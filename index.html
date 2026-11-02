@@ -452,6 +452,12 @@
             gap: 8px;
         }
 
+        /* Erzwingt exakt denselben zweizeiligen Zeilenumbruch wie in der Hauptleiste */
+        .module-list-item span.module-label-text {
+            line-height: 1.15;
+            display: inline-block;
+        }
+
         .module-controls {
             display: flex;
             align-items: center;
@@ -1259,7 +1265,6 @@
     }
 
     function closeSettings() {
-        document.getElementById('settings-modal').classList.add('open'); // Bleibt offen bis Klick auf X
         document.getElementById('settings-modal').classList.remove('open');
         saveSettings();
         renderTabs();
@@ -1295,8 +1300,9 @@
             };
 
             let label = document.createElement('span');
-            // Zeigt im Einstellungs-Dialog den Namen sauber in einer Zeile an
-            label.innerText = mod.title.replace('<br>', ' ');
+            label.className = 'module-label-text';
+            // Übernimmt exakt die zweizeilige Struktur (mit <br>) ins Einstellungsmenü
+            label.innerHTML = mod.title;
 
             left.appendChild(chk);
             left.appendChild(label);
@@ -1344,7 +1350,8 @@
                 };
 
                 let label = document.createElement('span');
-                label.innerText = mod.title.replace('<br>', ' ');
+                label.className = 'module-label-text';
+                label.innerHTML = mod.title;
 
                 left.appendChild(chk);
                 left.appendChild(label);
@@ -1408,7 +1415,7 @@
         "gx_k5":          { durchfluss: "40 l/h", strom: "6,8 A", spannung: "24 V", zeit: "13 h", prod: "60 min", pause: "30 min" },
         "gxl_k5":         { durchfluss: "40 l/h", strom: "6,8 A", spannung: "24 V", zeit: "19 h", prod: "60 min", pause: "15 min" },
         "sgx_k2":         { durchfluss: "40 l/h", strom: "6.8 A", spannung: "24 V", zeit: "19 h", prod: "60 min", pause: "15 min" },
-        "sgx_k5":         { durchfluss: "40 l/h", strom: "6,8 A", spannung: "24 V", zeit: "19 h", prod: "60 min", pause: "15 min" },
+        "sgx_k5":         { durchfluss: "40 l/h", strom: "6.8 A", spannung: "24 V", zeit: "19 h", prod: "60 min", pause: "15 min" },
         "g2_k5":          { durchfluss: "110 l/h", strom: "6.8 A", spannung: "24 V", zeit: "18 h", prod: "90 min", pause: "15 min" },
         "cgk":            { durchfluss: "40 l/h", strom: "6,8 A", spannung: "24 V", zeit: "7 h", prod: "30 min", pause: "30 min" },
         "cgx_k2":         { durchfluss: "40 l/h", strom: "6.8 A", spannung: "24 V", zeit: "13 h", prod: "60 min", pause: "30 min" },
