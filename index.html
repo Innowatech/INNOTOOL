@@ -205,13 +205,12 @@
             cursor: pointer;
             transition: 0.2s ease;
             white-space: normal;
-            hyphens: auto;
             text-align: center;
             box-shadow: 0 1px 2px rgba(0,0,0,0.05);
             display: flex;
             align-items: center;
             justify-content: center;
-            min-height: 38px;
+            min-height: 42px;
             line-height: 1.15;
         }
 
@@ -1137,15 +1136,15 @@
         throw new Error("Testversion abgelaufen.");
     }
 
-    // ZENTRALE MODUL-KONFIGURATION mit grammatikalischen Weichtrennstellen (&shy;)
+    // ZENTRALE MODUL-KONFIGURATION mit festen Umbrüchen für saubere Darstellung
     const defaultModules = [
-        { id: 'standard', title: 'Trink&shy;wasser', visible: true },
-        { id: 'wasserwerk', title: 'Wasser&shy;werk', visible: true },
+        { id: 'standard', title: 'Trinkwasser', visible: true },
+        { id: 'wasserwerk', title: 'Wasserwerk', visible: true },
         { id: 'schwimmbad', title: 'Pool', visible: true },
-        { id: 'pid', title: 'PID &amp; Regler', visible: true },
+        { id: 'pid', title: 'PID & Regler', visible: true },
         { id: 'sonden', title: 'Sonden', visible: true },
-        { id: 'anlagen', title: 'Produktions&shy;parameter', visible: true },
-        { id: 'verdünnung', title: 'Verdünnungs&shy;reihe', visible: true }
+        { id: 'anlagen', title: 'Produktions-<br>parameter', visible: true },
+        { id: 'verdünnung', title: 'Verdünnungs-<br>reihe', visible: true }
     ];
 
     let currentModules = [];
@@ -1176,8 +1175,10 @@
             try {
                 let parsed = JSON.parse(savedModules);
                 currentModules = parsed;
+                // Aktualisiere alte gespeicherte Titel auf die feste Umbruch-Variante
                 currentModules.forEach(m => {
-                    if (m.id === 'anlagen') m.title = 'Produktions&shy;parameter';
+                    if (m.id === 'anlagen') m.title = 'Produktions-<br>parameter';
+                    if (m.id === 'verdünnung') m.title = 'Verdünnungs-<br>reihe';
                 });
                 defaultModules.forEach(def => {
                     if (!currentModules.some(m => m.id === def.id)) {
@@ -1226,7 +1227,7 @@
             btn.type = 'button';
             btn.className = 'tab-btn';
             btn.id = 'btn-' + mod.id;
-            btn.innerHTML = mod.title;
+            btn.innerHTML = mod.title; // Übernimmt den Titel inkl. <br> direkt in die Navigation
             btn.onclick = () => switchTab(mod.id);
             container.appendChild(btn);
         });
@@ -1299,7 +1300,8 @@
             };
 
             let label = document.createElement('span');
-            label.innerText = mod.title.replace(/&shy;/g, '').replace(/&amp;/g, '&');
+            // Entfernt für die Einstellungen im Menü die <br>-Tags, damit es dort in einer Zeile sauber lesbar bleibt
+            label.innerHTML = mod.title.replace('<br>', ' ');
 
             left.appendChild(chk);
             left.appendChild(label);
@@ -1347,7 +1349,7 @@
                 };
 
                 let label = document.createElement('span');
-                label.innerText = mod.title.replace(/&shy;/g, '').replace(/&amp;/g, '&');
+                label.innerHTML = mod.title.replace('<br>', ' ');
 
                 left.appendChild(chk);
                 left.appendChild(label);
