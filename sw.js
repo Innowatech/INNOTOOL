@@ -1,10 +1,12 @@
-const CACHE_NAME = 'mat-service-tool-v12';
+const CACHE_NAME = 'mat-service-tool-v13';
 const assetsToCache = [
   './',
   './index.html',
-  './manifest.json'
+  './manifest.json',
+  './icon.png'
 ];
 
+// 1. Installation & Caching beim ersten Online-Start
 self.addEventListener('install', event => {
   self.skipWaiting();
   event.waitUntil(
@@ -14,6 +16,7 @@ self.addEventListener('install', event => {
   );
 });
 
+// 2. Sofortige Übernahme der Kontrolle und alte Caches löschen
 self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys().then(keys => {
@@ -28,6 +31,7 @@ self.addEventListener('activate', event => {
   );
 });
 
+// 3. Ultra-robuster Offline-Fetch-Handler für PC und Mobile
 self.addEventListener('fetch', event => {
   event.respondWith(
     caches.match(event.request)
@@ -36,6 +40,7 @@ self.addEventListener('fetch', event => {
           return cachedResponse;
         }
         return fetch(event.request).catch(() => {
+          // Fallback bei fehlendem Internet: Liefere immer die index.html aus dem Cache
           return caches.match('./index.html').then(indexResponse => {
             return indexResponse || caches.match('./');
           });
