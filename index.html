@@ -64,6 +64,22 @@
             --footer-bg: #181818;
         }
 
+        /* Korrektur für Dropdown-Menüs im Dark Mode auf Desktop (Chrome/Edge) */
+        body.dark-mode select {
+            background-color: var(--input-bg);
+            color: var(--text-color);
+        }
+
+        body.dark-mode select option {
+            background-color: #1e1e1e;
+            color: #ffffff;
+        }
+
+        select option {
+            background-color: #ffffff;
+            color: #333333;
+        }
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             background-color: var(--bg-color);
@@ -169,11 +185,11 @@
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
             flex: 1;
-            scrollbar-width: none; /* Firefox ausblenden */
+            scrollbar-width: none;
         }
 
         .tab-buttons::-webkit-scrollbar {
-            display: none; /* Chrome/Safari ausblenden */
+            display: none;
         }
 
         .tab-btn {
@@ -188,8 +204,8 @@
             color: var(--tab-btn-text);
             cursor: pointer;
             transition: 0.2s ease;
-            white-space: normal; /* Erlaubt zweizeiligen Umbruch */
-            hyphens: auto;       /* Nutzt die &shy; Trennungspunkte */
+            white-space: normal;
+            hyphens: auto;
             text-align: center;
             box-shadow: 0 1px 2px rgba(0,0,0,0.05);
             display: flex;
@@ -1122,7 +1138,6 @@
 
     // Settings & State Management
     function loadSettings() {
-        // 1. Dark Mode: Standardmäßig AUS (hell)
         const savedDarkMode = localStorage.getItem('mat_darkmode');
         const isDark = (savedDarkMode === 'true');
         
@@ -1137,12 +1152,10 @@
             }
         }
 
-        // 2. Zoom Level
         const savedZoom = localStorage.getItem('mat_zoom') || '1';
         changeZoom(savedZoom, false);
         document.getElementById('zoom-slider').value = savedZoom;
 
-        // 3. Modul Konfiguration
         const savedModules = localStorage.getItem('mat_modules');
         if (savedModules) {
             try {
@@ -1198,12 +1211,11 @@
             btn.type = 'button';
             btn.className = 'tab-btn';
             btn.id = 'btn-' + mod.id;
-            btn.innerHTML = mod.title; // innerHTML wichtig für &shy; und &amp;
+            btn.innerHTML = mod.title;
             btn.onclick = () => switchTab(mod.id);
             container.appendChild(btn);
         });
 
-        // Automatisch den ersten sichtbaren Tab aktivieren
         if (autoSelectFirst || !activeModules.some(m => m.id === currentActiveTab)) {
             if (activeModules.length > 0) {
                 switchTab(activeModules[0].id);
@@ -1231,7 +1243,6 @@
         if (activeContent) activeContent.classList.add('active');
     }
 
-    // Modal Control & Module Manager Render
     function openSettings() {
         renderModuleManager();
         document.getElementById('settings-modal').classList.add('open');
@@ -1252,7 +1263,6 @@
         const activeModules = currentModules.filter(m => m.visible);
         const inactiveModules = currentModules.filter(m => !m.visible);
 
-        // 1. Aktive Module rendern (mit Reihenfolge-Pfeilen)
         activeModules.forEach((mod, index) => {
             let item = document.createElement('div');
             item.className = 'module-list-item';
@@ -1305,7 +1315,6 @@
             activeList.appendChild(item);
         });
 
-        // 2. Inaktive Module rendern (ohne Pfeile, nur aktivieren)
         if (inactiveModules.length === 0) {
             inactiveList.innerHTML = '<div class="hint">Keine inaktiven Module vorhanden.</div>';
         } else {
@@ -1357,8 +1366,6 @@
             renderModuleManager();
         }
     }
-
-    // --- RECHENLOGIKEN ---
 
     const sondenDatabase = {
         1: { messRv1: "0,003 ... 0,400 ppm", steilRv1: "48,0 mA/ppm" },
@@ -1711,7 +1718,6 @@
         document.getElementById('pool_ph_hinweis').innerText = hinweis;
     }
 
-    // Init beim Start
     loadSettings();
     calcStandard();
     calcWasserwerk();
