@@ -2,22 +2,20 @@ const CACHE_NAME = 'mat-service-tool-v10';
 const assetsToCache = [
   './',
   './index.html',
-  './manifest.json',
-  './icon.png'
+  './manifest.json'
 ];
 
-// 1. Installation & Caching beim ersten Online-Start
+// 1. Installieren und sofort cachen
 self.addEventListener('install', event => {
   self.skipWaiting();
   event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then(cache => {
-        return cache.addAll(assetsToCache);
-      })
+    caches.open(CACHE_NAME).then(cache => {
+      return cache.addAll(assetsToCache);
+    })
   );
 });
 
-// 2. Sofortige Übernahme der Kontrolle
+// 2. Alte Caches sofort löschen und Kontrolle übernehmen
 self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys().then(keys => {
@@ -32,18 +30,22 @@ self.addEventListener('activate', event => {
   );
 });
 
-// 3. Zuverlässige Offline-Abfang-Logik (Cache First mit Fallback)
+// 3. Ultra-robuster Fetch-Handler für Desktop-PWAs
 self.addEventListener('fetch', event => {
   event.respondWith(
     caches.match(event.request)
       .then(cachedResponse => {
-        // Wenn die Datei im Cache liegt, sofort ausliefern
         if (cachedResponse) {
           return cachedResponse;
         }
-        // Versuchen online zu laden, bei Fehler (offline) IMMER die index.html ausliefern
         return fetch(event.request).catch(() => {
-          return caches.match('./index.html');
+          // Wenn offline und die Hauptseite angefordert wird, IMMER index.html liefern
+          return caches.match('./index.html').then(indexResponse => {
+            if (indexResponse) {
+              return indexResponse;
+            }
+            return caches.match('./');
+          });
         });
       })
   );
