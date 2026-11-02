@@ -434,6 +434,7 @@
             margin-bottom: 10px;
         }
 
+        /* Modus-Manager Listen-Layout mit festem Pfeil-Abstand */
         .module-list-item {
             display: flex;
             align-items: center;
@@ -443,12 +444,26 @@
             border: 1px solid var(--border-color);
             border-radius: 6px;
             margin-bottom: 6px;
+            gap: 10px;
+        }
+
+        .module-list-item > div:first-child {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .module-list-item span {
+            word-break: break-word;
         }
 
         .module-controls {
             display: flex;
             align-items: center;
             gap: 6px;
+            flex-shrink: 0;
         }
 
         .btn-arrow {
@@ -1268,9 +1283,6 @@
             item.className = 'module-list-item';
 
             let left = document.createElement('div');
-            left.style.display = 'flex';
-            left.style.alignItems = 'center';
-            left.style.gap = '8px';
 
             let chk = document.createElement('input');
             chk.type = 'checkbox';
@@ -1324,9 +1336,6 @@
                 item.style.opacity = '0.7';
 
                 let left = document.createElement('div');
-                left.style.display = 'flex';
-                left.style.alignItems = 'center';
-                left.style.gap = '8px';
 
                 let chk = document.createElement('input');
                 chk.type = 'checkbox';
