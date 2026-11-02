@@ -433,7 +433,7 @@
             margin-bottom: 10px;
         }
 
-        /* Modus-Manager Listen-Layout mit festem Pfeil-Abstand */
+        /* Modus-Manager Listen-Layout */
         .module-list-item {
             display: flex;
             align-items: center;
@@ -447,15 +447,9 @@
         }
 
         .module-list-item > div:first-child {
-            flex: 1;
-            min-width: 0;
             display: flex;
             align-items: center;
             gap: 8px;
-        }
-
-        .module-list-item span {
-            word-break: break-word;
         }
 
         .module-controls {
@@ -1136,7 +1130,7 @@
         throw new Error("Testversion abgelaufen.");
     }
 
-    // ZENTRALE MODUL-KONFIGURATION mit festen Umbrüchen für saubere Darstellung
+    // ZENTRALE MODUL-KONFIGURATION mit festen Umbrüchen
     const defaultModules = [
         { id: 'standard', title: 'Trinkwasser', visible: true },
         { id: 'wasserwerk', title: 'Wasserwerk', visible: true },
@@ -1175,7 +1169,7 @@
             try {
                 let parsed = JSON.parse(savedModules);
                 currentModules = parsed;
-                // Aktualisiere alte gespeicherte Titel auf die feste Umbruch-Variante
+                // Erzwinge die sauberen festen Umbrüche auch bei Bestandsdaten aus dem localStorage
                 currentModules.forEach(m => {
                     if (m.id === 'anlagen') m.title = 'Produktions-<br>parameter';
                     if (m.id === 'verdünnung') m.title = 'Verdünnungs-<br>reihe';
@@ -1227,7 +1221,7 @@
             btn.type = 'button';
             btn.className = 'tab-btn';
             btn.id = 'btn-' + mod.id;
-            btn.innerHTML = mod.title; // Übernimmt den Titel inkl. <br> direkt in die Navigation
+            btn.innerHTML = mod.title;
             btn.onclick = () => switchTab(mod.id);
             container.appendChild(btn);
         });
@@ -1265,6 +1259,7 @@
     }
 
     function closeSettings() {
+        document.getElementById('settings-modal').classList.add('open'); // Bleibt offen bis Klick auf X
         document.getElementById('settings-modal').classList.remove('open');
         saveSettings();
         renderTabs();
@@ -1300,8 +1295,8 @@
             };
 
             let label = document.createElement('span');
-            // Entfernt für die Einstellungen im Menü die <br>-Tags, damit es dort in einer Zeile sauber lesbar bleibt
-            label.innerHTML = mod.title.replace('<br>', ' ');
+            // Zeigt im Einstellungs-Dialog den Namen sauber in einer Zeile an
+            label.innerText = mod.title.replace('<br>', ' ');
 
             left.appendChild(chk);
             left.appendChild(label);
@@ -1349,7 +1344,7 @@
                 };
 
                 let label = document.createElement('span');
-                label.innerHTML = mod.title.replace('<br>', ' ');
+                label.innerText = mod.title.replace('<br>', ' ');
 
                 left.appendChild(chk);
                 left.appendChild(label);
