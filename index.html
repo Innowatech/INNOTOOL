@@ -12,7 +12,7 @@
     
     <title>INNOWATΞCH Service Tool</title>
     
-    <!-- PWA / App Manifest direkt verlinkt auf deine vorhandene manifest.json -->
+    <!-- PWA / App Manifest -->
     <link rel="manifest" href="manifest.json">
 
     <style>
@@ -64,7 +64,6 @@
             --footer-bg: #181818;
         }
 
-        /* Korrektur für Dropdown-Menüs im Dark Mode auf Desktop (Chrome/Edge) */
         body.dark-mode select {
             background-color: var(--input-bg);
             color: var(--text-color);
@@ -112,6 +111,23 @@
             margin: 0;
             font-size: 1.4rem;
             letter-spacing: 1px;
+            display: inline-block;
+        }
+
+        /* Weihnachtsmützen-Styling für das 'I' */
+        .santa-letter {
+            position: relative;
+            display: inline-block;
+        }
+
+        .santa-letter::before {
+            content: "🎅";
+            position: absolute;
+            top: -12px;
+            left: -6px;
+            font-size: 1.1rem;
+            transform: rotate(-15deg);
+            pointer-events: none;
         }
 
         .header-sub {
@@ -124,7 +140,6 @@
             font-weight: 500;
         }
 
-        /* Settings Icon Button */
         .settings-btn {
             position: absolute;
             right: 15px;
@@ -147,7 +162,6 @@
             background: rgba(255, 255, 255, 0.3);
         }
 
-        /* Tab Bar Wrapper mit sanften Fading-Rändern */
         .tab-bar-wrapper {
             display: flex;
             background: var(--tab-bar-bg);
@@ -309,6 +323,29 @@
             color: var(--result-val);
         }
 
+        /* PDF Export Button Layout */
+        .pdf-export-btn {
+            width: 100%;
+            margin-top: 15px;
+            padding: 10px 14px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: background 0.2s ease;
+        }
+
+        .pdf-export-btn:hover {
+            opacity: 0.9;
+        }
+
         .section-title {
             font-size: 0.95rem;
             font-weight: bold;
@@ -433,7 +470,6 @@
             margin-bottom: 10px;
         }
 
-        /* Modus-Manager Listen-Layout */
         .module-list-item {
             display: flex;
             align-items: center;
@@ -452,7 +488,6 @@
             gap: 8px;
         }
 
-        /* Erzwingt exakt denselben zweizeiligen Zeilenumbruch wie in der Hauptleiste */
         .module-list-item span.module-label-text {
             line-height: 1.15;
             display: inline-block;
@@ -489,27 +524,59 @@
         .zoom-slider-container input {
             flex: 1;
         }
+
+        /* Druck-Styles für den sauberen PDF-Export */
+        @media print {
+            body {
+                background: white !important;
+                color: black !important;
+                padding: 0 !important;
+                zoom: 1 !important;
+            }
+            .container {
+                box-shadow: none !important;
+                max-width: 100% !important;
+                border-radius: 0 !important;
+            }
+            .settings-btn, .tab-bar-wrapper, .pdf-export-btn, .modal-overlay, .footer {
+                display: none !important;
+            }
+            .tab-content {
+                display: none !important;
+            }
+            .tab-content.active {
+                display: block !important;
+            }
+            .result-box {
+                border: 2px solid #0d47a1 !important;
+                background: #f0f4f8 !important;
+            }
+            .result-value {
+                color: #0d47a1 !important;
+            }
+            .input-wrapper input, .input-wrapper select {
+                font-weight: bold !important;
+            }
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
     <div class="header">
-        <h1>INNOWATΞCH</h1>
+        <h1 id="app-title"><span id="first-letter">I</span>NNOWATΞCH</h1>
         <div class="header-sub">
             <span>Service Tool</span>
         </div>
         <button type="button" class="settings-btn" onclick="openSettings()" title="Einstellungen">⚙️</button>
     </div>
 
-    <!-- Modus Auswahl Container mit Fading-Rändern -->
+    <!-- Modus Auswahl Container -->
     <div class="tab-bar-wrapper">
-        <div class="tab-buttons" id="tab-buttons-container">
-            <!-- Tabs werden dynamisch per JavaScript eingefügt -->
-        </div>
+        <div class="tab-buttons" id="tab-buttons-container"></div>
     </div>
 
-    <!-- MODUS 1: Standard -->
+    <!-- MODUS 1: Standard (Trinkwasser) -->
     <div id="tab-standard" class="tab-content">
         <div class="form-group">
             <label>Zielkonzentration</label>
@@ -550,6 +617,8 @@
             <label>Erforderliche Dosiermenge</label>
             <div class="result-value" id="std_res_menge">0.00 ml</div>
         </div>
+
+        <button type="button" class="pdf-export-btn" onclick="exportToPDF('Trinkwasser')">📄 Als PDF speichern / drucken</button>
     </div>
 
     <!-- MODUS 2: Wasserwerk -->
@@ -659,6 +728,8 @@
             <label>Proportionale Dosiermenge je m³ Wasser</label>
             <div class="result-value" id="ww_res_l_pro_m3">0.00 l/m³</div>
         </div>
+
+        <button type="button" class="pdf-export-btn" onclick="exportToPDF('Wasserwerk')">📄 Als PDF speichern / drucken</button>
     </div>
 
     <!-- MODUS 3: Schwimmbad / Pool -->
@@ -782,6 +853,8 @@
             <div class="result-value" id="pool_res_ph">0 l / kg</div>
             <div class="hint" id="pool_ph_hinweis" style="margin-top: 5px; color: var(--result-label);">Werte eingeben.</div>
         </div>
+
+        <button type="button" class="pdf-export-btn" onclick="exportToPDF('Pool')">📄 Als PDF speichern / drucken</button>
     </div>
 
     <!-- MODUS 4: PID-Regler & Regler-Auslegung -->
@@ -873,6 +946,8 @@
         <div class="alert-box" id="hinweis_text">
             Bitte Werte des Praxistests eingeben, um die Regler-Parameter zu berechnen.
         </div>
+
+        <button type="button" class="pdf-export-btn" onclick="exportToPDF('PID & Regler')">📄 Als PDF speichern / drucken</button>
     </div>
 
     <!-- MODUS 5: Sonden (RV1) -->
@@ -907,7 +982,7 @@
         </div>
     </div>
 
-    <!-- MODUS 6: Produktionsparameter (Aquadron) -->
+    <!-- MODUS 6: Produktionsparameter -->
     <div id="tab-anlagen" class="tab-content">
         <div class="section-title">Aquadron Anlagentyp Auswählen</div>
 
@@ -995,7 +1070,7 @@
         </div>
     </div>
 
-    <!-- MODUS 7: Vollautomatisierter Verdünnungs- & Messrechner -->
+    <!-- MODUS 7: Verdünnungs- & Messrechner -->
     <div id="tab-verdünnung" class="tab-content">
         <div class="section-title">1. Proben- & Anlagenauswahl</div>
         
@@ -1061,7 +1136,7 @@
         </div>
     </div>
 
-    <!-- Copyright Footer mit Versionsnummer rechts -->
+    <!-- Footer -->
     <div class="footer">
         <span>© 2026 #MAT</span>
         <span class="footer-version">v1.0</span>
@@ -1076,7 +1151,6 @@
             <button type="button" class="modal-close-btn" onclick="closeSettings()">✕</button>
         </div>
         <div class="modal-body">
-            <!-- 1. Dark Mode -->
             <div class="setting-section">
                 <div class="setting-section-title">Erscheinungsbild</div>
                 <div class="toggle-row">
@@ -1085,7 +1159,6 @@
                 </div>
             </div>
 
-            <!-- 2. Display Density / Zoom -->
             <div class="setting-section">
                 <div class="setting-section-title">Darstellungsgröße (Zoom / Dichte)</div>
                 <div class="zoom-slider-container">
@@ -1098,30 +1171,44 @@
                 </div>
             </div>
 
-            <!-- 3. Modul Manager -->
             <div class="setting-section">
                 <div class="setting-section-title">Aktive Module (Reihenfolge mit ◄ / ►)</div>
-                <div id="active-module-list">
-                    <!-- Aktive Module werden hier gerendert -->
-                </div>
+                <div id="active-module-list"></div>
 
                 <div class="setting-section-title" style="margin-top: 15px; opacity: 0.8;">Inaktive Module</div>
-                <div id="inactive-module-list">
-                    <!-- Inaktive Module werden hier gerendert -->
-                </div>
+                <div id="inactive-module-list"></div>
             </div>
         </div>
     </div>
 </div>
 
 <script>
-    // Service Worker Registrierung für sofortige Offline-Verfügbarkeit
+    // Service Worker Registrierung
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
             navigator.serviceWorker.register('./sw.js')
                 .then(reg => console.log('Service Worker erfolgreich registriert:', reg.scope))
                 .catch(err => console.log('Service Worker Registrierung fehlgeschlagen:', err));
         });
+    }
+
+    // Automatische Weihnachtsmützen-Prüfung (01.12. - 31.12.)
+    function checkChristmasHat() {
+        const today = new Date();
+        const month = today.getMonth(); // 11 entspricht Dezember (0-indexed)
+        const date = today.getDate();
+        const firstLetterSpan = document.getElementById('first-letter');
+
+        if (month === 11 && date >= 1 && date <= 31) {
+            firstLetterSpan.classList.add('santa-letter');
+        } else {
+            firstLetterSpan.classList.remove('santa-letter');
+        }
+    }
+
+    // PDF-Export Funktion via Druck-Dialog
+    function exportToPDF(modulName) {
+        window.print();
     }
 
     // Testversion-Sperre (Gültig bis zum 31. Dezember 2027)
@@ -1136,7 +1223,7 @@
         throw new Error("Testversion abgelaufen.");
     }
 
-    // ZENTRALE MODUL-KONFIGURATION mit festen Umbrüchen
+    // ZENTRALE MODUL-KONFIGURATION
     const defaultModules = [
         { id: 'standard', title: 'Trinkwasser', visible: true },
         { id: 'wasserwerk', title: 'Wasserwerk', visible: true },
@@ -1150,8 +1237,8 @@
     let currentModules = [];
     let currentActiveTab = '';
 
-    // Settings & State Management
     function loadSettings() {
+        checkChristmasHat();
         const savedDarkMode = localStorage.getItem('mat_darkmode');
         const isDark = (savedDarkMode === 'true');
         
@@ -1175,7 +1262,6 @@
             try {
                 let parsed = JSON.parse(savedModules);
                 currentModules = parsed;
-                // Erzwinge die sauberen festen Umbrüche auch bei Bestandsdaten aus dem localStorage
                 currentModules.forEach(m => {
                     if (m.id === 'anlagen') m.title = 'Produktions-<br>parameter';
                     if (m.id === 'verdünnung') m.title = 'Verdünnungs-<br>reihe';
@@ -1301,7 +1387,6 @@
 
             let label = document.createElement('span');
             label.className = 'module-label-text';
-            // Übernimmt exakt die zweizeilige Struktur (mit <br>) ins Einstellungsmenü
             label.innerHTML = mod.title;
 
             left.appendChild(chk);
