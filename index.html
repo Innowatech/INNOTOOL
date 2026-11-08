@@ -38,9 +38,6 @@
             --tab-btn-text: #455a64;
             --footer-bg: #eee;
             --app-zoom: 1;
-
-            --blue-accent: #00bcd4;
-            --green-accent: #4caf50;
         }
 
         /* Dark Mode Farbschema */
@@ -65,9 +62,6 @@
             --tab-btn-border: #444444;
             --tab-btn-text: #cccccc;
             --footer-bg: #181818;
-
-            --blue-accent: #00bcd4;
-            --green-accent: #4caf50;
         }
 
         body.dark-mode select {
@@ -120,6 +114,7 @@
             display: inline-block;
         }
 
+        /* Weihnachtsmützen-Styling für das 'I' (nur im Dezember aktiv) */
         .santa-letter {
             position: relative;
             display: inline-block;
@@ -145,108 +140,87 @@
             font-weight: 500;
         }
 
-        .header-buttons {
+        .settings-btn {
             position: absolute;
             right: 15px;
             top: 15px;
-            display: flex;
-            gap: 8px;
-        }
-
-        .settings-btn, .view-toggle-btn {
             background: rgba(255, 255, 255, 0.15);
             border: none;
             color: white;
-            font-size: 1.1rem;
-            padding: 6px 10px;
-            border-radius: 6px;
+            font-size: 1.3rem;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: background 0.2s ease;
-            font-weight: 600;
         }
 
-        .settings-btn:hover, .view-toggle-btn:hover {
+        .settings-btn:hover {
             background: rgba(255, 255, 255, 0.3);
         }
 
-        /* KATEGORIEN & TAB-BAR STYLING */
-        .category-block {
-            margin: 12px;
-            background: rgba(30, 41, 59, 0.03);
-            border-radius: 10px;
-            overflow: hidden;
-            border: 1px solid var(--border-color);
-            transition: all 0.3s ease;
-        }
-
-        .category-header {
+        .tab-bar-wrapper {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 14px;
-            cursor: pointer;
-            user-select: none;
-            font-weight: bold;
-            font-size: 0.95rem;
             background: var(--tab-bar-bg);
+            border-bottom: 1px solid var(--border-color);
+            position: relative;
+            overflow: hidden;
         }
 
-        .cat-blue .category-header {
-            color: var(--blue-accent);
-            border-left: 4px solid var(--blue-accent);
+        .tab-bar-wrapper::before,
+        .tab-bar-wrapper::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 18px;
+            z-index: 2;
+            pointer-events: none;
         }
 
-        .cat-green .category-header {
-            color: var(--green-accent);
-            border-left: 4px solid var(--green-accent);
+        .tab-bar-wrapper::before {
+            left: 0;
+            background: linear-gradient(to right, var(--tab-bar-bg), transparent);
         }
 
-        .toggle-arrow {
-            transition: transform 0.2s ease;
-            font-size: 0.8rem;
+        .tab-bar-wrapper::after {
+            right: 0;
+            background: linear-gradient(to left, var(--tab-bar-bg), transparent);
         }
 
-        .category-block.collapsed .toggle-arrow {
-            transform: rotate(-90deg);
-        }
-
-        .category-content {
+        .tab-buttons {
             display: flex;
-            padding: 10px;
+            background: transparent;
+            padding: 8px 12px;
             gap: 6px;
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
+            flex: 1;
             scrollbar-width: none;
         }
 
-        .category-content::-webkit-scrollbar {
+        .tab-buttons::-webkit-scrollbar {
             display: none;
-        }
-
-        .category-block.collapsed .category-content {
-            display: none;
-        }
-
-        .tab-bar-wrapper {
-            background: var(--tab-bar-bg);
-            border-bottom: 1px solid var(--border-color);
         }
 
         .tab-btn {
             flex: 1;
-            min-width: 90px;
+            min-width: 82px;
             padding: 6px 4px;
+            border: 1px solid var(--tab-btn-border);
             border-radius: 6px;
             background: var(--tab-btn-bg);
             font-weight: bold;
-            font-size: 0.72rem;
+            font-size: 0.68rem;
             color: var(--tab-btn-text);
             cursor: pointer;
             transition: 0.2s ease;
+            white-space: normal;
             text-align: center;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -254,31 +228,17 @@
             line-height: 1.15;
         }
 
-        .cat-blue .tab-btn {
-            border: 1px solid rgba(0, 188, 212, 0.4);
-        }
-        .cat-green .tab-btn {
-            border: 1px solid rgba(76, 175, 80, 0.4);
-        }
-
         .tab-btn:hover {
-            opacity: 0.8;
+            border-color: var(--primary-color);
+            color: var(--primary-color);
         }
 
         .tab-btn.active {
-            background: var(--card-bg) !important;
-            border-width: 2px !important;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
-        }
-
-        .cat-blue .tab-btn.active {
-            border-color: var(--blue-accent) !important;
-            color: var(--blue-accent) !important;
-        }
-
-        .cat-green .tab-btn.active {
-            border-color: var(--green-accent) !important;
-            color: var(--green-accent) !important;
+            background: var(--card-bg);
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-bottom: 3px solid var(--primary-color);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
         }
 
         .tab-content {
@@ -430,7 +390,7 @@
             color: var(--subtext-color);
         }
 
-        /* Modal Overlay Styles */
+        /* Settings Modal Overlay Styles */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -509,22 +469,14 @@
             margin-bottom: 10px;
         }
 
-        /* HMI-Display Modus */
-        body.mode-hmi .category-block {
-            border: none;
-            background: transparent;
-        }
-        body.mode-hmi .category-header {
-            display: none;
-        }
-        body.mode-hmi .category-content {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
+        .zoom-slider-container {
+            display: flex;
+            align-items: center;
             gap: 10px;
         }
-        body.mode-hmi .tab-btn {
-            min-height: 55px;
-            font-size: 0.85rem;
+
+        .zoom-slider-container input {
+            flex: 1;
         }
 
         @media print {
@@ -539,7 +491,7 @@
                 max-width: 100% !important;
                 border-radius: 0 !important;
             }
-            .header-buttons, .tab-bar-wrapper, .pdf-export-btn, .modal-overlay, .footer {
+            .settings-btn, .tab-bar-wrapper, .pdf-export-btn, .modal-overlay, .footer {
                 display: none !important;
             }
             .tab-content {
@@ -565,39 +517,28 @@
 
 <div class="container">
     <div class="header">
-        <h1 id="app-title"><span id="first-letter" class="santa-letter">I</span>NNOWATΞCH</h1>
+        <h1 id="app-title"><span id="first-letter">I</span>NNOWATΞCH</h1>
         <div class="header-sub">
             <span>Service Tool</span>
         </div>
-        <div class="header-buttons">
-            <button type="button" class="view-toggle-btn" id="viewToggle" onclick="switchViewMode()" title="Ansicht umschalten">🖥️ HMI</button>
-            <button type="button" class="settings-btn" onclick="openSettings()" title="Einstellungen">⚙️</button>
-        </div>
+        <button type="button" class="settings-btn" onclick="openSettings()" title="Einstellungen">⚙️</button>
     </div>
 
-    <!-- ZWEITEILIGE KATEGORIEN-STRUKTUR (Anwendungen & Parameter) -->
+    <!-- Modus Auswahl Container -->
     <div class="tab-bar-wrapper">
-        <!-- Kategorie 1: Anwendungen (Blau) -->
-        <div id="cat-anwendungen" class="category-block cat-blue">
-            <div class="category-header" onclick="toggleCategory('cat-anwendungen')">
-                <span>🔵 Anwendungen</span>
-                <span class="toggle-arrow">▼</span>
-            </div>
-            <div class="category-content" id="container-anwendungen"></div>
-        </div>
-
-        <!-- Kategorie 2: Parameter (Grün) -->
-        <div id="cat-parameter" class="category-block cat-green">
-            <div class="category-header" onclick="toggleCategory('cat-parameter')">
-                <span>🟢 Parameter</span>
-                <span class="toggle-arrow">▼</span>
-            </div>
-            <div class="category-content" id="container-parameter"></div>
+        <div class="tab-buttons" id="tab-buttons-container">
+            <button type="button" class="tab-btn active" onclick="switchTab('standard')">Trinkwasser</button>
+            <button type="button" class="tab-btn" onclick="switchTab('wasserwerk')">Wasserwerk</button>
+            <button type="button" class="tab-btn" onclick="switchTab('schwimmbad')">Schwimmbad</button>
+            <button type="button" class="tab-btn" onclick="switchTab('pid')">PID-Regler</button>
+            <button type="button" class="tab-btn" onclick="switchTab('verduennungsreihe')">Verdünnungsreihe Anolyte</button>
+            <button type="button" class="tab-btn" onclick="switchTab('produktionsparameter')">Produktionsparameter AQD</button>
+            <button type="button" class="tab-btn" onclick="switchTab('sondendaten')">Sondendaten</button>
         </div>
     </div>
 
-    <!-- MODUS 1: Trinkwasser -->
-    <div id="tab-trinkwasser" class="tab-content">
+    <!-- MODUS 1: Standard (Trinkwasser) -->
+    <div id="tab-standard" class="tab-content active">
         <div class="form-group">
             <label>Zielkonzentration</label>
             <div class="input-wrapper">
@@ -877,7 +818,7 @@
         <button type="button" class="pdf-export-btn" onclick="exportToPDF('Schwimmbad')">📄 Als PDF speichern / drucken</button>
     </div>
 
-    <!-- MODUS 4: pH-Regler -->
+    <!-- MODUS 4: PID-Regler -->
     <div id="tab-pid" class="tab-content">
         <div class="section-title">1. Hydraulik & Betriebsart</div>
         
@@ -964,7 +905,7 @@
         </div>
 
         <div class="alert-box" id="hinweis_text">Bitte Testdaten eingeben, um Regler-Empfehlungen zu erhalten.</div>
-        <button type="button" class="pdf-export-btn" onclick="exportToPDF('pH-Regler')">📄 Als PDF speichern / drucken</button>
+        <button type="button" class="pdf-export-btn" onclick="exportToPDF('PID-Regler')">📄 Als PDF speichern / drucken</button>
     </div>
 
     <!-- MODUS 5: Verdünnungsreihe Anolyte -->
@@ -1034,86 +975,19 @@
 </div>
 
 <script>
-    const modulesConfig = [
-        { id: 'trinkwasser', label: 'Trinkwasser', cat: 'anwendungen' },
-        { id: 'schwimmbad', label: 'Schwimmbad', cat: 'anwendungen' },
-        { id: 'pid', label: 'pH-Regler', cat: 'anwendungen' },
-        { id: 'wasserwerk', label: 'Wasserwerk', cat: 'anwendungen' },
-        { id: 'verduennungsreihe', label: 'Verdünnungsreihe Anolyte', cat: 'anwendungen' },
-        { id: 'produktionsparameter', label: 'Produktionsparameter AQD', cat: 'parameter' },
-        { id: 'sondendaten', label: 'Sondendaten', cat: 'parameter' }
-    ];
-
-    function initModules() {
-        const contAnw = document.getElementById('container-anwendungen');
-        const contParam = document.getElementById('container-parameter');
-        contAnw.innerHTML = '';
-        contParam.innerHTML = '';
-
-        modulesConfig.forEach(mod => {
-            const btn = document.createElement('button');
-            btn.type = 'button';
-            btn.className = 'tab-btn';
-            btn.id = 'btn-' + mod.id;
-            btn.innerText = mod.label;
-            btn.onclick = () => switchTab(mod.id);
-
-            if (mod.cat === 'anwendungen') {
-                contAnw.appendChild(btn);
-            } else {
-                contParam.appendChild(btn);
-            }
-        });
-    }
-
     function switchTab(tabId) {
         document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
         document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
 
         const targetTab = document.getElementById('tab-' + tabId);
-        const targetBtn = document.getElementById('btn-' + tabId);
+        // Find button by onclick attribute content
+        const targetBtn = Array.from(document.querySelectorAll('.tab-btn')).find(btn => btn.getAttribute('onclick').includes(tabId));
 
         if (targetTab) targetTab.classList.add('active');
         if (targetBtn) targetBtn.classList.add('active');
 
         localStorage.setItem('innotool_active_tab', tabId);
         window.scrollTo(0, 0);
-    }
-
-    function toggleCategory(catId) {
-        if (document.body.classList.contains('mode-hmi')) return;
-        const category = document.getElementById(catId);
-        category.classList.toggle('collapsed');
-        const isCollapsed = category.classList.contains('collapsed');
-        localStorage.setItem('state_' + catId, isCollapsed ? 'collapsed' : 'expanded');
-    }
-
-    function switchViewMode() {
-        const isHMI = document.body.classList.toggle('mode-hmi');
-        const btn = document.getElementById('viewToggle');
-        if (isHMI) {
-            btn.innerText = '📱 Liste';
-            localStorage.setItem('innotool_view_mode', 'hmi');
-            document.querySelectorAll('.category-block').forEach(el => el.classList.remove('collapsed'));
-        } else {
-            btn.innerText = '🖥️ HMI';
-            localStorage.setItem('innotool_view_mode', 'klassisch');
-            restoreCategoryStates();
-        }
-    }
-
-    function restoreCategoryStates() {
-        ['cat-anwendungen', 'cat-parameter'].forEach(catId => {
-            const savedState = localStorage.getItem('state_' + catId);
-            const el = document.getElementById(catId);
-            if (el) {
-                if (savedState === 'collapsed') {
-                    el.classList.add('collapsed');
-                } else {
-                    el.classList.remove('collapsed');
-                }
-            }
-        });
     }
 
     /* --- VOLLSTÄNDIGE RECHEN-LOGIK --- */
@@ -1250,7 +1124,6 @@
         const tg = parseFloat(document.getElementById('zeit_tg').value) || 0;
 
         if (testL > 0 && diff > 0 && tg > 0) {
-            const gain = (testL * (wirkstoff / 500)) / diff;
             const pVal = Math.max(1, Math.min(10, (tg / (tu + tg)) * 5)).toFixed(1);
             const iVal = (4 * (tu + tg)).toFixed(0);
             const tot = (diff * 0.1).toFixed(2);
@@ -1302,18 +1175,17 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-        initModules();
-
-        const lastTab = localStorage.getItem('innotool_active_tab') || 'trinkwasser';
-        switchTab(lastTab);
-
-        const savedMode = localStorage.getItem('innotool_view_mode');
-        if (savedMode === 'hmi') {
-            document.body.classList.add('mode-hmi');
-            document.getElementById('viewToggle').innerText = '📱 Liste';
-        } else {
-            restoreCategoryStates();
+        // Automatische Weihnachtsmütze nur vom 01.12. bis 31.12.
+        const today = new Date();
+        if (today.getMonth() + 1 === 12) {
+            const iLetter = document.getElementById('first-letter');
+            if (iLetter) {
+                iLetter.classList.add('santa-letter');
+            }
         }
+
+        const lastTab = localStorage.getItem('innotool_active_tab') || 'standard';
+        switchTab(lastTab);
 
         if (localStorage.getItem('innotool_dark') === 'true') {
             document.body.classList.add('dark-mode');
