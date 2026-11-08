@@ -207,14 +207,14 @@
         }
 
         .tab-btn {
-            flex: 1;
-            min-width: 82px;
-            padding: 6px 4px;
+            flex: 0 0 auto;
+            min-width: 95px;
+            padding: 8px 10px;
             border: 1px solid var(--tab-btn-border);
             border-radius: 6px;
             background: var(--tab-btn-bg);
             font-weight: bold;
-            font-size: 0.68rem;
+            font-size: 0.72rem;
             color: var(--tab-btn-text);
             cursor: pointer;
             transition: 0.2s ease;
@@ -224,8 +224,9 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            min-height: 42px;
-            line-height: 1.15;
+            min-height: 46px;
+            line-height: 1.2;
+            word-break: break-word;
         }
 
         .tab-btn:hover {
@@ -732,7 +733,7 @@
         <button type="button" class="pdf-export-btn" onclick="exportToPDF('Wasserwerk')">📄 Als PDF speichern / drucken</button>
     </div>
 
-    <!-- MODUS 3: Schwimmbad / Pool -->
+    <!-- MODUS 3: Schwimmbad -->
     <div id="tab-schwimmbad" class="tab-content">
         <div class="section-title">1. Pool-Wasservolumen</div>
         
@@ -854,10 +855,10 @@
             <div class="hint" id="pool_ph_hinweis" style="margin-top: 5px; color: var(--result-label);">Werte eingeben.</div>
         </div>
 
-        <button type="button" class="pdf-export-btn" onclick="exportToPDF('Pool')">📄 Als PDF speichern / drucken</button>
+        <button type="button" class="pdf-export-btn" onclick="exportToPDF('Schwimmbad')">📄 Als PDF speichern / drucken</button>
     </div>
 
-    <!-- MODUS 4: PID-Regler & Regler-Auslegung -->
+    <!-- MODUS 4: PID Regler -->
     <div id="tab-pid" class="tab-content">
         <div class="section-title">1. Hydraulik & Betriebsart</div>
         
@@ -947,10 +948,10 @@
             Bitte Werte des Praxistests eingeben, um die Regler-Parameter zu berechnen.
         </div>
 
-        <button type="button" class="pdf-export-btn" onclick="exportToPDF('PID & Regler')">📄 Als PDF speichern / drucken</button>
+        <button type="button" class="pdf-export-btn" onclick="exportToPDF('PID Regler')">📄 Als PDF speichern / drucken</button>
     </div>
 
-    <!-- MODUS 5: Sonden (RV1) -->
+    <!-- MODUS 5: Sondendaten -->
     <div id="tab-sonden" class="tab-content">
         <div class="section-title">Sondentyp Auswählen (mit RV1)</div>
 
@@ -982,7 +983,7 @@
         </div>
     </div>
 
-    <!-- MODUS 6: Produktionsparameter -->
+    <!-- MODUS 6: Produktionsparameter AQD -->
     <div id="tab-anlagen" class="tab-content">
         <div class="section-title">Aquadron Anlagentyp Auswählen</div>
 
@@ -1227,10 +1228,10 @@
     const defaultModules = [
         { id: 'standard', title: 'Trinkwasser', visible: true },
         { id: 'wasserwerk', title: 'Wasserwerk', visible: true },
-        { id: 'schwimmbad', title: 'Pool', visible: true },
-        { id: 'pid', title: 'PID & Regler', visible: true },
-        { id: 'sonden', title: 'Sonden', visible: true },
-        { id: 'anlagen', title: 'Produktions-<br>parameter', visible: true },
+        { id: 'schwimmbad', title: 'Schwimmbad', visible: true },
+        { id: 'pid', title: 'PID Regler', visible: true },
+        { id: 'sonden', title: 'Sondendaten', visible: true },
+        { id: 'anlagen', title: 'Produktions-<br>parameter AQD', visible: true },
         { id: 'verdünnung', title: 'Verdünnungsreihe<br>Anolyte', visible: true }
     ];
 
@@ -1263,7 +1264,10 @@
                 let parsed = JSON.parse(savedModules);
                 currentModules = parsed;
                 currentModules.forEach(m => {
-                    if (m.id === 'anlagen') m.title = 'Produktions-<br>parameter';
+                    if (m.id === 'schwimmbad') m.title = 'Schwimmbad';
+                    if (m.id === 'pid') m.title = 'PID Regler';
+                    if (m.id === 'sonden') m.title = 'Sondendaten';
+                    if (m.id === 'anlagen') m.title = 'Produktions-<br>parameter AQD';
                     if (m.id === 'verdünnung') m.title = 'Verdünnungsreihe<br>Anolyte';
                 });
                 defaultModules.forEach(def => {
