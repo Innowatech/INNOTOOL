@@ -39,7 +39,6 @@
             --footer-bg: #eee;
             --app-zoom: 1;
 
-            /* Neue Farbakzente für Kategorien */
             --blue-accent: #00bcd4;
             --green-accent: #4caf50;
         }
@@ -236,7 +235,6 @@
             border-bottom: 1px solid var(--border-color);
         }
 
-        /* KACHELN IN DEN KATEGORIEN */
         .tab-btn {
             flex: 1;
             min-width: 90px;
@@ -256,7 +254,6 @@
             line-height: 1.15;
         }
 
-        /* Farbspezifische Umrandungen für Kacheln */
         .cat-blue .tab-btn {
             border: 1px solid rgba(0, 188, 212, 0.4);
         }
@@ -270,7 +267,6 @@
 
         .tab-btn.active {
             background: var(--card-bg) !important;
-            color: var(--primary-color) !important;
             border-width: 2px !important;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
         }
@@ -434,7 +430,7 @@
             color: var(--subtext-color);
         }
 
-        /* Settings Modal Overlay Styles */
+        /* Modal Overlay Styles */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -513,13 +509,13 @@
             margin-bottom: 10px;
         }
 
-        /* HMI-Display Modus Anpassungen */
+        /* HMI-Display Modus */
         body.mode-hmi .category-block {
             border: none;
             background: transparent;
         }
         body.mode-hmi .category-header {
-            display: none; /* Header im reinen Display-Modus ausblenden */
+            display: none;
         }
         body.mode-hmi .category-content {
             display: grid;
@@ -531,7 +527,6 @@
             font-size: 0.85rem;
         }
 
-        /* Druck-Styles für den sauberen PDF-Export */
         @media print {
             body {
                 background: white !important;
@@ -570,7 +565,7 @@
 
 <div class="container">
     <div class="header">
-        <h1 id="app-title"><span id="first-letter">I</span>NNOWATΞCH</h1>
+        <h1 id="app-title"><span id="first-letter" class="santa-letter">I</span>NNOWATΞCH</h1>
         <div class="header-sub">
             <span>Service Tool</span>
         </div>
@@ -588,9 +583,7 @@
                 <span>🔵 Anwendungen</span>
                 <span class="toggle-arrow">▼</span>
             </div>
-            <div class="category-content" id="container-anwendungen">
-                <!-- Wird per JS befüllt -->
-            </div>
+            <div class="category-content" id="container-anwendungen"></div>
         </div>
 
         <!-- Kategorie 2: Parameter (Grün) -->
@@ -599,13 +592,11 @@
                 <span>🟢 Parameter</span>
                 <span class="toggle-arrow">▼</span>
             </div>
-            <div class="category-content" id="container-parameter">
-                <!-- Wird per JS befüllt -->
-            </div>
+            <div class="category-content" id="container-parameter"></div>
         </div>
     </div>
 
-    <!-- MODUS 1: Standard (Trinkwasser) -->
+    <!-- MODUS 1: Trinkwasser -->
     <div id="tab-trinkwasser" class="tab-content">
         <div class="form-group">
             <label>Zielkonzentration</label>
@@ -1043,16 +1034,12 @@
 </div>
 
 <script>
-    // Definition aller Module mit korrekter Kategorien-Zuordnung
     const modulesConfig = [
-        // Kategorie 1: Anwendungen (Blau)
         { id: 'trinkwasser', label: 'Trinkwasser', cat: 'anwendungen' },
         { id: 'schwimmbad', label: 'Schwimmbad', cat: 'anwendungen' },
         { id: 'pid', label: 'pH-Regler', cat: 'anwendungen' },
         { id: 'wasserwerk', label: 'Wasserwerk', cat: 'anwendungen' },
         { id: 'verduennungsreihe', label: 'Verdünnungsreihe Anolyte', cat: 'anwendungen' },
-        
-        // Kategorie 2: Parameter (Grün)
         { id: 'produktionsparameter', label: 'Produktionsparameter AQD', cat: 'parameter' },
         { id: 'sondendaten', label: 'Sondendaten', cat: 'parameter' }
     ];
@@ -1093,7 +1080,6 @@
         window.scrollTo(0, 0);
     }
 
-    // Kategorien Ein-/Ausklappen mit Speicherfunktion
     function toggleCategory(catId) {
         if (document.body.classList.contains('mode-hmi')) return;
         const category = document.getElementById(catId);
@@ -1102,7 +1088,6 @@
         localStorage.setItem('state_' + catId, isCollapsed ? 'collapsed' : 'expanded');
     }
 
-    // Ansichten-Umschalter (Klassisch vs. HMI)
     function switchViewMode() {
         const isHMI = document.body.classList.toggle('mode-hmi');
         const btn = document.getElementById('viewToggle');
@@ -1131,16 +1116,169 @@
         });
     }
 
-    // Placeholder Rechenfunktionen
-    function calcStandard() {}
-    function updateFromM3Tag() {}
-    function updateFromLsek() {}
-    function calcWasserwerk() {}
-    function calcPoolVolumen() {}
-    function calcPoolAll() {}
-    function updateChlorDefault() {}
-    function berechnePID() {}
-    function calcVerd() {}
+    /* --- VOLLSTÄNDIGE RECHEN-LOGIK --- */
+    function calcStandard() {
+        const ziel = parseFloat(document.getElementById('std_ziel').value) || 0;
+        const vol = parseFloat(document.getElementById('std_vol').value) || 0;
+        const anol = parseFloat(document.getElementById('std_anol').value) || 0;
+        const zehrung = parseFloat(document.getElementById('std_zehrung').value) || 0;
+
+        const sollGesamt = ziel + zehrung;
+        document.getElementById('std_res_soll').innerText = sollGesamt.toFixed(2) + ' mg/l';
+
+        if (anol > 0 && vol > 0) {
+            const mengeMl = (vol * sollGesamt / anol) * 1000;
+            document.getElementById('std_res_menge').innerText = mengeMl.toFixed(1) + ' ml';
+        } else {
+            document.getElementById('std_res_menge').innerText = '0.00 ml';
+        }
+    }
+
+    function updateFromM3Tag() {
+        const m3Tag = parseFloat(document.getElementById('ww_m3tag').value) || 0;
+        const stunden = parseFloat(document.getElementById('ww_stunden').value) || 24;
+        if (stunden > 0) {
+            const m3h = m3Tag / stunden;
+            document.getElementById('ww_m3h').value = m3h.toFixed(2);
+            document.getElementById('ww_lsek').value = ((m3h * 1000) / 3600).toFixed(2);
+        }
+        calcWasserwerk();
+    }
+
+    function updateFromLsek() {
+        const lsek = parseFloat(document.getElementById('ww_lsek').value) || 0;
+        const m3h = lsek * 3.6;
+        document.getElementById('ww_m3h').value = m3h.toFixed(2);
+        document.getElementById('ww_m3tag').value = (m3h * (parseFloat(document.getElementById('ww_stunden').value) || 24)).toFixed(0);
+        calcWasserwerk();
+    }
+
+    function calcWasserwerk() {
+        const m3h = parseFloat(document.getElementById('ww_m3h').value) || 0;
+        const anolKonz = parseFloat(document.getElementById('ww_anol_konz').value) || 0;
+        const ziel = parseFloat(document.getElementById('ww_ziel').value) || 0;
+        const zehrung = parseFloat(document.getElementById('ww_zehrung').value) || 0;
+        const impuls = parseFloat(document.getElementById('ww_impuls').value) || 0;
+        const maxFlow = parseFloat(document.getElementById('ww_max_flow').value) || 0;
+
+        const sollGesamt = ziel + zehrung;
+        document.getElementById('ww_res_soll').innerText = sollGesamt.toFixed(2) + ' mg/l';
+
+        if (anolKonz > 0) {
+            const literTag = (m3h * 24 * sollGesamt * 1000) / (anolKonz * 1000);
+            document.getElementById('ww_res_bedarf').innerText = literTag.toFixed(2) + ' Liter/Tag';
+
+            const lProM3 = (sollGesamt * 1000) / anolKonz;
+            document.getElementById('ww_res_l_pro_m3').innerText = lProM3.toFixed(3) + ' l/m³';
+
+            if (impuls > 0) {
+                const mlHub = lProM3 * impuls;
+                document.getElementById('ww_res_hub').innerText = mlHub.toFixed(2) + ' ml/Hub';
+            }
+        }
+
+        if (maxFlow > 0 && anolKonz > 0) {
+            const pumpe20 = (maxFlow * (sollGesamt * 1000)) / anolKonz;
+            document.getElementById('ww_res_pumpe_20ma').value = pumpe20.toFixed(2);
+        }
+    }
+
+    function calcPoolVolumen() {
+        const l = parseFloat(document.getElementById('pool_laenge').value) || 0;
+        const b = parseFloat(document.getElementById('pool_breite').value) || 0;
+        const t = parseFloat(document.getElementById('pool_tiefe').value) || 0;
+        if (l > 0 && b > 0 && t > 0) {
+            const lit = l * b * t * 1000;
+            document.getElementById('pool_volumen').value = lit.toFixed(0);
+        }
+        calcPoolAll();
+    }
+
+    function updateChlorDefault() {
+        const sorte = document.getElementById('pool_chlorsorte').value;
+        if (sorte === 'anolyte') {
+            document.getElementById('chlor_konz_einheit').innerText = 'mg/l';
+            document.getElementById('pool_chlor_konz').placeholder = 'z. B. 500';
+        } else {
+            document.getElementById('chlor_konz_einheit').innerText = 'g/kg';
+            document.getElementById('pool_chlor_konz').placeholder = 'z. B. 650';
+        }
+        calcPoolAll();
+    }
+
+    function calcPoolAll() {
+        const vol = parseFloat(document.getElementById('pool_volumen').value) || 0;
+        const chlorIst = parseFloat(document.getElementById('pool_chlor_ist').value) || 0;
+        const chlorSoll = parseFloat(document.getElementById('pool_chlor_soll').value) || 0;
+        const chlorKonz = parseFloat(document.getElementById('pool_chlor_konz').value) || 0;
+        const sorte = document.getElementById('pool_chlorsorte').value;
+
+        if (chlorSoll > chlorIst && chlorKonz > 0 && vol > 0) {
+            const diff = chlorSoll - chlorIst;
+            if (sorte === 'anolyte') {
+                const lit = (vol * diff) / chlorKonz;
+                document.getElementById('pool_res_chlor').innerText = lit.toFixed(2) + ' Liter';
+            } else {
+                const kg = (vol * diff) / (chlorKonz * 1000);
+                document.getElementById('pool_res_chlor').innerText = kg.toFixed(3) + ' kg';
+            }
+        } else {
+            document.getElementById('pool_res_chlor').innerText = '0.0 l / kg';
+        }
+
+        const phIst = parseFloat(document.getElementById('pool_ph_ist').value) || 0;
+        const phSoll = parseFloat(document.getElementById('pool_ph_soll').value) || 0;
+        const alk = parseFloat(document.getElementById('pool_alk').value) || 100;
+        const saeureKonz = parseFloat(document.getElementById('pool_saeure_konz').value) || 20;
+
+        if (phIst > phSoll && vol > 0 && saeureKonz > 0) {
+            const phDiff = phIst - phSoll;
+            const mlSaure = vol * phDiff * (alk / 100) * (10 / saeureKonz);
+            document.getElementById('pool_res_ph').innerText = (mlSaure / 1000).toFixed(2) + ' Liter Säure (-)';
+        } else if (phIst < phSoll && vol > 0) {
+            document.getElementById('pool_res_ph').innerText = 'Lauge (+) erforderlich';
+        } else {
+            document.getElementById('pool_res_ph').innerText = '0 l / kg';
+        }
+    }
+
+    function berechnePID() {
+        const testL = parseFloat(document.getElementById('pumpe_test_l').value) || 0;
+        const wirkstoff = parseFloat(document.getElementById('pumpe_wirkstoff').value) || 500;
+        const diff = parseFloat(document.getElementById('chlor_diff').value) || 0;
+        const tu = parseFloat(document.getElementById('zeit_tu').value) || 0;
+        const tg = parseFloat(document.getElementById('zeit_tg').value) || 0;
+
+        if (testL > 0 && diff > 0 && tg > 0) {
+            const gain = (testL * (wirkstoff / 500)) / diff;
+            const pVal = Math.max(1, Math.min(10, (tg / (tu + tg)) * 5)).toFixed(1);
+            const iVal = (4 * (tu + tg)).toFixed(0);
+            const tot = (diff * 0.1).toFixed(2);
+
+            document.getElementById('res_p').innerText = pVal + ' %';
+            document.getElementById('res_i').innerText = iVal + ' s';
+            document.getElementById('res_totband').innerText = tot + ' mg/l';
+            document.getElementById('hinweis_text').innerText = 'Empfohlene Regler-Parameter erfolgreich berechnet.';
+        } else {
+            document.getElementById('res_p').innerText = '-- %';
+            document.getElementById('res_i').innerText = '-- s';
+            document.getElementById('res_totband').innerText = '-- mg/l';
+            document.getElementById('hinweis_text').innerText = 'Bitte Testdaten eingeben, um Regler-Empfehlungen zu erhalten.';
+        }
+    }
+
+    function calcVerd() {
+        const start = parseFloat(document.getElementById('verd_start').value) || 0;
+        if (start > 0) {
+            document.getElementById('verd_res').innerHTML = `<b>Verdünnungs-Stufen für ${start} mg/l:</b><br>` +
+                `1:2 = ${(start/2).toFixed(1)} mg/l<br>` +
+                `1:5 = ${(start/5).toFixed(1)} mg/l<br>` +
+                `1:10 = ${(start/10).toFixed(1)} mg/l`;
+        } else {
+            document.getElementById('verd_res').innerText = 'Bitte Ausgangskonzentration eingeben.';
+        }
+    }
+
     function exportToPDF(name) { window.print(); }
 
     function openSettings() { document.getElementById('settingsModal').classList.add('open'); }
@@ -1166,11 +1304,9 @@
     document.addEventListener('DOMContentLoaded', () => {
         initModules();
 
-        // Letzten Tab wiederherstellen
         const lastTab = localStorage.getItem('innotool_active_tab') || 'trinkwasser';
         switchTab(lastTab);
 
-        // Ansichts-Modus laden
         const savedMode = localStorage.getItem('innotool_view_mode');
         if (savedMode === 'hmi') {
             document.body.classList.add('mode-hmi');
@@ -1179,13 +1315,11 @@
             restoreCategoryStates();
         }
 
-        // Dark Mode laden
         if (localStorage.getItem('innotool_dark') === 'true') {
             document.body.classList.add('dark-mode');
             document.getElementById('darkModeToggle').checked = true;
         }
 
-        // Zoom laden
         const savedZoom = localStorage.getItem('innotool_zoom');
         if (savedZoom) {
             document.getElementById('zoomSlider').value = savedZoom;
