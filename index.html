@@ -183,49 +183,48 @@
             display: none;
         }
 
-        /* Kategorien-Boxen mit halbtransparentem Hintergrund */
+        /* Deutlich kräftigere Kategorien-Boxen */
         .category-group {
             display: flex;
             flex-direction: column;
-            background: rgba(13, 71, 161, 0.06); /* Hellblau halbtransparent */
-            border: 1px solid rgba(13, 71, 161, 0.15);
+            background: rgba(13, 71, 161, 0.13); /* Kräftigeres Hellblau */
+            border: 1px solid rgba(13, 71, 161, 0.3);
             border-radius: 8px;
             padding: 6px;
             flex-shrink: 0;
         }
 
         .category-group.category-parameters {
-            background: rgba(46, 125, 50, 0.06); /* Hellgrün halbtransparent */
-            border: 1px solid rgba(46, 125, 50, 0.15);
+            background: rgba(46, 125, 50, 0.13); /* Kräftigeres Hellgrün */
+            border: 1px solid rgba(46, 125, 50, 0.3);
         }
 
         body.dark-mode .category-group {
-            background: rgba(33, 150, 243, 0.08);
-            border: 1px solid rgba(33, 150, 243, 0.2);
+            background: rgba(33, 150, 243, 0.16);
+            border: 1px solid rgba(33, 150, 243, 0.35);
         }
 
         body.dark-mode .category-group.category-parameters {
-            background: rgba(76, 175, 80, 0.08);
-            border: 1px solid rgba(76, 175, 80, 0.2);
+            background: rgba(76, 175, 80, 0.16);
+            border: 1px solid rgba(76, 175, 80, 0.35);
         }
 
         .category-title {
-            font-size: 0.65rem;
+            font-size: 0.68rem;
             font-weight: bold;
             text-transform: uppercase;
             letter-spacing: 0.5px;
             color: var(--primary-color);
             margin-bottom: 4px;
             text-align: center;
-            opacity: 0.85;
         }
 
         .category-group.category-parameters .category-title {
-            color: #2e7d32;
+            color: #1b5e20;
         }
 
         body.dark-mode .category-group.category-parameters .category-title {
-            color: #81c784;
+            color: #a5d6a7;
         }
 
         .tab-buttons-inner {
@@ -602,9 +601,7 @@
 
     <!-- Kategorisiertes Reiter-Layout -->
     <div class="tab-bar-wrapper">
-        <div class="categories-container" id="categories-container">
-            <!-- Wird dynamisch per JS gerendert nach Kategorien & Reihenfolge -->
-        </div>
+        <div class="categories-container" id="categories-container"></div>
     </div>
 
     <!-- MODUS 1: Standard (Trinkwasser) -->
@@ -1194,8 +1191,8 @@
                 <div class="setting-section-title">Darstellungsgröße (Zoom / Dichte)</div>
                 <div class="zoom-slider-container">
                     <span>🔍 70%</span>
-                    <input type="range" id="zoom-slider" min="0.7" max="1.3" step="0.05" value="1" oninput="changeZoom(this.value)">
-                    <span>130%</span>
+                    <input type="range" id="zoom-slider" min="0.7" max="1.2" step="0.05" value="1" oninput="changeZoom(this.value)">
+                    <span>120%</span>
                 </div>
                 <div class="hint" style="text-align: center; margin-top: 5px;">
                     Aktueller Faktor: <b id="zoom-val-text">100%</b>
@@ -1284,7 +1281,8 @@
             }
         }
 
-        const savedZoom = localStorage.getItem('mat_zoom') || '1';
+        let savedZoom = parseFloat(localStorage.getItem('mat_zoom') || '1');
+        if (savedZoom > 1.2) savedZoom = 1.2; // Begrenzung falls alter Wert gespeichert war
         changeZoom(savedZoom, false);
         document.getElementById('zoom-slider').value = savedZoom;
 
@@ -1293,7 +1291,6 @@
             try {
                 let parsed = JSON.parse(savedModules);
                 currentModules = parsed;
-                // Sicherstellen, dass Titel und Kategorien aktuell bleiben
                 currentModules.forEach(m => {
                     const def = defaultModules.find(d => d.id === m.id);
                     if (def) {
@@ -1330,10 +1327,12 @@
     }
 
     function changeZoom(val, save = true) {
-        document.documentElement.style.setProperty('--app-zoom', val);
-        document.getElementById('zoom-val-text').innerText = Math.round(val * 100) + '%';
+        let numVal = parseFloat(val);
+        if (numVal > 1.2) numVal = 1.2;
+        document.documentElement.style.setProperty('--app-zoom', numVal);
+        document.getElementById('zoom-val-text').innerText = Math.round(numVal * 100) + '%';
         if (save) {
-            localStorage.setItem('mat_zoom', val);
+            localStorage.setItem('mat_zoom', numVal);
         }
     }
 
@@ -1343,7 +1342,6 @@
 
         const activeModules = currentModules.filter(m => m.visible);
 
-        // Nach Kategorien gruppieren ('Anwendung' und 'Parameter')
         const catMap = {};
         activeModules.forEach(mod => {
             const cat = mod.category || 'Anwendung';
@@ -1351,7 +1349,6 @@
             catMap[cat].push(mod);
         });
 
-        // Reihenfolge der Kategorien definieren
         const categoryOrder = ['Anwendung', 'Parameter'];
 
         categoryOrder.forEach(catName => {
