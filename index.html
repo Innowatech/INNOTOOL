@@ -422,17 +422,6 @@
             margin-top: 2px;
         }
 
-        .alert-box {
-            background-color: var(--alert-bg);
-            border: 1px solid var(--alert-border);
-            border-radius: 6px;
-            padding: 12px;
-            margin-top: 15px;
-            font-size: 0.8rem;
-            color: var(--alert-text);
-            line-height: 1.4;
-        }
-
         .instruction-step {
             background: var(--input-bg);
             border: 1px solid var(--border-color);
@@ -1251,29 +1240,57 @@
         <div class="section-title">2. Innowatech Inbetriebnahmeanleitung (Vega-Tool)</div>
 
         <div class="instruction-step">
-            <b>1. Service-Login:</b> Oben rechts im Optionen-Menü (Schraubenschlüssel-Icon) den Service-Login aktivieren. Passwort ist <b>sw</b> (Schwarzwald)[cite: 8].
+            <b>1. Service-Login:</b> Oben rechts im Optionen-Menü (Schraubenschlüssel-Icon) den Service-Login aktivieren. Passwort ist <b>sw</b> (Schwarzwald).
         </div>
 
         <div class="instruction-step">
-            <b>2. Bluetooth-Zugangscode:</b> Unter <i>Zugriffsschutz</i> den Bluetooth-Zugangscode auf <b>072186</b> ändern (Standard-Auslieferungscode des Sensors auf den neuen Code umstellen).
+            <b>2. Messstellenname:</b> Generiert sich aus: Letzte 3 Ziffern der Fabrikationsnummer – Aquadron-Anlagentyp – Tankvolumen – Tanknummer (z. B. <i>517-FXM-60-1</i>).
         </div>
 
         <div class="instruction-step">
-            <b>3. Stromausgang:</b> Unter <i>Stromausgang</i> den Ausgangsbereich auf <b>4 – 20 mA</b> festlegen (da die Wago-Steuerung Werte &lt; 4 mA und &gt; 20 mA als Fehler wertet). Verhalten bei Störung auf <b>&le; 3,6 mA</b> stellen[cite: 7].
+            <b>3. Anwendung:</b> Mediumtyp auf <b>Flüssigkeit</b> und Anwendung auf <b>Lagertank</b> einstellen.
         </div>
 
         <div class="instruction-step">
-            <b>4. Spezialparameter (Bereichsbegrenzung):</b> Unter <i>Spezialparameter</i> (nach Service-Login):
-            <br>• Haken bei <i>Begrenzung Messbereichsbeginn aktiv</i> setzen[cite: 9].
-            <br>• Wert auf <b>30 mm</b> setzen (unterdrückt Störeinflüsse/Tropfenbildung im Nahbereich)[cite: 9].
-            <br>• Rauschmittelung steigend = <b>2</b> (schnelle Reaktion)[cite: 9].
-            <br>• Rauschmittelung fallend = <b>6</b> (größere Mittelung der Echokurve)[cite: 9].
+            <b>4. Einheiten:</b> Distanzeinheit des Gerätes auf <b>mm</b> (Millimeter) und Temperatureinheit auf <b>°C</b> (Grad Celsius) festlegen.
         </div>
 
         <div class="instruction-step">
-            <b>5. Erstes großes Echo:</b> 
-            <br>• Haken bei <i>„Erstes großes Echo“ aktiv</i> setzen[cite: 9].
-            <br>• Amplitudenschwelle auf <b>12 dB</b> einstellen[cite: 9].
+            <b>5. Abgleich:</b> Messwertabgleich für das jeweilige Tankvolumen eintragen (Minimum 0 mm, Maximum gemäß obiger Tankauswahl).
+        </div>
+
+        <div class="instruction-step">
+            <b>6. Skalierung:</b> 
+            <br>• Skalierungsgröße: <b>dimensionslos</b>
+            <br>• Skalierungseinheit: <b>-</b> (Strich)
+            <br>• Skalierungsformat: <b>#</b>
+            <br>• 100% entspricht: <b>100</b>
+            <br>• 0% entspricht: <b>0</b>
+        </div>
+
+        <div class="instruction-step">
+            <b>7. Stromausgang:</b> 
+            <br>• Ausgangskennlinie: <b>0 ... 100% entspricht 4 ... 20 mA</b>
+            <br>• Strombereich: <b>4 ... 20 mA</b>
+            <br>• Verhalten bei Störung: <b>&le; 3,6 mA</b>
+        </div>
+
+        <div class="instruction-step">
+            <b>8. Störsignalausblendung:</b> Aktuelle Messkurve visuell prüfen (erste/höchste Welle ist der Wasserspiegel).
+        </div>
+
+        <div class="instruction-step">
+            <b>9. Spezialparameter (erfordert Service-Login `sw`):</b> 
+            <br>• Haken bei <i>Begrenzung Messbereichsbeginn aktiv</i> setzen.
+            <br>• Begrenzung Messbereichsbeginn auf <b>30 mm</b> setzen.
+            <br>• Faktor für Rauschmittelung steigend = <b>2</b>.
+            <br>• Faktor für Rauschmittelung fallend = <b>6</b>.
+            <br>• Haken bei <i>„Erstes großes Echo“ aktiv</i> setzen.
+            <br>• Amplitudenschwelle „Erstes großes Echo“ = <b>12 dB</b>.
+        </div>
+
+        <div class="instruction-step">
+            <b>10. Zugriffsschutz:</b> Den werkseitigen Bluetooth-Zugangscode auf <b>072186</b> abändern.
         </div>
 
         <button type="button" class="pdf-export-btn" onclick="exportToPDF('Vega Radarsensor')">📄 Als PDF speichern / drucken</button>
