@@ -433,6 +433,20 @@
             line-height: 1.4;
         }
 
+        .instruction-step {
+            background: var(--input-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 12px;
+            margin-bottom: 10px;
+            font-size: 0.85rem;
+            line-height: 1.4;
+        }
+
+        .instruction-step b {
+            color: var(--primary-color);
+        }
+
         .footer {
             display: flex;
             justify-content: space-between;
@@ -1200,27 +1214,13 @@
 
     <!-- MODUS 8: Vega Radarsensor -->
     <div id="tab-radar" class="tab-content">
-        <div class="section-title">1. Messstellenname & Tank-Stammdaten</div>
+        <div class="section-title">1. Tank-Stammdaten & Abgleich</div>
         
-        <div class="form-group">
-            <label>Letzte 3 Ziffern der Fabrikationsnummer</label>
-            <div class="input-wrapper">
-                <input type="text" id="radar_fab" maxlength="3" placeholder="z. B. 517" oninput="calcRadarName()">
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label>Aquadron-Anlagentyp</label>
-            <div class="input-wrapper">
-                <input type="text" id="radar_typ" placeholder="z. B. FXM" oninput="calcRadarName()">
-            </div>
-        </div>
-
         <div class="form-group">
             <label>Standard-Tankvolumen</label>
             <div class="input-wrapper">
                 <select id="radar_tankvol" onchange="updateRadarTankDefaults()">
-                    <option value="">-- Tankvolumen wählen (optional) --</option>
+                    <option value="">-- Bitte Tankvolumen wählen --</option>
                     <option value="40">40 Liter</option>
                     <option value="60">60 Liter</option>
                     <option value="100">100 Liter</option>
@@ -1232,21 +1232,6 @@
         </div>
 
         <div class="form-group">
-            <label>Tanknummer (bei mehreren Tanks)</label>
-            <div class="input-wrapper">
-                <input type="number" id="radar_tankenr" value="1" min="1" step="1" oninput="calcRadarName()">
-                <span class="unit">Nr.</span>
-            </div>
-        </div>
-
-        <div class="result-box">
-            <label>Generierter Messstellenname</label>
-            <div class="result-value" id="radar_res_name" style="font-size: 1.25rem; color: var(--primary-color);">---</div>
-        </div>
-
-        <div class="section-title">2. Abgleichwerte (von Sensorunterseite)</div>
-
-        <div class="form-group">
             <label>Abgleich Minimum (0%)</label>
             <div class="input-wrapper">
                 <input type="number" id="radar_abgleich_min" value="0" step="1">
@@ -1255,24 +1240,40 @@
         </div>
 
         <div class="form-group">
-            <label>Abgleich Maximum (100% / Voll)</label>
+            <label>Abgleich Maximum (100% / Voll - ab Sensorunterseite)</label>
             <div class="input-wrapper">
                 <input type="number" id="radar_abgleich_max" placeholder="z. B. 535" step="1">
                 <span class="unit">mm</span>
             </div>
-            <div class="hint" id="radar_tank_hint">Wähle oben ein Tankvolumen, um den Standardwert zu laden.</div>
+            <div class="hint" id="radar_tank_hint">Wähle oben ein Tankvolumen, um den Standardwert aus der Tabelle zu laden.</div>
         </div>
 
-        <div class="section-title">3. Parameter-Checkliste & Sollwerte</div>
+        <div class="section-title">2. Innowatech Inbetriebnahmeanleitung (Vega-Tool)</div>
 
-        <div class="alert-box">
-            <b>🔑 Service-Login & Spezialparameter:</b><br>
-            • Service-Login Passwort (PC & App): <b>sw</b> (Schwarzwald)[cite: 8]<br>
-            • Bluetooth-Zugangscode: <b>072186</b><br>
-            • Stromausgang: <b>4 – 20 mA</b> (Verhalten bei Störung: $\le 3,6\text{ mA}$)[cite: 7]<br>
-            • Begrenzung Messbereichsbeginn: aktiv, Wert = <b>30 mm</b>[cite: 9]<br>
-            • Rauschmittelung steigend = <b>2</b>, fallend = <b>6</b>[cite: 9]<br>
-            • „Erstes großes Echo“: aktiv, Amplitudenschwelle = <b>12 dB</b>[cite: 9]
+        <div class="instruction-step">
+            <b>1. Service-Login:</b> Oben rechts im Optionen-Menü (Schraubenschlüssel-Icon) den Service-Login aktivieren. Passwort ist <b>sw</b> (Schwarzwald)[cite: 8].
+        </div>
+
+        <div class="instruction-step">
+            <b>2. Bluetooth-Zugangscode:</b> Unter <i>Zugriffsschutz</i> den Bluetooth-Zugangscode auf <b>072186</b> ändern (Standard-Auslieferungscode des Sensors auf den neuen Code umstellen).
+        </div>
+
+        <div class="instruction-step">
+            <b>3. Stromausgang:</b> Unter <i>Stromausgang</i> den Ausgangsbereich auf <b>4 – 20 mA</b> festlegen (da die Wago-Steuerung Werte &lt; 4 mA und &gt; 20 mA als Fehler wertet). Verhalten bei Störung auf <b>&le; 3,6 mA</b> stellen[cite: 7].
+        </div>
+
+        <div class="instruction-step">
+            <b>4. Spezialparameter (Bereichsbegrenzung):</b> Unter <i>Spezialparameter</i> (nach Service-Login):
+            <br>• Haken bei <i>Begrenzung Messbereichsbeginn aktiv</i> setzen[cite: 9].
+            <br>• Wert auf <b>30 mm</b> setzen (unterdrückt Störeinflüsse/Tropfenbildung im Nahbereich)[cite: 9].
+            <br>• Rauschmittelung steigend = <b>2</b> (schnelle Reaktion)[cite: 9].
+            <br>• Rauschmittelung fallend = <b>6</b> (größere Mittelung der Echokurve)[cite: 9].
+        </div>
+
+        <div class="instruction-step">
+            <b>5. Erstes großes Echo:</b> 
+            <br>• Haken bei <i>„Erstes großes Echo“ aktiv</i> setzen[cite: 9].
+            <br>• Amplitudenschwelle auf <b>12 dB</b> einstellen[cite: 9].
         </div>
 
         <button type="button" class="pdf-export-btn" onclick="exportToPDF('Vega Radarsensor')">📄 Als PDF speichern / drucken</button>
@@ -1604,7 +1605,6 @@
 
                     let label = document.createElement('span');
                     label.className = 'module-label-text';
-                    // HTML-Tags im Titel (wie <br>) für die Anzeige im Modal bereinigen
                     label.innerHTML = mod.title.replace(/<br>/g, ' ');
 
                     left.appendChild(chk);
@@ -1686,7 +1686,7 @@
         }
     }
 
-    // Vega Radarsensor Logik
+    // Vega Radarsensor Tankdaten-Datenbank
     const radarTankDatabase = {
         "40": 385,
         "60": 535,
@@ -1696,20 +1696,6 @@
         "1000": 1190
     };
 
-    function calcRadarName() {
-        let fab = (document.getElementById('radar_fab').value || '').trim();
-        let typ = (document.getElementById('radar_typ').value || '').trim().toUpperCase();
-        let vol = document.getElementById('radar_tankvol').value;
-        let tankNr = document.getElementById('radar_tankenr').value || '1';
-
-        if (fab && typ && vol) {
-            let fullName = `${fab}-${typ}-${vol}-${tankNr}`;
-            document.getElementById('radar_res_name').innerText = fullName;
-        } else {
-            document.getElementById('radar_res_name').innerText = "Bitte Fab-Nr., Anlagentyp & Tankvolumen eingeben";
-        }
-    }
-
     function updateRadarTankDefaults() {
         let vol = document.getElementById('radar_tankvol').value;
         let maxInput = document.getElementById('radar_abgleich_max');
@@ -1718,12 +1704,11 @@
         if (vol && radarTankDatabase[vol]) {
             let defaultMax = radarTankDatabase[vol];
             maxInput.value = defaultMax;
-            hint.innerHTML = `<span style="color: #2e7d32;"><b>Standardwert geladen:</b> ${defaultMax} mm für ${vol}l Tank (gemäß VEGA-Handbuch). Abweichungen bauseits bitte prüfen.</span>`;
+            hint.innerHTML = `<span style="color: #2e7d32;"><b>Standardwert geladen:</b> ${defaultMax} mm für ${vol}l Tank (gemäß Tabelle). Abweichungen bauseits bitte prüfen.</span>`;
         } else {
             maxInput.value = "";
             hint.innerText = "Wähle oben ein Tankvolumen, um den Standardwert zu laden.";
         }
-        calcRadarName();
     }
 
     const sondenDatabase = {
