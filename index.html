@@ -436,6 +436,16 @@
             color: var(--primary-color);
         }
 
+        /* Blaue Text-Hervorhebung für Schlüsselwerte wie 'aktiv' */
+        .param-highlight {
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        body.dark-mode .param-highlight {
+            color: #90caf9;
+        }
+
         .footer {
             display: flex;
             justify-content: space-between;
@@ -634,7 +644,7 @@
         <button type="button" class="settings-btn" onclick="openSettings()" title="Einstellungen">⚙️</button>
     </div>
 
-    <!-- Kategorisiertes Reiter-Layout mit Scroll-Pfeilen -->
+    <!-- Kategorisiertes Reiter-Layout mit Scroll-Indikatoren -->
     <div class="tab-bar-wrapper">
         <div class="scroll-arrow left" id="scroll-arrow-left">◄</div>
         <div class="categories-container" id="categories-container" onscroll="checkScrollArrows()"></div>
@@ -1234,7 +1244,7 @@
                 <input type="number" id="radar_abgleich_max" placeholder="z. B. 535" step="1">
                 <span class="unit">mm</span>
             </div>
-            <div class="hint" id="radar_tank_hint">Wähle oben ein Tankvolumen, um den Standardwert aus der Tabelle zu laden.</div>
+            <div class="hint" id="radar_tank_hint">Wähle oben ein Tankvolumen, um den Standardwert automatisch zu setzen.</div>
         </div>
 
         <div class="section-title">2. Innowatech Inbetriebnahmeanleitung (Vega-Tool)</div>
@@ -1256,7 +1266,7 @@
         </div>
 
         <div class="instruction-step">
-            <b>5. Abgleich:</b> Messwertabgleich für das jeweilige Tankvolumen eintragen (Minimum 0 mm, Maximum gemäß obiger Tankauswahl).
+            <b>5. Abgleich:</b> Messwertabgleich für das jeweilige Tankvolumen eintragen (Minimum 0 mm, Maximum automatisch aus obiger Auswahl übernommen).
         </div>
 
         <div class="instruction-step">
@@ -1281,12 +1291,12 @@
 
         <div class="instruction-step">
             <b>9. Spezialparameter (erfordert Service-Login `sw`):</b> 
-            <br>• Haken bei <i>Begrenzung Messbereichsbeginn aktiv</i> setzen.
+            <br>• Begrenzung Messbereichsbeginn <span class="param-highlight">aktiv</span> setzen.
             <br>• Begrenzung Messbereichsbeginn auf <b>30 mm</b> setzen.
             <br>• Faktor für Rauschmittelung steigend = <b>2</b>.
             <br>• Faktor für Rauschmittelung fallend = <b>6</b>.
-            <br>• Haken bei <i>„Erstes großes Echo“ aktiv</i> setzen.
-            <br>• Amplitudenschwelle „Erstes großes Echo“ = <b>12 dB</b>.
+            <br>• Erstes großes Echo <span class="param-highlight">aktiv</span> setzen.
+            <br>• Amplitudenschwelle Erstes großes Echo = <b>12 dB</b>.
         </div>
 
         <div class="instruction-step">
@@ -1703,7 +1713,7 @@
         }
     }
 
-    // Vega Radarsensor Tankdaten-Datenbank
+    // Vega Radarsensor Tankdaten-Datenbank & automatischer Abgleich
     const radarTankDatabase = {
         "40": 385,
         "60": 535,
@@ -1721,10 +1731,10 @@
         if (vol && radarTankDatabase[vol]) {
             let defaultMax = radarTankDatabase[vol];
             maxInput.value = defaultMax;
-            hint.innerHTML = `<span style="color: #2e7d32;"><b>Standardwert geladen:</b> ${defaultMax} mm für ${vol}l Tank (gemäß Tabelle). Abweichungen bauseits bitte prüfen.</span>`;
+            hint.innerHTML = `<span style="color: #2e7d32;"><b>Werte automatisch eingetragen:</b> Min = 0 mm, Max = ${defaultMax} mm für ${vol}l Tank.</span>`;
         } else {
             maxInput.value = "";
-            hint.innerText = "Wähle oben ein Tankvolumen, um den Standardwert zu laden.";
+            hint.innerText = "Wähle oben ein Tankvolumen, um die Abgleichwerte automatisch zu setzen.";
         }
     }
 
