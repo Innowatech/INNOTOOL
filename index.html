@@ -1306,10 +1306,80 @@
         <button type="button" class="pdf-export-btn" onclick="exportToPDF('Vega Radarsensor')">📄 Als PDF speichern / drucken</button>
     </div>
 
+    <!-- MODUS 9: Enthärtungsanlagen -->
+    <div id="tab-enthaerter" class="tab-content">
+        <div class="section-title">Enthärtungsanlage Auswählen</div>
+
+        <div class="form-group">
+            <label>Anlagentyp / Modell</label>
+            <div class="input-wrapper">
+                <select id="enthaerter_select" onchange="updateEnthaerterData()">
+                    <option value="">-- Bitte Enthärter-Typ wählen --</option>
+                    <option value="fk">FK</option>
+                    <option value="fkl">FKL</option>
+                    <option value="fx">FX</option>
+                    <option value="gx">GX</option>
+                    <option value="gxl">GXL</option>
+                    <option value="fxl">FXL</option>
+                    <option value="fxm">FXM</option>
+                    <option value="kl">KL</option>
+                    <option value="kl30_pg">KL30 + PG</option>
+                    <option value="wat100">WAT 100-368</option>
+                    <option value="wat200">WAT 200-368</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="result-box">
+            <div class="result-row">
+                <span class="result-label">Austauschkapazität</span>
+                <span class="result-value" id="enth_kapazitaet">-</span>
+            </div>
+            <div class="result-row">
+                <span class="result-label">Austauscherfüllung (Harz)</span>
+                <span class="result-value" id="enth_harz">-</span>
+            </div>
+            <div class="result-row">
+                <span class="result-label">Solemenge pro Regeneration</span>
+                <span class="result-value" id="enth_sole">-</span>
+            </div>
+            <div class="result-row">
+                <span class="result-label">Salzmenge pro Regeneration</span>
+                <span class="result-value" id="enth_salz">-</span>
+            </div>
+            <div class="result-row" style="background: rgba(13, 71, 161, 0.08); padding: 4px; border-radius: 4px;">
+                <span class="result-label" style="font-weight: bold;">Rückfüllmenge Wasser</span>
+                <span class="result-value" id="enth_rueckfuelle">-</span>
+            </div>
+        </div>
+
+        <div class="section-title">Werkseitige Zykluszeiten</div>
+        <div class="result-box">
+            <div class="result-row">
+                <span class="result-label">Rückspülen</span>
+                <span class="result-value" id="enth_rueckspuelen">-</span>
+            </div>
+            <div class="result-row">
+                <span class="result-label">Besalzen</span>
+                <span class="result-value" id="enth_besalzen">-</span>
+            </div>
+            <div class="result-row">
+                <span class="result-label">Schnellspülen</span>
+                <span class="result-value" id="enth_schnellspuelen">-</span>
+            </div>
+            <div class="result-row">
+                <span class="result-label">Sole nachfüllen</span>
+                <span class="result-value" id="enth_sole_nachf">-</span>
+            </div>
+        </div>
+
+        <button type="button" class="pdf-export-btn" onclick="exportToPDF('Enthärtungsanlagen')">📄 Als PDF speichern / drucken</button>
+    </div>
+
     <!-- Footer -->
     <div class="footer">
         <span>© 2026 #MAT</span>
-        <span class="footer-version">v1.0</span>
+        <span class="footer-version">v1.1</span>
     </div>
 </div>
 
@@ -1397,7 +1467,7 @@
         throw new Error("Testversion abgelaufen.");
     }
 
-    // ZENTRALE MODUL-KONFIGURATION inkl. Vega Radarsensor
+    // ZENTRALE MODUL-KONFIGURATION inkl. Enthärtungsanlagen
     const defaultModules = [
         { id: 'standard', title: 'Trinkwasser', category: 'Anwendung', visible: true },
         { id: 'wasserwerk', title: 'Wasserwerk', category: 'Anwendung', visible: true },
@@ -1406,7 +1476,8 @@
         { id: 'verdünnung', title: 'Verdünnungsreihe<br>Anolyte', category: 'Anwendung', visible: true },
         { id: 'sonden', title: 'Sondendaten', category: 'Parameter', visible: true },
         { id: 'anlagen', title: 'Produktions-<br>parameter AQD', category: 'Parameter', visible: true },
-        { id: 'radar', title: 'Vega<br>Radarsensor', category: 'Parameter', visible: true }
+        { id: 'radar', title: 'Vega<br>Radarsensor', category: 'Parameter', visible: true },
+        { id: 'enthaerter', title: 'Enthärtungs-<br>anlagen', category: 'Parameter', visible: true }
     ];
 
     let currentModules = [];
@@ -1735,6 +1806,47 @@
         } else {
             maxInput.value = "";
             hint.innerText = "Wähle oben ein Tankvolumen, um die Abgleichwerte automatisch zu setzen.";
+        }
+    }
+
+    // Enthärtungsanlagen-Datenbank (gemäß offizieller Innowatech-Tabelle)
+    const enthaerterDatabase = {
+        "fk":      { harz: "4 Liter", kapazitaet: "15 °dH x m³", sole: "3 l", salz: "0,96 kg", rueckfuelle: "2,7 l", rueckspuelen: "3 Min", besalzen: "30 Min", schnellspuelen: "15 Min", sole_nachf: "3 Min" },
+        "fkl":     { harz: "4 Liter", kapazitaet: "15 °dH x m³", sole: "3 l", salz: "0,96 kg", rueckfuelle: "2,7 l", rueckspuelen: "3 Min", besalzen: "30 Min", schnellspuelen: "15 Min", sole_nachf: "3 Min" },
+        "fx":      { harz: "4 Liter", kapazitaet: "15 °dH x m³", sole: "3 l", salz: "0,96 kg", rueckfuelle: "2,7 l", rueckspuelen: "3 Min", besalzen: "30 Min", schnellspuelen: "15 Min", sole_nachf: "3 Min" },
+        "gx":      { harz: "4 Liter", kapazitaet: "15 °dH x m³", sole: "3 l", salz: "0,96 kg", rueckfuelle: "2,7 l", rueckspuelen: "3 Min", besalzen: "30 Min", schnellspuelen: "15 Min", sole_nachf: "3 Min" },
+        "gxl":     { harz: "11 Liter", kapazitaet: "35 °dH x m³", sole: "8,5 l", salz: "2,65 kg", rueckfuelle: "7,4 l", rueckspuelen: "3 Min", besalzen: "30 Min", schnellspuelen: "15 Min", sole_nachf: "3 Min" },
+        "fxl":     { harz: "11 Liter", kapazitaet: "35 °dH x m³", sole: "8,5 l", salz: "2,65 kg", rueckfuelle: "7,4 l", rueckspuelen: "3 Min", besalzen: "30 Min", schnellspuelen: "15 Min", sole_nachf: "3 Min" },
+        "fxm":     { harz: "4 Liter", kapazitaet: "15 °dH x m³", sole: "3 l", salz: "0,96 kg", rueckfuelle: "2,7 l", rueckspuelen: "3 Min", besalzen: "30 Min", schnellspuelen: "15 Min", sole_nachf: "3 Min" },
+        "kl":      { harz: "4 Liter", kapazitaet: "15 °dH x m³", sole: "3 l", salz: "0,96 kg", rueckfuelle: "2,7 l", rueckspuelen: "3 Min", besalzen: "30 Min", schnellspuelen: "15 Min", sole_nachf: "3 Min" },
+        "kl30_pg": { harz: "8 Liter", kapazitaet: "30 °dH x m³", sole: "6 l", salz: "1,02 kg", rueckfuelle: "5,4 l", rueckspuelen: "3 Min", besalzen: "30 Min", schnellspuelen: "15 Min", sole_nachf: "5 Min" },
+        "wat100":  { harz: "25 Liter", kapazitaet: "100 °dH x m³", sole: "19,2 l", salz: "6 kg", rueckfuelle: "16,8 l", rueckspuelen: "5 Min", besalzen: "55 Min", schnellspuelen: "10 Min", sole_nachf: "9 Min" },
+        "wat200":  { harz: "56 Liter", kapazitaet: "200 °dH x m³", sole: "43 l", salz: "13,4 kg", rueckfuelle: "37,6 l", rueckspuelen: "5 Min", besalzen: "85 Min", schnellspuelen: "12 Min", sole_nachf: "14 Min" }
+    };
+
+    function updateEnthaerterData() {
+        let key = document.getElementById('enthaerter_select').value;
+        if (key && enthaerterDatabase[key]) {
+            let d = enthaerterDatabase[key];
+            document.getElementById('enth_kapazitaet').innerText = d.kapazitaet;
+            document.getElementById('enth_harz').innerText = d.harz;
+            document.getElementById('enth_sole').innerText = d.sole;
+            document.getElementById('enth_salz').innerText = d.salz;
+            document.getElementById('enth_rueckfuelle').innerText = d.rueckfuelle;
+            document.getElementById('enth_rueckspuelen').innerText = d.rueckspuelen;
+            document.getElementById('enth_besalzen').innerText = d.besalzen;
+            document.getElementById('enth_schnellspuelen').innerText = d.schnellspuelen;
+            document.getElementById('enth_sole_nachf').innerText = d.sole_nachf;
+        } else {
+            document.getElementById('enth_kapazitaet').innerText = "-";
+            document.getElementById('enth_harz').innerText = "-";
+            document.getElementById('enth_sole').innerText = "-";
+            document.getElementById('enth_salz').innerText = "-";
+            document.getElementById('enth_rueckfuelle').innerText = "-";
+            document.getElementById('enth_rueckspuelen').innerText = "-";
+            document.getElementById('enth_besalzen').innerText = "-";
+            document.getElementById('enth_schnellspuelen').innerText = "-";
+            document.getElementById('enth_sole_nachf').innerText = "-";
         }
     }
 
