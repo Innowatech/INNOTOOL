@@ -38,6 +38,12 @@
             --tab-btn-text: #455a64;
             --footer-bg: #eee;
             --app-zoom: 1;
+
+            /* Dunklere/kräftigere Kategorienfarben */
+            --cat-anwendung-bg: rgba(13, 71, 161, 0.22);
+            --cat-anwendung-border: rgba(13, 71, 161, 0.55);
+            --cat-parameter-bg: rgba(46, 125, 50, 0.22);
+            --cat-parameter-border: rgba(46, 125, 50, 0.55);
         }
 
         /* Dark Mode Farbschema */
@@ -62,6 +68,11 @@
             --tab-btn-border: #444444;
             --tab-btn-text: #cccccc;
             --footer-bg: #181818;
+
+            --cat-anwendung-bg: rgba(33, 150, 243, 0.28);
+            --cat-anwendung-border: rgba(33, 150, 243, 0.65);
+            --cat-parameter-bg: rgba(76, 175, 80, 0.28);
+            --cat-parameter-border: rgba(76, 175, 80, 0.65);
         }
 
         body.dark-mode select {
@@ -114,7 +125,7 @@
             display: inline-block;
         }
 
-        /* Umschalt-Button oben links mit Text & Einstellungen oben rechts */
+        /* Umschalt-Button oben links mit zweizeiligem Text & Einstellungen oben rechts */
         .header-btn {
             position: absolute;
             top: 15px;
@@ -137,9 +148,11 @@
             height: 38px;
             padding: 0 10px;
             border-radius: 6px;
-            font-size: 0.85rem;
+            font-size: 0.75rem;
             font-weight: bold;
             gap: 6px;
+            line-height: 1.1;
+            text-align: left;
         }
 
         .settings-btn {
@@ -232,26 +245,16 @@
         .category-group {
             display: flex;
             flex-direction: column;
-            background: rgba(13, 71, 161, 0.13);
-            border: 1px solid rgba(13, 71, 161, 0.3);
+            background: var(--cat-anwendung-bg);
+            border: 1px solid var(--cat-anwendung-border);
             border-radius: 8px;
             padding: 6px;
             flex-shrink: 0;
         }
 
         .category-group.category-parameters {
-            background: rgba(46, 125, 50, 0.13);
-            border: 1px solid rgba(46, 125, 50, 0.3);
-        }
-
-        body.dark-mode .category-group {
-            background: rgba(33, 150, 243, 0.16);
-            border: 1px solid rgba(33, 150, 243, 0.35);
-        }
-
-        body.dark-mode .category-group.category-parameters {
-            background: rgba(76, 175, 80, 0.16);
-            border: 1px solid rgba(76, 175, 80, 0.35);
+            background: var(--cat-parameter-bg);
+            border: 1px solid var(--cat-parameter-border);
         }
 
         .category-title {
@@ -314,7 +317,7 @@
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
         }
 
-        /* APP-LAUNCHER STYLES (Grid-Dashboard mit kräftigeren Farben) */
+        /* APP-LAUNCHER STYLES (Grid-Dashboard mit spürbar dunkleren/kräftigeren Kacheln) */
         .launcher-view {
             display: none;
             padding: 20px;
@@ -355,10 +358,10 @@
             gap: 12px;
         }
 
-        /* Kräftiger hinterlegte Kacheln (Hellblau & Hellgrün passend zum Slidermenü) */
+        /* Kräftiger hinterlegte Kacheln (Hellblau & Hellgrün analog zum Slidermenü) */
         .launcher-card {
-            background: rgba(13, 71, 161, 0.12);
-            border: 1px solid rgba(13, 71, 161, 0.35);
+            background: var(--cat-anwendung-bg);
+            border: 1px solid var(--cat-anwendung-border);
             border-radius: 10px;
             padding: 14px 10px;
             display: flex;
@@ -367,24 +370,14 @@
             justify-content: center;
             text-align: center;
             cursor: pointer;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.06);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.08);
             transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
             min-height: 80px;
         }
 
         .launcher-category.param .launcher-card {
-            background: rgba(46, 125, 50, 0.12);
-            border: 1px solid rgba(46, 125, 50, 0.35);
-        }
-
-        body.dark-mode .launcher-card {
-            background: rgba(33, 150, 243, 0.18);
-            border: 1px solid rgba(33, 150, 243, 0.4);
-        }
-
-        body.dark-mode .launcher-category.param .launcher-card {
-            background: rgba(76, 175, 80, 0.18);
-            border: 1px solid rgba(76, 175, 80, 0.4);
+            background: var(--cat-parameter-bg);
+            border: 1px solid var(--cat-parameter-border);
         }
 
         .launcher-card:active {
@@ -393,7 +386,7 @@
 
         .launcher-card:hover {
             border-color: var(--primary-color);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
         }
 
         .launcher-icon {
@@ -769,7 +762,7 @@
 <div class="container">
     <div class="header">
         <button type="button" class="header-btn view-toggle-btn" id="view-toggle-btn" onclick="toggleMainView()" title="Ansicht umschalten">
-            <span id="toggle-icon">田</span> <span id="toggle-text">Ansicht</span>
+            <span id="toggle-icon">田</span> <span id="toggle-text">Dash-<br>board</span>
         </button>
         <h1 id="app-title"><span id="first-letter">I</span>NNOWATΞCH</h1>
         <div class="header-sub">
@@ -1533,7 +1526,7 @@
     <!-- Footer -->
     <div class="footer">
         <span>© 2026 #MAT</span>
-        <span class="footer-version">v1.4</span>
+        <span class="footer-version">v1.0</span>
     </div>
 </div>
 
@@ -1552,13 +1545,17 @@
                     <input type="checkbox" id="darkmode-toggle" onchange="toggleDarkMode(this.checked)">
                 </div>
                 <div class="toggle-row" style="margin-top: 10px;">
-                    <span>Icons anzeigen (Dashboard & Schiebeleiste)</span>
-                    <input type="checkbox" id="icons-toggle" onchange="toggleIcons(this.checked)">
+                    <span>Icons in Schiebeleiste anzeigen</span>
+                    <input type="checkbox" id="icons-slider-toggle" onchange="toggleSliderIcons(this.checked)">
+                </div>
+                <div class="toggle-row" style="margin-top: 10px;">
+                    <span>Icons im Dashboard anzeigen</span>
+                    <input type="checkbox" id="icons-dashboard-toggle" onchange="toggleDashboardIcons(this.checked)">
                 </div>
             </div>
 
             <div class="setting-section">
-                <div class="setting-section-title">Darstellungsgröße (Zoom / Dichte)</div>
+                <div class="setting-section-title">Darstellungsgröße</div>
                 <div class="zoom-slider-container">
                     <span>🔍 70%</span>
                     <input type="range" id="zoom-slider" min="0.7" max="1.2" step="0.05" value="1" oninput="changeZoom(this.value)">
@@ -1642,7 +1639,8 @@
     let currentActiveTab = '';
     let isLauncherActive = false;
     let isInToolFromLauncher = false;
-    let showIcons = true;
+    let showSliderIcons = true;
+    let showDashboardIcons = true;
 
     function loadSettings() {
         checkChristmasHat();
@@ -1660,9 +1658,13 @@
             }
         }
 
-        const savedIcons = localStorage.getItem('mat_show_icons');
-        showIcons = (savedIcons !== 'false');
-        document.getElementById('icons-toggle').checked = showIcons;
+        const savedSliderIcons = localStorage.getItem('mat_show_slider_icons');
+        showSliderIcons = (savedSliderIcons !== 'false');
+        document.getElementById('icons-slider-toggle').checked = showSliderIcons;
+
+        const savedDashboardIcons = localStorage.getItem('mat_show_dashboard_icons');
+        showDashboardIcons = (savedDashboardIcons !== 'false');
+        document.getElementById('icons-dashboard-toggle').checked = showDashboardIcons;
 
         let savedZoom = parseFloat(localStorage.getItem('mat_zoom') || '1');
         if (savedZoom > 1.2) savedZoom = 1.2;
@@ -1715,9 +1717,14 @@
         localStorage.setItem('mat_darkmode', isDark);
     }
 
-    function toggleIcons(enabled) {
-        showIcons = enabled;
-        localStorage.setItem('mat_show_icons', enabled);
+    function toggleSliderIcons(enabled) {
+        showSliderIcons = enabled;
+        localStorage.setItem('mat_show_slider_icons', enabled);
+    }
+
+    function toggleDashboardIcons(enabled) {
+        showDashboardIcons = enabled;
+        localStorage.setItem('mat_show_dashboard_icons', enabled);
     }
 
     function changeZoom(val, save = true) {
@@ -1761,13 +1768,13 @@
             launcherView.classList.remove('active');
             backBar.classList.add('active');
             toggleIcon.innerText = '田';
-            toggleText.innerText = 'Ansicht';
+            toggleText.innerHTML = 'Dash-<br>board';
         } else {
             tabBarWrapper.style.display = 'block';
             launcherView.classList.remove('active');
             backBar.classList.remove('active');
             toggleIcon.innerText = '田';
-            toggleText.innerText = 'Ansicht';
+            toggleText.innerHTML = 'Dash-<br>board';
             
             if (currentActiveTab) {
                 switchTab(currentActiveTab);
@@ -1792,7 +1799,7 @@
             card.className = 'launcher-card';
             card.onclick = () => selectModuleFromLauncher(mod.id);
 
-            let iconHtml = showIcons ? `<div class="launcher-icon">${mod.icon || '🛠️'}</div>` : '';
+            let iconHtml = showDashboardIcons ? `<div class="launcher-icon">${mod.icon || '🛠️'}</div>` : '';
 
             card.innerHTML = `
                 ${iconHtml}
@@ -1876,7 +1883,7 @@
                     btn.id = 'btn-' + mod.id;
                     
                     let btnText = mod.title;
-                    if (showIcons && mod.icon) {
+                    if (showSliderIcons && mod.icon) {
                         btnText = mod.icon + '<br>' + btnText;
                     }
                     btn.innerHTML = btnText;
@@ -1981,7 +1988,7 @@
 
                     let label = document.createElement('span');
                     label.className = 'module-label-text';
-                    label.innerHTML = (showIcons && mod.icon ? mod.icon + ' ' : '') + mod.title.replace(/<br>/g, ' ');
+                    label.innerHTML = mod.icon + ' ' + mod.title.replace(/<br>/g, ' ');
 
                     left.appendChild(handle);
                     left.appendChild(chk);
