@@ -125,7 +125,7 @@
             display: inline-block;
         }
 
-        /* Umschalt-Button oben links mit zweizeiligem Text & Einstellungen oben rechts */
+        /* Umschalt-Button oben links mit einheitlichem Wort "Ansicht" & Einstellungen oben rechts */
         .header-btn {
             position: absolute;
             top: 15px;
@@ -148,11 +148,9 @@
             height: 38px;
             padding: 0 10px;
             border-radius: 6px;
-            font-size: 0.75rem;
+            font-size: 0.85rem;
             font-weight: bold;
             gap: 6px;
-            line-height: 1.1;
-            text-align: left;
         }
 
         .settings-btn {
@@ -293,15 +291,14 @@
             color: var(--tab-btn-text);
             cursor: pointer;
             transition: 0.2s ease;
-            white-space: normal;
-            text-align: center;
+            white-space: nowrap; /* Kein automatischer Umbruch bis Zoom greift */
+            text-align: left;    /* Saubere Linksbündigkeit bei mehrzeiliger Darstellung */
             box-shadow: 0 1px 2px rgba(0,0,0,0.05);
             display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-start;
             min-height: 42px;
             line-height: 1.15;
-            word-break: break-word;
         }
 
         .tab-btn:hover {
@@ -317,7 +314,21 @@
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
         }
 
-        /* APP-LAUNCHER STYLES (Grid-Dashboard mit spürbar dunkleren/kräftigeren Kacheln) */
+        /* Flexbox für Button-Inhalt (Icon oben, Text sauber darunter ausgerichtet) */
+        .btn-content-inner {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            width: 100%;
+        }
+
+        .btn-text-line {
+            display: block;
+            width: 100%;
+            white-space: nowrap;
+        }
+
+        /* APP-LAUNCHER STYLES (Grid-Dashboard) */
         .launcher-view {
             display: none;
             padding: 20px;
@@ -358,7 +369,6 @@
             gap: 12px;
         }
 
-        /* Kräftiger hinterlegte Kacheln (Hellblau & Hellgrün analog zum Slidermenü) */
         .launcher-card {
             background: var(--cat-anwendung-bg);
             border: 1px solid var(--cat-anwendung-border);
@@ -399,9 +409,10 @@
             font-weight: bold;
             color: var(--text-color);
             line-height: 1.2;
+            text-align: left;
         }
 
-        /* ZURÜCK-BUTTON LEISTE (Im Tool-Modus aktiv) */
+        /* ZURÜCK-BUTTON LEISTE */
         .dashboard-back-bar {
             display: none;
             background: var(--result-bg);
@@ -593,7 +604,7 @@
             color: var(--subtext-color);
         }
 
-        /* Settings Modal Overlay Styles & Drag & Drop Griff */
+        /* Settings Modal Overlay Styles & Griff auf rechter Seite */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -705,12 +716,14 @@
             display: inline-block;
         }
 
+        /* Griff-Symbol auf die rechte Seite verlegt */
         .drag-handle {
             font-size: 1.1rem;
             color: var(--subtext-color);
             cursor: grab;
             padding: 0 4px;
             letter-spacing: -2px;
+            order: 2;
         }
 
         .zoom-slider-container {
@@ -762,7 +775,7 @@
 <div class="container">
     <div class="header">
         <button type="button" class="header-btn view-toggle-btn" id="view-toggle-btn" onclick="toggleMainView()" title="Ansicht umschalten">
-            <span id="toggle-icon">田</span> <span id="toggle-text">Dash-<br>board</span>
+            <span id="toggle-icon">田</span> <span id="toggle-text">Ansicht</span>
         </button>
         <h1 id="app-title"><span id="first-letter">I</span>NNOWATΞCH</h1>
         <div class="header-sub">
@@ -1541,7 +1554,7 @@
             <div class="setting-section">
                 <div class="setting-section-title">Erscheinungsbild & Icons</div>
                 <div class="toggle-row">
-                    <span>Dunkelmodus (Dark Mode)</span>
+                    <span>Dunkelmodus</span>
                     <input type="checkbox" id="darkmode-toggle" onchange="toggleDarkMode(this.checked)">
                 </div>
                 <div class="toggle-row" style="margin-top: 10px;">
@@ -1566,7 +1579,7 @@
                 </div>
             </div>
 
-            <!-- Getrennte Einstellungen für Anwendung & Parameter mit Drag & Drop Griff -->
+            <!-- Getrennte Einstellungen für Anwendung & Parameter mit Griff ☰ rechts -->
             <div class="setting-section">
                 <div class="setting-section-title" style="color: #0d47a1;">Kategorie: Anwendung (Per Griff ☰ verschiebbar)</div>
                 <div id="active-list-anwendung"></div>
@@ -1622,17 +1635,17 @@
         throw new Error("Testversion abgelaufen.");
     }
 
-    // ZENTRALE MODUL-KONFIGURATION inkl. Icons
+    // ZENTRALE MODUL-KONFIGURATION inkl. reiner Textstrings (ohne harte Umbrüche)
     const defaultModules = [
         { id: 'standard', title: 'Trinkwasser', icon: '💧', category: 'Anwendung', visible: true },
         { id: 'wasserwerk', title: 'Wasserwerk', icon: '🏢', category: 'Anwendung', visible: true },
         { id: 'schwimmbad', title: 'Schwimmbad', icon: '🏊', category: 'Anwendung', visible: true },
         { id: 'pid', title: 'PID Regler', icon: '📈', category: 'Anwendung', visible: true },
-        { id: 'verdünnung', title: 'Verdünnungsreihe<br>Anolyte', icon: '🧪', category: 'Anwendung', visible: true },
+        { id: 'verdünnung', title: 'Verdünnungsreihe Anolyte', icon: '🧪', category: 'Anwendung', visible: true },
         { id: 'sonden', title: 'Sondendaten', icon: '⚡', category: 'Parameter', visible: true },
-        { id: 'anlagen', title: 'Produktions-<br>parameter AQD', icon: '⚙️', category: 'Parameter', visible: true },
-        { id: 'radar', title: 'Vega<br>Radarsensor', icon: '📡', category: 'Parameter', visible: true },
-        { id: 'enthaerter', title: 'Enthärtungs-<br>anlagen', icon: '💧', category: 'Parameter', visible: true }
+        { id: 'anlagen', title: 'Produktionsparameter AQD', icon: '⚙️', category: 'Parameter', visible: true },
+        { id: 'radar', title: 'Vega Radarsensor', icon: '📡', category: 'Parameter', visible: true },
+        { id: 'enthaerter', title: 'Enthärtungsanlagen', icon: '💧', category: 'Parameter', visible: true }
     ];
 
     let currentModules = [];
@@ -1756,7 +1769,7 @@
             launcherView.classList.add('active');
             backBar.classList.remove('active');
             toggleIcon.innerText = '📄';
-            toggleText.innerText = 'Leiste';
+            toggleText.innerText = 'Ansicht';
             
             currentModules.forEach(t => {
                 let content = document.getElementById('tab-' + t.id);
@@ -1768,13 +1781,13 @@
             launcherView.classList.remove('active');
             backBar.classList.add('active');
             toggleIcon.innerText = '田';
-            toggleText.innerHTML = 'Dash-<br>board';
+            toggleText.innerText = 'Ansicht';
         } else {
             tabBarWrapper.style.display = 'block';
             launcherView.classList.remove('active');
             backBar.classList.remove('active');
             toggleIcon.innerText = '田';
-            toggleText.innerHTML = 'Dash-<br>board';
+            toggleText.innerText = 'Ansicht';
             
             if (currentActiveTab) {
                 switchTab(currentActiveTab);
@@ -1882,11 +1895,28 @@
                     btn.className = 'tab-btn';
                     btn.id = 'btn-' + mod.id;
                     
-                    let btnText = mod.title;
+                    let contentDiv = document.createElement('div');
+                    contentDiv.className = 'btn-content-inner';
+
                     if (showSliderIcons && mod.icon) {
-                        btnText = mod.icon + '<br>' + btnText;
+                        let iconEl = document.createElement('span');
+                        iconEl.style.fontSize = '0.9rem';
+                        iconEl.style.marginBottom = '2px';
+                        iconEl.innerText = mod.icon;
+                        contentDiv.appendChild(iconEl);
                     }
-                    btn.innerHTML = btnText;
+
+                    // Wörter in Zeilen aufteilen für saubere, linksausgerichtete Umbrüche bei erhöhtem Zoom
+                    let words = mod.title.split(' ');
+                    words.forEach((word, wIdx) => {
+                        let lineSpan = document.createElement('span');
+                        lineSpan.className = 'btn-text-line';
+                        lineSpan.innerText = word;
+                        contentDiv.appendChild(lineSpan);
+                    });
+
+                    btn.innerHTML = '';
+                    btn.appendChild(contentDiv);
                     btn.onclick = () => switchTab(mod.id);
                     innerBtns.appendChild(btn);
                 });
@@ -1939,7 +1969,7 @@
         if (isLauncherActive && !isInToolFromLauncher) renderLauncherGrid();
     }
 
-    // Einstellungs-Manager mit Drag & Drop Griff-Symbol (☰)
+    // Einstellungs-Manager mit Griff-Symbol (☰) auf der rechten Seite
     function renderModuleManager() {
         const listAnwendung = document.getElementById('active-list-anwendung');
         const listParameter = document.getElementById('active-list-parameter');
@@ -1967,11 +1997,6 @@
 
                     let left = document.createElement('div');
 
-                    let handle = document.createElement('span');
-                    handle.className = 'drag-handle';
-                    handle.innerText = '☰';
-                    handle.title = 'Zum Verschieben gedrückt halten';
-
                     let chk = document.createElement('input');
                     chk.type = 'checkbox';
                     chk.checked = true;
@@ -1988,12 +2013,17 @@
 
                     let label = document.createElement('span');
                     label.className = 'module-label-text';
-                    label.innerHTML = mod.icon + ' ' + mod.title.replace(/<br>/g, ' ');
+                    label.innerHTML = mod.icon + ' ' + mod.title;
 
-                    left.appendChild(handle);
                     left.appendChild(chk);
                     left.appendChild(label);
                     item.appendChild(left);
+
+                    let handle = document.createElement('span');
+                    handle.className = 'drag-handle';
+                    handle.innerText = '☰';
+                    handle.title = 'Zum Verschieben gedrückt halten';
+                    item.appendChild(handle);
 
                     // Drag & Drop Event-Listener
                     item.addEventListener('dragstart', (e) => {
@@ -2051,7 +2081,7 @@
 
                 let label = document.createElement('span');
                 label.className = 'module-label-text';
-                label.innerHTML = `[${mod.category}] ` + mod.title.replace(/<br>/g, ' ');
+                label.innerHTML = `[${mod.category}] ` + mod.title;
 
                 left.appendChild(chk);
                 left.appendChild(label);
