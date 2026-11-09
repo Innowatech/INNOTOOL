@@ -114,17 +114,13 @@
             display: inline-block;
         }
 
-        /* Umschalt-Button oben links & Einstellungen oben rechts */
+        /* Umschalt-Button oben links mit Text & Einstellungen oben rechts */
         .header-btn {
             position: absolute;
             top: 15px;
             background: rgba(255, 255, 255, 0.15);
             border: none;
             color: white;
-            font-size: 1.2rem;
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -138,10 +134,20 @@
 
         .view-toggle-btn {
             left: 15px;
+            height: 38px;
+            padding: 0 10px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            gap: 6px;
         }
 
         .settings-btn {
             right: 15px;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            font-size: 1.2rem;
         }
 
         /* Weihnachtsmützen-Styling für das 'I' */
@@ -308,7 +314,7 @@
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
         }
 
-        /* APP-LAUNCHER STYLES (Grid-Dashboard) */
+        /* APP-LAUNCHER STYLES (Grid-Dashboard mit kräftigeren Farben) */
         .launcher-view {
             display: none;
             padding: 20px;
@@ -349,9 +355,10 @@
             gap: 12px;
         }
 
+        /* Kräftiger hinterlegte Kacheln (Hellblau & Hellgrün passend zum Slidermenü) */
         .launcher-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
+            background: rgba(13, 71, 161, 0.12);
+            border: 1px solid rgba(13, 71, 161, 0.35);
             border-radius: 10px;
             padding: 14px 10px;
             display: flex;
@@ -363,6 +370,21 @@
             box-shadow: 0 2px 5px rgba(0,0,0,0.06);
             transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
             min-height: 80px;
+        }
+
+        .launcher-category.param .launcher-card {
+            background: rgba(46, 125, 50, 0.12);
+            border: 1px solid rgba(46, 125, 50, 0.35);
+        }
+
+        body.dark-mode .launcher-card {
+            background: rgba(33, 150, 243, 0.18);
+            border: 1px solid rgba(33, 150, 243, 0.4);
+        }
+
+        body.dark-mode .launcher-category.param .launcher-card {
+            background: rgba(76, 175, 80, 0.18);
+            border: 1px solid rgba(76, 175, 80, 0.4);
         }
 
         .launcher-card:active {
@@ -386,7 +408,7 @@
             line-height: 1.2;
         }
 
-        /* ZURÜCK-BUTTON ZUM DASHBOARD (Im Tool-Modus aktiv) */
+        /* ZURÜCK-BUTTON LEISTE (Im Tool-Modus aktiv) */
         .dashboard-back-bar {
             display: none;
             background: var(--result-bg);
@@ -578,7 +600,7 @@
             color: var(--subtext-color);
         }
 
-        /* Settings Modal Overlay Styles */
+        /* Settings Modal Overlay Styles & Drag & Drop Griff */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -667,6 +689,16 @@
             border-radius: 6px;
             margin-bottom: 6px;
             gap: 10px;
+            cursor: grab;
+        }
+
+        .module-list-item:active {
+            cursor: grabbing;
+        }
+
+        .module-list-item.dragging {
+            opacity: 0.4;
+            background: var(--result-bg);
         }
 
         .module-list-item > div:first-child {
@@ -675,31 +707,17 @@
             gap: 8px;
         }
 
-        .module-list-item span.module-label-text {
+        .module-label-text {
             line-height: 1.15;
             display: inline-block;
         }
 
-        .module-controls {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            flex-shrink: 0;
-        }
-
-        .btn-arrow {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            color: var(--text-color);
-            padding: 4px 10px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .btn-arrow:disabled {
-            opacity: 0.3;
-            cursor: default;
+        .drag-handle {
+            font-size: 1.1rem;
+            color: var(--subtext-color);
+            cursor: grab;
+            padding: 0 4px;
+            letter-spacing: -2px;
         }
 
         .zoom-slider-container {
@@ -750,7 +768,9 @@
 
 <div class="container">
     <div class="header">
-        <button type="button" class="header-btn view-toggle-btn" id="view-toggle-btn" onclick="toggleMainView()" title="Ansicht umschalten">田</button>
+        <button type="button" class="header-btn view-toggle-btn" id="view-toggle-btn" onclick="toggleMainView()" title="Ansicht umschalten">
+            <span id="toggle-icon">田</span> <span id="toggle-text">Ansicht</span>
+        </button>
         <h1 id="app-title"><span id="first-letter">I</span>NNOWATΞCH</h1>
         <div class="header-sub">
             <span>Service Tool</span>
@@ -1513,7 +1533,7 @@
     <!-- Footer -->
     <div class="footer">
         <span>© 2026 #MAT</span>
-        <span class="footer-version">v1.3</span>
+        <span class="footer-version">v1.4</span>
     </div>
 </div>
 
@@ -1526,10 +1546,14 @@
         </div>
         <div class="modal-body">
             <div class="setting-section">
-                <div class="setting-section-title">Erscheinungsbild</div>
+                <div class="setting-section-title">Erscheinungsbild & Icons</div>
                 <div class="toggle-row">
                     <span>Dunkelmodus (Dark Mode)</span>
                     <input type="checkbox" id="darkmode-toggle" onchange="toggleDarkMode(this.checked)">
+                </div>
+                <div class="toggle-row" style="margin-top: 10px;">
+                    <span>Icons anzeigen (Dashboard & Schiebeleiste)</span>
+                    <input type="checkbox" id="icons-toggle" onchange="toggleIcons(this.checked)">
                 </div>
             </div>
 
@@ -1545,12 +1569,12 @@
                 </div>
             </div>
 
-            <!-- Getrennte Einstellungen für Anwendung & Parameter -->
+            <!-- Getrennte Einstellungen für Anwendung & Parameter mit Drag & Drop Griff -->
             <div class="setting-section">
-                <div class="setting-section-title" style="color: #0d47a1;">Kategorie: Anwendung</div>
+                <div class="setting-section-title" style="color: #0d47a1;">Kategorie: Anwendung (Per Griff ☰ verschiebbar)</div>
                 <div id="active-list-anwendung"></div>
 
-                <div class="setting-section-title" style="margin-top: 20px; color: #1b5e20;">Kategorie: Parameter</div>
+                <div class="setting-section-title" style="margin-top: 20px; color: #1b5e20;">Kategorie: Parameter (Per Griff ☰ verschiebbar)</div>
                 <div id="active-list-parameter"></div>
 
                 <div class="setting-section-title" style="margin-top: 20px; opacity: 0.8;">Inaktive Module</div>
@@ -1601,7 +1625,7 @@
         throw new Error("Testversion abgelaufen.");
     }
 
-    // ZENTRALE MODUL-KONFIGURATION inkl. Icons für den App-Launcher
+    // ZENTRALE MODUL-KONFIGURATION inkl. Icons
     const defaultModules = [
         { id: 'standard', title: 'Trinkwasser', icon: '💧', category: 'Anwendung', visible: true },
         { id: 'wasserwerk', title: 'Wasserwerk', icon: '🏢', category: 'Anwendung', visible: true },
@@ -1618,6 +1642,7 @@
     let currentActiveTab = '';
     let isLauncherActive = false;
     let isInToolFromLauncher = false;
+    let showIcons = true;
 
     function loadSettings() {
         checkChristmasHat();
@@ -1634,6 +1659,10 @@
                 localStorage.setItem('mat_darkmode', 'false');
             }
         }
+
+        const savedIcons = localStorage.getItem('mat_show_icons');
+        showIcons = (savedIcons !== 'false');
+        document.getElementById('icons-toggle').checked = showIcons;
 
         let savedZoom = parseFloat(localStorage.getItem('mat_zoom') || '1');
         if (savedZoom > 1.2) savedZoom = 1.2;
@@ -1686,6 +1715,11 @@
         localStorage.setItem('mat_darkmode', isDark);
     }
 
+    function toggleIcons(enabled) {
+        showIcons = enabled;
+        localStorage.setItem('mat_show_icons', enabled);
+    }
+
     function changeZoom(val, save = true) {
         let numVal = parseFloat(val);
         if (numVal > 1.2) numVal = 1.2;
@@ -1696,7 +1730,6 @@
         }
     }
 
-    // Umschalten über das Icon oben links (globaler Modus)
     function toggleMainView() {
         isLauncherActive = !isLauncherActive;
         isInToolFromLauncher = false;
@@ -1708,15 +1741,15 @@
         const tabBarWrapper = document.getElementById('tab-bar-wrapper');
         const launcherView = document.getElementById('launcher-view');
         const backBar = document.getElementById('dashboard-back-bar');
-        const toggleBtn = document.getElementById('view-toggle-btn');
+        const toggleIcon = document.getElementById('toggle-icon');
+        const toggleText = document.getElementById('toggle-text');
 
         if (isLauncherActive && !isInToolFromLauncher) {
-            // Dashboard-Übersicht aktiv
             tabBarWrapper.style.display = 'none';
             launcherView.classList.add('active');
             backBar.classList.remove('active');
-            toggleBtn.innerText = '📄';
-            toggleBtn.title = 'Zur Leistenansicht wechseln';
+            toggleIcon.innerText = '📄';
+            toggleText.innerText = 'Leiste';
             
             currentModules.forEach(t => {
                 let content = document.getElementById('tab-' + t.id);
@@ -1724,19 +1757,17 @@
             });
             renderLauncherGrid();
         } else if (isLauncherActive && isInToolFromLauncher) {
-            // Aus dem Dashboard heraus wurde eine Kachel geöffnet -> Schiebeleiste bleibt aus, Zurück-Button erscheint
             tabBarWrapper.style.display = 'none';
             launcherView.classList.remove('active');
             backBar.classList.add('active');
-            toggleBtn.innerText = '田';
-            toggleBtn.title = 'Zum Dashboard zurückkehren';
+            toggleIcon.innerText = '田';
+            toggleText.innerText = 'Ansicht';
         } else {
-            // Klassischer Leisten-Modus
             tabBarWrapper.style.display = 'block';
             launcherView.classList.remove('active');
             backBar.classList.remove('active');
-            toggleBtn.innerText = '田';
-            toggleBtn.title = 'Zum Dashboard wechseln';
+            toggleIcon.innerText = '田';
+            toggleText.innerText = 'Ansicht';
             
             if (currentActiveTab) {
                 switchTab(currentActiveTab);
@@ -1761,8 +1792,10 @@
             card.className = 'launcher-card';
             card.onclick = () => selectModuleFromLauncher(mod.id);
 
+            let iconHtml = showIcons ? `<div class="launcher-icon">${mod.icon || '🛠️'}</div>` : '';
+
             card.innerHTML = `
-                <div class="launcher-icon">${mod.icon || '🛠️'}</div>
+                ${iconHtml}
                 <div class="launcher-label">${mod.title}</div>
             `;
 
@@ -1785,7 +1818,6 @@
         applyViewMode();
     }
 
-    // Scroll-Indikatoren prüfen & einblenden
     function checkScrollArrows() {
         const container = document.getElementById('categories-container');
         const arrowLeft = document.getElementById('scroll-arrow-left');
@@ -1842,7 +1874,12 @@
                     btn.type = 'button';
                     btn.className = 'tab-btn';
                     btn.id = 'btn-' + mod.id;
-                    btn.innerHTML = mod.title;
+                    
+                    let btnText = mod.title;
+                    if (showIcons && mod.icon) {
+                        btnText = mod.icon + '<br>' + btnText;
+                    }
+                    btn.innerHTML = btnText;
                     btn.onclick = () => switchTab(mod.id);
                     innerBtns.appendChild(btn);
                 });
@@ -1895,6 +1932,7 @@
         if (isLauncherActive && !isInToolFromLauncher) renderLauncherGrid();
     }
 
+    // Einstellungs-Manager mit Drag & Drop Griff-Symbol (☰)
     function renderModuleManager() {
         const listAnwendung = document.getElementById('active-list-anwendung');
         const listParameter = document.getElementById('active-list-parameter');
@@ -1917,8 +1955,15 @@
                 categoryActiveModules.forEach((mod, index) => {
                     let item = document.createElement('div');
                     item.className = 'module-list-item';
+                    item.draggable = true;
+                    item.dataset.id = mod.id;
 
                     let left = document.createElement('div');
+
+                    let handle = document.createElement('span');
+                    handle.className = 'drag-handle';
+                    handle.innerText = '☰';
+                    handle.title = 'Zum Verschieben gedrückt halten';
 
                     let chk = document.createElement('input');
                     chk.type = 'checkbox';
@@ -1936,31 +1981,43 @@
 
                     let label = document.createElement('span');
                     label.className = 'module-label-text';
-                    label.innerHTML = mod.title.replace(/<br>/g, ' ');
+                    label.innerHTML = (showIcons && mod.icon ? mod.icon + ' ' : '') + mod.title.replace(/<br>/g, ' ');
 
+                    left.appendChild(handle);
                     left.appendChild(chk);
                     left.appendChild(label);
-
-                    let controls = document.createElement('div');
-                    controls.className = 'module-controls';
-
-                    let btnUp = document.createElement('button');
-                    btnUp.className = 'btn-arrow';
-                    btnUp.innerText = '◄';
-                    btnUp.disabled = index === 0;
-                    btnUp.onclick = () => moveCategoryModule(categoryName, index, -1);
-
-                    let btnDown = document.createElement('button');
-                    btnDown.className = 'btn-arrow';
-                    btnDown.innerText = '►';
-                    btnDown.disabled = index === categoryActiveModules.length - 1;
-                    btnDown.onclick = () => moveCategoryModule(categoryName, index, 1);
-
-                    controls.appendChild(btnUp);
-                    controls.appendChild(btnDown);
-
                     item.appendChild(left);
-                    item.appendChild(controls);
+
+                    // Drag & Drop Event-Listener
+                    item.addEventListener('dragstart', (e) => {
+                        e.dataTransfer.setData('text/plain', mod.id);
+                        item.classList.add('dragging');
+                    });
+
+                    item.addEventListener('dragend', () => {
+                        item.classList.remove('dragging');
+                    });
+
+                    item.addEventListener('dragover', (e) => {
+                        e.preventDefault();
+                        const draggingItem = targetContainer.querySelector('.dragging');
+                        if (!draggingItem || draggingItem === item) return;
+
+                        const rect = item.getBoundingClientRect();
+                        const offset = e.clientY - rect.top - rect.height / 2;
+
+                        if (offset < 0) {
+                            targetContainer.insertBefore(draggingItem, item);
+                        } else {
+                            targetContainer.insertBefore(draggingItem, item.nextSibling);
+                        }
+                    });
+
+                    item.addEventListener('drop', (e) => {
+                        e.preventDefault();
+                        updateModulesOrderFromDOM();
+                    });
+
                     targetContainer.appendChild(item);
                 });
             }
@@ -1997,23 +2054,21 @@
         }
     }
 
-    function moveCategoryModule(categoryName, categoryIdx, direction) {
-        const categoryModules = currentModules.filter(m => m.visible && m.category === categoryName);
-        const targetCategoryIdx = categoryIdx + direction;
+    // Reihenfolge nach Drag & Drop in currentModules übernehmen
+    function updateModulesOrderFromDOM() {
+        const newActiveOrder = [];
+        ['active-list-anwendung', 'active-list-parameter'].forEach(containerId => {
+            const container = document.getElementById(containerId);
+            container.querySelectorAll('.module-list-item').forEach(item => {
+                const id = item.dataset.id;
+                const mod = currentModules.find(m => m.id === id);
+                if (mod) newActiveOrder.push(mod);
+            });
+        });
 
-        if (targetCategoryIdx >= 0 && targetCategoryIdx < categoryModules.length) {
-            const mod1 = categoryModules[categoryIdx];
-            const mod2 = categoryModules[targetCategoryIdx];
-
-            const idx1 = currentModules.indexOf(mod1);
-            const idx2 = currentModules.indexOf(mod2);
-
-            currentModules[idx1] = mod2;
-            currentModules[idx2] = mod1;
-
-            saveSettings();
-            renderModuleManager();
-        }
+        const inactiveModules = currentModules.filter(m => !m.visible);
+        currentModules = [...newActiveOrder, ...inactiveModules];
+        saveSettings();
     }
 
     const radarTankDatabase = {
