@@ -110,31 +110,36 @@
             position: relative;
         }
 
+        /* NEU: Flexibler Header mit absolutem Schutz vor Überlappung bei Zoom */
         .header {
             background-color: var(--primary-color);
             color: white;
-            padding: 16px 65px; /* Ausreichend Platz links und rechts für Buttons */
+            padding: 14px 10px;
             text-align: center;
             position: relative;
-            min-height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            min-height: 52px;
+        }
+
+        .header-center {
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
+            flex: 1;
+            padding: 0 5px;
+            overflow: hidden;
         }
 
         .header h1 {
             margin: 0;
-            font-size: 1.3rem;
-            letter-spacing: 1px;
-            display: inline-block;
+            font-size: 1.25rem;
+            letter-spacing: 0.8px;
+            white-space: nowrap;
         }
 
-        /* Umschalt-Button oben links (behoben gegen Überlappung) */
         .header-btn {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
             background: rgba(255, 255, 255, 0.15);
             border: none;
             color: white;
@@ -143,6 +148,7 @@
             align-items: center;
             justify-content: center;
             transition: background 0.2s ease;
+            flex-shrink: 0;
         }
 
         .header-btn:hover {
@@ -150,21 +156,19 @@
         }
 
         .view-toggle-btn {
-            left: 12px;
-            height: 36px;
+            height: 34px;
             padding: 0 8px;
             border-radius: 6px;
-            font-size: 0.78rem;
+            font-size: 0.75rem;
             font-weight: bold;
-            gap: 5px;
+            gap: 4px;
         }
 
         .settings-btn {
-            right: 12px;
-            width: 36px;
-            height: 36px;
+            width: 34px;
+            height: 34px;
             border-radius: 50%;
-            font-size: 1.1rem;
+            font-size: 1.05rem;
         }
 
         /* Weihnachtsmützen-Styling für das 'I' */
@@ -178,19 +182,16 @@
             position: absolute;
             top: -12px;
             left: -6px;
-            font-size: 1.1rem;
+            font-size: 1.0rem;
             transform: rotate(-15deg);
             pointer-events: none;
         }
 
         .header-sub {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-top: 2px;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             opacity: 0.95;
             font-weight: 500;
+            margin-top: 1px;
         }
 
         /* Reiter-Leiste mit Scroll-Indikatoren */
@@ -785,9 +786,9 @@
         <button type="button" class="header-btn view-toggle-btn" id="view-toggle-btn" onclick="toggleMainView()" title="Ansicht umschalten">
             <span id="toggle-icon">田</span> <span id="toggle-text">Ansicht</span>
         </button>
-        <h1 id="app-title"><span id="first-letter">I</span>NNOWATΞCH</h1>
-        <div class="header-sub">
-            <span>Service Tool</span>
+        <div class="header-center">
+            <h1 id="app-title"><span id="first-letter">I</span>NNOWATΞCH</h1>
+            <div class="header-sub">Service Tool</div>
         </div>
         <button type="button" class="header-btn settings-btn" onclick="openSettings()" title="Einstellungen">⚙️</button>
     </div>
@@ -1976,7 +1977,6 @@
         if (isLauncherActive && !isInToolFromLauncher) renderLauncherGrid();
     }
 
-    // Einstellungs-Manager mit sauberem Layout & Griff ☰ rechts
     function renderModuleManager() {
         const listAnwendung = document.getElementById('active-list-anwendung');
         const listParameter = document.getElementById('active-list-parameter');
@@ -2033,7 +2033,6 @@
                     handle.title = 'Zum Verschieben gedrückt halten';
                     item.appendChild(handle);
 
-                    // Drag & Drop Event-Listener
                     item.addEventListener('dragstart', (e) => {
                         e.dataTransfer.setData('text/plain', mod.id);
                         item.classList.add('dragging');
