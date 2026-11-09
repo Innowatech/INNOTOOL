@@ -223,7 +223,6 @@
             display: none;
         }
 
-        /* Deutlich kräftigere Kategorien-Boxen */
         .category-group {
             display: flex;
             flex-direction: column;
@@ -387,6 +386,37 @@
             line-height: 1.2;
         }
 
+        /* ZURÜCK-BUTTON ZUM DASHBOARD (Im Tool-Modus aktiv) */
+        .dashboard-back-bar {
+            display: none;
+            background: var(--result-bg);
+            border-bottom: 1px solid var(--result-border);
+            padding: 10px 15px;
+        }
+
+        .dashboard-back-bar.active {
+            display: block;
+        }
+
+        .dashboard-back-btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 0.85rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            transition: opacity 0.2s;
+        }
+
+        .dashboard-back-btn:hover {
+            opacity: 0.9;
+        }
+
         .tab-content {
             display: none;
             padding: 20px;
@@ -469,7 +499,6 @@
             color: var(--result-val);
         }
 
-        /* PDF Export Button Layout */
         .pdf-export-btn {
             width: 100%;
             margin-top: 15px;
@@ -522,7 +551,6 @@
             color: var(--primary-color);
         }
 
-        /* Blaue Text-Hervorhebung für Schlüsselwerte wie 'aktiv' */
         .param-highlight {
             color: var(--primary-color);
             font-weight: bold;
@@ -684,7 +712,6 @@
             flex: 1;
         }
 
-        /* Druck-Styles für den sauberen PDF-Export */
         @media print {
             body {
                 background: white !important;
@@ -697,7 +724,7 @@
                 max-width: 100% !important;
                 border-radius: 0 !important;
             }
-            .header-btn, .tab-bar-wrapper, .pdf-export-btn, .modal-overlay, .footer {
+            .header-btn, .tab-bar-wrapper, .dashboard-back-bar, .pdf-export-btn, .modal-overlay, .footer {
                 display: none !important;
             }
             .tab-content {
@@ -731,11 +758,18 @@
         <button type="button" class="header-btn settings-btn" onclick="openSettings()" title="Einstellungen">⚙️</button>
     </div>
 
-    <!-- Kategorisiertes Reiter-Layout mit Scroll-Indikatoren (Klassische Leiste) -->
+    <!-- Klassische Schiebe-Leiste oben -->
     <div class="tab-bar-wrapper" id="tab-bar-wrapper">
         <div class="scroll-arrow left" id="scroll-arrow-left">◄</div>
         <div class="categories-container" id="categories-container" onscroll="checkScrollArrows()"></div>
         <div class="scroll-arrow right" id="scroll-arrow-right">►</div>
+    </div>
+
+    <!-- ZURÜCK-BUTTON LEISTE (Nur im Dashboard-Modus aktiv, wenn man in einem Tool ist) -->
+    <div class="dashboard-back-bar" id="dashboard-back-bar">
+        <button type="button" class="dashboard-back-btn" onclick="backToDashboard()">
+            ⬅️ Zurück zur Übersicht
+        </button>
     </div>
 
     <!-- APP LAUNCHER DASHBOARD (Kachel-Ansicht) -->
@@ -1479,7 +1513,7 @@
     <!-- Footer -->
     <div class="footer">
         <span>© 2026 #MAT</span>
-        <span class="footer-version">v1.2</span>
+        <span class="footer-version">v1.3</span>
     </div>
 </div>
 
@@ -1583,6 +1617,7 @@
     let currentModules = [];
     let currentActiveTab = '';
     let isLauncherActive = false;
+    let isInToolFromLauncher = false;
 
     function loadSettings() {
         checkChristmasHat();
@@ -1632,6 +1667,7 @@
 
         const savedLauncherState = localStorage.getItem('mat_launcher_view');
         isLauncherActive = (savedLauncherState === 'true');
+        isInToolFromLauncher = false;
 
         renderTabs(true);
         applyViewMode();
@@ -1660,9 +1696,10 @@
         }
     }
 
-    // APP-LAUNCHER UMSCHALT-LOGIK
+    // Umschalten über das Icon oben links (globaler Modus)
     function toggleMainView() {
         isLauncherActive = !isLauncherActive;
+        isInToolFromLauncher = false;
         localStorage.setItem('mat_launcher_view', isLauncherActive);
         applyViewMode();
     }
@@ -1670,27 +1707,37 @@
     function applyViewMode() {
         const tabBarWrapper = document.getElementById('tab-bar-wrapper');
         const launcherView = document.getElementById('launcher-view');
+        const backBar = document.getElementById('dashboard-back-bar');
         const toggleBtn = document.getElementById('view-toggle-btn');
 
-        if (isLauncherActive) {
+        if (isLauncherActive && !isInToolFromLauncher) {
+            // Dashboard-Übersicht aktiv
             tabBarWrapper.style.display = 'none';
             launcherView.classList.add('active');
-            toggleBtn.innerText = '📄'; // Symbol für "Zurück zur Werkzeugansicht"
+            backBar.classList.remove('active');
+            toggleBtn.innerText = '📄';
             toggleBtn.title = 'Zur Leistenansicht wechseln';
             
-            // Verstecke alle Tab-Inhalte im Dashboard-Modus
             currentModules.forEach(t => {
                 let content = document.getElementById('tab-' + t.id);
                 if (content) content.classList.remove('active');
             });
             renderLauncherGrid();
+        } else if (isLauncherActive && isInToolFromLauncher) {
+            // Aus dem Dashboard heraus wurde eine Kachel geöffnet -> Schiebeleiste bleibt aus, Zurück-Button erscheint
+            tabBarWrapper.style.display = 'none';
+            launcherView.classList.remove('active');
+            backBar.classList.add('active');
+            toggleBtn.innerText = '田';
+            toggleBtn.title = 'Zum Dashboard zurückkehren';
         } else {
+            // Klassischer Leisten-Modus
             tabBarWrapper.style.display = 'block';
             launcherView.classList.remove('active');
-            toggleBtn.innerText = '田'; // Symbol für Kachel-Dashboard
+            backBar.classList.remove('active');
+            toggleBtn.innerText = '田';
             toggleBtn.title = 'Zum Dashboard wechseln';
             
-            // Stelle den aktiven Tab wieder her
             if (currentActiveTab) {
                 switchTab(currentActiveTab);
             } else {
@@ -1728,10 +1775,14 @@
     }
 
     function selectModuleFromLauncher(tabId) {
-        isLauncherActive = false;
-        localStorage.setItem('mat_launcher_view', 'false');
+        isInToolFromLauncher = true;
         applyViewMode();
         switchTab(tabId);
+    }
+
+    function backToDashboard() {
+        isInToolFromLauncher = false;
+        applyViewMode();
     }
 
     // Scroll-Indikatoren prüfen & einblenden
@@ -1827,7 +1878,7 @@
             activeBtn.classList.add('active');
             activeBtn.scrollIntoView({ behavior: 'smooth', inline: 'nearest', block: 'nearest' });
         }
-        if (activeContent && !isLauncherActive) {
+        if (activeContent && (!isLauncherActive || isInToolFromLauncher)) {
             activeContent.classList.add('active');
         }
     }
@@ -1841,10 +1892,9 @@
         document.getElementById('settings-modal').classList.remove('open');
         saveSettings();
         renderTabs();
-        if (isLauncherActive) renderLauncherGrid();
+        if (isLauncherActive && !isInToolFromLauncher) renderLauncherGrid();
     }
 
-    // Einstellungs-Manager getrennt nach Kategorien
     function renderModuleManager() {
         const listAnwendung = document.getElementById('active-list-anwendung');
         const listParameter = document.getElementById('active-list-parameter');
@@ -1947,7 +1997,6 @@
         }
     }
 
-    // Verschieben NUR innerhalb der eigenen Kategorie
     function moveCategoryModule(categoryName, categoryIdx, direction) {
         const categoryModules = currentModules.filter(m => m.visible && m.category === categoryName);
         const targetCategoryIdx = categoryIdx + direction;
@@ -1967,7 +2016,6 @@
         }
     }
 
-    // Vega Radarsensor Tankdaten-Datenbank & automatischer Abgleich
     const radarTankDatabase = {
         "40": 385,
         "60": 535,
@@ -1992,7 +2040,6 @@
         }
     }
 
-    // Enthärtungsanlagen-Datenbank (gemäß offizieller Innowatech-Tabelle)
     const enthaerterDatabase = {
         "fk":      { harz: "4 Liter", kapazitaet: "15 °dH x m³", sole: "3 l", salz: "0,96 kg", rueckfuelle: "2,7 l", rueckspuelen: "3 Min", besalzen: "30 Min", schnellspuelen: "15 Min", sole_nachf: "3 Min" },
         "fkl":     { harz: "4 Liter", kapazitaet: "15 °dH x m³", sole: "3 l", salz: "0,96 kg", rueckfuelle: "2,7 l", rueckspuelen: "3 Min", besalzen: "30 Min", schnellspuelen: "15 Min", sole_nachf: "3 Min" },
