@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mat-service-tool-v2';
+const CACHE_NAME = 'mat-service-tool-v3';
 const assetsToCache = [
   './',
   './index.html',
