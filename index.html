@@ -113,22 +113,28 @@
         .header {
             background-color: var(--primary-color);
             color: white;
-            padding: 20px;
+            padding: 16px 65px; /* Ausreichend Platz links und rechts für Buttons */
             text-align: center;
             position: relative;
+            min-height: 50px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
 
         .header h1 {
             margin: 0;
-            font-size: 1.4rem;
+            font-size: 1.3rem;
             letter-spacing: 1px;
             display: inline-block;
         }
 
-        /* Umschalt-Button oben links mit einheitlichem Wort "Ansicht" & Einstellungen oben rechts */
+        /* Umschalt-Button oben links (behoben gegen Überlappung) */
         .header-btn {
             position: absolute;
-            top: 15px;
+            top: 50%;
+            transform: translateY(-50%);
             background: rgba(255, 255, 255, 0.15);
             border: none;
             color: white;
@@ -144,21 +150,21 @@
         }
 
         .view-toggle-btn {
-            left: 15px;
-            height: 38px;
-            padding: 0 10px;
+            left: 12px;
+            height: 36px;
+            padding: 0 8px;
             border-radius: 6px;
-            font-size: 0.85rem;
+            font-size: 0.78rem;
             font-weight: bold;
-            gap: 6px;
+            gap: 5px;
         }
 
         .settings-btn {
-            right: 15px;
-            width: 38px;
-            height: 38px;
+            right: 12px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
         }
 
         /* Weihnachtsmützen-Styling für das 'I' */
@@ -181,8 +187,8 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            margin-top: 4px;
-            font-size: 0.9rem;
+            margin-top: 2px;
+            font-size: 0.85rem;
             opacity: 0.95;
             font-weight: 500;
         }
@@ -291,8 +297,8 @@
             color: var(--tab-btn-text);
             cursor: pointer;
             transition: 0.2s ease;
-            white-space: nowrap; /* Kein automatischer Umbruch bis Zoom greift */
-            text-align: left;    /* Saubere Linksbündigkeit bei mehrzeiliger Darstellung */
+            white-space: nowrap;
+            text-align: left;
             box-shadow: 0 1px 2px rgba(0,0,0,0.05);
             display: flex;
             align-items: center;
@@ -314,7 +320,6 @@
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
         }
 
-        /* Flexbox für Button-Inhalt (Icon oben, Text sauber darunter ausgerichtet) */
         .btn-content-inner {
             display: flex;
             flex-direction: column;
@@ -328,7 +333,7 @@
             white-space: nowrap;
         }
 
-        /* APP-LAUNCHER STYLES (Grid-Dashboard) */
+        /* APP-LAUNCHER STYLES */
         .launcher-view {
             display: none;
             padding: 20px;
@@ -604,7 +609,7 @@
             color: var(--subtext-color);
         }
 
-        /* Settings Modal Overlay Styles & Griff auf rechter Seite */
+        /* Settings Modal Overlay Styles & sauberer Modul-Container */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -687,11 +692,11 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 8px 10px;
+            padding: 10px 12px;
             background: var(--input-bg);
             border: 1px solid var(--border-color);
             border-radius: 6px;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
             gap: 10px;
             cursor: grab;
         }
@@ -705,25 +710,28 @@
             background: var(--result-bg);
         }
 
-        .module-list-item > div:first-child {
+        .module-list-item-left {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
+            flex: 1;
+            min-width: 0;
         }
 
         .module-label-text {
-            line-height: 1.15;
-            display: inline-block;
+            line-height: 1.2;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
-        /* Griff-Symbol auf die rechte Seite verlegt */
+        /* Griff-Symbol auf der rechten Seite */
         .drag-handle {
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             color: var(--subtext-color);
             cursor: grab;
             padding: 0 4px;
-            letter-spacing: -2px;
-            order: 2;
+            flex-shrink: 0;
         }
 
         .zoom-slider-container {
@@ -791,7 +799,7 @@
         <div class="scroll-arrow right" id="scroll-arrow-right">►</div>
     </div>
 
-    <!-- ZURÜCK-BUTTON LEISTE (Nur im Dashboard-Modus aktiv, wenn man in einem Tool ist) -->
+    <!-- ZURÜCK-BUTTON LEISTE -->
     <div class="dashboard-back-bar" id="dashboard-back-bar">
         <button type="button" class="dashboard-back-btn" onclick="backToDashboard()">
             ⬅️ Zurück zur Übersicht
@@ -1635,7 +1643,7 @@
         throw new Error("Testversion abgelaufen.");
     }
 
-    // ZENTRALE MODUL-KONFIGURATION inkl. reiner Textstrings (ohne harte Umbrüche)
+    // ZENTRALE MODUL-KONFIGURATION inkl. reiner Textstrings
     const defaultModules = [
         { id: 'standard', title: 'Trinkwasser', icon: '💧', category: 'Anwendung', visible: true },
         { id: 'wasserwerk', title: 'Wasserwerk', icon: '🏢', category: 'Anwendung', visible: true },
@@ -1906,9 +1914,8 @@
                         contentDiv.appendChild(iconEl);
                     }
 
-                    // Wörter in Zeilen aufteilen für saubere, linksausgerichtete Umbrüche bei erhöhtem Zoom
                     let words = mod.title.split(' ');
-                    words.forEach((word, wIdx) => {
+                    words.forEach((word) => {
                         let lineSpan = document.createElement('span');
                         lineSpan.className = 'btn-text-line';
                         lineSpan.innerText = word;
@@ -1969,7 +1976,7 @@
         if (isLauncherActive && !isInToolFromLauncher) renderLauncherGrid();
     }
 
-    // Einstellungs-Manager mit Griff-Symbol (☰) auf der rechten Seite
+    // Einstellungs-Manager mit sauberem Layout & Griff ☰ rechts
     function renderModuleManager() {
         const listAnwendung = document.getElementById('active-list-anwendung');
         const listParameter = document.getElementById('active-list-parameter');
@@ -1989,13 +1996,14 @@
             if (categoryActiveModules.length === 0) {
                 targetContainer.innerHTML = '<div class="hint">Keine aktiven Module in dieser Kategorie.</div>';
             } else {
-                categoryActiveModules.forEach((mod, index) => {
+                categoryActiveModules.forEach((mod) => {
                     let item = document.createElement('div');
                     item.className = 'module-list-item';
                     item.draggable = true;
                     item.dataset.id = mod.id;
 
                     let left = document.createElement('div');
+                    left.className = 'module-list-item-left';
 
                     let chk = document.createElement('input');
                     chk.type = 'checkbox';
@@ -2013,7 +2021,7 @@
 
                     let label = document.createElement('span');
                     label.className = 'module-label-text';
-                    label.innerHTML = mod.icon + ' ' + mod.title;
+                    label.innerHTML = (mod.icon || '🛠️') + ' ' + mod.title;
 
                     left.appendChild(chk);
                     left.appendChild(label);
@@ -2069,6 +2077,7 @@
                 item.style.opacity = '0.7';
 
                 let left = document.createElement('div');
+                left.className = 'module-list-item-left';
 
                 let chk = document.createElement('input');
                 chk.type = 'checkbox';
@@ -2081,7 +2090,7 @@
 
                 let label = document.createElement('span');
                 label.className = 'module-label-text';
-                label.innerHTML = `[${mod.category}] ` + mod.title;
+                label.innerHTML = `[${mod.category}] ` + (mod.icon || '🛠️') + ' ' + mod.title;
 
                 left.appendChild(chk);
                 left.appendChild(label);
@@ -2091,7 +2100,6 @@
         }
     }
 
-    // Reihenfolge nach Drag & Drop in currentModules übernehmen
     function updateModulesOrderFromDOM() {
         const newActiveOrder = [];
         ['active-list-anwendung', 'active-list-parameter'].forEach(containerId => {
