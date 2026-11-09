@@ -114,6 +114,36 @@
             display: inline-block;
         }
 
+        /* Umschalt-Button oben links & Einstellungen oben rechts */
+        .header-btn {
+            position: absolute;
+            top: 15px;
+            background: rgba(255, 255, 255, 0.15);
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s ease;
+        }
+
+        .header-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .view-toggle-btn {
+            left: 15px;
+        }
+
+        .settings-btn {
+            right: 15px;
+        }
+
         /* Weihnachtsmützen-Styling für das 'I' */
         .santa-letter {
             position: relative;
@@ -138,28 +168,6 @@
             font-size: 0.9rem;
             opacity: 0.95;
             font-weight: 500;
-        }
-
-        .settings-btn {
-            position: absolute;
-            right: 15px;
-            top: 15px;
-            background: rgba(255, 255, 255, 0.15);
-            border: none;
-            color: white;
-            font-size: 1.3rem;
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background 0.2s ease;
-        }
-
-        .settings-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
         }
 
         /* Reiter-Leiste mit Scroll-Indikatoren */
@@ -299,6 +307,84 @@
             border: 1px solid var(--primary-color);
             border-bottom: 3px solid var(--primary-color);
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        /* APP-LAUNCHER STYLES (Grid-Dashboard) */
+        .launcher-view {
+            display: none;
+            padding: 20px;
+        }
+
+        .launcher-view.active {
+            display: block;
+        }
+
+        .launcher-category {
+            margin-bottom: 22px;
+        }
+
+        .launcher-category-title {
+            font-size: 0.85rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 4px;
+            margin-bottom: 12px;
+        }
+
+        .launcher-category.param .launcher-category-title {
+            color: #1b5e20;
+            border-color: #1b5e20;
+        }
+
+        body.dark-mode .launcher-category.param .launcher-category-title {
+            color: #a5d6a7;
+            border-color: #a5d6a7;
+        }
+
+        .launcher-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .launcher-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 14px 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.06);
+            transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+            min-height: 80px;
+        }
+
+        .launcher-card:active {
+            transform: scale(0.97);
+        }
+
+        .launcher-card:hover {
+            border-color: var(--primary-color);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+        }
+
+        .launcher-icon {
+            font-size: 1.7rem;
+            margin-bottom: 6px;
+        }
+
+        .launcher-label {
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: var(--text-color);
+            line-height: 1.2;
         }
 
         .tab-content {
@@ -611,7 +697,7 @@
                 max-width: 100% !important;
                 border-radius: 0 !important;
             }
-            .settings-btn, .tab-bar-wrapper, .pdf-export-btn, .modal-overlay, .footer {
+            .header-btn, .tab-bar-wrapper, .pdf-export-btn, .modal-overlay, .footer {
                 display: none !important;
             }
             .tab-content {
@@ -637,18 +723,32 @@
 
 <div class="container">
     <div class="header">
+        <button type="button" class="header-btn view-toggle-btn" id="view-toggle-btn" onclick="toggleMainView()" title="Ansicht umschalten">田</button>
         <h1 id="app-title"><span id="first-letter">I</span>NNOWATΞCH</h1>
         <div class="header-sub">
             <span>Service Tool</span>
         </div>
-        <button type="button" class="settings-btn" onclick="openSettings()" title="Einstellungen">⚙️</button>
+        <button type="button" class="header-btn settings-btn" onclick="openSettings()" title="Einstellungen">⚙️</button>
     </div>
 
-    <!-- Kategorisiertes Reiter-Layout mit Scroll-Indikatoren -->
-    <div class="tab-bar-wrapper">
+    <!-- Kategorisiertes Reiter-Layout mit Scroll-Indikatoren (Klassische Leiste) -->
+    <div class="tab-bar-wrapper" id="tab-bar-wrapper">
         <div class="scroll-arrow left" id="scroll-arrow-left">◄</div>
         <div class="categories-container" id="categories-container" onscroll="checkScrollArrows()"></div>
         <div class="scroll-arrow right" id="scroll-arrow-right">►</div>
+    </div>
+
+    <!-- APP LAUNCHER DASHBOARD (Kachel-Ansicht) -->
+    <div class="launcher-view" id="launcher-view">
+        <div class="launcher-category">
+            <div class="launcher-category-title">Anwendungen</div>
+            <div class="launcher-grid" id="launcher-grid-anwendung"></div>
+        </div>
+
+        <div class="launcher-category param">
+            <div class="launcher-category-title">Parameter</div>
+            <div class="launcher-grid" id="launcher-grid-parameter"></div>
+        </div>
     </div>
 
     <!-- MODUS 1: Standard (Trinkwasser) -->
@@ -1379,7 +1479,7 @@
     <!-- Footer -->
     <div class="footer">
         <span>© 2026 #MAT</span>
-        <span class="footer-version">v1.1</span>
+        <span class="footer-version">v1.2</span>
     </div>
 </div>
 
@@ -1467,21 +1567,22 @@
         throw new Error("Testversion abgelaufen.");
     }
 
-    // ZENTRALE MODUL-KONFIGURATION inkl. Enthärtungsanlagen
+    // ZENTRALE MODUL-KONFIGURATION inkl. Icons für den App-Launcher
     const defaultModules = [
-        { id: 'standard', title: 'Trinkwasser', category: 'Anwendung', visible: true },
-        { id: 'wasserwerk', title: 'Wasserwerk', category: 'Anwendung', visible: true },
-        { id: 'schwimmbad', title: 'Schwimmbad', category: 'Anwendung', visible: true },
-        { id: 'pid', title: 'PID Regler', category: 'Anwendung', visible: true },
-        { id: 'verdünnung', title: 'Verdünnungsreihe<br>Anolyte', category: 'Anwendung', visible: true },
-        { id: 'sonden', title: 'Sondendaten', category: 'Parameter', visible: true },
-        { id: 'anlagen', title: 'Produktions-<br>parameter AQD', category: 'Parameter', visible: true },
-        { id: 'radar', title: 'Vega<br>Radarsensor', category: 'Parameter', visible: true },
-        { id: 'enthaerter', title: 'Enthärtungs-<br>anlagen', category: 'Parameter', visible: true }
+        { id: 'standard', title: 'Trinkwasser', icon: '💧', category: 'Anwendung', visible: true },
+        { id: 'wasserwerk', title: 'Wasserwerk', icon: '🏢', category: 'Anwendung', visible: true },
+        { id: 'schwimmbad', title: 'Schwimmbad', icon: '🏊', category: 'Anwendung', visible: true },
+        { id: 'pid', title: 'PID Regler', icon: '📈', category: 'Anwendung', visible: true },
+        { id: 'verdünnung', title: 'Verdünnungsreihe<br>Anolyte', icon: '🧪', category: 'Anwendung', visible: true },
+        { id: 'sonden', title: 'Sondendaten', icon: '⚡', category: 'Parameter', visible: true },
+        { id: 'anlagen', title: 'Produktions-<br>parameter AQD', icon: '⚙️', category: 'Parameter', visible: true },
+        { id: 'radar', title: 'Vega<br>Radarsensor', icon: '📡', category: 'Parameter', visible: true },
+        { id: 'enthaerter', title: 'Enthärtungs-<br>anlagen', icon: '💧', category: 'Parameter', visible: true }
     ];
 
     let currentModules = [];
     let currentActiveTab = '';
+    let isLauncherActive = false;
 
     function loadSettings() {
         checkChristmasHat();
@@ -1514,6 +1615,7 @@
                     if (def) {
                         m.title = def.title;
                         m.category = def.category;
+                        m.icon = def.icon || '🛠️';
                     }
                 });
                 defaultModules.forEach(def => {
@@ -1528,7 +1630,11 @@
             currentModules = [...defaultModules];
         }
 
+        const savedLauncherState = localStorage.getItem('mat_launcher_view');
+        isLauncherActive = (savedLauncherState === 'true');
+
         renderTabs(true);
+        applyViewMode();
     }
 
     function saveSettings() {
@@ -1552,6 +1658,80 @@
         if (save) {
             localStorage.setItem('mat_zoom', numVal);
         }
+    }
+
+    // APP-LAUNCHER UMSCHALT-LOGIK
+    function toggleMainView() {
+        isLauncherActive = !isLauncherActive;
+        localStorage.setItem('mat_launcher_view', isLauncherActive);
+        applyViewMode();
+    }
+
+    function applyViewMode() {
+        const tabBarWrapper = document.getElementById('tab-bar-wrapper');
+        const launcherView = document.getElementById('launcher-view');
+        const toggleBtn = document.getElementById('view-toggle-btn');
+
+        if (isLauncherActive) {
+            tabBarWrapper.style.display = 'none';
+            launcherView.classList.add('active');
+            toggleBtn.innerText = '📄'; // Symbol für "Zurück zur Werkzeugansicht"
+            toggleBtn.title = 'Zur Leistenansicht wechseln';
+            
+            // Verstecke alle Tab-Inhalte im Dashboard-Modus
+            currentModules.forEach(t => {
+                let content = document.getElementById('tab-' + t.id);
+                if (content) content.classList.remove('active');
+            });
+            renderLauncherGrid();
+        } else {
+            tabBarWrapper.style.display = 'block';
+            launcherView.classList.remove('active');
+            toggleBtn.innerText = '田'; // Symbol für Kachel-Dashboard
+            toggleBtn.title = 'Zum Dashboard wechseln';
+            
+            // Stelle den aktiven Tab wieder her
+            if (currentActiveTab) {
+                switchTab(currentActiveTab);
+            } else {
+                const active = currentModules.find(m => m.visible);
+                if (active) switchTab(active.id);
+            }
+        }
+    }
+
+    function renderLauncherGrid() {
+        const gridAnwendung = document.getElementById('launcher-grid-anwendung');
+        const gridParameter = document.getElementById('launcher-grid-parameter');
+
+        gridAnwendung.innerHTML = '';
+        gridParameter.innerHTML = '';
+
+        const activeModules = currentModules.filter(m => m.visible);
+
+        activeModules.forEach(mod => {
+            let card = document.createElement('div');
+            card.className = 'launcher-card';
+            card.onclick = () => selectModuleFromLauncher(mod.id);
+
+            card.innerHTML = `
+                <div class="launcher-icon">${mod.icon || '🛠️'}</div>
+                <div class="launcher-label">${mod.title}</div>
+            `;
+
+            if (mod.category === 'Parameter') {
+                gridParameter.appendChild(card);
+            } else {
+                gridAnwendung.appendChild(card);
+            }
+        });
+    }
+
+    function selectModuleFromLauncher(tabId) {
+        isLauncherActive = false;
+        localStorage.setItem('mat_launcher_view', 'false');
+        applyViewMode();
+        switchTab(tabId);
     }
 
     // Scroll-Indikatoren prüfen & einblenden
@@ -1647,7 +1827,9 @@
             activeBtn.classList.add('active');
             activeBtn.scrollIntoView({ behavior: 'smooth', inline: 'nearest', block: 'nearest' });
         }
-        if (activeContent) activeContent.classList.add('active');
+        if (activeContent && !isLauncherActive) {
+            activeContent.classList.add('active');
+        }
     }
 
     function openSettings() {
@@ -1659,6 +1841,7 @@
         document.getElementById('settings-modal').classList.remove('open');
         saveSettings();
         renderTabs();
+        if (isLauncherActive) renderLauncherGrid();
     }
 
     // Einstellungs-Manager getrennt nach Kategorien
