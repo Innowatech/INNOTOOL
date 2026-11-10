@@ -76,30 +76,31 @@
             --cat-parameter-border: #16a34a;
         }
 
-        /* ABSOLUTER FIX FÜR WEISSE DROPDOWNS IM DARK MODE */
-        body.dark-mode select,
-        body.dark-mode select option,
-        body.dark-mode select optgroup {
-            background-color: #2a2a2a !important;
-            color: #e0e0e0 !important;
-            color-scheme: dark !important;
-        }
-
+        /* ABSOLUTER FIX FÜR DROPDOWNS & SYSTEM-POPUPS IM DARK MODE */
         select {
-            background-color: transparent;
+            background-color: var(--input-bg);
             color: var(--text-color);
             -webkit-appearance: none;
             -moz-appearance: none;
             appearance: none;
             background-image: url("data:image/svg+xml;utf8,<svg fill='%23666666' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
-            background-repeat: no-repeat;
-            background-position: right 6px center;
-            background-size: 16px;
-            padding-right: 24px !important;
+            background-repeat: no-repeat !important;
+            background-position: right 8px center !important;
+            background-size: 16px !important;
+            padding-right: 28px !important;
         }
 
         body.dark-mode select {
+            background-color: #2a2a2a !important;
+            color: #e0e0e0 !important;
+            color-scheme: dark !important;
             background-image: url("data:image/svg+xml;utf8,<svg fill='%23e0e0e0' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>") !important;
+        }
+
+        body.dark-mode select option,
+        body.dark-mode select optgroup {
+            background-color: #2a2a2a !important;
+            color: #e0e0e0 !important;
         }
 
         select option {
@@ -127,7 +128,7 @@
             position: relative;
         }
 
-        /* HEADER MIT ECHTER DISPLAY-MITTEN-ZENTRIERUNG */
+        /* HEADER MIT ABSOLUTER DISPLAY-MITTEN-ZENTRIERUNG */
         .header {
             background: linear-gradient(to bottom, #1565c0 0%, #0d47a1 100%);
             color: white;
@@ -149,7 +150,6 @@
             z-index: 2;
         }
 
-        /* Der Titel sitzt absolut in der Mitte des Containers und ignoriert Button-Breiten */
         .header-center {
             position: absolute;
             left: 50%;
@@ -1628,10 +1628,10 @@
         <button type="button" class="pdf-export-btn" onclick="exportToPDF('Enthärtungsanlagen')">📄 Als PDF speichern / drucken</button>
     </div>
 
-    <!-- Footer mit hochgezählter Versionsnummer v1.6 -->
+    <!-- Footer mit hochgezählter Versionsnummer v1.7 -->
     <div class="footer">
         <span>© 2026 #MAT</span>
-        <span class="footer-version">v1.6</span>
+        <span class="footer-version">v1.7</span>
     </div>
 </div>
 
@@ -2308,7 +2308,7 @@
         "gx_k5":          { durchfluss: "40 l/h", strom: "6,8 A", spannung: "24 V", zeit: "13 h", prod: "60 min", pause: "30 min" },
         "gxl_k5":         { durchfluss: "40 l/h", strom: "6,8 A", spannung: "24 V", zeit: "19 h", prod: "60 min", pause: "15 min" },
         "sgx_k2":         { durchfluss: "40 l/h", strom: "6.8 A", spannung: "24 V", zeit: "19 h", prod: "60 min", pause: "15 min" },
-        "sgx_k5":         { durchfluss: "40 l/h", strom: "6.8 A", spannung: "24 V", zeit: "19 h", prod: "60 min", pause: "15 min" },
+        "sgx_k5":         { durchfluss: "40 l/h", strom: "6,8 A", spannung: "24 V", zeit: "19 h", prod: "60 min", pause: "15 min" },
         "g2_k5":          { durchfluss: "110 l/h", strom: "6.8 A", spannung: "24 V", zeit: "18 h", prod: "90 min", pause: "15 min" },
         "cgk":            { durchfluss: "40 l/h", strom: "6,8 A", spannung: "24 V", zeit: "7 h", prod: "30 min", pause: "30 min" },
         "cgx_k2":         { durchfluss: "40 l/h", strom: "6.8 A", spannung: "24 V", zeit: "13 h", prod: "60 min", pause: "30 min" },
