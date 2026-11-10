@@ -76,36 +76,119 @@
             --cat-parameter-border: #16a34a;
         }
 
-        /* ABSOLUTER FIX FÜR DROPDOWNS & SYSTEM-POPUPS IM DARK MODE */
-        select {
-            background-color: var(--input-bg);
+        /* ECHTES EIGENES DROPDOWN-MENÜ (VERHINDERT WEISSES ANDROID-POPUP) */
+        .custom-select-trigger {
+            width: 100%;
+            border: none;
+            background: transparent;
+            padding: 7px 4px;
+            font-size: 0.92rem;
             color: var(--text-color);
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            appearance: none;
+            outline: none;
+            text-align: left;
+            cursor: pointer;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .custom-select-trigger::after {
+            content: "";
+            display: inline-block;
+            width: 16px;
+            height: 16px;
             background-image: url("data:image/svg+xml;utf8,<svg fill='%23666666' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
-            background-repeat: no-repeat !important;
-            background-position: right 8px center !important;
-            background-size: 16px !important;
-            padding-right: 28px !important;
+            background-repeat: no-repeat;
+            background-position: center;
+            flex-shrink: 0;
+            margin-left: 4px;
         }
 
-        body.dark-mode select {
-            background-color: #2a2a2a !important;
-            color: #e0e0e0 !important;
-            color-scheme: dark !important;
-            background-image: url("data:image/svg+xml;utf8,<svg fill='%23e0e0e0' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>") !important;
+        body.dark-mode .custom-select-trigger::after {
+            background-image: url("data:image/svg+xml;utf8,<svg fill='%23e0e0e0' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
         }
 
-        body.dark-mode select option,
-        body.dark-mode select optgroup {
-            background-color: #2a2a2a !important;
-            color: #e0e0e0 !important;
+        /* Modal für das benutzerdefinierte Dropdown */
+        .dropdown-modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 2000;
+            justify-content: center;
+            align-items: flex-end;
+            backdrop-filter: blur(2px);
         }
 
-        select option {
-            background-color: #ffffff;
-            color: #333333;
+        .dropdown-modal-overlay.open {
+            display: flex;
+        }
+
+        .dropdown-modal-content {
+            background: var(--card-bg);
+            width: 100%;
+            max-height: 70vh;
+            border-top-left-radius: 16px;
+            border-top-right-radius: 16px;
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            animation: slideUp 0.2s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
+        }
+
+        .dropdown-modal-header {
+            padding: 12px 16px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            color: var(--primary-color);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--result-bg);
+        }
+
+        .dropdown-modal-list {
+            overflow-y: auto;
+            padding: 6px;
+        }
+
+        .dropdown-item {
+            padding: 12px 14px;
+            font-size: 0.9rem;
+            color: var(--text-color);
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-radius: 6px;
+            margin-bottom: 2px;
+        }
+
+        .dropdown-item:hover, .dropdown-item:active {
+            background: var(--result-bg);
+            color: var(--primary-color);
+        }
+
+        .dropdown-item.selected {
+            font-weight: bold;
+            color: var(--primary-color);
+            background: var(--result-bg);
+        }
+
+        /* Verstecke das originale Select, da wir es übersteuern */
+        select.native-select-hidden {
+            display: none !important;
         }
 
         body {
@@ -547,7 +630,7 @@
             box-shadow: inset 0 1px 2px rgba(0,0,0,0.06);
         }
 
-        .input-wrapper input, .input-wrapper select {
+        .input-wrapper input {
             width: 100%;
             border: none;
             background: transparent;
@@ -852,7 +935,7 @@
             .result-value {
                 color: #0d47a1 !important;
             }
-            .input-wrapper input, .input-wrapper select {
+            .input-wrapper input {
                 font-weight: bold !important;
             }
         }
@@ -1628,10 +1711,10 @@
         <button type="button" class="pdf-export-btn" onclick="exportToPDF('Enthärtungsanlagen')">📄 Als PDF speichern / drucken</button>
     </div>
 
-    <!-- Footer mit hochgezählter Versionsnummer v1.7 -->
+    <!-- Footer mit hochgezählter Versionsnummer v1.8 -->
     <div class="footer">
         <span>© 2026 #MAT</span>
-        <span class="footer-version">v1.7</span>
+        <span class="footer-version">v1.8</span>
     </div>
 </div>
 
@@ -1682,6 +1765,14 @@
                 <div id="inactive-module-list"></div>
             </div>
         </div>
+    </div>
+</div>
+
+<!-- EIGENES DROPDOWN MODAL -->
+<div class="dropdown-modal-overlay" id="dropdown-modal" onclick="closeCustomDropdown(event)">
+    <div class="dropdown-modal-content" onclick="event.stopPropagation()">
+        <div class="dropdown-modal-header" id="dropdown-modal-title">Auswahl treffen</div>
+        <div class="dropdown-modal-list" id="dropdown-modal-list"></div>
     </div>
 </div>
 
@@ -1757,6 +1848,62 @@
     let isInToolFromLauncher = false;
     let showSliderIcons = true;
     let showDashboardIcons = true;
+    let activeDropdownSelect = null;
+
+    // EIGENES DROPDOWN SYSTEM INITIALISIEREN
+    function initCustomDropdowns() {
+        document.querySelectorAll('.input-wrapper select').forEach(select => {
+            if (select.classList.contains('native-select-hidden')) return;
+            select.classList.add('native-select-hidden');
+
+            let parentWrapper = select.parentElement;
+            let existingTrigger = parentWrapper.querySelector('.custom-select-trigger');
+            if (existingTrigger) existingTrigger.remove();
+
+            let trigger = document.createElement('div');
+            trigger.className = 'custom-select-trigger';
+            updateTriggerText(trigger, select);
+
+            trigger.onclick = () => openCustomDropdown(select);
+            parentWrapper.appendChild(trigger);
+        });
+    }
+
+    function updateTriggerText(trigger, select) {
+        let selectedOption = select.options[select.selectedIndex];
+        trigger.innerText = selectedOption ? selectedOption.text : "Bitte wählen...";
+    }
+
+    function openCustomDropdown(select) {
+        activeDropdownSelect = select;
+        const modalTitle = document.getElementById('dropdown-modal-title');
+        const modalList = document.getElementById('dropdown-modal-list');
+        
+        let labelEl = select.closest('.form-group')?.querySelector('label');
+        modalTitle.innerText = labelEl ? labelEl.innerText : "Auswahl";
+        modalList.innerHTML = '';
+
+        Array.from(select.options).forEach((opt, idx) => {
+            let item = document.createElement('div');
+            item.className = 'dropdown-item' + (opt.selected ? ' selected' : '');
+            item.innerHTML = `<span>${opt.text}</span>` + (opt.selected ? '<span style="color:var(--primary-color);">✓</span>' : '');
+            item.onclick = () => {
+                select.selectedIndex = idx;
+                select.dispatchEvent(new Event('change'));
+                initCustomDropdowns();
+                closeCustomDropdown();
+            };
+            modalList.appendChild(item);
+        });
+
+        document.getElementById('dropdown-modal').classList.add('open');
+    }
+
+    function closeCustomDropdown(e) {
+        if (!e || e.target.id === 'dropdown-modal') {
+            document.getElementById('dropdown-modal').classList.remove('open');
+        }
+    }
 
     function loadSettings() {
         checkChristmasHat();
@@ -1818,6 +1965,7 @@
 
         renderTabs(true);
         applyViewMode();
+        initCustomDropdowns();
     }
 
     function saveSettings() {
@@ -2308,7 +2456,7 @@
         "gx_k5":          { durchfluss: "40 l/h", strom: "6,8 A", spannung: "24 V", zeit: "13 h", prod: "60 min", pause: "30 min" },
         "gxl_k5":         { durchfluss: "40 l/h", strom: "6,8 A", spannung: "24 V", zeit: "19 h", prod: "60 min", pause: "15 min" },
         "sgx_k2":         { durchfluss: "40 l/h", strom: "6.8 A", spannung: "24 V", zeit: "19 h", prod: "60 min", pause: "15 min" },
-        "sgx_k5":         { durchfluss: "40 l/h", strom: "6,8 A", spannung: "24 V", zeit: "19 h", prod: "60 min", pause: "15 min" },
+        "sgx_k5":         { durchfluss: "40 l/h", strom: "6.8 A", spannung: "24 V", zeit: "19 h", prod: "60 min", pause: "15 min" },
         "g2_k5":          { durchfluss: "110 l/h", strom: "6.8 A", spannung: "24 V", zeit: "18 h", prod: "90 min", pause: "15 min" },
         "cgk":            { durchfluss: "40 l/h", strom: "6,8 A", spannung: "24 V", zeit: "7 h", prod: "30 min", pause: "30 min" },
         "cgx_k2":         { durchfluss: "40 l/h", strom: "6.8 A", spannung: "24 V", zeit: "13 h", prod: "60 min", pause: "30 min" },
