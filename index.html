@@ -10,7 +10,7 @@
     <meta name="theme-color" content="#0d47a1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
-    <title>INNOWATΞCH Service Tool v2.4</title>
+    <title>INNOWATΞCH Service Tool v2.5</title>
     
     <!-- PWA / App Manifest -->
     <link rel="manifest" href="manifest.json">
@@ -76,7 +76,6 @@
             --cat-parameter-border: #16a34a;
         }
 
-        /* ECHTES EIGENES DROPDOWN-MENÜ (VERHINDERT WEISSES ANDROID-POPUP) */
         .custom-select-trigger {
             width: 100%;
             border: none;
@@ -111,7 +110,6 @@
             background-image: url("data:image/svg+xml;utf8,<svg fill='%23e0e0e0' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
         }
 
-        /* Modal für das benutzerdefinierte Dropdown */
         .dropdown-modal-overlay {
             display: none;
             position: fixed;
@@ -300,6 +298,7 @@
             font-weight: bold;
             color: white;
             white-space: nowrap;
+            cursor: pointer;
         }
 
         .santa-letter {
@@ -908,6 +907,30 @@
             flex: 1;
         }
 
+        /* App-Start Login Modal (Auth-Guard) */
+        .app-login-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0,0,0,0.75);
+            z-index: 4000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px);
+        }
+        .app-login-overlay.active {
+            display: flex;
+        }
+        .app-login-box {
+            background: var(--card-bg);
+            width: 90%;
+            max-width: 380px;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            text-align: center;
+        }
+
         .admin-modal-overlay {
             display: none;
             position: fixed;
@@ -1025,13 +1048,30 @@
 </head>
 <body>
 
+<!-- App-Start Login (Auth-Guard): Erzwingt Anmeldung beim App-Öffnen -->
+<div class="app-login-overlay" id="appLoginOverlay">
+    <div class="app-login-box">
+        <h2 style="color: var(--primary-color); margin-top: 0; font-size: 1.2rem;">INNOWATΞCH Service</h2>
+        <p style="font-size: 0.85rem; color: var(--subtext-color); margin-bottom: 15px;">Bitte mit Techniker- oder Admin-Kürzel anmelden</p>
+        <div class="form-group" style="text-align: left;">
+            <label>Kürzel (z.B. MAT)</label>
+            <input type="text" id="appLoginUser" maxlength="3" autocomplete="off" placeholder="MAT" style="width:100%; padding:9px; border:1px solid var(--border-color); border-radius:4px; background:var(--input-bg); color:var(--text-color); text-transform:uppercase; font-size: 1rem; box-sizing: border-box;">
+        </div>
+        <div class="form-group" style="text-align: left; margin-top: 10px;">
+            <label>PIN</label>
+            <input type="password" id="appLoginPin" maxlength="5" autocomplete="current-password" placeholder="*****" style="width:100%; padding:9px; border:1px solid var(--border-color); border-radius:4px; background:var(--input-bg); color:var(--text-color); font-size: 1rem; box-sizing: border-box;">
+        </div>
+        <button type="button" class="admin-btn admin-btn-primary" style="margin-top: 15px;" onclick="performAppLogin()">Anmelden</button>
+    </div>
+</div>
+
 <div class="container">
     <div class="header">
         <div class="header-left">
             <button type="button" class="header-btn view-toggle-btn" id="view-toggle-btn" onclick="toggleMainView()" title="Ansicht umschalten">
                 <span id="toggle-icon">田</span> <span id="toggle-text">Ansicht</span>
             </button>
-            <span id="activeUserBadge" class="active-user-badge" style="display:none;"></span>
+            <span id="activeUserBadge" class="active-user-badge" onclick="performLogout()" title="Klicken zum Abmelden"></span>
         </div>
         <div class="header-center">
             <h1 id="app-title"><span id="first-letter">I</span>NNOWATΞCH</h1>
@@ -1782,10 +1822,10 @@
         <button type="button" class="pdf-export-btn" onclick="exportToPDF('Enthärtungsanlagen')">📄 Als PDF speichern / drucken</button>
     </div>
 
-    <!-- Footer mit Version v2.4 -->
+    <!-- Footer mit Version v2.5 -->
     <div class="footer">
         <span>© 2026 #MAT</span>
-        <span class="footer-version" onclick="handleVersionClick()">v2.4</span>
+        <span class="footer-version" onclick="handleVersionClick()">v2.5</span>
     </div>
 </div>
 
@@ -1838,11 +1878,11 @@
     </div>
 </div>
 
-<!-- Admin Authentifizierung Modal (Dynamisch über users.json / localStorage) -->
+<!-- Admin Authentifizierung Modal -->
 <div class="admin-modal-overlay" id="adminAuthModal">
     <div class="admin-modal-content">
         <div class="admin-modal-header">
-            <span>Admin Authentifizierung (v2.4)</span>
+            <span>Admin Authentifizierung (v2.5)</span>
             <button type="button" class="modal-close-btn" style="color:var(--primary-color);" onclick="closeAdminModal('adminAuthModal')">✕</button>
         </div>
         <div class="form-group">
@@ -1891,7 +1931,10 @@
         <div style="margin-top: 15px; border-top: 1px solid var(--border-color); padding-top: 10px;">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
                 <h3 style="font-size: 0.9rem; margin: 0; color: var(--primary-color);">Vorhandene Techniker</h3>
-                <button type="button" class="admin-btn-sm admin-btn-primary" onclick="performLogout()" style="padding:3px 6px;">Abmelden</button>
+                <div style="display:flex; gap:4px;">
+                    <button type="button" class="admin-btn-sm admin-btn-danger" onclick="factoryResetUsers()">Reset Data</button>
+                    <button type="button" class="admin-btn-sm admin-btn-primary" onclick="performLogout()">Abmelden</button>
+                </div>
             </div>
             <div id="userListContainer"></div>
         </div>
@@ -1919,7 +1962,7 @@
         return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
     }
 
-    // Initiale users.json Standardstruktur anlegen, falls leer (Standard-Admin MAT mit PIN 12345)
+    // Initiale users.json Standardstruktur anlegen (Admin MAT mit PIN 12345)
     async function initDefaultUsers() {
         if (Object.keys(dbUsers).length === 0) {
             let defaultAdminHash = await hashPin("12345");
@@ -1932,6 +1975,52 @@
         }
     }
     initDefaultUsers();
+
+    function checkAuthGuard() {
+        if (!activeUser || !dbUsers[activeUser] || dbUsers[activeUser].status !== 'active') {
+            document.getElementById('appLoginUser').value = "";
+            document.getElementById('appLoginPin').value = "";
+            document.getElementById('appLoginOverlay').classList.add('active');
+        } else {
+            document.getElementById('appLoginOverlay').classList.remove('active');
+            updateActiveUserBadge();
+            applyUserPermissions();
+        }
+    }
+
+    async function performAppLogin() {
+        let u = document.getElementById('appLoginUser').value.trim().toUpperCase();
+        let p = document.getElementById('appLoginPin').value.trim();
+
+        if (!dbUsers[u]) {
+            alert("Unbekanntes Kürzel!");
+            return;
+        }
+
+        let enteredHash = await hashPin(p);
+        if (dbUsers[u].pinHash === enteredHash && dbUsers[u].status === 'active') {
+            activeUser = u;
+            localStorage.setItem('innowatech_active_user', u);
+            document.getElementById('appLoginOverlay').classList.remove('active');
+            updateActiveUserBadge();
+            applyUserPermissions();
+        } else {
+            alert("Ungültige PIN oder Benutzer gesperrt!");
+        }
+    }
+
+    function factoryResetUsers() {
+        if (confirm("Wirklich alle gespeicherten Benutzer im Speicher löschen? (Standard-Admin MAT PIN 12345 wird neu angelegt)")) {
+            localStorage.removeItem('innowatech_users');
+            localStorage.removeItem('innowatech_active_user');
+            dbUsers = {};
+            activeUser = null;
+            initDefaultUsers().then(() => {
+                alert("Daten zurückgesetzt. Bitte neu anmelden.");
+                window.location.reload();
+            });
+        }
+    }
 
     function handleVersionClick() {
         clickCount++;
@@ -2010,7 +2099,7 @@
         };
 
         localStorage.setItem('innowatech_users', JSON.stringify(dbUsers));
-        alert(`Techniker ${kuerzel} erfolgreich in users.json gespeichert!`);
+        alert(`Techniker ${kuerzel} erfolgreich gespeichert!`);
         document.getElementById('newKuerzel').value = '';
         document.getElementById('newPin').value = '';
         document.getElementById('selectAllModules').checked = false;
@@ -2058,10 +2147,8 @@
     function performLogout() {
         activeUser = null;
         localStorage.removeItem('innowatech_active_user');
-        applyUserPermissions();
-        updateActiveUserBadge();
         closeAdminModal('adminConsoleModal');
-        alert("Erfolgreich abgemeldet.");
+        checkAuthGuard();
     }
 
     function updateActiveUserBadge() {
@@ -2264,7 +2351,7 @@
         isLauncherActive = (savedLauncherState === 'true');
         isInToolFromLauncher = false;
 
-        applyUserPermissions();
+        checkAuthGuard();
         applyViewMode();
         initCustomDropdowns();
     }
