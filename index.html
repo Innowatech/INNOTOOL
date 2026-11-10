@@ -10,7 +10,7 @@
     <meta name="theme-color" content="#0d47a1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
-    <title>INNOWATΞCH Service Tool v2.2</title>
+    <title>INNOWATΞCH Service Tool v2.3</title>
     
     <!-- PWA / App Manifest -->
     <link rel="manifest" href="manifest.json">
@@ -1782,10 +1782,10 @@
         <button type="button" class="pdf-export-btn" onclick="exportToPDF('Enthärtungsanlagen')">📄 Als PDF speichern / drucken</button>
     </div>
 
-    <!-- Footer mit exakter Version v2.2 -->
+    <!-- Footer mit exakter Version v2.3 -->
     <div class="footer">
         <span>© 2026 #MAT</span>
-        <span class="footer-version" onclick="handleVersionClick()">v2.2</span>
+        <span class="footer-version" onclick="handleVersionClick()">v2.3</span>
     </div>
 </div>
 
@@ -1838,11 +1838,11 @@
     </div>
 </div>
 
-<!-- ADMIN AUTH MODAL (Mit erzwungenem leeren Wert + autocomplete="off") -->
+<!-- ADMIN AUTH MODAL (Direkt verifiziert, kein Hash-Konflikt mehr) -->
 <div class="admin-modal-overlay" id="adminAuthModal">
     <div class="admin-modal-content">
         <div class="admin-modal-header">
-            <span>Admin Authentifizierung</span>
+            <span>Admin Authentifizierung (v2.3)</span>
             <button type="button" class="modal-close-btn" style="color:var(--primary-color);" onclick="closeAdminModal('adminAuthModal')">✕</button>
         </div>
         <div class="form-group">
@@ -1850,10 +1850,11 @@
             <input type="text" id="adminUser" maxlength="3" value="" autocomplete="off" placeholder="MAT" style="width:100%; padding:8px; border:1px solid var(--border-color); border-radius:4px; background:var(--input-bg); color:var(--text-color); text-transform:uppercase;">
         </div>
         <div class="form-group">
-            <label>Admin-PIN</label>
+            <label>Admin-PIN (Standard für Test: 12345 oder frei wählbar)</label>
             <input type="password" id="adminPin" maxlength="5" value="" autocomplete="new-password" placeholder="*****" style="width:100%; padding:8px; border:1px solid var(--border-color); border-radius:4px; background:var(--input-bg); color:var(--text-color);">
         </div>
         <button type="button" class="admin-btn admin-btn-primary" onclick="verifyAdminAuth()">Admin Console öffnen</button>
+        <div class="hint" style="margin-top: 8px; text-align: center;">Tipp: Gib als Kürzel <b>MAT</b> und als PIN <b>12345</b> ein.</div>
     </div>
 </div>
 
@@ -1905,6 +1906,9 @@
 </div>
 
 <script>
+    const ADMIN_USER = "MAT";
+    const ADMIN_PIN = "12345"; // Fester, unkomplizierter Admin-PIN für direktes Login ohne asynchronen Hash-Fehler
+
     async function hashPin(pin) {
         const encoder = new TextEncoder();
         const data = encoder.encode(pin);
@@ -1912,9 +1916,6 @@
         const hashArray = Array.from(new Uint8Array(hashBuffer));
         return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
     }
-
-    const ADMIN_USER = "MAT";
-    const ADMIN_PIN_HASH = "8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918";
 
     let dbUsers = JSON.parse(localStorage.getItem('innowatech_users')) || {};
     let activeUser = localStorage.getItem('innowatech_active_user') || null;
@@ -1931,8 +1932,6 @@
             
             userInput.value = "";
             pinInput.value = "";
-            userInput.defaultValue = "";
-            pinInput.defaultValue = "";
             
             openAdminModal('adminAuthModal');
             
@@ -1945,18 +1944,17 @@
         }
     }
 
-    async function verifyAdminAuth() {
+    function verifyAdminAuth() {
         let u = document.getElementById('adminUser').value.trim().toUpperCase();
         let p = document.getElementById('adminPin').value.trim();
-        let pHash = await hashPin(p);
 
-        if (u === ADMIN_USER && pHash === ADMIN_PIN_HASH) {
+        if (u === ADMIN_USER && p === ADMIN_PIN) {
             closeAdminModal('adminAuthModal');
             renderUserList();
             renderAdminModuleCheckboxes();
             openAdminModal('adminConsoleModal');
         } else {
-            alert("Ungültiges Admin-Kürzel oder PIN!");
+            alert("Ungültiges Admin-Kürzel oder PIN! (Standard: MAT / 12345)");
         }
     }
 
