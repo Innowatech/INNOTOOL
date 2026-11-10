@@ -78,14 +78,16 @@
             --cat-parameter-border: #16a34a;
         }
 
-        body.dark-mode select {
-            background-color: var(--input-bg);
-            color: var(--text-color);
+        /* Dark Mode Fix für Dropdowns und deren Popups */
+        body.dark-mode select, 
+        body.dark-mode select option {
+            background-color: #2a2a2a !important;
+            color: #e0e0e0 !important;
         }
 
-        body.dark-mode select option {
-            background-color: #1e1e1e;
-            color: #ffffff;
+        select {
+            background-color: transparent;
+            color: var(--text-color);
         }
 
         select option {
@@ -113,16 +115,16 @@
             position: relative;
         }
 
-        /* Flexibler Header mit 3D-Akzent */
+        /* Absolut zentrierter Header */
         .header {
             background: linear-gradient(to bottom, #1565c0 0%, #0d47a1 100%);
             color: white;
-            padding: 10px 10px;
+            padding: 10px 12px;
             text-align: center;
             position: relative;
-            display: flex;
+            display: grid;
+            grid-template-columns: auto 1fr auto;
             align-items: center;
-            justify-content: space-between;
             min-height: 44px;
             box-shadow: inset 0 1px 0 rgba(255,255,255,0.3);
         }
@@ -131,9 +133,23 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            flex: 1;
-            padding: 0 5px;
+            justify-content: center;
+            grid-column: 2;
             overflow: hidden;
+            padding: 0 4px;
+        }
+
+        .header-left {
+            grid-column: 1;
+            display: flex;
+            align-items: center;
+        }
+
+        .header-right {
+            grid-column: 3;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
         }
 
         .header h1 {
@@ -831,14 +847,18 @@
 
 <div class="container">
     <div class="header">
-        <button type="button" class="header-btn view-toggle-btn" id="view-toggle-btn" onclick="toggleMainView()" title="Ansicht umschalten">
-            <span id="toggle-icon">田</span> <span id="toggle-text">Ansicht</span>
-        </button>
+        <div class="header-left">
+            <button type="button" class="header-btn view-toggle-btn" id="view-toggle-btn" onclick="toggleMainView()" title="Ansicht umschalten">
+                <span id="toggle-icon">田</span> <span id="toggle-text">Ansicht</span>
+            </button>
+        </div>
         <div class="header-center">
             <h1 id="app-title"><span id="first-letter">I</span>NNOWATΞCH</h1>
             <div class="header-sub">Service Tool</div>
         </div>
-        <button type="button" class="header-btn settings-btn" onclick="openSettings()" title="Einstellungen">⚙️</button>
+        <div class="header-right">
+            <button type="button" class="header-btn settings-btn" onclick="openSettings()" title="Einstellungen">⚙️</button>
+        </div>
     </div>
 
     <!-- Klassische Schiebe-Leiste oben -->
@@ -1593,10 +1613,10 @@
         <button type="button" class="pdf-export-btn" onclick="exportToPDF('Enthärtungsanlagen')">📄 Als PDF speichern / drucken</button>
     </div>
 
-    <!-- Footer mit hochgezählter Versionsnummer v1.1 -->
+    <!-- Footer mit hochgezählter Versionsnummer v1.2 -->
     <div class="footer">
         <span>© 2026 #MAT</span>
-        <span class="footer-version">v1.1</span>
+        <span class="footer-version">v1.2</span>
     </div>
 </div>
 
