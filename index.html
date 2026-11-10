@@ -127,18 +127,20 @@
             position: relative;
         }
 
-        /* 100% exakt zentrierter Header via Grid */
+        /* 100% zentrierter Header mit fließenden Spalten für Zoom-Sicherheit */
         .header {
             background: linear-gradient(to bottom, #1565c0 0%, #0d47a1 100%);
             color: white;
-            padding: 10px 12px;
+            padding: 10px 8px;
             text-align: center;
             position: relative;
             display: grid;
-            grid-template-columns: 80px 1fr 80px;
+            grid-template-columns: minmax(70px, auto) 1fr minmax(40px, auto);
             align-items: center;
             min-height: 44px;
             box-shadow: inset 0 1px 0 rgba(255,255,255,0.3);
+            overflow: hidden;
+            gap: 4px;
         }
 
         .header-left {
@@ -155,7 +157,7 @@
             align-items: center;
             justify-content: center;
             overflow: hidden;
-            padding: 0 4px;
+            padding: 0 2px;
         }
 
         .header-right {
@@ -167,8 +169,8 @@
 
         .header h1 {
             margin: 0;
-            font-size: 1.1rem;
-            letter-spacing: 0.8px;
+            font-size: 1.05rem;
+            letter-spacing: 0.5px;
             white-space: nowrap;
             text-shadow: 0 1px 2px rgba(0,0,0,0.3);
         }
@@ -197,18 +199,18 @@
 
         .view-toggle-btn {
             height: 30px;
-            padding: 0 8px;
+            padding: 0 6px;
             border-radius: 6px;
-            font-size: 0.7rem;
+            font-size: 0.68rem;
             font-weight: bold;
-            gap: 4px;
+            gap: 3px;
         }
 
         .settings-btn {
             width: 30px;
             height: 30px;
             border-radius: 50%;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
         }
 
         /* Weihnachtsmützen-Styling für das 'I' */
@@ -228,7 +230,7 @@
         }
 
         .header-sub {
-            font-size: 0.72rem;
+            font-size: 0.7rem;
             opacity: 0.95;
             font-weight: 500;
             margin-top: 1px;
@@ -1626,10 +1628,10 @@
         <button type="button" class="pdf-export-btn" onclick="exportToPDF('Enthärtungsanlagen')">📄 Als PDF speichern / drucken</button>
     </div>
 
-    <!-- Footer mit hochgezählter Versionsnummer v1.4 -->
+    <!-- Footer mit hochgezählter Versionsnummer v1.5 -->
     <div class="footer">
         <span>© 2026 #MAT</span>
-        <span class="footer-version">v1.4</span>
+        <span class="footer-version">v1.5</span>
     </div>
 </div>
 
