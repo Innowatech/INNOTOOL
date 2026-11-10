@@ -10,7 +10,7 @@
     <meta name="theme-color" content="#0d47a1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
-    <title>INNOWATΞCH Service Tool v2.3</title>
+    <title>INNOWATΞCH Service Tool v2.4</title>
     
     <!-- PWA / App Manifest -->
     <link rel="manifest" href="manifest.json">
@@ -1782,10 +1782,10 @@
         <button type="button" class="pdf-export-btn" onclick="exportToPDF('Enthärtungsanlagen')">📄 Als PDF speichern / drucken</button>
     </div>
 
-    <!-- Footer mit exakter Version v2.3 -->
+    <!-- Footer mit Version v2.4 -->
     <div class="footer">
         <span>© 2026 #MAT</span>
-        <span class="footer-version" onclick="handleVersionClick()">v2.3</span>
+        <span class="footer-version" onclick="handleVersionClick()">v2.4</span>
     </div>
 </div>
 
@@ -1838,11 +1838,11 @@
     </div>
 </div>
 
-<!-- ADMIN AUTH MODAL (Direkt verifiziert, kein Hash-Konflikt mehr) -->
+<!-- Admin Authentifizierung Modal (Dynamisch über users.json / localStorage) -->
 <div class="admin-modal-overlay" id="adminAuthModal">
     <div class="admin-modal-content">
         <div class="admin-modal-header">
-            <span>Admin Authentifizierung (v2.3)</span>
+            <span>Admin Authentifizierung (v2.4)</span>
             <button type="button" class="modal-close-btn" style="color:var(--primary-color);" onclick="closeAdminModal('adminAuthModal')">✕</button>
         </div>
         <div class="form-group">
@@ -1850,14 +1850,14 @@
             <input type="text" id="adminUser" maxlength="3" value="" autocomplete="off" placeholder="MAT" style="width:100%; padding:8px; border:1px solid var(--border-color); border-radius:4px; background:var(--input-bg); color:var(--text-color); text-transform:uppercase;">
         </div>
         <div class="form-group">
-            <label>Admin-PIN (Standard für Test: 12345 oder frei wählbar)</label>
+            <label>Admin-PIN</label>
             <input type="password" id="adminPin" maxlength="5" value="" autocomplete="new-password" placeholder="*****" style="width:100%; padding:8px; border:1px solid var(--border-color); border-radius:4px; background:var(--input-bg); color:var(--text-color);">
         </div>
         <button type="button" class="admin-btn admin-btn-primary" onclick="verifyAdminAuth()">Admin Console öffnen</button>
-        <div class="hint" style="margin-top: 8px; text-align: center;">Tipp: Gib als Kürzel <b>MAT</b> und als PIN <b>12345</b> ein.</div>
     </div>
 </div>
 
+<!-- Admin Konsole Modal -->
 <div class="admin-modal-overlay" id="adminConsoleModal">
     <div class="admin-modal-content">
         <div class="admin-modal-header">
@@ -1906,8 +1906,10 @@
 </div>
 
 <script>
-    const ADMIN_USER = "MAT";
-    const ADMIN_PIN = "12345"; // Fester, unkomplizierter Admin-PIN für direktes Login ohne asynchronen Hash-Fehler
+    let dbUsers = JSON.parse(localStorage.getItem('innowatech_users')) || {};
+    let activeUser = localStorage.getItem('innowatech_active_user') || null;
+    let clickCount = 0;
+    let clickTimer = null;
 
     async function hashPin(pin) {
         const encoder = new TextEncoder();
@@ -1917,44 +1919,50 @@
         return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
     }
 
-    let dbUsers = JSON.parse(localStorage.getItem('innowatech_users')) || {};
-    let activeUser = localStorage.getItem('innowatech_active_user') || null;
-    let clickCount = 0;
-    let clickTimer = null;
+    // Initiale users.json Standardstruktur anlegen, falls leer (Standard-Admin MAT mit PIN 12345)
+    async function initDefaultUsers() {
+        if (Object.keys(dbUsers).length === 0) {
+            let defaultAdminHash = await hashPin("12345");
+            dbUsers["MAT"] = {
+                pinHash: defaultAdminHash,
+                status: 'active',
+                modules: ['standard', 'wasserwerk', 'schwimmbad', 'pid', 'verdünnung', 'sonden', 'anlagen', 'radar', 'enthaerter']
+            };
+            localStorage.setItem('innowatech_users', JSON.stringify(dbUsers));
+        }
+    }
+    initDefaultUsers();
 
     function handleVersionClick() {
         clickCount++;
         if (clickTimer) clearTimeout(clickTimer);
         if (clickCount >= 5) {
             clickCount = 0;
-            const userInput = document.getElementById('adminUser');
-            const pinInput = document.getElementById('adminPin');
-            
-            userInput.value = "";
-            pinInput.value = "";
-            
+            document.getElementById('adminUser').value = "";
+            document.getElementById('adminPin').value = "";
             openAdminModal('adminAuthModal');
-            
-            setTimeout(() => {
-                userInput.value = "";
-                pinInput.value = "";
-            }, 50);
         } else {
             clickTimer = setTimeout(() => { clickCount = 0; }, 2000);
         }
     }
 
-    function verifyAdminAuth() {
+    async function verifyAdminAuth() {
         let u = document.getElementById('adminUser').value.trim().toUpperCase();
         let p = document.getElementById('adminPin').value.trim();
 
-        if (u === ADMIN_USER && p === ADMIN_PIN) {
+        if (!dbUsers[u]) {
+            alert("Unbekanntes Kürzel!");
+            return;
+        }
+
+        let enteredHash = await hashPin(p);
+        if (dbUsers[u].pinHash === enteredHash && dbUsers[u].status === 'active') {
             closeAdminModal('adminAuthModal');
             renderUserList();
             renderAdminModuleCheckboxes();
             openAdminModal('adminConsoleModal');
         } else {
-            alert("Ungültiges Admin-Kürzel oder PIN! (Standard: MAT / 12345)");
+            alert("Ungültige PIN oder Benutzer gesperrt!");
         }
     }
 
@@ -2002,11 +2010,10 @@
         };
 
         localStorage.setItem('innowatech_users', JSON.stringify(dbUsers));
-        alert(`Techniker ${kuerzel} erfolgreich gespeichert!`);
+        alert(`Techniker ${kuerzel} erfolgreich in users.json gespeichert!`);
         document.getElementById('newKuerzel').value = '';
         document.getElementById('newPin').value = '';
         document.getElementById('selectAllModules').checked = false;
-        toggleSelectAllModules({checked: false});
         renderUserList();
     }
 
@@ -2014,11 +2021,6 @@
         let container = document.getElementById('userListContainer');
         container.innerHTML = '';
         let keys = Object.keys(dbUsers);
-        if (keys.length === 0) {
-            container.innerHTML = '<div class="hint">Noch keine Techniker angelegt.</div>';
-            return;
-        }
-
         keys.forEach(k => {
             let u = dbUsers[k];
             let div = document.createElement('div');
@@ -2073,7 +2075,7 @@
     }
 
     function applyUserPermissions() {
-        if (!activeUser || activeUser === ADMIN_USER) {
+        if (!activeUser) {
             currentModules.forEach(m => m.userAllowed = true);
         } else {
             let user = dbUsers[activeUser];
