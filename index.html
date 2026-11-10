@@ -34,21 +34,19 @@
             --alert-text: #856404;
             --tab-bar-bg: #eceff1;
             
-            /* Ständiger 3D-Verlauf für Reiter */
             --tab-btn-bg: linear-gradient(to bottom, #ffffff 0%, #e1ecf7 100%);
             --tab-btn-border: #90a4ae;
             --tab-btn-text: #37474f;
             --footer-bg: #eee;
             --app-zoom: 1;
 
-            /* Ständiger 3D-Verlauf für Dashboard-Kacheln im Ruhezustand */
             --cat-anwendung-bg: linear-gradient(to bottom, #ffffff 0%, #e0f2fe 100%);
             --cat-anwendung-border: #3b82f6;
             --cat-parameter-bg: linear-gradient(to bottom, #ffffff 0%, #dcfce7 100%);
             --cat-parameter-border: #22c55e;
         }
 
-        /* Dark Mode Farbschema mit starkem 3D-Effekt */
+        /* Dark Mode Farbschema */
         body.dark-mode {
             --primary-color: #1565c0;
             --secondary-color: #0288d1;
@@ -78,28 +76,30 @@
             --cat-parameter-border: #16a34a;
         }
 
-        /* Strenger Dark Mode Fix für Dropdowns & Optionen */
-        body.dark-mode select {
-            background-color: var(--input-bg) !important;
-            color: var(--text-color) !important;
+        /* ABSOLUTER FIX FÜR WEISSE DROPDOWNS IM DARK MODE */
+        body.dark-mode select,
+        body.dark-mode select option,
+        body.dark-mode select optgroup {
+            background-color: #2a2a2a !important;
+            color: #e0e0e0 !important;
+            color-scheme: dark !important;
+        }
+
+        select {
+            background-color: transparent;
+            color: var(--text-color);
             -webkit-appearance: none;
             -moz-appearance: none;
             appearance: none;
-            background-image: url("data:image/svg+xml;utf8,<svg fill='%23e0e0e0' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+            background-image: url("data:image/svg+xml;utf8,<svg fill='%23666666' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
             background-repeat: no-repeat;
             background-position: right 6px center;
             background-size: 16px;
             padding-right: 24px !important;
         }
 
-        body.dark-mode select option {
-            background-color: #1e1e1e !important;
-            color: #e0e0e0 !important;
-        }
-
-        select {
-            background-color: transparent;
-            color: var(--text-color);
+        body.dark-mode select {
+            background-image: url("data:image/svg+xml;utf8,<svg fill='%23e0e0e0' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>") !important;
         }
 
         select option {
@@ -127,44 +127,47 @@
             position: relative;
         }
 
-        /* 100% zentrierter Header mit fließenden Spalten für Zoom-Sicherheit */
+        /* HEADER MIT ECHTER DISPLAY-MITTEN-ZENTRIERUNG */
         .header {
             background: linear-gradient(to bottom, #1565c0 0%, #0d47a1 100%);
             color: white;
-            padding: 10px 8px;
+            padding: 10px 12px;
             text-align: center;
             position: relative;
-            display: grid;
-            grid-template-columns: minmax(70px, auto) 1fr minmax(40px, auto);
+            display: flex;
+            justify-content: space-between;
             align-items: center;
             min-height: 44px;
             box-shadow: inset 0 1px 0 rgba(255,255,255,0.3);
             overflow: hidden;
-            gap: 4px;
         }
 
         .header-left {
-            grid-column: 1;
             display: flex;
             align-items: center;
             justify-content: flex-start;
+            z-index: 2;
         }
 
+        /* Der Titel sitzt absolut in der Mitte des Containers und ignoriert Button-Breiten */
         .header-center {
-            grid-column: 2;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            overflow: hidden;
-            padding: 0 2px;
+            pointer-events: none;
+            width: 65%;
+            z-index: 1;
         }
 
         .header-right {
-            grid-column: 3;
             display: flex;
             align-items: center;
             justify-content: flex-end;
+            z-index: 2;
         }
 
         .header h1 {
@@ -199,7 +202,7 @@
 
         .view-toggle-btn {
             height: 30px;
-            padding: 0 6px;
+            padding: 0 8px;
             border-radius: 6px;
             font-size: 0.68rem;
             font-weight: bold;
@@ -235,6 +238,7 @@
             font-weight: 500;
             margin-top: 1px;
             text-shadow: 0 1px 1px rgba(0,0,0,0.2);
+            white-space: nowrap;
         }
 
         /* Reiter-Leiste */
@@ -329,7 +333,6 @@
             flex: 1;
         }
 
-        /* Permanenter 3D-Look für Reiter-Buttons im Ruhezustand */
         .tab-btn {
             flex: 0 0 auto;
             min-width: 80px;
@@ -383,7 +386,7 @@
             white-space: nowrap;
         }
 
-        /* APP-LAUNCHER DASHBOARD (Kompakt, 3D mit permanenter Tiefe) */
+        /* APP-LAUNCHER DASHBOARD */
         .launcher-view {
             display: none;
             padding: 10px 12px;
@@ -424,7 +427,6 @@
             gap: 8px;
         }
 
-        /* Permanente 3D-Optik: Deutlicher Schattenwurf, feiner Rahmen und glänzender Verlauf im Ruhezustand */
         .launcher-card {
             background: var(--cat-anwendung-bg);
             border: 1.5px solid var(--cat-anwendung-border);
@@ -446,7 +448,6 @@
             border: 1.5px solid var(--cat-parameter-border);
         }
 
-        /* Physisches Einrasten/Eindrücken beim Antippen */
         .launcher-card:active {
             transform: translateY(3px);
             box-shadow: 0 1px 3px rgba(0,0,0,0.2), inset 0 2px 4px rgba(0,0,0,0.15);
@@ -599,7 +600,6 @@
             color: var(--result-val);
         }
 
-        /* 3D-Export-Button */
         .pdf-export-btn {
             width: 100%;
             margin-top: 10px;
@@ -890,7 +890,7 @@
         </button>
     </div>
 
-    <!-- APP LAUNCHER DASHBOARD (Kompakte 3D-Kacheln) -->
+    <!-- APP LAUNCHER DASHBOARD -->
     <div class="launcher-view" id="launcher-view">
         <div class="launcher-category">
             <div class="launcher-category-title">Anwendungen</div>
@@ -1628,10 +1628,10 @@
         <button type="button" class="pdf-export-btn" onclick="exportToPDF('Enthärtungsanlagen')">📄 Als PDF speichern / drucken</button>
     </div>
 
-    <!-- Footer mit hochgezählter Versionsnummer v1.5 -->
+    <!-- Footer mit hochgezählter Versionsnummer v1.6 -->
     <div class="footer">
         <span>© 2026 #MAT</span>
-        <span class="footer-version">v1.5</span>
+        <span class="footer-version">v1.6</span>
     </div>
 </div>
 
@@ -1711,7 +1711,6 @@
         });
     }
 
-    // Automatische Weihnachtsmützen-Prüfung (01.12. - 31.12.)
     function checkChristmasHat() {
         const today = new Date();
         const month = today.getMonth();
@@ -1725,12 +1724,10 @@
         }
     }
 
-    // PDF-Export Funktion via Druck-Dialog
     function exportToPDF(modulName) {
         window.print();
     }
 
-    // Testversion-Sperre (Gültig bis zum 31. Dezember 2027)
     const ablaufDatum = new Date('2027-12-31T23:59:59');
     if (new Date() > ablaufDatum) {
         document.body.innerHTML = `
@@ -1742,7 +1739,6 @@
         throw new Error("Testversion abgelaufen.");
     }
 
-    // ZENTRALE MODUL-KONFIGURATION
     const defaultModules = [
         { id: 'standard', title: 'Trinkwasser', icon: '💧', category: 'Anwendung', visible: true },
         { id: 'wasserwerk', title: 'Wasserwerk', icon: '🏢', category: 'Anwendung', visible: true },
