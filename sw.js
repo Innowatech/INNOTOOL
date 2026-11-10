@@ -1,50 +1,44 @@
-const CACHE_NAME = 'mat-service-tool-v4';
-const assetsToCache = [
+const CACHE_NAME = 'mat-service-tool-v1.4';
+const urlsToCache = [
   './',
   './index.html',
-  './manifest.json',
-  './icon.png'
+  './manifest.json'
 ];
 
-// 1. Installation & Caching beim ersten Online-Start
+// Installation: Dateien cachen
 self.addEventListener('install', event => {
-  self.skipWaiting();
   event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => {
-      return cache.addAll(assetsToCache);
-    })
+    caches.open(CACHE_NAME)
+      .then(cache => {
+        return cache.addAll(urlsToCache);
+      })
   );
+  self.skipWaiting(); // Erzwingt, dass der neue SW sofort aktiv wird
 });
 
-// 2. Sofortige Übernahme der Kontrolle und alte Caches löschen
+// Aktivierung: Alten Cache aufräumen
 self.addEventListener('activate', event => {
   event.waitUntil(
-    caches.keys().then(keys => {
+    caches.keys().then(cacheNames => {
       return Promise.all(
-        keys.map(key => {
-          if (key !== CACHE_NAME) {
-            return caches.delete(key);
+        cacheNames.map(cacheName => {
+          if (cacheName !== CACHE_NAME) {
+            console.log('Alter Cache wird gelöscht:', cacheName);
+            return caches.delete(cacheName);
           }
         })
       );
-    }).then(() => self.clients.claim())
+    })
   );
+  self.clients.claim();
 });
 
-// 3. Ultra-robuster Offline-Fetch-Handler für PC und Mobile
+// Fetch: Aus dem Cache oder Netzwerk laden
 self.addEventListener('fetch', event => {
   event.respondWith(
     caches.match(event.request)
-      .then(cachedResponse => {
-        if (cachedResponse) {
-          return cachedResponse;
-        }
-        return fetch(event.request).catch(() => {
-          // Fallback bei fehlendem Internet: Liefere immer die index.html aus dem Cache
-          return caches.match('./index.html').then(indexResponse => {
-            return indexResponse || caches.match('./');
-          });
-        });
+      .then(response => {
+        return response || fetch(event.request);
       })
   );
 });
