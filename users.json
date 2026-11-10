@@ -1,0 +1,16 @@
+{
+  "users": {
+    "MAT": {
+      "pinHash": "b2c62c95e1358ef9c762d6eb5b3c3b01859bf376a77d5bbff563fa1d4f2066c1",
+      "role": "master",
+      "status": "active",
+      "modules": ["all"]
+    },
+    "MYL": {
+      "pinHash": "5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5",
+      "role": "technician",
+      "status": "active",
+      "modules": ["standard", "wasserwerk", "schwimmbad", "sonden"]
+    }
+  }
+}
