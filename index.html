@@ -78,10 +78,22 @@
             --cat-parameter-border: #16a34a;
         }
 
-        /* Dark Mode Fix für Dropdowns und deren Popups */
-        body.dark-mode select, 
+        /* Strenger Dark Mode Fix für Dropdowns & Optionen */
+        body.dark-mode select {
+            background-color: var(--input-bg) !important;
+            color: var(--text-color) !important;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background-image: url("data:image/svg+xml;utf8,<svg fill='%23e0e0e0' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+            background-repeat: no-repeat;
+            background-position: right 6px center;
+            background-size: 16px;
+            padding-right: 24px !important;
+        }
+
         body.dark-mode select option {
-            background-color: #2a2a2a !important;
+            background-color: #1e1e1e !important;
             color: #e0e0e0 !important;
         }
 
@@ -115,7 +127,7 @@
             position: relative;
         }
 
-        /* Absolut zentrierter Header */
+        /* 100% exakt zentrierter Header via Grid */
         .header {
             background: linear-gradient(to bottom, #1565c0 0%, #0d47a1 100%);
             color: white;
@@ -123,26 +135,27 @@
             text-align: center;
             position: relative;
             display: grid;
-            grid-template-columns: auto 1fr auto;
+            grid-template-columns: 80px 1fr 80px;
             align-items: center;
             min-height: 44px;
             box-shadow: inset 0 1px 0 rgba(255,255,255,0.3);
-        }
-
-        .header-center {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            grid-column: 2;
-            overflow: hidden;
-            padding: 0 4px;
         }
 
         .header-left {
             grid-column: 1;
             display: flex;
             align-items: center;
+            justify-content: flex-start;
+        }
+
+        .header-center {
+            grid-column: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            padding: 0 4px;
         }
 
         .header-right {
@@ -1613,10 +1626,10 @@
         <button type="button" class="pdf-export-btn" onclick="exportToPDF('Enthärtungsanlagen')">📄 Als PDF speichern / drucken</button>
     </div>
 
-    <!-- Footer mit hochgezählter Versionsnummer v1.2 -->
+    <!-- Footer mit hochgezählter Versionsnummer v1.4 -->
     <div class="footer">
         <span>© 2026 #MAT</span>
-        <span class="footer-version">v1.2</span>
+        <span class="footer-version">v1.4</span>
     </div>
 </div>
 
@@ -1671,11 +1684,27 @@
 </div>
 
 <script>
-    // Service Worker Registrierung
+    // Service Worker Registrierung mit Auto-Update / SkipWaiting-Prüfung
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
             navigator.serviceWorker.register('./sw.js')
-                .then(reg => console.log('Service Worker erfolgreich registriert:', reg.scope))
+                .then(reg => {
+                    console.log('Service Worker erfolgreich registriert:', reg.scope);
+                    
+                    reg.onupdatefound = () => {
+                        const installingWorker = reg.installing;
+                        if (installingWorker) {
+                            installingWorker.onstatechange = () => {
+                                if (installingWorker.state === 'installed') {
+                                    if (navigator.serviceWorker.controller) {
+                                        console.log('Neue Version verfügbar. Aktualisiere...');
+                                        window.location.reload();
+                                    }
+                                }
+                            };
+                        }
+                    };
+                })
                 .catch(err => console.log('Service Worker Registrierung fehlgeschlagen:', err));
         });
     }
