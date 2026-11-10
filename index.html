@@ -39,11 +39,11 @@
             --footer-bg: #eee;
             --app-zoom: 1;
 
-            /* Dunklere/kräftigere Kategorienfarben */
-            --cat-anwendung-bg: rgba(13, 71, 161, 0.22);
-            --cat-anwendung-border: rgba(13, 71, 161, 0.55);
-            --cat-parameter-bg: rgba(46, 125, 50, 0.22);
-            --cat-parameter-border: rgba(46, 125, 50, 0.55);
+            /* Kategorienfarben */
+            --cat-anwendung-bg: linear-gradient(to bottom, #ffffff, #e3f2fd);
+            --cat-anwendung-border: #90caf9;
+            --cat-parameter-bg: linear-gradient(to bottom, #ffffff, #e8f5e9);
+            --cat-parameter-border: #a5d6a7;
         }
 
         /* Dark Mode Farbschema */
@@ -69,10 +69,10 @@
             --tab-btn-text: #cccccc;
             --footer-bg: #181818;
 
-            --cat-anwendung-bg: rgba(33, 150, 243, 0.28);
-            --cat-anwendung-border: rgba(33, 150, 243, 0.65);
-            --cat-parameter-bg: rgba(76, 175, 80, 0.28);
-            --cat-parameter-border: rgba(76, 175, 80, 0.65);
+            --cat-anwendung-bg: linear-gradient(to bottom, #1e1e1e, #162938);
+            --cat-anwendung-border: #1565c0;
+            --cat-parameter-bg: linear-gradient(to bottom, #1e1e1e, #1b331e);
+            --cat-parameter-border: #2e7d32;
         }
 
         body.dark-mode select {
@@ -94,7 +94,7 @@
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             background-color: var(--bg-color);
             margin: 0;
-            padding: calc(15px * var(--app-zoom));
+            padding: calc(10px * var(--app-zoom));
             color: var(--text-color);
             -webkit-tap-highlight-color: transparent;
             zoom: var(--app-zoom);
@@ -110,17 +110,17 @@
             position: relative;
         }
 
-        /* NEU: Flexibler Header mit absolutem Schutz vor Überlappung bei Zoom */
+        /* Flexibler Header mit absolutem Schutz vor Überlappung bei Zoom */
         .header {
             background-color: var(--primary-color);
             color: white;
-            padding: 14px 10px;
+            padding: 12px 10px;
             text-align: center;
             position: relative;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            min-height: 52px;
+            min-height: 48px;
         }
 
         .header-center {
@@ -134,7 +134,7 @@
 
         .header h1 {
             margin: 0;
-            font-size: 1.25rem;
+            font-size: 1.15rem;
             letter-spacing: 0.8px;
             white-space: nowrap;
         }
@@ -156,19 +156,19 @@
         }
 
         .view-toggle-btn {
-            height: 34px;
+            height: 32px;
             padding: 0 8px;
             border-radius: 6px;
-            font-size: 0.75rem;
+            font-size: 0.72rem;
             font-weight: bold;
             gap: 4px;
         }
 
         .settings-btn {
-            width: 34px;
-            height: 34px;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
-            font-size: 1.05rem;
+            font-size: 1rem;
         }
 
         /* Weihnachtsmützen-Styling für das 'I' */
@@ -180,15 +180,15 @@
         .santa-letter::before {
             content: "🎅";
             position: absolute;
-            top: -12px;
-            left: -6px;
-            font-size: 1.0rem;
+            top: -11px;
+            left: -5px;
+            font-size: 0.9rem;
             transform: rotate(-15deg);
             pointer-events: none;
         }
 
         .header-sub {
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             opacity: 0.95;
             font-weight: 500;
             margin-top: 1px;
@@ -200,7 +200,7 @@
             border-bottom: 1px solid var(--border-color);
             position: relative;
             overflow: hidden;
-            padding: 8px 10px;
+            padding: 6px 8px;
         }
 
         .scroll-arrow {
@@ -236,7 +236,7 @@
 
         .categories-container {
             display: flex;
-            gap: 12px;
+            gap: 10px;
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
             scrollbar-width: none;
@@ -250,25 +250,24 @@
         .category-group {
             display: flex;
             flex-direction: column;
-            background: var(--cat-anwendung-bg);
-            border: 1px solid var(--cat-anwendung-border);
+            background: rgba(13, 71, 161, 0.08);
+            border: 1px solid var(--border-color);
             border-radius: 8px;
-            padding: 6px;
+            padding: 5px;
             flex-shrink: 0;
         }
 
         .category-group.category-parameters {
-            background: var(--cat-parameter-bg);
-            border: 1px solid var(--cat-parameter-border);
+            background: rgba(46, 125, 50, 0.08);
         }
 
         .category-title {
-            font-size: 0.68rem;
+            font-size: 0.65rem;
             font-weight: bold;
             text-transform: uppercase;
             letter-spacing: 0.5px;
             color: var(--primary-color);
-            margin-bottom: 4px;
+            margin-bottom: 3px;
             text-align: center;
         }
 
@@ -282,19 +281,19 @@
 
         .tab-buttons-inner {
             display: flex;
-            gap: 6px;
+            gap: 5px;
             flex: 1;
         }
 
         .tab-btn {
             flex: 0 0 auto;
-            min-width: 88px;
-            padding: 6px 8px;
+            min-width: 82px;
+            padding: 5px 7px;
             border: 1px solid var(--tab-btn-border);
             border-radius: 6px;
             background: var(--tab-btn-bg);
             font-weight: bold;
-            font-size: 0.7rem;
+            font-size: 0.68rem;
             color: var(--tab-btn-text);
             cursor: pointer;
             transition: 0.2s ease;
@@ -304,7 +303,7 @@
             display: flex;
             align-items: center;
             justify-content: flex-start;
-            min-height: 42px;
+            min-height: 38px;
             line-height: 1.15;
         }
 
@@ -334,10 +333,10 @@
             white-space: nowrap;
         }
 
-        /* APP-LAUNCHER STYLES */
+        /* APP-LAUNCHER DASHBOARD (Kompakt & Dreidimensional) */
         .launcher-view {
             display: none;
-            padding: 20px;
+            padding: 12px 15px;
         }
 
         .launcher-view.active {
@@ -345,18 +344,18 @@
         }
 
         .launcher-category {
-            margin-bottom: 22px;
+            margin-bottom: 14px;
         }
 
         .launcher-category-title {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             font-weight: bold;
             text-transform: uppercase;
             letter-spacing: 0.8px;
             color: var(--primary-color);
             border-bottom: 2px solid var(--primary-color);
-            padding-bottom: 4px;
-            margin-bottom: 12px;
+            padding-bottom: 3px;
+            margin-bottom: 8px;
         }
 
         .launcher-category.param .launcher-category-title {
@@ -372,23 +371,24 @@
         .launcher-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
+            gap: 10px;
         }
 
+        /* 3D-Optik mit feinem Farbverlauf, Tiefenschatten und taktilem Klick-Effekt */
         .launcher-card {
             background: var(--cat-anwendung-bg);
             border: 1px solid var(--cat-anwendung-border);
-            border-radius: 10px;
-            padding: 14px 10px;
+            border-radius: 8px;
+            padding: 10px 10px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             text-align: center;
             cursor: pointer;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.08);
-            transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
-            min-height: 80px;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.5);
+            transition: transform 0.1s ease, box-shadow 0.1s ease, border-color 0.15s ease;
+            min-height: 68px;
         }
 
         .launcher-category.param .launcher-card {
@@ -396,26 +396,28 @@
             border: 1px solid var(--cat-parameter-border);
         }
 
+        /* Physischer Tastendruck-Effekt (Tiefenverschiebung nach unten) */
         .launcher-card:active {
-            transform: scale(0.97);
+            transform: translateY(2px);
+            box-shadow: 0 1px 2px rgba(0,0,0,0.15), inset 0 1px 2px rgba(0,0,0,0.1);
         }
 
         .launcher-card:hover {
             border-color: var(--primary-color);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.6);
         }
 
         .launcher-icon {
-            font-size: 1.7rem;
-            margin-bottom: 6px;
+            font-size: 1.4rem;
+            margin-bottom: 4px;
         }
 
         .launcher-label {
-            font-size: 0.8rem;
+            font-size: 0.78rem;
             font-weight: bold;
             color: var(--text-color);
-            line-height: 1.2;
-            text-align: left;
+            line-height: 1.15;
+            text-align: center;
         }
 
         /* ZURÜCK-BUTTON LEISTE */
@@ -423,7 +425,7 @@
             display: none;
             background: var(--result-bg);
             border-bottom: 1px solid var(--result-border);
-            padding: 10px 15px;
+            padding: 8px 12px;
         }
 
         .dashboard-back-bar.active {
@@ -436,12 +438,12 @@
             border: none;
             border-radius: 6px;
             font-weight: bold;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
-            gap: 6px;
-            padding: 6px 12px;
+            gap: 5px;
+            padding: 5px 10px;
             transition: opacity 0.2s;
         }
 
@@ -451,7 +453,7 @@
 
         .tab-content {
             display: none;
-            padding: 20px;
+            padding: 15px;
         }
 
         .tab-content.active {
@@ -459,14 +461,14 @@
         }
 
         .form-group {
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
 
         label {
             display: block;
-            font-size: 0.85rem;
+            font-size: 0.82rem;
             font-weight: 600;
-            margin-bottom: 4px;
+            margin-bottom: 3px;
             color: var(--text-color);
         }
 
@@ -476,40 +478,40 @@
             border: 1px solid var(--border-color);
             border-radius: 6px;
             background-color: var(--input-bg);
-            padding: 0 10px;
+            padding: 0 8px;
         }
 
         .input-wrapper input, .input-wrapper select {
             width: 100%;
             border: none;
             background: transparent;
-            padding: 10px 5px;
-            font-size: 1rem;
+            padding: 8px 4px;
+            font-size: 0.95rem;
             color: var(--text-color);
             outline: none;
         }
 
         .unit {
-            font-size: 0.85rem;
+            font-size: 0.82rem;
             color: var(--subtext-color);
             white-space: nowrap;
-            margin-left: 8px;
+            margin-left: 6px;
         }
 
         .result-box {
             background-color: var(--result-bg);
             border: 1px solid var(--result-border);
             border-radius: 6px;
-            padding: 15px;
-            margin-top: 15px;
+            padding: 12px;
+            margin-top: 12px;
         }
 
         .result-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 10px;
-            padding-bottom: 6px;
+            margin-bottom: 8px;
+            padding-bottom: 5px;
             border-bottom: 1px dashed var(--result-border);
         }
 
@@ -520,32 +522,32 @@
         }
 
         .result-label {
-            font-size: 0.88rem;
+            font-size: 0.85rem;
             font-weight: 600;
             color: var(--result-label);
         }
 
         .result-value {
-            font-size: 1.15rem;
+            font-size: 1.1rem;
             font-weight: bold;
             color: var(--result-val);
         }
 
         .pdf-export-btn {
             width: 100%;
-            margin-top: 15px;
-            padding: 10px 14px;
+            margin-top: 12px;
+            padding: 9px 12px;
             background-color: var(--primary-color);
             color: white;
             border: none;
             border-radius: 6px;
             font-weight: bold;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 6px;
             transition: background 0.2s ease;
         }
 
@@ -554,17 +556,17 @@
         }
 
         .section-title {
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             font-weight: bold;
             color: var(--primary-color);
             border-bottom: 2px solid var(--primary-color);
-            padding-bottom: 4px;
-            margin-top: 20px;
-            margin-bottom: 12px;
+            padding-bottom: 3px;
+            margin-top: 15px;
+            margin-bottom: 10px;
         }
 
         .hint {
-            font-size: 0.75rem;
+            font-size: 0.72rem;
             color: var(--subtext-color);
             margin-top: 2px;
         }
@@ -573,10 +575,10 @@
             background: var(--input-bg);
             border: 1px solid var(--border-color);
             border-radius: 6px;
-            padding: 12px;
-            margin-bottom: 10px;
-            font-size: 0.85rem;
-            line-height: 1.4;
+            padding: 10px;
+            margin-bottom: 8px;
+            font-size: 0.82rem;
+            line-height: 1.35;
         }
 
         .instruction-step b {
@@ -596,8 +598,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px 15px;
-            font-size: 0.85rem;
+            padding: 10px 12px;
+            font-size: 0.8rem;
             font-weight: bold;
             color: var(--subtext-color);
             background-color: var(--footer-bg);
@@ -605,12 +607,12 @@
         }
 
         .footer-version {
-            font-size: 0.75rem;
+            font-size: 0.72rem;
             font-weight: normal;
             color: var(--subtext-color);
         }
 
-        /* Settings Modal Overlay Styles & sauberer Modul-Container */
+        /* Settings Modal Overlay Styles */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -641,7 +643,7 @@
         .modal-header {
             background: var(--primary-color);
             color: white;
-            padding: 15px 20px;
+            padding: 12px 16px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -649,26 +651,26 @@
 
         .modal-header h2 {
             margin: 0;
-            font-size: 1.1rem;
+            font-size: 1.05rem;
         }
 
         .modal-close-btn {
             background: transparent;
             border: none;
             color: white;
-            font-size: 1.4rem;
+            font-size: 1.3rem;
             cursor: pointer;
         }
 
         .modal-body {
-            padding: 20px;
+            padding: 15px;
             overflow-y: auto;
         }
 
         .setting-section {
-            margin-bottom: 20px;
+            margin-bottom: 16px;
             border-bottom: 1px solid var(--border-color);
-            padding-bottom: 15px;
+            padding-bottom: 12px;
         }
 
         .setting-section:last-child {
@@ -677,8 +679,8 @@
 
         .setting-section-title {
             font-weight: bold;
-            font-size: 0.9rem;
-            margin-bottom: 10px;
+            font-size: 0.85rem;
+            margin-bottom: 8px;
             color: var(--primary-color);
         }
 
@@ -686,20 +688,22 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
+            font-size: 0.85rem;
         }
 
         .module-list-item {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 10px 12px;
+            padding: 8px 10px;
             background: var(--input-bg);
             border: 1px solid var(--border-color);
             border-radius: 6px;
-            margin-bottom: 8px;
-            gap: 10px;
+            margin-bottom: 6px;
+            gap: 8px;
             cursor: grab;
+            font-size: 0.85rem;
         }
 
         .module-list-item:active {
@@ -714,7 +718,7 @@
         .module-list-item-left {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             flex: 1;
             min-width: 0;
         }
@@ -726,9 +730,8 @@
             text-overflow: ellipsis;
         }
 
-        /* Griff-Symbol auf der rechten Seite */
         .drag-handle {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             color: var(--subtext-color);
             cursor: grab;
             padding: 0 4px;
@@ -807,7 +810,7 @@
         </button>
     </div>
 
-    <!-- APP LAUNCHER DASHBOARD (Kachel-Ansicht) -->
+    <!-- APP LAUNCHER DASHBOARD (Kompakte 3D-Kacheln) -->
     <div class="launcher-view" id="launcher-view">
         <div class="launcher-category">
             <div class="launcher-category-title">Anwendungen</div>
@@ -1242,7 +1245,7 @@
 
         <div class="section-title">3. Messergebnis & Endauswertung</div>
 
-        <div class="form-group" style="margin-top: 15px;">
+        <div class="form-group" style="margin-top: 12px;">
             <label>Gemessener Hanna-Wert (abgelesen)</label>
             <div class="input-wrapper" style="background-color: var(--result-bg); border-color: var(--result-border);">
                 <input type="number" id="verd_messwert" step="0.1" placeholder="z. B. 385.0" oninput="calcVerduennung()">
@@ -1252,10 +1255,10 @@
 
         <div class="result-box" style="background-color: rgba(46, 125, 50, 0.1); border-color: #a5d6a7;">
             <label style="color: #2e7d32;">Echter Wirkstoffgehalt im Anolyte:</label>
-            <div class="result-value" id="verd_res_final" style="color: #2e7d32; font-size: 1.4rem;">0.0 mg/l</div>
+            <div class="result-value" id="verd_res_final" style="color: #2e7d32; font-size: 1.3rem;">0.0 mg/l</div>
         </div>
 
-        <div class="alert-box" id="verd_hinweis_box" style="margin-top: 15px;">
+        <div class="alert-box" id="verd_hinweis_box" style="margin-top: 12px;">
             Werte werden berechnet...
         </div>
     </div>
@@ -1566,11 +1569,11 @@
                     <span>Dunkelmodus</span>
                     <input type="checkbox" id="darkmode-toggle" onchange="toggleDarkMode(this.checked)">
                 </div>
-                <div class="toggle-row" style="margin-top: 10px;">
+                <div class="toggle-row" style="margin-top: 8px;">
                     <span>Icons in Schiebeleiste anzeigen</span>
                     <input type="checkbox" id="icons-slider-toggle" onchange="toggleSliderIcons(this.checked)">
                 </div>
-                <div class="toggle-row" style="margin-top: 10px;">
+                <div class="toggle-row" style="margin-top: 8px;">
                     <span>Icons im Dashboard anzeigen</span>
                     <input type="checkbox" id="icons-dashboard-toggle" onchange="toggleDashboardIcons(this.checked)">
                 </div>
@@ -1588,15 +1591,14 @@
                 </div>
             </div>
 
-            <!-- Getrennte Einstellungen für Anwendung & Parameter mit Griff ☰ rechts -->
             <div class="setting-section">
                 <div class="setting-section-title" style="color: #0d47a1;">Kategorie: Anwendung (Per Griff ☰ verschiebbar)</div>
                 <div id="active-list-anwendung"></div>
 
-                <div class="setting-section-title" style="margin-top: 20px; color: #1b5e20;">Kategorie: Parameter (Per Griff ☰ verschiebbar)</div>
+                <div class="setting-section-title" style="margin-top: 15px; color: #1b5e20;">Kategorie: Parameter (Per Griff ☰ verschiebbar)</div>
                 <div id="active-list-parameter"></div>
 
-                <div class="setting-section-title" style="margin-top: 20px; opacity: 0.8;">Inaktive Module</div>
+                <div class="setting-section-title" style="margin-top: 15px; opacity: 0.8;">Inaktive Module</div>
                 <div id="inactive-module-list"></div>
             </div>
         </div>
@@ -1644,7 +1646,7 @@
         throw new Error("Testversion abgelaufen.");
     }
 
-    // ZENTRALE MODUL-KONFIGURATION inkl. reiner Textstrings
+    // ZENTRALE MODUL-KONFIGURATION
     const defaultModules = [
         { id: 'standard', title: 'Trinkwasser', icon: '💧', category: 'Anwendung', visible: true },
         { id: 'wasserwerk', title: 'Wasserwerk', icon: '🏢', category: 'Anwendung', visible: true },
@@ -1909,7 +1911,7 @@
 
                     if (showSliderIcons && mod.icon) {
                         let iconEl = document.createElement('span');
-                        iconEl.style.fontSize = '0.9rem';
+                        iconEl.style.fontSize = '0.85rem';
                         iconEl.style.marginBottom = '2px';
                         iconEl.innerText = mod.icon;
                         contentDiv.appendChild(iconEl);
