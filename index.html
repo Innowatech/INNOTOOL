@@ -24,7 +24,7 @@
             --input-bg: #f9fbf9;
             --text-color: #333333;
             --subtext-color: #666666;
-            --border-color: #cccccc;
+            --border-color: #bbbbbb;
             --result-bg: #e3f2fd;
             --result-border: #90caf9;
             --result-label: #1565c0;
@@ -33,20 +33,22 @@
             --alert-border: #ffeba8;
             --alert-text: #856404;
             --tab-bar-bg: #eceff1;
-            --tab-btn-bg: linear-gradient(to bottom, #ffffff, #f0f4f8);
-            --tab-btn-border: #b0bec5;
-            --tab-btn-text: #455a64;
+            
+            /* Starke 3D-Verläufe für Reiter & Buttons */
+            --tab-btn-bg: linear-gradient(to bottom, #ffffff 0%, #e6eff8 100%);
+            --tab-btn-border: #90a4ae;
+            --tab-btn-text: #37474f;
             --footer-bg: #eee;
             --app-zoom: 1;
 
-            /* Kategorienfarben */
-            --cat-anwendung-bg: linear-gradient(to bottom, #ffffff, #e3f2fd);
-            --cat-anwendung-border: #90caf9;
-            --cat-parameter-bg: linear-gradient(to bottom, #ffffff, #e8f5e9);
-            --cat-parameter-border: #a5d6a7;
+            /* 3D-Kanten & Verläufe für Dashboard-Kacheln */
+            --cat-anwendung-bg: linear-gradient(to bottom, #ffffff 0%, #dbeafe 100%);
+            --cat-anwendung-border: #60a5fa;
+            --cat-parameter-bg: linear-gradient(to bottom, #ffffff 0%, #dcfce7 100%);
+            --cat-parameter-border: #4ade80;
         }
 
-        /* Dark Mode Farbschema */
+        /* Dark Mode Farbschema mit 3D-Effekt */
         body.dark-mode {
             --primary-color: #1565c0;
             --secondary-color: #0288d1;
@@ -64,15 +66,16 @@
             --alert-border: #665500;
             --alert-text: #ffd54f;
             --tab-bar-bg: #181818;
-            --tab-btn-bg: linear-gradient(to bottom, #2c2c2c, #222222);
-            --tab-btn-border: #444444;
-            --tab-btn-text: #cccccc;
+            
+            --tab-btn-bg: linear-gradient(to bottom, #333333 0%, #1f1f1f 100%);
+            --tab-btn-border: #555555;
+            --tab-btn-text: #e0e0e0;
             --footer-bg: #181818;
 
-            --cat-anwendung-bg: linear-gradient(to bottom, #1e1e1e, #162938);
-            --cat-anwendung-border: #1565c0;
-            --cat-parameter-bg: linear-gradient(to bottom, #1e1e1e, #1b331e);
-            --cat-parameter-border: #2e7d32;
+            --cat-anwendung-bg: linear-gradient(to bottom, #262626 0%, #162a40 100%);
+            --cat-anwendung-border: #1d4ed8;
+            --cat-parameter-bg: linear-gradient(to bottom, #262626 0%, #13381a 100%);
+            --cat-parameter-border: #15803d;
         }
 
         body.dark-mode select {
@@ -110,9 +113,9 @@
             position: relative;
         }
 
-        /* Flexibler Header mit absolutem Schutz vor Überlappung bei Zoom */
+        /* Flexibler Header mit 3D-Akzent */
         .header {
-            background-color: var(--primary-color);
+            background: linear-gradient(to bottom, #1565c0 0%, #0d47a1 100%);
             color: white;
             padding: 12px 10px;
             text-align: center;
@@ -121,6 +124,7 @@
             align-items: center;
             justify-content: space-between;
             min-height: 48px;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.3);
         }
 
         .header-center {
@@ -137,22 +141,29 @@
             font-size: 1.15rem;
             letter-spacing: 0.8px;
             white-space: nowrap;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
         }
 
         .header-btn {
-            background: rgba(255, 255, 255, 0.15);
-            border: none;
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.05));
+            border: 1px solid rgba(255, 255, 255, 0.4);
             color: white;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: background 0.2s ease;
+            transition: all 0.15s ease;
             flex-shrink: 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.4);
         }
 
         .header-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0.35), rgba(255, 255, 255, 0.15));
+        }
+
+        .header-btn:active {
+            transform: translateY(1px);
+            box-shadow: 0 1px 2px rgba(0,0,0,0.2), inset 0 1px 1px rgba(0,0,0,0.2);
         }
 
         .view-toggle-btn {
@@ -192,9 +203,10 @@
             opacity: 0.95;
             font-weight: 500;
             margin-top: 1px;
+            text-shadow: 0 1px 1px rgba(0,0,0,0.2);
         }
 
-        /* Reiter-Leiste mit Scroll-Indikatoren */
+        /* Reiter-Leiste */
         .tab-bar-wrapper {
             background: var(--tab-bar-bg);
             border-bottom: 1px solid var(--border-color);
@@ -250,15 +262,16 @@
         .category-group {
             display: flex;
             flex-direction: column;
-            background: rgba(13, 71, 161, 0.08);
+            background: rgba(13, 71, 161, 0.05);
             border: 1px solid var(--border-color);
             border-radius: 8px;
             padding: 5px;
             flex-shrink: 0;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.04);
         }
 
         .category-group.category-parameters {
-            background: rgba(46, 125, 50, 0.08);
+            background: rgba(46, 125, 50, 0.05);
         }
 
         .category-title {
@@ -285,6 +298,7 @@
             flex: 1;
         }
 
+        /* 3D-Reiter-Buttons mit spürbarem Tiefeneffekt */
         .tab-btn {
             flex: 0 0 auto;
             min-width: 82px;
@@ -296,10 +310,10 @@
             font-size: 0.68rem;
             color: var(--tab-btn-text);
             cursor: pointer;
-            transition: 0.2s ease;
+            transition: all 0.15s ease;
             white-space: nowrap;
             text-align: left;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+            box-shadow: 0 3px 5px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.7);
             display: flex;
             align-items: center;
             justify-content: flex-start;
@@ -310,14 +324,20 @@
         .tab-btn:hover {
             border-color: var(--primary-color);
             color: var(--primary-color);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.8);
+        }
+
+        .tab-btn:active {
+            transform: translateY(2px);
+            box-shadow: 0 1px 2px rgba(0,0,0,0.15), inset 0 1px 2px rgba(0,0,0,0.1);
         }
 
         .tab-btn.active {
-            background: var(--card-bg);
+            background: linear-gradient(to bottom, var(--card-bg) 0%, var(--result-bg) 100%);
             color: var(--primary-color);
             border: 1px solid var(--primary-color);
             border-bottom: 3px solid var(--primary-color);
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255,255,255,0.9);
         }
 
         .btn-content-inner {
@@ -333,7 +353,7 @@
             white-space: nowrap;
         }
 
-        /* APP-LAUNCHER DASHBOARD (Kompakt & Dreidimensional) */
+        /* APP-LAUNCHER DASHBOARD (Starke 3D-Kacheln) */
         .launcher-view {
             display: none;
             padding: 12px 15px;
@@ -374,7 +394,7 @@
             gap: 10px;
         }
 
-        /* 3D-Optik mit feinem Farbverlauf, Tiefenschatten und taktilem Klick-Effekt */
+        /* Starker 3D-Effekt: Kräftiger Farbverlauf, deutlicher Schattenwurf und Klick-Einrückung */
         .launcher-card {
             background: var(--cat-anwendung-bg);
             border: 1px solid var(--cat-anwendung-border);
@@ -386,8 +406,8 @@
             justify-content: center;
             text-align: center;
             cursor: pointer;
-            box-shadow: 0 3px 6px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.5);
-            transition: transform 0.1s ease, box-shadow 0.1s ease, border-color 0.15s ease;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,0.8), inset 0 -2px 4px rgba(0,0,0,0.03);
+            transition: all 0.12s ease;
             min-height: 68px;
         }
 
@@ -396,20 +416,22 @@
             border: 1px solid var(--cat-parameter-border);
         }
 
-        /* Physischer Tastendruck-Effekt (Tiefenverschiebung nach unten) */
+        /* Physisches Einrasten/Eindrücken beim Antippen */
         .launcher-card:active {
-            transform: translateY(2px);
-            box-shadow: 0 1px 2px rgba(0,0,0,0.15), inset 0 1px 2px rgba(0,0,0,0.1);
+            transform: translateY(3px);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2), inset 0 2px 4px rgba(0,0,0,0.15);
+            background: var(--card-bg);
         }
 
         .launcher-card:hover {
             border-color: var(--primary-color);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.6);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.16), inset 0 1px 0 rgba(255,255,255,0.9);
         }
 
         .launcher-icon {
             font-size: 1.4rem;
             margin-bottom: 4px;
+            filter: drop-shadow(0 1px 2px rgba(0,0,0,0.15));
         }
 
         .launcher-label {
@@ -418,6 +440,11 @@
             color: var(--text-color);
             line-height: 1.15;
             text-align: center;
+            text-shadow: 0 1px 0 rgba(255,255,255,0.5);
+        }
+
+        body.dark-mode .launcher-label {
+            text-shadow: none;
         }
 
         /* ZURÜCK-BUTTON LEISTE */
@@ -433,9 +460,9 @@
         }
 
         .dashboard-back-btn {
-            background: var(--primary-color);
+            background: linear-gradient(to bottom, #1976d2, #0d47a1);
             color: white;
-            border: none;
+            border: 1px solid #1565c0;
             border-radius: 6px;
             font-weight: bold;
             font-size: 0.8rem;
@@ -443,12 +470,19 @@
             display: inline-flex;
             align-items: center;
             gap: 5px;
-            padding: 5px 10px;
-            transition: opacity 0.2s;
+            padding: 6px 12px;
+            box-shadow: 0 3px 5px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.4);
+            transition: all 0.15s ease;
         }
 
         .dashboard-back-btn:hover {
-            opacity: 0.9;
+            opacity: 0.95;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.5);
+        }
+
+        .dashboard-back-btn:active {
+            transform: translateY(2px);
+            box-shadow: 0 1px 2px rgba(0,0,0,0.2), inset 0 1px 2px rgba(0,0,0,0.2);
         }
 
         .tab-content {
@@ -479,6 +513,7 @@
             border-radius: 6px;
             background-color: var(--input-bg);
             padding: 0 8px;
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.06);
         }
 
         .input-wrapper input, .input-wrapper select {
@@ -504,6 +539,7 @@
             border-radius: 6px;
             padding: 12px;
             margin-top: 12px;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.04);
         }
 
         .result-row {
@@ -533,13 +569,14 @@
             color: var(--result-val);
         }
 
+        /* 3D-Export-Button */
         .pdf-export-btn {
             width: 100%;
             margin-top: 12px;
-            padding: 9px 12px;
-            background-color: var(--primary-color);
+            padding: 10px 12px;
+            background: linear-gradient(to bottom, #1976d2, #0d47a1);
             color: white;
-            border: none;
+            border: 1px solid #1565c0;
             border-radius: 6px;
             font-weight: bold;
             font-size: 0.85rem;
@@ -548,11 +585,18 @@
             align-items: center;
             justify-content: center;
             gap: 6px;
-            transition: background 0.2s ease;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.4);
+            transition: all 0.15s ease;
         }
 
         .pdf-export-btn:hover {
-            opacity: 0.9;
+            opacity: 0.95;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.5);
+        }
+
+        .pdf-export-btn:active {
+            transform: translateY(2px);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2), inset 0 1px 2px rgba(0,0,0,0.2);
         }
 
         .section-title {
@@ -641,12 +685,13 @@
         }
 
         .modal-header {
-            background: var(--primary-color);
+            background: linear-gradient(to bottom, #1565c0, #0d47a1);
             color: white;
             padding: 12px 16px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.3);
         }
 
         .modal-header h2 {
@@ -704,6 +749,7 @@
             gap: 8px;
             cursor: grab;
             font-size: 0.85rem;
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.03);
         }
 
         .module-list-item:active {
@@ -810,7 +856,7 @@
         </button>
     </div>
 
-    <!-- APP LAUNCHER DASHBOARD (Kompakte 3D-Kacheln) -->
+    <!-- APP LAUNCHER DASHBOARD (3D-Kacheln) -->
     <div class="launcher-view" id="launcher-view">
         <div class="launcher-category">
             <div class="launcher-category-title">Anwendungen</div>
