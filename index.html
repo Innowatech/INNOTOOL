@@ -1810,7 +1810,7 @@
         <button type="button" class="pdf-export-btn" onclick="exportToPDF('Enthärtungsanlagen')">📄 Als PDF speichern / drucken</button>
     </div>
 
-    <!-- Footer mit aktualisierter Version v2.0 -->
+    <!-- Footer mit exakter Version v2.0 -->
     <div class="footer">
         <span>© 2026 #MAT</span>
         <span class="footer-version" onclick="handleVersionClick()">v2.0</span>
@@ -1867,7 +1867,7 @@
     </div>
 </div>
 
-<!-- ADMIN AUTH MODAL (Kürzelfeld standardmäßig leer) -->
+<!-- ADMIN AUTH MODAL (Kürzelliste & PIN strikt zurückgesetzt) -->
 <div class="admin-modal-overlay" id="adminAuthModal">
     <div class="admin-modal-content">
         <div class="admin-modal-header">
@@ -1880,7 +1880,7 @@
         </div>
         <div class="form-group">
             <label>Admin-PIN</label>
-            <input type="password" id="adminPin" maxlength="5" placeholder="*****" style="width:100%; padding:8px; border:1px solid var(--border-color); border-radius:4px; background:var(--input-bg); color:var(--text-color);">
+            <input type="password" id="adminPin" maxlength="5" value="" placeholder="*****" style="width:100%; padding:8px; border:1px solid var(--border-color); border-radius:4px; background:var(--input-bg); color:var(--text-color);">
         </div>
         <button type="button" class="admin-btn admin-btn-primary" onclick="verifyAdminAuth()">Admin Console öffnen</button>
     </div>
@@ -1958,8 +1958,8 @@
         if (clickTimer) clearTimeout(clickTimer);
         if (clickCount >= 5) {
             clickCount = 0;
+            document.getElementById('adminUser').value = '';
             document.getElementById('adminPin').value = '';
-            document.getElementById('adminUser').value = ''; // Bleibt beim Öffnen garantiert leer!
             openAdminModal('adminAuthModal');
         } else {
             clickTimer = setTimeout(() => { clickCount = 0; }, 2000);
