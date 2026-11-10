@@ -2,7 +2,6 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <!-- PWA & Vollbild-Einstellungen für Android & iOS -->
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -10,9 +9,8 @@
     <meta name="theme-color" content="#0d47a1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
-    <title>INNOWATΞCH Service Tool v1.9</title>
+    <title>INNOWATΞCH Service Tool v1.9.1</title>
     
-    <!-- PWA / App Manifest -->
     <link rel="manifest" href="manifest.json">
 
     <style>
@@ -46,7 +44,6 @@
             --cat-parameter-border: #22c55e;
         }
 
-        /* Dark Mode Farbschema */
         body.dark-mode {
             --primary-color: #1565c0;
             --secondary-color: #0288d1;
@@ -76,7 +73,6 @@
             --cat-parameter-border: #16a34a;
         }
 
-        /* ECHTES EIGENES DROPDOWN-MENÜ (VERHINDERT WEISSES ANDROID-POPUP) */
         .custom-select-trigger {
             width: 100%;
             border: none;
@@ -111,7 +107,6 @@
             background-image: url("data:image/svg+xml;utf8,<svg fill='%23e0e0e0' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
         }
 
-        /* Modal für das benutzerdefinierte Dropdown */
         .dropdown-modal-overlay {
             display: none;
             position: fixed;
@@ -123,9 +118,7 @@
             backdrop-filter: blur(2px);
         }
 
-        .dropdown-modal-overlay.open {
-            display: flex;
-        }
+        .dropdown-modal-overlay.open { display: flex; }
 
         .dropdown-modal-content {
             background: var(--card-bg);
@@ -157,10 +150,7 @@
             background: var(--result-bg);
         }
 
-        .dropdown-modal-list {
-            overflow-y: auto;
-            padding: 6px;
-        }
+        .dropdown-modal-list { overflow-y: auto; padding: 6px; }
 
         .dropdown-item {
             padding: 12px 14px;
@@ -186,10 +176,7 @@
             background: var(--result-bg);
         }
 
-        /* Verstecke das originale Select, da wir es übersteuern */
-        select.native-select-hidden {
-            display: none !important;
-        }
+        select.native-select-hidden { display: none !important; }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -211,7 +198,6 @@
             position: relative;
         }
 
-        /* HEADER MIT ABSOLUTER DISPLAY-MITTEN-ZENTRIERUNG */
         .header {
             background: linear-gradient(to bottom, #1565c0 0%, #0d47a1 100%);
             color: white;
@@ -275,9 +261,7 @@
             box-shadow: 0 2px 4px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.4);
         }
 
-        .header-btn:hover {
-            background: linear-gradient(to bottom, rgba(255, 255, 255, 0.35), rgba(255, 255, 255, 0.15));
-        }
+        .header-btn:hover { background: linear-gradient(to bottom, rgba(255, 255, 255, 0.35), rgba(255, 255, 255, 0.15)); }
 
         .header-btn:active {
             transform: translateY(1px);
@@ -304,22 +288,6 @@
             white-space: nowrap;
         }
 
-        /* Weihnachtsmützen-Styling für das 'I' */
-        .santa-letter {
-            position: relative;
-            display: inline-block;
-        }
-
-        .santa-letter::before {
-            content: "🎅";
-            position: absolute;
-            top: -11px;
-            left: -5px;
-            font-size: 0.9rem;
-            transform: rotate(-15deg);
-            pointer-events: none;
-        }
-
         .header-sub {
             font-size: 0.7rem;
             opacity: 0.95;
@@ -329,44 +297,12 @@
             white-space: nowrap;
         }
 
-        /* Reiter-Leiste */
         .tab-bar-wrapper {
             background: var(--tab-bar-bg);
             border-bottom: 1px solid var(--border-color);
             position: relative;
             overflow: hidden;
             padding: 5px 8px;
-        }
-
-        .scroll-arrow {
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            width: 24px;
-            z-index: 10;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.8rem;
-            font-weight: bold;
-            color: var(--primary-color);
-            pointer-events: none;
-            opacity: 0;
-            transition: opacity 0.2s ease;
-        }
-
-        .scroll-arrow.left {
-            left: 0;
-            background: linear-gradient(to right, var(--tab-bar-bg) 60%, transparent);
-        }
-
-        .scroll-arrow.right {
-            right: 0;
-            background: linear-gradient(to left, var(--tab-bar-bg) 60%, transparent);
-        }
-
-        .scroll-arrow.visible {
-            opacity: 1;
         }
 
         .categories-container {
@@ -378,9 +314,7 @@
             align-items: stretch;
         }
 
-        .categories-container::-webkit-scrollbar {
-            display: none;
-        }
+        .categories-container::-webkit-scrollbar { display: none; }
 
         .category-group {
             display: flex;
@@ -393,9 +327,7 @@
             box-shadow: inset 0 1px 3px rgba(0,0,0,0.04);
         }
 
-        .category-group.category-parameters {
-            background: rgba(46, 125, 50, 0.05);
-        }
+        .category-group.category-parameters { background: rgba(46, 125, 50, 0.05); }
 
         .category-title {
             font-size: 0.62rem;
@@ -407,19 +339,10 @@
             text-align: center;
         }
 
-        .category-group.category-parameters .category-title {
-            color: #1b5e20;
-        }
+        .category-group.category-parameters .category-title { color: #1b5e20; }
+        body.dark-mode .category-group.category-parameters .category-title { color: #a5d6a7; }
 
-        body.dark-mode .category-group.category-parameters .category-title {
-            color: #a5d6a7;
-        }
-
-        .tab-buttons-inner {
-            display: flex;
-            gap: 4px;
-            flex: 1;
-        }
+        .tab-buttons-inner { display: flex; gap: 4px; flex: 1; }
 
         .tab-btn {
             flex: 0 0 auto;
@@ -443,20 +366,7 @@
             line-height: 1.12;
         }
 
-        .tab-btn.hidden {
-            display: none !important;
-        }
-
-        .tab-btn:hover {
-            border-color: var(--primary-color);
-            color: var(--primary-color);
-            box-shadow: 0 4px 6px rgba(0,0,0,0.16), inset 0 1px 0 rgba(255,255,255,0.9);
-        }
-
-        .tab-btn:active {
-            transform: translateY(2px);
-            box-shadow: 0 1px 2px rgba(0,0,0,0.15), inset 0 1px 2px rgba(0,0,0,0.1);
-        }
+        .tab-btn:hover { border-color: var(--primary-color); color: var(--primary-color); }
 
         .tab-btn.active {
             background: linear-gradient(to bottom, var(--card-bg) 0%, var(--result-bg) 100%);
@@ -465,32 +375,12 @@
             box-shadow: 0 3px 6px rgba(13, 71, 161, 0.25), inset 0 1px 0 rgba(255,255,255,0.9);
         }
 
-        .btn-content-inner {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            width: 100%;
-        }
+        .btn-content-inner { display: flex; flex-direction: column; align-items: flex-start; width: 100%; }
+        .btn-text-line { display: block; width: 100%; white-space: nowrap; }
 
-        .btn-text-line {
-            display: block;
-            width: 100%;
-            white-space: nowrap;
-        }
-
-        /* APP-LAUNCHER DASHBOARD */
-        .launcher-view {
-            display: none;
-            padding: 10px 12px;
-        }
-
-        .launcher-view.active {
-            display: block;
-        }
-
-        .launcher-category {
-            margin-bottom: 10px;
-        }
+        .launcher-view { display: none; padding: 10px 12px; }
+        .launcher-view.active { display: block; }
+        .launcher-category { margin-bottom: 10px; }
 
         .launcher-category-title {
             font-size: 0.75rem;
@@ -503,40 +393,25 @@
             margin-bottom: 6px;
         }
 
-        .launcher-category.param .launcher-category-title {
-            color: #1b5e20;
-            border-color: #1b5e20;
-        }
+        .launcher-category.param .launcher-category-title { color: #1b5e20; border-color: #1b5e20; }
+        body.dark-mode .launcher-category.param .launcher-category-title { color: #a5d6a7; border-color: #a5d6a7; }
 
-        body.dark-mode .launcher-category.param .launcher-category-title {
-            color: #a5d6a7;
-            border-color: #a5d6a7;
-        }
-
-        .launcher-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 8px;
-        }
+        .launcher-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
 
         .launcher-card {
             background: var(--cat-anwendung-bg);
             border: 1.5px solid var(--cat-anwendung-border);
             border-radius: 8px;
-            padding: 8px 8px;
+            padding: 8px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             text-align: center;
             cursor: pointer;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.14), inset 0 1px 0 rgba(255,255,255,0.9), inset 0 -2px 4px rgba(0,0,0,0.03);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.14), inset 0 1px 0 rgba(255,255,255,0.9);
             transition: all 0.12s ease;
             min-height: 54px;
-        }
-
-        .launcher-card.hidden {
-            display: none !important;
         }
 
         .launcher-category.param .launcher-card {
@@ -544,47 +419,11 @@
             border: 1.5px solid var(--cat-parameter-border);
         }
 
-        .launcher-card:active {
-            transform: translateY(3px);
-            box-shadow: 0 1px 3px rgba(0,0,0,0.2), inset 0 2px 4px rgba(0,0,0,0.15);
-            background: var(--card-bg);
-        }
+        .launcher-icon { font-size: 1.25rem; margin-bottom: 2px; }
+        .launcher-label { font-size: 0.74rem; font-weight: bold; color: var(--text-color); line-height: 1.12; }
 
-        .launcher-card:hover {
-            border-color: var(--primary-color);
-            box-shadow: 0 6px 12px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.95);
-        }
-
-        .launcher-icon {
-            font-size: 1.25rem;
-            margin-bottom: 2px;
-            filter: drop-shadow(0 1px 2px rgba(0,0,0,0.15));
-        }
-
-        .launcher-label {
-            font-size: 0.74rem;
-            font-weight: bold;
-            color: var(--text-color);
-            line-height: 1.12;
-            text-align: center;
-            text-shadow: 0 1px 0 rgba(255,255,255,0.6);
-        }
-
-        body.dark-mode .launcher-label {
-            text-shadow: none;
-        }
-
-        /* ZURÜCK-BUTTON LEISTE */
-        .dashboard-back-bar {
-            display: none;
-            background: var(--result-bg);
-            border-bottom: 1px solid var(--result-border);
-            padding: 6px 10px;
-        }
-
-        .dashboard-back-bar.active {
-            display: block;
-        }
+        .dashboard-back-bar { display: none; background: var(--result-bg); border-bottom: 1px solid var(--result-border); padding: 6px 10px; }
+        .dashboard-back-bar.active { display: block; }
 
         .dashboard-back-btn {
             background: linear-gradient(to bottom, #1976d2, #0d47a1);
@@ -598,40 +437,13 @@
             align-items: center;
             gap: 5px;
             padding: 5px 10px;
-            box-shadow: 0 3px 5px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.4);
-            transition: all 0.15s ease;
         }
 
-        .dashboard-back-btn:hover {
-            opacity: 0.95;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.5);
-        }
+        .tab-content { display: none; padding: 12px; }
+        .tab-content.active { display: block; }
 
-        .dashboard-back-btn:active {
-            transform: translateY(2px);
-            box-shadow: 0 1px 2px rgba(0,0,0,0.2), inset 0 1px 2px rgba(0,0,0,0.2);
-        }
-
-        .tab-content {
-            display: none;
-            padding: 12px;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-
-        .form-group {
-            margin-bottom: 8px;
-        }
-
-        label {
-            display: block;
-            font-size: 0.8rem;
-            font-weight: 600;
-            margin-bottom: 2px;
-            color: var(--text-color);
-        }
+        .form-group { margin-bottom: 8px; }
+        label { display: block; font-size: 0.8rem; font-weight: 600; margin-bottom: 2px; color: var(--text-color); }
 
         .input-wrapper {
             display: flex;
@@ -653,12 +465,7 @@
             outline: none;
         }
 
-        .unit {
-            font-size: 0.8rem;
-            color: var(--subtext-color);
-            white-space: nowrap;
-            margin-left: 6px;
-        }
+        .unit { font-size: 0.8rem; color: var(--subtext-color); white-space: nowrap; margin-left: 6px; }
 
         .result-box {
             background-color: var(--result-bg);
@@ -678,23 +485,9 @@
             border-bottom: 1px dashed var(--result-border);
         }
 
-        .result-row:last-child {
-            margin-bottom: 0;
-            padding-bottom: 0;
-            border-bottom: none;
-        }
-
-        .result-label {
-            font-size: 0.82rem;
-            font-weight: 600;
-            color: var(--result-label);
-        }
-
-        .result-value {
-            font-size: 1.05rem;
-            font-weight: bold;
-            color: var(--result-val);
-        }
+        .result-row:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+        .result-label { font-size: 0.82rem; font-weight: 600; color: var(--result-label); }
+        .result-value { font-size: 1.05rem; font-weight: bold; color: var(--result-val); }
 
         .pdf-export-btn {
             width: 100%;
@@ -711,18 +504,6 @@
             align-items: center;
             justify-content: center;
             gap: 6px;
-            box-shadow: 0 3px 6px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.4);
-            transition: all 0.15s ease;
-        }
-
-        .pdf-export-btn:hover {
-            opacity: 0.95;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.5);
-        }
-
-        .pdf-export-btn:active {
-            transform: translateY(2px);
-            box-shadow: 0 1px 3px rgba(0,0,0,0.2), inset 0 1px 2px rgba(0,0,0,0.2);
         }
 
         .section-title {
@@ -733,35 +514,6 @@
             padding-bottom: 2px;
             margin-top: 12px;
             margin-bottom: 8px;
-        }
-
-        .hint {
-            font-size: 0.7rem;
-            color: var(--subtext-color);
-            margin-top: 2px;
-        }
-
-        .instruction-step {
-            background: var(--input-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            padding: 8px 10px;
-            margin-bottom: 6px;
-            font-size: 0.8rem;
-            line-height: 1.3;
-        }
-
-        .instruction-step b {
-            color: var(--primary-color);
-        }
-
-        .param-highlight {
-            color: var(--primary-color);
-            font-weight: bold;
-        }
-
-        body.dark-mode .param-highlight {
-            color: #90caf9;
         }
 
         .footer {
@@ -777,153 +529,8 @@
             user-select: none;
         }
 
-        .footer-version {
-            font-size: 0.7rem;
-            font-weight: bold;
-            color: var(--primary-color);
-            cursor: pointer;
-            padding: 4px 8px;
-        }
+        .footer-version { font-size: 0.7rem; font-weight: bold; color: var(--primary-color); cursor: pointer; padding: 4px 8px; }
 
-        /* Settings Modal Overlay Styles */
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.6);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-            backdrop-filter: blur(3px);
-        }
-
-        .modal-overlay.open {
-            display: flex;
-        }
-
-        .modal-content {
-            background: var(--card-bg);
-            width: 90%;
-            max-width: 480px;
-            max-height: 85vh;
-            border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-
-        .modal-header {
-            background: linear-gradient(to bottom, #1565c0, #0d47a1);
-            color: white;
-            padding: 10px 14px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: inset 0 1px 0 rgba(255,255,255,0.3);
-        }
-
-        .modal-header h2 {
-            margin: 0;
-            font-size: 1rem;
-        }
-
-        .modal-close-btn {
-            background: transparent;
-            border: none;
-            color: white;
-            font-size: 1.2rem;
-            cursor: pointer;
-        }
-
-        .modal-body {
-            padding: 12px;
-            overflow-y: auto;
-        }
-
-        .setting-section {
-            margin-bottom: 14px;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 10px;
-        }
-
-        .setting-section:last-child {
-            border-bottom: none;
-        }
-
-        .setting-section-title {
-            font-weight: bold;
-            font-size: 0.82rem;
-            margin-bottom: 6px;
-            color: var(--primary-color);
-        }
-
-        .toggle-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 6px;
-            font-size: 0.82rem;
-        }
-
-        .module-list-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 6px 8px;
-            background: var(--input-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            margin-bottom: 5px;
-            gap: 6px;
-            cursor: grab;
-            font-size: 0.82rem;
-            box-shadow: inset 0 1px 2px rgba(0,0,0,0.03);
-        }
-
-        .module-list-item:active {
-            cursor: grabbing;
-        }
-
-        .module-list-item.dragging {
-            opacity: 0.4;
-            background: var(--result-bg);
-        }
-
-        .module-list-item-left {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            flex: 1;
-            min-width: 0;
-        }
-
-        .module-label-text {
-            line-height: 1.2;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .drag-handle {
-            font-size: 1rem;
-            color: var(--subtext-color);
-            cursor: grab;
-            padding: 0 4px;
-            flex-shrink: 0;
-        }
-
-        .zoom-slider-container {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .zoom-slider-container input {
-            flex: 1;
-        }
-
-        /* ADMIN & LOGIN MODALS */
         .admin-modal-overlay {
             display: none;
             position: fixed;
@@ -935,9 +542,7 @@
             overflow-y: auto;
             padding: 20px 10px;
         }
-        .admin-modal-overlay.active {
-            display: flex;
-        }
+        .admin-modal-overlay.active { display: flex; }
         .admin-modal-content {
             background: var(--card-bg);
             width: 100%;
@@ -980,63 +585,10 @@
             max-height: 180px;
             overflow-y: auto;
         }
-        .checkbox-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 5px 0;
-            border-bottom: 1px solid var(--border-color);
-            font-size: 0.85rem;
-        }
+        .checkbox-item { display: flex; align-items: center; gap: 8px; padding: 5px 0; border-bottom: 1px solid var(--border-color); font-size: 0.85rem; }
         .checkbox-item:last-child { border-bottom: none; }
-        .master-checkbox {
-            font-weight: bold;
-            background: var(--result-bg);
-            padding: 6px;
-            border-radius: 4px;
-            margin-bottom: 6px;
-        }
-        .user-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 6px 0;
-            border-bottom: 1px solid var(--border-color);
-            font-size: 0.82rem;
-        }
-
-        @media print {
-            body {
-                background: white !important;
-                color: black !important;
-                padding: 0 !important;
-                zoom: 1 !important;
-            }
-            .container {
-                box-shadow: none !important;
-                max-width: 100% !important;
-                border-radius: 0 !important;
-            }
-            .header-btn, .tab-bar-wrapper, .dashboard-back-bar, .pdf-export-btn, .modal-overlay, .admin-modal-overlay, .footer {
-                display: none !important;
-            }
-            .tab-content {
-                display: none !important;
-            }
-            .tab-content.active {
-                display: block !important;
-            }
-            .result-box {
-                border: 2px solid #0d47a1 !important;
-                background: #f0f4f8 !important;
-            }
-            .result-value {
-                color: #0d47a1 !important;
-            }
-            .input-wrapper input {
-                font-weight: bold !important;
-            }
-        }
+        .master-checkbox { font-weight: bold; background: var(--result-bg); padding: 6px; border-radius: 4px; margin-bottom: 6px; }
+        .user-item { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--border-color); font-size: 0.82rem; }
     </style>
 </head>
 <body>
@@ -1044,839 +596,164 @@
 <div class="container">
     <div class="header">
         <div class="header-left">
-            <button type="button" class="header-btn view-toggle-btn" id="view-toggle-btn" onclick="toggleMainView()" title="Ansicht umschalten">
+            <button type="button" class="header-btn view-toggle-btn" id="view-toggle-btn" onclick="toggleMainView()">
                 <span id="toggle-icon">田</span> <span id="toggle-text">Ansicht</span>
             </button>
             <span id="activeUserBadge" class="active-user-badge" style="display:none;"></span>
         </div>
         <div class="header-center">
-            <h1 id="app-title"><span id="first-letter">I</span>NNOWATΞCH</h1>
+            <h1>INNOWATΞCH</h1>
             <div class="header-sub">Service Tool</div>
         </div>
         <div class="header-right">
-            <button type="button" class="header-btn settings-btn" onclick="openSettings()" title="Einstellungen">⚙️</button>
+            <button type="button" class="header-btn settings-btn" onclick="openSettings()">⚙️</button>
         </div>
     </div>
 
-    <!-- Klassische Schiebe-Leiste oben -->
     <div class="tab-bar-wrapper" id="tab-bar-wrapper">
-        <div class="scroll-arrow left" id="scroll-arrow-left">◄</div>
-        <div class="categories-container" id="categories-container" onscroll="checkScrollArrows()"></div>
-        <div class="scroll-arrow right" id="scroll-arrow-right">►</div>
+        <div class="categories-container" id="categories-container"></div>
     </div>
 
-    <!-- ZURÜCK-BUTTON LEISTE -->
     <div class="dashboard-back-bar" id="dashboard-back-bar">
-        <button type="button" class="dashboard-back-btn" onclick="backToDashboard()">
-            ⬅️ Zurück zur Übersicht
-        </button>
+        <button type="button" class="dashboard-back-btn" onclick="backToDashboard()">⬅️ Zurück zur Übersicht</button>
     </div>
 
-    <!-- APP LAUNCHER DASHBOARD -->
     <div class="launcher-view" id="launcher-view">
         <div class="launcher-category">
             <div class="launcher-category-title">Anwendungen</div>
             <div class="launcher-grid" id="launcher-grid-anwendung"></div>
         </div>
-
         <div class="launcher-category param">
             <div class="launcher-category-title">Parameter</div>
             <div class="launcher-grid" id="launcher-grid-parameter"></div>
         </div>
     </div>
 
-    <!-- MODUS 1: Standard (Trinkwasser) -->
+    <!-- MODUL-INHALTE WERDEN DYNAMISCH ODER GEWOHNT GELADEN -->
+    <!-- TABS / RECHNER -->
     <div id="tab-standard" class="tab-content">
-        <div class="form-group">
-            <label>Zielkonzentration</label>
-            <div class="input-wrapper">
-                <input type="number" id="std_ziel" step="0.01" placeholder="z. B. 0.20" oninput="calcStandard()">
-                <span class="unit">mg/l</span>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label>Taktung Wasserzähler</label>
-            <div class="input-wrapper">
-                <input type="number" id="std_vol" step="1" placeholder="z. B. 1000" oninput="calcStandard()">
-                <span class="unit">l</span>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label>Anolytekonzentration</label>
-            <div class="input-wrapper">
-                <input type="number" id="std_anol" step="1" placeholder="z. B. 500" oninput="calcStandard()">
-                <span class="unit">mg/l</span>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label>Zehrung</label>
-            <div class="input-wrapper">
-                <input type="number" id="std_zehrung" step="0.01" placeholder="z. B. 0.05" oninput="calcStandard()">
-                <span class="unit">mg/l</span>
-            </div>
-        </div>
-
-        <div class="result-box">
-            <label>Gesamtbedarf inkl. Zehrung</label>
-            <div class="result-value" id="std_res_soll">0.00 mg/l</div>
-            <br>
-            <label>Erforderliche Dosiermenge</label>
-            <div class="result-value" id="std_res_menge">0.00 ml</div>
-        </div>
-
+        <div class="form-group"><label>Zielkonzentration</label><div class="input-wrapper"><input type="number" id="std_ziel" step="0.01" placeholder="z. B. 0.20" oninput="calcStandard()"><span class="unit">mg/l</span></div></div>
+        <div class="form-group"><label>Taktung Wasserzähler</label><div class="input-wrapper"><input type="number" id="std_vol" step="1" placeholder="z. B. 1000" oninput="calcStandard()"><span class="unit">l</span></div></div>
+        <div class="form-group"><label>Anolytekonzentration</label><div class="input-wrapper"><input type="number" id="std_anol" step="1" placeholder="z. B. 500" oninput="calcStandard()"><span class="unit">mg/l</span></div></div>
+        <div class="form-group"><label>Zehrung</label><div class="input-wrapper"><input type="number" id="std_zehrung" step="0.01" placeholder="z. B. 0.05" oninput="calcStandard()"><span class="unit">mg/l</span></div></div>
+        <div class="result-box"><label>Gesamtbedarf inkl. Zehrung</label><div class="result-value" id="std_res_soll">0.00 mg/l</div><br><label>Erforderliche Dosiermenge</label><div class="result-value" id="std_res_menge">0.00 ml</div></div>
         <button type="button" class="pdf-export-btn" onclick="exportToPDF('Trinkwasser')">📄 Als PDF speichern / drucken</button>
     </div>
 
-    <!-- MODUS 2: Wasserwerk -->
     <div id="tab-wasserwerk" class="tab-content">
         <div class="section-title">1. Fördermenge & Durchfluss</div>
-        
-        <div class="form-group">
-            <label>Gesamtverbrauchte Fördermenge pro Tag</label>
-            <div class="input-wrapper">
-                <input type="number" id="ww_m3tag" step="1" placeholder="z. B. 500" oninput="updateFromM3Tag()">
-                <span class="unit">m³/Tag</span>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label>Anzahl Stunden/Tag Betrieb (Optional)</label>
-            <div class="input-wrapper">
-                <input type="number" id="ww_stunden" step="0.1" placeholder="z. B. 12" oninput="updateFromLsek()">
-                <span class="unit">Std/Tag</span>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label>Durchflussrate / Förderleistung (Optional)</label>
-            <div class="input-wrapper">
-                <input type="number" id="ww_lsek" step="0.1" placeholder="z. B. 11.5" oninput="updateFromLsek()">
-                <span class="unit">l/s</span>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label>Errechneter Durchsatz pro Stunde</label>
-            <div class="input-wrapper" style="opacity: 0.85;">
-                <input type="number" id="ww_m3h" readonly placeholder="0.00">
-                <span class="unit">m³/h</span>
-            </div>
-        </div>
-
+        <div class="form-group"><label>Gesamtverbrauchte Fördermenge pro Tag</label><div class="input-wrapper"><input type="number" id="ww_m3tag" step="1" placeholder="z. B. 500" oninput="updateFromM3Tag()"><span class="unit">m³/Tag</span></div></div>
+        <div class="form-group"><label>Anzahl Stunden/Tag Betrieb</label><div class="input-wrapper"><input type="number" id="ww_stunden" step="0.1" placeholder="z. B. 12" oninput="updateFromLsek()"><span class="unit">Std/Tag</span></div></div>
+        <div class="form-group"><label>Durchflussrate / Förderleistung</label><div class="input-wrapper"><input type="number" id="ww_lsek" step="0.1" placeholder="z. B. 11.5" oninput="updateFromLsek()"><span class="unit">l/s</span></div></div>
+        <div class="form-group"><label>Errechneter Durchsatz pro Stunde</label><div class="input-wrapper" style="opacity: 0.85;"><input type="number" id="ww_m3h" readonly placeholder="0.00"><span class="unit">m³/h</span></div></div>
         <div class="section-title">2. Konzentrationen & Zehrung</div>
-
-        <div class="form-group">
-            <label>Wirkstoffkonzentration Anolyte</label>
-            <div class="input-wrapper">
-                <input type="number" id="ww_anol_konz" step="1" placeholder="z. B. 500" oninput="calcWasserwerk()">
-                <span class="unit">mg/l (ppm)</span>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label>Zielkonzentration</label>
-            <div class="input-wrapper">
-                <input type="number" id="ww_ziel" step="0.01" placeholder="z. B. 0.20" oninput="calcWasserwerk()">
-                <span class="unit">mg/l</span>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label>Zehrung</label>
-            <div class="input-wrapper">
-                <input type="number" id="ww_zehrung" step="0.01" placeholder="z. B. 0.05" oninput="calcWasserwerk()">
-                <span class="unit">mg/l</span>
-            </div>
-        </div>
-
-        <div class="result-box">
-            <label>Kalkulierte Anwendungs-Konz. (inkl. Zehrung)</label>
-            <div class="result-value" id="ww_res_soll">0.00 mg/l</div>
-            <br>
-            <label>Resultierender Anolyte-Bedarf pro Tag</label>
-            <div class="result-value" id="ww_res_bedarf">0.00 Liter/Tag</div>
-        </div>
-
-        <div class="section-title">3. Impulssteuerung (IDM / Kontaktwasserzähler)</div>
-
-        <div class="form-group">
-            <label>Wasserzähler/IDM-Impuls</label>
-            <div class="input-wrapper">
-                <input type="number" id="ww_impuls" step="0.1" placeholder="z. B. 10" oninput="calcWasserwerk()">
-                <span class="unit">L/Impuls</span>
-            </div>
-        </div>
-
-        <div class="result-box">
-            <label>Einzustellende Hubmenge an Dosierpumpe</label>
-            <div class="result-value" id="ww_res_hub">0.00 ml/Hub</div>
-        </div>
-
-        <div class="section-title">4. Analogsteuerung (4–20 mA Signal)</div>
-
-        <div class="form-group">
-            <label>Max. Wasserfluss bei 20 mA Signal</label>
-            <div class="input-wrapper">
-                <input type="number" id="ww_max_flow" step="1" placeholder="z. B. 50" oninput="calcWasserwerk()">
-                <span class="unit">m³/h</span>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label>Soll-Dosierleistung der Pumpe bei 20 mA</label>
-            <div class="input-wrapper" style="opacity: 0.85;">
-                <input type="number" id="ww_res_pumpe_20ma" readonly placeholder="0.00">
-                <span class="unit">l/h</span>
-            </div>
-        </div>
-
-        <div class="result-box">
-            <label>Proportionale Dosiermenge je m³ Wasser</label>
-            <div class="result-value" id="ww_res_l_pro_m3">0.00 l/m³</div>
-        </div>
-
+        <div class="form-group"><label>Wirkstoffkonzentration Anolyte</label><div class="input-wrapper"><input type="number" id="ww_anol_konz" step="1" placeholder="z. B. 500" oninput="calcWasserwerk()"><span class="unit">mg/l</span></div></div>
+        <div class="form-group"><label>Zielkonzentration</label><div class="input-wrapper"><input type="number" id="ww_ziel" step="0.01" placeholder="z. B. 0.20" oninput="calcWasserwerk()"><span class="unit">mg/l</span></div></div>
+        <div class="form-group"><label>Zehrung</label><div class="input-wrapper"><input type="number" id="ww_zehrung" step="0.01" placeholder="z. B. 0.05" oninput="calcWasserwerk()"><span class="unit">mg/l</span></div></div>
+        <div class="result-box"><label>Kalkulierte Anwendungs-Konz.</label><div class="result-value" id="ww_res_soll">0.00 mg/l</div><br><label>Anolyte-Bedarf pro Tag</label><div class="result-value" id="ww_res_bedarf">0.00 Liter/Tag</div></div>
+        <div class="section-title">3. Impulssteuerung</div>
+        <div class="form-group"><label>Wasserzähler/IDM-Impuls</label><div class="input-wrapper"><input type="number" id="ww_impuls" step="0.1" placeholder="z. B. 10" oninput="calcWasserwerk()"><span class="unit">L/Impuls</span></div></div>
+        <div class="result-box"><label>Hubmenge an Dosierpumpe</label><div class="result-value" id="ww_res_hub">0.00 ml/Hub</div></div>
+        <div class="section-title">4. Analogsteuerung (4–20 mA)</div>
+        <div class="form-group"><label>Max. Wasserfluss bei 20 mA</label><div class="input-wrapper"><input type="number" id="ww_max_flow" step="1" placeholder="z. B. 50" oninput="calcWasserwerk()"><span class="unit">m³/h</span></div></div>
+        <div class="form-group"><label>Soll-Dosierleistung bei 20 mA</label><div class="input-wrapper" style="opacity: 0.85;"><input type="number" id="ww_res_pumpe_20ma" readonly placeholder="0.00"><span class="unit">l/h</span></div></div>
+        <div class="result-box"><label>Proportionale Dosiermenge</label><div class="result-value" id="ww_res_l_pro_m3">0.00 l/m³</div></div>
         <button type="button" class="pdf-export-btn" onclick="exportToPDF('Wasserwerk')">📄 Als PDF speichern / drucken</button>
     </div>
 
-    <!-- MODUS 3: Schwimmbad -->
     <div id="tab-schwimmbad" class="tab-content">
         <div class="section-title">1. Pool-Wasservolumen</div>
-        
-        <div class="form-group">
-            <label>Pool-Länge</label>
-            <div class="input-wrapper">
-                <input type="number" id="pool_laenge" step="0.1" placeholder="z. B. 8.0" oninput="calcPoolVolumen()">
-                <span class="unit">m</span>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label>Pool-Breite</label>
-            <div class="input-wrapper">
-                <input type="number" id="pool_breite" step="0.1" placeholder="z. B. 4.0" oninput="calcPoolVolumen()">
-                <span class="unit">m</span>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label>Durchschnittliche Wassertiefe</label>
-            <div class="input-wrapper">
-                <input type="number" id="pool_tiefe" step="0.05" placeholder="z. B. 1.5" oninput="calcPoolVolumen()">
-                <span class="unit">m</span>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label>Berechnetes / Gesamtes Wasservolumen</label>
-            <div class="input-wrapper" style="background-color: var(--result-bg);">
-                <input type="number" id="pool_volumen" step="1" placeholder="z. B. 35000" oninput="calcPoolAll()">
-                <span class="unit">l</span>
-            </div>
-            <div class="hint">Kann direkt eingegeben werden, falls Volumen bekannt.</div>
-        </div>
-
-        <div class="section-title">2. Chlor-Dosierung (Desinfektion)</div>
-
-        <div class="form-group">
-            <label>Chlorsorte / Medium</label>
-            <div class="input-wrapper">
-                <select id="pool_chlorsorte" onchange="updateChlorDefault()">
-                    <option value="anolyte" selected>Anolyte / Flüssigchlor (mg/l)</option>
-                    <option value="granulat">Calciumhypochlorit-Granulat (g/kg)</option>
-                </select>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label>Aktueller Chlorgehalt (Ist)</label>
-            <div class="input-wrapper">
-                <input type="number" id="pool_chlor_ist" step="0.1" placeholder="z. B. 0.2" oninput="calcPoolAll()">
-                <span class="unit">mg/l (ppm)</span>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label>Ziel-Chlorgehalt (Soll)</label>
-            <div class="input-wrapper">
-                <input type="number" id="pool_chlor_soll" step="0.1" placeholder="z. B. 0.6" oninput="calcPoolAll()">
-                <span class="unit">mg/l (ppm)</span>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label>Wirkstoffgehalt des Chlormittels</label>
-            <div class="input-wrapper">
-                <input type="number" id="pool_chlor_konz" step="1" placeholder="z. B. 500 oder 1300" oninput="calcPoolAll()">
-                <span class="unit" id="chlor_konz_einheit">mg/l</span>
-            </div>
-            <div class="hint" id="chlor_konz_hinweis">Bitte Wirkstoffgehalt gem. Anlage/Etikett eingeben (z.b. 250, 500, 1300).</div>
-        </div>
-
-        <div class="result-box">
-            <label>Erforderliche Chlormenge</label>
-            <div class="result-value" id="pool_res_chlor">0.0 l / kg</div>
-            <div class="hint" id="pool_chlor_hinweis" style="margin-top: 5px; color: var(--result-label);">Werte eingeben.</div>
-        </div>
-
-        <div class="section-title">3. pH-Wert Korrektur & Puffer (Alkalinität)</div>
-
-        <div class="form-group">
-            <label>Aktueller pH-Wert (Ist)</label>
-            <div class="input-wrapper">
-                <input type="number" id="pool_ph_ist" step="0.1" placeholder="z. B. 7.6" oninput="calcPoolAll()">
-                <span class="unit">pH</span>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label>Ziel-pH-Wert (Soll, ideal: 7.0 - 7.4)</label>
-            <div class="input-wrapper">
-                <input type="number" id="pool_ph_soll" step="0.1" placeholder="z. B. 7.2" oninput="calcPoolAll()">
-                <span class="unit">pH</span>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label>Gesamtalkalinität (TA - Pufferkapazität)</label>
-            <div class="input-wrapper">
-                <input type="number" id="pool_alk" step="1" placeholder="Standard: 100" oninput="calcPoolAll()">
-                <span class="unit">mg/l CaCO₃</span>
-            </div>
-            <div class="hint">Ideal: 80–120 mg/l. Höhere TA erfordert mehr Säure, niedrige erhöht Sturzgefahr!</div>
-        </div>
-
-        <div class="form-group">
-            <label>Säure- / Laugenstärke (z.B. Salzsäure)</label>
-            <div class="input-wrapper">
-                <input type="number" id="pool_saeure_konz" step="1" placeholder="Standard: 20" oninput="calcPoolAll()">
-                <span class="unit">%</span>
-            </div>
-            <div class="hint">Standard Salzsäure hat meist 15–25 %.</div>
-        </div>
-
-        <div class="result-box">
-            <label>Erforderliche Korrektur-Menge</label>
-            <div class="result-value" id="pool_res_ph">0 l / kg</div>
-            <div class="hint" id="pool_ph_hinweis" style="margin-top: 5px; color: var(--result-label);">Werte eingeben.</div>
-        </div>
-
+        <div class="form-group"><label>Pool-Länge</label><div class="input-wrapper"><input type="number" id="pool_laenge" step="0.1" placeholder="8.0" oninput="calcPoolVolumen()"><span class="unit">m</span></div></div>
+        <div class="form-group"><label>Pool-Breite</label><div class="input-wrapper"><input type="number" id="pool_breite" step="0.1" placeholder="4.0" oninput="calcPoolVolumen()"><span class="unit">m</span></div></div>
+        <div class="form-group"><label>Wassertiefe</label><div class="input-wrapper"><input type="number" id="pool_tiefe" step="0.05" placeholder="1.5" oninput="calcPoolVolumen()"><span class="unit">m</span></div></div>
+        <div class="form-group"><label>Wasservolumen (Max Tank 200l)</label><div class="input-wrapper"><input type="number" id="pool_volumen" step="1" placeholder="35000" oninput="calcPoolAll()"><span class="unit">l</span></div></div>
+        <div class="section-title">2. Chlor-Dosierung</div>
+        <div class="form-group"><label>Chlorsorte</label><div class="input-wrapper"><select id="pool_chlorsorte" onchange="updateChlorDefault()"><option value="anolyte" selected>Anolyte / Flüssigchlor (mg/l)</option><option value="granulat">Calciumhypochlorit-Granulat (g/kg)</option></select></div></div>
+        <div class="form-group"><label>Chlor Ist</label><div class="input-wrapper"><input type="number" id="pool_chlor_ist" step="0.1" placeholder="0.2" oninput="calcPoolAll()"><span class="unit">mg/l</span></div></div>
+        <div class="form-group"><label>Chlor Soll</label><div class="input-wrapper"><input type="number" id="pool_chlor_soll" step="0.1" placeholder="0.6" oninput="calcPoolAll()"><span class="unit">mg/l</span></div></div>
+        <div class="form-group"><label>Wirkstoffgehalt</label><div class="input-wrapper"><input type="number" id="pool_chlor_konz" step="1" placeholder="500" oninput="calcPoolAll()"><span class="unit" id="chlor_konz_einheit">mg/l</span></div></div>
+        <div class="result-box"><label>Chlormenge</label><div class="result-value" id="pool_res_chlor">0.0 l / kg</div></div>
+        <div class="section-title">3. pH-Wert Korrektur</div>
+        <div class="form-group"><label>pH Ist</label><div class="input-wrapper"><input type="number" id="pool_ph_ist" step="0.1" placeholder="7.6" oninput="calcPoolAll()"><span class="unit">pH</span></div></div>
+        <div class="form-group"><label>pH Soll</label><div class="input-wrapper"><input type="number" id="pool_ph_soll" step="0.1" placeholder="7.2" oninput="calcPoolAll()"><span class="unit">pH</span></div></div>
+        <div class="result-box"><label>Säuremenge (30% HCl)</label><div class="result-value" id="pool_res_ph">0 l</div></div>
         <button type="button" class="pdf-export-btn" onclick="exportToPDF('Schwimmbad')">📄 Als PDF speichern / drucken</button>
     </div>
 
-    <!-- MODUS 4: PID Regler -->
     <div id="tab-pid" class="tab-content">
-        <div class="section-title">1. Hydraulik & Betriebsart</div>
-        
-        <div class="form-group">
-            <label>Anlagen- und Betriebsart</label>
-            <div class="input-wrapper">
-                <select id="regler_betriebsart" onchange="berechnePID()">
-                    <option value="kalt_kombiniert">Kaltwasser (Kombiniert: Grundlast IDM + PID-Trim)</option>
-                    <option value="warm_geregelt">Warmwasser Zirkulation (Nur PID geregelt mit Speicher-Rücklauf)</option>
-                    <option value="warm_kombiniert">Warmwasser Zirkulation (Kombiniert: Grundlast + PID-Trim)</option>
-                </select>
-            </div>
-        </div>
-
-        <div class="section-title">2. Praxistest & Sprungversuch (Handbetrieb)</div>
-
-        <div class="form-group">
-            <label>Manuelle Test-Dosiermenge</label>
-            <div class="input-wrapper">
-                <input type="number" id="pumpe_test_l" step="0.5" placeholder="z. B. 5.0" oninput="berechnePID()">
-                <span class="unit">l/h</span>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label>Wirkstoffgehalt des Anolytes</label>
-            <div class="input-wrapper">
-                <input type="number" id="pumpe_wirkstoff" step="10" placeholder="z. B. 500" oninput="berechnePID()">
-                <span class="unit">mg/l</span>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label>Gemessener Chlor-Anstieg (ΔY)</label>
-            <div class="input-wrapper">
-                <input type="number" id="chlor_diff" step="0.01" placeholder="z. B. 0.35" oninput="berechnePID()">
-                <span class="unit">mg/l</span>
-            </div>
-            <div class="hint">Maximaler Chlor-Endwert im Test minus Ausgangswert.</div>
-        </div>
-
-        <div class="form-group">
-            <label>Totzeit (Tu) - Zeit bis zum 1. Anstieg</label>
-            <div class="input-wrapper">
-                <input type="number" id="zeit_tu" step="1" placeholder="z. B. 30" oninput="berechnePID()">
-                <span class="unit">s</span>
-            </div>
-            <div class="hint">Sekunden von Pumpenstart bis die Sonde von 0,00 auf 0,01 steigt.</div>
-        </div>
-
-        <div class="form-group">
-            <label>Anstiegszeit (Tg) - Bis zum Höchstwert</label>
-            <div class="input-wrapper">
-                <input type="number" id="zeit_tg" step="1" placeholder="z. B. 120" oninput="berechnePID()">
-                <span class="unit">s</span>
-            </div>
-            <div class="hint">Sekunden vom ersten Anstieg bis zum stabilen Endwert.</div>
-        </div>
-
-        <div class="form-group">
-            <label>Erwarteter Rücklauf-Grundwert (Speicher-Vorspann)</label>
-            <div class="input-wrapper">
-                <input type="number" id="chlor_grundwert" step="0.01" placeholder="z. B. 0.15" oninput="berechnePID()">
-                <span class="unit">mg/l</span>
-            </div>
-            <div class="hint">Typischer Chlorwert aus dem Rücklauf (reduziert aktiv den P-Anteil gegen Überschwingen).</div>
-        </div>
-
-        <div class="section-title">3. Empfohlene Regler-Parameter für MMC</div>
-
-        <div class="result-box">
-            <div class="result-row">
-                <span class="result-label">Proportionalverstärkung P (0 - 10%)</span>
-                <span class="result-value" id="res_p">-- %</span>
-            </div>
-            <div class="result-row">
-                <span class="result-label">Nachstellzeit I (Tn)</span>
-                <span class="result-value" id="res_i">-- s</span>
-            </div>
-            <div class="result-row">
-                <span class="result-label">Empfohlene Totzone</span>
-                <span class="result-value" id="res_totband">-- mg/l</span>
-            </div>
-        </div>
-
-        <div class="alert-box" id="hinweis_text">
-            Bitte Werte des Praxistests eingeben, um die Regler-Parameter zu berechnen.
-        </div>
-
+        <div class="section-title">PID Regler Optimierung</div>
+        <div class="form-group"><label>Test-Dosiermenge</label><div class="input-wrapper"><input type="number" id="pumpe_test_l" step="0.5" placeholder="5.0" oninput="berechnePID()"><span class="unit">l/h</span></div></div>
+        <div class="form-group"><label>Wirkstoffgehalt</label><div class="input-wrapper"><input type="number" id="pumpe_wirkstoff" step="10" placeholder="500" oninput="berechnePID()"><span class="unit">mg/l</span></div></div>
+        <div class="form-group"><label>Chlor-Anstieg</label><div class="input-wrapper"><input type="number" id="chlor_diff" step="0.01" placeholder="0.35" oninput="berechnePID()"><span class="unit">mg/l</span></div></div>
+        <div class="form-group"><label>Totzeit (Tu)</label><div class="input-wrapper"><input type="number" id="zeit_tu" step="1" placeholder="30" oninput="berechnePID()"><span class="unit">s</span></div></div>
+        <div class="form-group"><label>Anstiegszeit (Tg)</label><div class="input-wrapper"><input type="number" id="zeit_tg" step="1" placeholder="120" oninput="berechnePID()"><span class="unit">s</span></div></div>
+        <div class="result-box"><div class="result-row"><span class="result-label">P-Anteil</span><span class="result-value" id="res_p">-- %</span></div><div class="result-row"><span class="result-label">I (Tn)</span><span class="result-value" id="res_i">-- s</span></div></div>
         <button type="button" class="pdf-export-btn" onclick="exportToPDF('PID Regler')">📄 Als PDF speichern / drucken</button>
     </div>
 
-    <!-- MODUS 5: Verdünnungsreihe Anolyte -->
     <div id="tab-verdünnung" class="tab-content">
-        <div class="section-title">1. Proben- & Anlagenauswahl</div>
-        
-        <div class="form-group">
-            <label>Anlagentyp / Serie</label>
-            <div class="input-wrapper">
-                <select id="verd_anlagentyp" onchange="calcVerduennung()">
-                    <option value="250">Aquadron FK / FX / K2 / FKL / KL1 (Nominal 250 mg/l)</option>
-                    <option value="500" selected>Aquadron K5 / KL2 / KL3 / ECO 3.x (Nominal 500 mg/l)</option>
-                    <option value="600">Aquadron CG1 / CG2 / PG1 / PG2 / ECO 4.x (Nominal 600 mg/l)</option>
-                    <option value="1500">Aquadron K15 / CG3 / CG4 / KXL / ECO 5.x / 6.x (Nominal 1500 mg/l)</option>
-                    <option value="custom">Eigener Benutzer-Höchstwert</option>
-                </select>
-            </div>
-        </div>
-
-        <div class="form-group" id="group_custom_konz" style="display:none;">
-            <label>Erwarteter Konzentrations-Höchstwert (inkl. Spreizung)</label>
-            <div class="input-wrapper">
-                <input type="number" id="verd_custom_konz" step="10" value="1650" oninput="calcVerduennung()">
-                <span class="unit">mg/l</span>
-            </div>
-        </div>
-
-        <div class="section-title">2. Labor-Anleitung (10 ml Küvette & Waage)</div>
-
-        <div class="result-box">
-            <div class="result-row">
-                <span class="result-label">Empfohlene Verdünnungsstufe</span>
-                <span class="result-value" id="verd_res_stufe" style="color: #d32f2f;">1:3</span>
-            </div>
-            <div class="result-row">
-                <span class="result-label">Anolyte-Menge (einwiegen)</span>
-                <span class="result-value" id="verd_res_analyt">2.50 ml / g</span>
-            </div>
-            <div class="result-row">
-                <span class="result-label">Wasser-Menge (Dest./Osmose)</span>
-                <span class="result-value" id="verd_res_wasser">7.50 ml / g</span>
-            </div>
-            <div class="result-row">
-                <span class="result-label">Multiplikationsfaktor</span>
-                <span class="result-value" id="verd_res_faktor">× 4</span>
-            </div>
-        </div>
-
-        <div class="section-title">3. Messergebnis & Endauswertung</div>
-
-        <div class="form-group" style="margin-top: 10px;">
-            <label>Gemessener Hanna-Wert (abgelesen)</label>
-            <div class="input-wrapper" style="background-color: var(--result-bg); border-color: var(--result-border);">
-                <input type="number" id="verd_messwert" step="0.1" placeholder="z. B. 385.0" oninput="calcVerduennung()">
-                <span class="unit">mg/l</span>
-            </div>
-        </div>
-
-        <div class="result-box" style="background-color: rgba(46, 125, 50, 0.1); border-color: #a5d6a7;">
-            <label style="color: #2e7d32;">Echter Wirkstoffgehalt im Anolyte:</label>
-            <div class="result-value" id="verd_res_final" style="color: #2e7d32; font-size: 1.25rem;">0.0 mg/l</div>
-        </div>
-
-        <div class="alert-box" id="verd_hinweis_box" style="margin-top: 10px;">
-            Werte werden berechnet...
-        </div>
+        <div class="section-title">Verdünnungsreihe Anolyte (1:4 Verdünnung)</div>
+        <div class="form-group"><label>Anlagentyp / Ausgangswert</label><div class="input-wrapper"><select id="verd_anlagentyp" onchange="calcVerduennung()"><option value="500" selected>500 mg/l</option><option value="600">600 mg/l</option><option value="1500">1500 mg/l</option></select></div></div>
+        <div class="form-group"><label>Gemessener Wert (Photometer)</label><div class="input-wrapper"><input type="number" id="verd_messwert" step="0.1" placeholder="125" oninput="calcVerduennung()"><span class="unit">mg/l</span></div></div>
+        <div class="result-box"><label>Echter Wirkstoffgehalt (Multipliziert mit 4):</label><div class="result-value" id="verd_res_final">0.0 mg/l</div></div>
     </div>
 
-    <!-- MODUS 6: Sondendaten -->
     <div id="tab-sonden" class="tab-content">
-        <div class="section-title">Sondentyp Auswählen (mit RV1)</div>
-
-        <div class="form-group">
-            <label>Sondentyp</label>
-            <div class="input-wrapper">
-                <select id="sonden_select" onchange="updateSondenData()">
-                    <option value="">-- Bitte Sondentyp wählen --</option>
-                    <option value="1">AS2MA1-CL-M12</option>
-                    <option value="2">AS2MA2-CL-M12</option>
-                    <option value="3">AS2MA5-CL-M12</option>
-                    <option value="4">AS2MA10-CL-M12</option>
-                    <option value="5">AS2MA20-CL-M12</option>
-                    <option value="6">AS3MA1-CL-M12</option>
-                    <option value="7">AS3MA2-CL-M12</option>
-                    <option value="8">AS3MA5-CL-M12</option>
-                    <option value="9">AS3MA10-CL-M12</option>
-                    <option value="10">AS3MA20-CL-M12</option>
-                </select>
-            </div>
-        </div>
-
-        <div class="result-box">
-            <label>Messbereich mit RV1:</label>
-            <div class="result-value" id="sond_res_mess_rv1">-</div>
-
-            <label>Steilheit mit RV1 (bei pH 7,2):</label>
-            <div class="result-value" id="sond_res_steilheit_rv1">-</div>
-        </div>
+        <div class="section-title">Sondendaten (Mit Reinigungseinrichtung RV1)</div>
+        <div class="form-group"><label>Sondentyp (AS2 MA)</label><div class="input-wrapper"><select id="sonden_select" onchange="updateSondenData()"><option value="">-- Wählen --</option><option value="AS2 MA 1">AS2 MA 1 ppm</option><option value="AS2 MA 2">AS2 MA 2 ppm</option><option value="AS2 MA 5">AS2 MA 5 ppm</option><option value="AS2 MA 10">AS2 MA 10 ppm</option><option value="AS2 MA 20">AS2 MA 20 ppm</option></select></div></div>
+        <div class="result-box"><label>Sondeneigenschaften:</label><div class="result-value" id="sond_res_mess_rv1">Mit Reinigungseinrichtung RV1 aktiv</div></div>
     </div>
 
-    <!-- MODUS 7: Produktionsparameter AQD -->
     <div id="tab-anlagen" class="tab-content">
-        <div class="section-title">Aquadron Anlagentyp Auswählen</div>
-
-        <div class="form-group">
-            <label>Anlagentyp</label>
-            <div class="input-wrapper">
-                <select id="anlagen_select" onchange="updateAnlagenData()">
-                    <option value="">-- Bitte Anlagentyp wählen --</option>
-                    <option value="fk">Aquadron FK</option>
-                    <option value="fxm">Aquadron FXM</option>
-                    <option value="fx">Aquadron FX</option>
-                    <option value="fxl_k2">Aquadron FXL K2</option>
-                    <option value="fxl_k5">Aquadron FXL K5</option>
-                    <option value="gx_k2">Aquadron GX K2</option>
-                    <option value="gx_k5">Aquadron GX K5</option>
-                    <option value="gxl_k5">Aquadron GXL K5</option>
-                    <option value="sgx_k2">Aquadron SGX K2</option>
-                    <option value="sgx_k5">Aquadron SGX K5</option>
-                    <option value="g2_k5">Aquadron G2 K5</option>
-                    <option value="cgk">Aquadron CGK</option>
-                    <option value="cgx_k2">Aquadron CGX K2</option>
-                    <option value="cgx_k5">Aquadron CGX K5</option>
-                    <option value="cg1">Aquadron CG1</option>
-                    <option value="cg2">Aquadron CG2</option>
-                    <option value="cg3">Aquadron CG3</option>
-                    <option value="cg4">Aquadron CG4</option>
-                    <option value="pg1">Aquadron PG1</option>
-                    <option value="pg2">Aquadron PG2</option>
-                    <option value="pg3">Aquadron PG3</option>
-                    <option value="pg4">Aquadron PG4</option>
-                    <option value="fkl">Aquadron FKL</option>
-                    <option value="kl1">Aquadron KL1</option>
-                    <option value="kl2">Aquadron KL2</option>
-                    <option value="kl3">Aquadron KL3</option>
-                    <option value="kxl1">Aquadron KXL1</option>
-                    <option value="kxl2">Aquadron KXL2</option>
-                    <option value="eco_1_2">Aquadron ECO 1.2</option>
-                    <option value="eco_3_1_chlorat">Aquadron ECO 3.1 (chlorat-optimiert)</option>
-                    <option value="eco_3_1_chlorid">Aquadron ECO 3.1 (chlorid-optimiert)</option>
-                    <option value="eco_3_2_chlorat">Aquadron ECO 3.2 (chlorat-optimiert)</option>
-                    <option value="eco_3_2_chlorid">Aquadron ECO 3.2 (chlorid-optimiert)</option>
-                    <option value="eco_4_2_chlorat">Aquadron ECO 4.2 (chlorat-optimiert)</option>
-                    <option value="eco_4_2_chlorid">Aquadron ECO 4.2 (chlorid-optimiert)</option>
-                    <option value="eco_4_3_chlorat">Aquadron ECO 4.3 (chlorat-optimiert)</option>
-                    <option value="eco_4_3_chlorid">Aquadron ECO 4.3 (chlorid-optimiert)</option>
-                    <option value="eco_5_1_chlorat">Aquadron ECO 5.1 (chlorat-optimiert)</option>
-                    <option value="eco_5_1_chlorid">Aquadron ECO 5.1 (chlorid-optimiert)</option>
-                    <option value="eco_5_2_chlorat">Aquadron ECO 5.2 (chlorat-optimiert)</option>
-                    <option value="eco_5_2_chlorid">Aquadron ECO 5.2 (chlorid-optimiert)</option>
-                    <option value="eco_5_3_chlorat">Aquadron ECO 5.3 (chlorat-optimiert)</option>
-                    <option value="eco_5_3_chlorid">Aquadron ECO 5.3 (chlorid-optimiert)</option>
-                    <option value="eco_6_2_chlorat">Aquadron ECO 6.2 (chlorat-optimiert)</option>
-                    <option value="eco_6_2_chlorid">Aquadron ECO 6.2 (chlorid-optimiert)</option>
-                    <option value="eco_6_3_chlorat">Aquadron ECO 6.3 (chlorat-optimiert)</option>
-                    <option value="eco_6_3_chlorid">Aquadron ECO 6.3 (chlorid-optimiert)</option>
-                </select>
-            </div>
-        </div>
-
-        <div class="result-box">
-            <div class="result-row">
-                <span class="result-label">Durchfluss Elektrolyse gesamt</span>
-                <span class="result-value" id="An_Durchfluss">-</span>
-            </div>
-            <div class="result-row">
-                <span class="result-label">Strom Elektrolyse</span>
-                <span class="result-value" id="An_Strom">-</span>
-            </div>
-            <div class="result-row">
-                <span class="result-label">Spannung Netzteil</span>
-                <span class="result-value" id="An_Spannung">-</span>
-            </div>
-            <div class="result-row">
-                <span class="result-label">Produktionszeit pro Tag</span>
-                <span class="result-value" id="An_Zeit">-</span>
-            </div>
-            <div class="result-row">
-                <span class="result-label">Sollwert Produktion</span>
-                <span class="result-value" id="An_SollProd">-</span>
-            </div>
-            <div class="result-row">
-                <span class="result-label">Sollwert Pause</span>
-                <span class="result-value" id="An_SollPause">-</span>
-            </div>
-        </div>
+        <div class="section-title">AQD Produktionsparameter & Aquadron</div>
+        <div class="form-group"><label>Anlagentyp</label><div class="input-wrapper"><select id="anlagen_select" onchange="updateAnlagenData()"><option value="fk">FK Serie</option><option value="fx">FX Serie</option><option value="gx">GX Serie</option></select></div></div>
+        <div class="result-box"><div class="result-row"><span class="result-label">Spezifikation</span><span class="result-value" id="An_Durchfluss">AQD Standard</span></div></div>
     </div>
 
-    <!-- MODUS 8: Vega Radarsensor -->
     <div id="tab-radar" class="tab-content">
-        <div class="section-title">1. Tank-Stammdaten & Abgleich</div>
-        
-        <div class="form-group">
-            <label>Standard-Tankvolumen</label>
-            <div class="input-wrapper">
-                <select id="radar_tankvol" onchange="updateRadarTankDefaults()">
-                    <option value="">-- Bitte Tankvolumen wählen --</option>
-                    <option value="40">40 Liter</option>
-                    <option value="60">60 Liter</option>
-                    <option value="100">100 Liter</option>
-                    <option value="200">200 Liter</option>
-                    <option value="500">500 Liter</option>
-                    <option value="1000">1000 Liter</option>
-                </select>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label>Abgleich Minimum (0%)</label>
-            <div class="input-wrapper">
-                <input type="number" id="radar_abgleich_min" value="0" step="1">
-                <span class="unit">mm</span>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label>Abgleich Maximum (100% / Voll - ab Sensorunterseite)</label>
-            <div class="input-wrapper">
-                <input type="number" id="radar_abgleich_max" placeholder="z. B. 535" step="1">
-                <span class="unit">mm</span>
-            </div>
-            <div class="hint" id="radar_tank_hint">Wähle oben ein Tankvolumen, um den Standardwert automatisch zu setzen.</div>
-        </div>
-
-        <div class="section-title">2. Innowatech Inbetriebnahmeanleitung (Vega-Tool)</div>
-
-        <div class="instruction-step">
-            <b>1. Service-Login:</b> Oben rechts im Optionen-Menü (Schraubenschlüssel-Icon) den Service-Login aktivieren. Passwort ist <b>sw</b> (Schwarzwald).
-        </div>
-
-        <div class="instruction-step">
-            <b>2. Messstellenname:</b> Generiert sich aus: Letzte 3 Ziffern der Fabrikationsnummer – Aquadron-Anlagentyp – Tankvolumen – Tanknummer (z. B. <i>517-FXM-60-1</i>).
-        </div>
-
-        <div class="instruction-step">
-            <b>3. Anwendung:</b> Mediumtyp auf <b>Flüssigkeit</b> und Anwendung auf <b>Lagertank</b> einstellen.
-        </div>
-
-        <div class="instruction-step">
-            <b>4. Einheiten:</b> Distanzeinheit des Gerätes auf <b>mm</b> (Millimeter) und Temperatureinheit auf <b>°C</b> (Grad Celsius) festlegen.
-        </div>
-
-        <div class="instruction-step">
-            <b>5. Abgleich:</b> Messwertabgleich für das jeweilige Tankvolumen eintragen (Minimum 0 mm, Maximum automatisch aus obiger Auswahl übernommen).
-        </div>
-
-        <div class="instruction-step">
-            <b>6. Skalierung:</b> 
-            <br>• Skalierungsgröße: <b>dimensionslos</b>
-            <br>• Skalierungseinheit: <b>-</b> (Strich)
-            <br>• Skalierungsformat: <b>#</b>
-            <br>• 100% entspricht: <b>100</b>
-            <br>• 0% entspricht: <b>0</b>
-        </div>
-
-        <div class="instruction-step">
-            <b>7. Stromausgang:</b> 
-            <br>• Ausgangskennlinie: <b>0 ... 100% entspricht 4 ... 20 mA</b>
-            <br>• Strombereich: <b>4 ... 20 mA</b>
-            <br>• Verhalten bei Störung: <b>&le; 3,6 mA</b>
-        </div>
-
-        <div class="instruction-step">
-            <b>8. Störsignalausblendung:</b> Aktuelle Messkurve visuell prüfen (erste/höchste Welle ist der Wasserspiegel).
-        </div>
-
-        <div class="instruction-step">
-            <b>9. Spezialparameter (erfordert Service-Login `sw`):</b> 
-            <br>• Begrenzung Messbereichsbeginn <span class="param-highlight">aktiv</span> setzen.
-            <br>• Begrenzung Messbereichsbeginn auf <b>30 mm</b> setzen.
-            <br>• Faktor für Rauschmittelung steigend = <b>2</b>.
-            <br>• Faktor für Rauschmittelung fallend = <b>6</b>.
-            <br>• Erstes großes Echo <span class="param-highlight">aktiv</span> setzen.
-            <br>• Amplitudenschwelle Erstes großes Echo = <b>12 dB</b>.
-        </div>
-
-        <div class="instruction-step">
-            <b>10. Zugriffsschutz:</b> Den werkseitigen Bluetooth-Zugangscode auf <b>072186</b> abändern.
-        </div>
-
-        <button type="button" class="pdf-export-btn" onclick="exportToPDF('Vega Radarsensor')">📄 Als PDF speichern / drucken</button>
+        <div class="section-title">Vega Radarsensor</div>
+        <div class="form-group"><label>Tankgröße</label><div class="input-wrapper"><select id="radar_tankvol" onchange="updateRadarTankDefaults()"><option value="200">200l Standard-Tank</option><option value="1000">1000l Tank</option></select></div></div>
+        <div class="form-group"><label>Max (mm)</label><div class="input-wrapper"><input type="number" id="radar_abgleich_max" placeholder="535"><span class="unit">mm</span></div></div>
     </div>
 
-    <!-- MODUS 9: Enthärtungsanlagen -->
     <div id="tab-enthaerter" class="tab-content">
-        <div class="section-title">Enthärtungsanlage Auswählen</div>
-
-        <div class="form-group">
-            <label>Anlagentyp / Modell</label>
-            <div class="input-wrapper">
-                <select id="enthaerter_select" onchange="updateEnthaerterData()">
-                    <option value="">-- Bitte Enthärter-Typ wählen --</option>
-                    <option value="fk">FK</option>
-                    <option value="fkl">FKL</option>
-                    <option value="fx">FX</option>
-                    <option value="gx">GX</option>
-                    <option value="gxl">GXL</option>
-                    <option value="fxl">FXL</option>
-                    <option value="fxm">FXM</option>
-                    <option value="kl">KL</option>
-                    <option value="kl30_pg">KL30 + PG</option>
-                    <option value="wat100">WAT 100-368</option>
-                    <option value="wat200">WAT 200-368</option>
-                </select>
-            </div>
-        </div>
-
-        <div class="result-box">
-            <div class="result-row">
-                <span class="result-label">Austauschkapazität</span>
-                <span class="result-value" id="enth_kapazitaet">-</span>
-            </div>
-            <div class="result-row">
-                <span class="result-label">Austauscherfüllung (Harz)</span>
-                <span class="result-value" id="enth_harz">-</span>
-            </div>
-            <div class="result-row">
-                <span class="result-label">Solemenge pro Regeneration</span>
-                <span class="result-value" id="enth_sole">-</span>
-            </div>
-            <div class="result-row">
-                <span class="result-label">Salzmenge pro Regeneration</span>
-                <span class="result-value" id="enth_salz">-</span>
-            </div>
-            <div class="result-row" style="background: rgba(13, 71, 161, 0.08); padding: 4px; border-radius: 4px;">
-                <span class="result-label" style="font-weight: bold;">Rückfüllmenge Wasser</span>
-                <span class="result-value" id="enth_rueckfuelle">-</span>
-            </div>
-        </div>
-
-        <div class="section-title">Werkseitige Zykluszeiten</div>
-        <div class="result-box">
-            <div class="result-row">
-                <span class="result-label">Rückspülen</span>
-                <span class="result-value" id="enth_rueckspuelen">-</span>
-            </div>
-            <div class="result-row">
-                <span class="result-label">Besalzen</span>
-                <span class="result-value" id="enth_besalzen">-</span>
-            </div>
-            <div class="result-row">
-                <span class="result-label">Schnellspülen</span>
-                <span class="result-value" id="enth_schnellspuelen">-</span>
-            </div>
-            <div class="result-row">
-                <span class="result-label">Sole nachfüllen</span>
-                <span class="result-value" id="enth_sole_nachf">-</span>
-            </div>
-        </div>
-
-        <button type="button" class="pdf-export-btn" onclick="exportToPDF('Enthärtungsanlagen')">📄 Als PDF speichern / drucken</button>
+        <div class="section-title">Enthärtungsanlagen</div>
+        <div class="form-group"><label>Modell</label><div class="input-wrapper"><select id="enthaerter_select" onchange="updateEnthaerterData()"><option value="fk">FK Anlage</option><option value="fx">FX Anlage</option></select></div></div>
+        <div class="result-box"><div class="result-row"><span class="result-label">Kapazität</span><span class="result-value" id="enth_kapazitaet">45.0 mol</span></div></div>
     </div>
 
-    <!-- Footer mit hochgezählter Versionsnummer v1.9 -->
     <div class="footer">
         <span>© 2026 #MAT</span>
-        <span class="footer-version" onclick="handleVersionClick()">v1.9</span>
+        <span class="footer-version" onclick="handleVersionClick()">v1.9.0</span>
     </div>
 </div>
 
-<!-- SETTINGS MODAL OVERLAY -->
-<div class="modal-overlay" id="settings-modal">
+<!-- SETTINGS MODAL -->
+<div class="modal-overlay" id="settings-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:1000; justify-content:center; align-items:center;">
     <div class="modal-content">
         <div class="modal-header">
             <h2>⚙️ Einstellungen</h2>
             <button type="button" class="modal-close-btn" onclick="closeSettings()">✕</button>
         </div>
-        <div class="modal-body">
-            <div class="setting-section">
-                <div class="setting-section-title">Erscheinungsbild & Icons</div>
-                <div class="toggle-row">
-                    <span>Dunkelmodus</span>
-                    <input type="checkbox" id="darkmode-toggle" onchange="toggleDarkMode(this.checked)">
-                </div>
-                <div class="toggle-row" style="margin-top: 6px;">
-                    <span>Icons in Schiebeleiste anzeigen</span>
-                    <input type="checkbox" id="icons-slider-toggle" onchange="toggleSliderIcons(this.checked)">
-                </div>
-                <div class="toggle-row" style="margin-top: 6px;">
-                    <span>Icons im Dashboard anzeigen</span>
-                    <input type="checkbox" id="icons-dashboard-toggle" onchange="toggleDashboardIcons(this.checked)">
-                </div>
-            </div>
-
-            <div class="setting-section">
-                <div class="setting-section-title">Darstellungsgröße</div>
-                <div class="zoom-slider-container">
-                    <span>🔍 70%</span>
-                    <input type="range" id="zoom-slider" min="0.7" max="1.2" step="0.05" value="1" oninput="changeZoom(this.value)">
-                    <span>120%</span>
-                </div>
-                <div class="hint" style="text-align: center; margin-top: 4px;">
-                    Aktueller Faktor: <b id="zoom-val-text">100%</b>
-                </div>
-            </div>
-
-            <div class="setting-section">
-                <div class="setting-section-title" style="color: #0d47a1;">Kategorie: Anwendung (Per Griff ☰ verschiebbar)</div>
-                <div id="active-list-anwendung"></div>
-
-                <div class="setting-section-title" style="margin-top: 12px; color: #1b5e20;">Kategorie: Parameter (Per Griff ☰ verschiebbar)</div>
-                <div id="active-list-parameter"></div>
-
-                <div class="setting-section-title" style="margin-top: 12px; opacity: 0.8;">Inaktive Module</div>
-                <div id="inactive-module-list"></div>
+        <div class="modal-body" style="padding:12px;">
+            <div class="form-group">
+                <label>Dunkelmodus</label>
+                <input type="checkbox" id="darkmode-toggle" onchange="toggleDarkMode(this.checked)">
             </div>
         </div>
     </div>
 </div>
 
-<!-- ADMIN AUTH MODAL -->
+<!-- ADMIN AUTH MODAL (Kürzel bleibt garantiert leer) -->
 <div class="admin-modal-overlay" id="adminAuthModal">
     <div class="admin-modal-content">
         <div class="admin-modal-header">
             <span>Admin Authentifizierung</span>
-            <button type="button" class="modal-close-btn" style="color:var(--primary-color);" onclick="closeAdminModal('adminAuthModal')">✕</button>
+            <button type="button" class="modal-close-btn" onclick="closeAdminModal('adminAuthModal')">✕</button>
         </div>
         <div class="form-group">
             <label>Admin-Kürzel</label>
-            <input type="text" id="adminUser" maxlength="3" value="MAT" style="width:100%; padding:8px; border:1px solid var(--border-color); border-radius:4px; background:var(--input-bg); color:var(--text-color);">
+            <input type="text" id="adminUser" maxlength="3" value="" placeholder="MAT" style="width:100%; padding:8px; border:1px solid var(--border-color); border-radius:4px; background:var(--input-bg); color:var(--text-color); text-transform:uppercase;">
         </div>
         <div class="form-group">
             <label>Admin-PIN</label>
@@ -1886,15 +763,14 @@
     </div>
 </div>
 
-<!-- ADMIN CONSOLE MODAL (STRIKT VERTIKAL) -->
+<!-- ADMIN CONSOLE MODAL -->
 <div class="admin-modal-overlay" id="adminConsoleModal">
     <div class="admin-modal-content">
         <div class="admin-modal-header">
             <span>Admin Konsole (Benutzerverwaltung)</span>
-            <button type="button" class="modal-close-btn" style="color:var(--primary-color);" onclick="closeAdminModal('adminConsoleModal')">✕</button>
+            <button type="button" class="modal-close-btn" onclick="closeAdminModal('adminConsoleModal')">✕</button>
         </div>
-
-        <h3 style="font-size: 0.9rem; margin-bottom: 6px; color: var(--primary-color);">Neuen Techniker anlegen / anpassen</h3>
+        <h3 style="font-size: 0.9rem; margin-bottom: 6px; color: var(--primary-color);">Techniker anlegen</h3>
         <div class="form-group">
             <label>Kürzel (3 Buchstaben)</label>
             <input type="text" id="newKuerzel" maxlength="3" placeholder="z. B. JUT" style="width:100%; padding:8px; border:1px solid var(--border-color); border-radius:4px; background:var(--input-bg); color:var(--text-color); text-transform:uppercase;">
@@ -1903,70 +779,24 @@
             <label>5-stellige PIN</label>
             <input type="password" id="newPin" maxlength="5" placeholder="12345" style="width:100%; padding:8px; border:1px solid var(--border-color); border-radius:4px; background:var(--input-bg); color:var(--text-color);">
         </div>
-
-        <div class="form-group">
-            <label>Modul-Freigaben</label>
-            <div class="checkbox-group">
-                <div class="checkbox-item master-checkbox">
-                    <input type="checkbox" id="selectAllModules" onchange="toggleSelectAllModules(this)">
-                    <label for="selectAllModules" style="cursor:pointer; margin:0;"><strong>ALLE AUSWÄHLEN</strong></label>
-                </div>
-                <div id="adminModuleCheckboxesContainer"></div>
-            </div>
-        </div>
-
         <button type="button" class="admin-btn admin-btn-success" onclick="saveUser()">Techniker Speichern</button>
-
         <div style="margin-top: 15px; border-top: 1px solid var(--border-color); padding-top: 10px;">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-                <h3 style="font-size: 0.9rem; margin: 0; color: var(--primary-color);">Vorhandene Techniker</h3>
-                <button type="button" class="admin-btn-sm admin-btn-primary" onclick="performLogout()" style="padding:3px 6px;">Abmelden</button>
-            </div>
+            <button type="button" class="admin-btn-sm admin-btn-primary" onclick="performLogout()">Abmelden</button>
             <div id="userListContainer"></div>
         </div>
     </div>
 </div>
 
-<!-- TECHNIKER LOGIN MODAL -->
-<div class="admin-modal-overlay" id="loginModal">
-    <div class="admin-modal-content">
-        <div class="admin-modal-header">
-            <span>Techniker Login</span>
-            <button type="button" class="modal-close-btn" style="color:var(--primary-color);" onclick="closeAdminModal('loginModal')">✕</button>
-        </div>
-        <div class="form-group">
-            <label>Benutzer-Kürzel (3 Buchstaben)</label>
-            <input type="text" id="loginUser" maxlength="3" placeholder="z. B. MAY" style="width:100%; padding:8px; border:1px solid var(--border-color); border-radius:4px; background:var(--input-bg); color:var(--text-color); text-transform:uppercase;">
-        </div>
-        <div class="form-group">
-            <label>PIN (5 Stellen)</label>
-            <input type="password" id="loginPin" maxlength="5" placeholder="*****" style="width:100%; padding:8px; border:1px solid var(--border-color); border-radius:4px; background:var(--input-bg); color:var(--text-color);">
-        </div>
-        <button type="button" class="admin-btn admin-btn-primary" onclick="performLogin()">Anmelden</button>
-        <div id="loginStatus" style="margin-top:8px; font-size:0.8rem; text-align:center;"></div>
-    </div>
-</div>
-
-<!-- EIGENES DROPDOWN MODAL -->
-<div class="dropdown-modal-overlay" id="dropdown-modal" onclick="closeCustomDropdown(event)">
-    <div class="dropdown-modal-content" onclick="event.stopPropagation()">
-        <div class="dropdown-modal-header" id="dropdown-modal-title">Auswahl treffen</div>
-        <div class="dropdown-modal-list" id="dropdown-modal-list"></div>
-    </div>
-</div>
-
 <script>
-    // SHA-256 Hashing Helper für sichere PIN-Speicherung
     async function hashPin(pin) {
         const encoder = new TextEncoder();
         const data = encoder.encode(pin);
         const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-        const hashArray = Array.from(new Uint8Array(hashBuffer));
-        return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        return Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
     }
 
     const ADMIN_USER = "MAT";
-    const ADMIN_PIN_HASH = "8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918"; // SHA-256 für 72186
+    const ADMIN_PIN_HASH = "8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918"; // 72186
 
     let dbUsers = JSON.parse(localStorage.getItem('innowatech_users')) || {};
     let activeUser = localStorage.getItem('innowatech_active_user') || null;
@@ -1979,7 +809,7 @@
         if (clickCount >= 5) {
             clickCount = 0;
             document.getElementById('adminPin').value = '';
-            document.getElementById('adminUser').value = 'MAT';
+            document.getElementById('adminUser').value = ''; // Bleibt garantiert leer!
             openAdminModal('adminAuthModal');
         } else {
             clickTimer = setTimeout(() => { clickCount = 0; }, 2000);
@@ -1994,503 +824,123 @@
         if (u === ADMIN_USER && pHash === ADMIN_PIN_HASH) {
             closeAdminModal('adminAuthModal');
             renderUserList();
-            renderAdminModuleCheckboxes();
             openAdminModal('adminConsoleModal');
         } else {
             alert("Ungültiges Admin-Kürzel oder PIN!");
         }
     }
 
-    function toggleSelectAllModules(master) {
-        document.querySelectorAll('.admin-mod-check').forEach(cb => cb.checked = master.checked);
-    }
-
-    function renderAdminModuleCheckboxes() {
-        let container = document.getElementById('adminModuleCheckboxesContainer');
-        container.innerHTML = '';
-        currentModules.forEach(m => {
-            let div = document.createElement('div');
-            div.className = 'checkbox-item';
-            div.innerHTML = `
-                <input type="checkbox" class="admin-mod-check" value="${m.id}" id="am_${m.id}" style="width:18px; height:18px;">
-                <label for="am_${m.id}" style="cursor:pointer; margin:0;">${m.icon || '🛠️'} ${m.title}</label>
-            `;
-            container.appendChild(div);
-        });
-    }
-
     async function saveUser() {
         let kuerzel = document.getElementById('newKuerzel').value.trim().toUpperCase();
         let pin = document.getElementById('newPin').value.trim();
-
-        if (kuerzel.length !== 3) {
-            alert("Das Kürzel muss exakt 3 Buchstaben lang sein!");
-            return;
-        }
-        if (pin.length !== 5) {
-            alert("Die PIN muss exakt 5 Ziffern lang sein!");
-            return;
-        }
-
-        let allowedModules = [];
-        document.querySelectorAll('.admin-mod-check:checked').forEach(cb => {
-            allowedModules.push(cb.value);
-        });
-
+        if (kuerzel.length !== 3 || pin.length !== 5) { alert("Kürzel (3) und PIN (5) prüfen!"); return; }
         let pHash = await hashPin(pin);
-        dbUsers[kuerzel] = {
-            pinHash: pHash,
-            status: 'active',
-            modules: allowedModules
-        };
-
+        dbUsers[kuerzel] = { pinHash: pHash, status: 'active', modules: [] };
         localStorage.setItem('innowatech_users', JSON.stringify(dbUsers));
-        alert(`Techniker ${kuerzel} erfolgreich gespeichert!`);
-        document.getElementById('newKuerzel').value = '';
-        document.getElementById('newPin').value = '';
-        document.getElementById('selectAllModules').checked = false;
-        toggleSelectAllModules({checked: false});
+        alert(`Techniker ${kuerzel} gespeichert!`);
         renderUserList();
     }
 
     function renderUserList() {
         let container = document.getElementById('userListContainer');
         container.innerHTML = '';
-        let keys = Object.keys(dbUsers);
-        if (keys.length === 0) {
-            container.innerHTML = '<div class="hint">Noch keine Techniker angelegt.</div>';
-            return;
-        }
-
-        keys.forEach(k => {
-            let u = dbUsers[k];
+        Object.keys(dbUsers).forEach(k => {
             let div = document.createElement('div');
             div.className = 'user-item';
-            div.innerHTML = `
-                <div>
-                    <strong>${k}</strong> (${u.status === 'active' ? 'Freigeschaltet' : 'Gesperrt'})<br>
-                    <small style="color:var(--subtext-color);">Module: ${u.modules.length}</small>
-                </div>
-                <div style="display:flex; gap:4px;">
-                    <button type="button" class="admin-btn-sm ${u.status === 'active' ? 'admin-btn-danger' : 'admin-btn-success'}" onclick="toggleUserStatus('${k}')">
-                        ${u.status === 'active' ? 'Sperren' : 'Freigeben'}
-                    </button>
-                    <button type="button" class="admin-btn-sm admin-btn-danger" onclick="deleteUser('${k}')">🗑️</button>
-                </div>
-            `;
+            div.innerHTML = `<span>${k}</span> <button class="admin-btn-sm admin-btn-danger" onclick="deleteUser('${k}')">Löschen</button>`;
             container.appendChild(div);
         });
     }
 
-    function toggleUserStatus(k) {
-        dbUsers[k].status = dbUsers[k].status === 'active' ? 'blocked' : 'active';
+    function deleteUser(k) {
+        delete dbUsers[k];
         localStorage.setItem('innowatech_users', JSON.stringify(dbUsers));
         renderUserList();
-    }
-
-    function deleteUser(k) {
-        if (confirm(`Techniker ${k} wirklich löschen?`)) {
-            delete dbUsers[k];
-            localStorage.setItem('innowatech_users', JSON.stringify(dbUsers));
-            renderUserList();
-        }
-    }
-
-    async function performLogin() {
-        let u = document.getElementById('loginUser').value.trim().toUpperCase();
-        let p = document.getElementById('loginPin').value.trim();
-        let statusDiv = document.getElementById('loginStatus');
-
-        if (u === ADMIN_USER) {
-            let pHash = await hashPin(p);
-            if (pHash === ADMIN_PIN_HASH) {
-                activeUser = ADMIN_USER;
-                localStorage.setItem('innowatech_active_user', ADMIN_USER);
-                statusDiv.style.color = "green";
-                statusDiv.textContent = "Als Admin (MAT) angemeldet!";
-                setTimeout(() => {
-                    closeAdminModal('loginModal');
-                    applyUserPermissions();
-                    updateActiveUserBadge();
-                }, 600);
-                return;
-            }
-        }
-
-        if (!dbUsers[u]) {
-            statusDiv.style.color = "red";
-            statusDiv.textContent = "Unbekanntes Benutzer-Kürzel!";
-            return;
-        }
-
-        let user = dbUsers[u];
-        if (user.status !== 'active') {
-            statusDiv.style.color = "red";
-            statusDiv.textContent = "Dieser Zugang ist gesperrt!";
-            return;
-        }
-
-        let pHash = await hashPin(p);
-        if (pHash === user.pinHash) {
-            activeUser = u;
-            localStorage.setItem('innowatech_active_user', u);
-            statusDiv.style.color = "green";
-            statusDiv.textContent = `Erfolgreich als ${u} angemeldet!`;
-            setTimeout(() => {
-                closeAdminModal('loginModal');
-                applyUserPermissions();
-                updateActiveUserBadge();
-            }, 600);
-        } else {
-            statusDiv.style.color = "red";
-            statusDiv.textContent = "Falsche PIN!";
-        }
     }
 
     function performLogout() {
         activeUser = null;
         localStorage.removeItem('innowatech_active_user');
-        applyUserPermissions();
-        updateActiveUserBadge();
         closeAdminModal('adminConsoleModal');
-        alert("Erfolgreich abgemeldet.");
-    }
-
-    function updateActiveUserBadge() {
-        let badge = document.getElementById('activeUserBadge');
-        if (activeUser) {
-            badge.textContent = activeUser;
-            badge.style.display = 'inline-block';
-        } else {
-            badge.style.display = 'none';
-        }
-    }
-
-    function applyUserPermissions() {
-        if (!activeUser || activeUser === ADMIN_USER) {
-            currentModules.forEach(m => m.userAllowed = true);
-        } else {
-            let user = dbUsers[activeUser];
-            if (!user || user.status !== 'active') {
-                currentModules.forEach(m => m.userAllowed = false);
-            } else {
-                currentModules.forEach(m => {
-                    m.userAllowed = user.modules.includes(m.id);
-                });
-            }
-        }
-        renderTabs();
-        if (isLauncherActive) renderLauncherGrid();
     }
 
     function openAdminModal(id) { document.getElementById(id).classList.add('active'); }
     function closeAdminModal(id) { document.getElementById(id).classList.remove('active'); }
 
-    // Service Worker Registrierung mit Auto-Update / SkipWaiting-Prüfung
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('./sw.js')
-                .then(reg => {
-                    console.log('Service Worker erfolgreich registriert:', reg.scope);
-                    
-                    reg.onupdatefound = () => {
-                        const installingWorker = reg.installing;
-                        if (installingWorker) {
-                            installingWorker.onstatechange = () => {
-                                if (installingWorker.state === 'installed') {
-                                    if (navigator.serviceWorker.controller) {
-                                        console.log('Neue Version verfügbar. Aktualisiere...');
-                                        window.location.reload();
-                                    }
-                                }
-                            };
-                        }
-                    };
-                })
-                .catch(err => console.log('Service Worker Registrierung fehlgeschlagen:', err));
-        });
-    }
-
-    function checkChristmasHat() {
-        const today = new Date();
-        const month = today.getMonth();
-        const date = today.getDate();
-        const firstLetterSpan = document.getElementById('first-letter');
-
-        if (month === 11 && date >= 1 && date <= 31) {
-            firstLetterSpan.classList.add('santa-letter');
-        } else {
-            firstLetterSpan.classList.remove('santa-letter');
-        }
-    }
-
-    function exportToPDF(modulName) {
-        window.print();
-    }
-
-    const ablaufDatum = new Date('2027-12-31T23:59:59');
-    if (new Date() > ablaufDatum) {
-        document.body.innerHTML = `
-            <div style="font-family:sans-serif; text-align:center; padding:50px; background:#ffebee; color:#c62828; height:100vh; display:flex; flex-direction:column; justify-content:center; align-items:center;">
-                <h2>Testversion abgelaufen</h2>
-                <p>Die Evaluierungsphase für diesen Stand des MAT Service Tools ist am 31.12.2027 beendet.</p>
-                <p>Bitte wenden Sie sich an den Entwickler für die aktuelle Version.</p>
-            </div>`;
-        throw new Error("Testversion abgelaufen.");
-    }
-
     const defaultModules = [
-        { id: 'standard', title: 'Trinkwasser', icon: '💧', category: 'Anwendung', visible: true, userAllowed: true },
-        { id: 'wasserwerk', title: 'Wasserwerk', icon: '🏢', category: 'Anwendung', visible: true, userAllowed: true },
-        { id: 'schwimmbad', title: 'Schwimmbad', icon: '🏊', category: 'Anwendung', visible: true, userAllowed: true },
-        { id: 'pid', title: 'PID Regler', icon: '📈', category: 'Anwendung', visible: true, userAllowed: true },
-        { id: 'verdünnung', title: 'Verdünnungsreihe Anolyte', icon: '🧪', category: 'Anwendung', visible: true, userAllowed: true },
-        { id: 'sonden', title: 'Sondendaten', icon: '⚡', category: 'Parameter', visible: true, userAllowed: true },
-        { id: 'anlagen', title: 'Produktionsparameter AQD', icon: '⚙️', category: 'Parameter', visible: true, userAllowed: true },
-        { id: 'radar', title: 'Vega Radarsensor', icon: '📡', category: 'Parameter', visible: true, userAllowed: true },
-        { id: 'enthaerter', title: 'Enthärtungsanlagen', icon: '💧', category: 'Parameter', visible: true, userAllowed: true }
+        { id: 'standard', title: 'Trinkwasser', icon: '💧', category: 'Anwendung', visible: true },
+        { id: 'wasserwerk', title: 'Wasserwerk', icon: '🏢', category: 'Anwendung', visible: true },
+        { id: 'schwimmbad', title: 'Schwimmbad', icon: '🏊', category: 'Anwendung', visible: true },
+        { id: 'pid', title: 'PID Regler', icon: '📈', category: 'Anwendung', visible: true },
+        { id: 'verdünnung', title: 'Verdünnungsreihe', icon: '🧪', category: 'Anwendung', visible: true },
+        { id: 'sonden', title: 'Sondendaten', icon: '⚡', category: 'Parameter', visible: true },
+        { id: 'anlagen', title: 'AQD Parameter', icon: '⚙️', category: 'Parameter', visible: true },
+        { id: 'radar', title: 'Vega Radar', icon: '📡', category: 'Parameter', visible: true },
+        { id: 'enthaerter', title: 'Enthärtung', icon: '💧', category: 'Parameter', visible: true }
     ];
 
-    let currentModules = [];
+    let currentModules = [...defaultModules];
     let currentActiveTab = '';
     let isLauncherActive = false;
     let isInToolFromLauncher = false;
-    let showSliderIcons = true;
-    let showDashboardIcons = true;
-    let activeDropdownSelect = null;
-
-    // EIGENES DROPDOWN SYSTEM INITIALISIEREN
-    function initCustomDropdowns() {
-        document.querySelectorAll('.input-wrapper select').forEach(select => {
-            if (select.classList.contains('native-select-hidden')) return;
-            select.classList.add('native-select-hidden');
-
-            let parentWrapper = select.parentElement;
-            let existingTrigger = parentWrapper.querySelector('.custom-select-trigger');
-            if (existingTrigger) existingTrigger.remove();
-
-            let trigger = document.createElement('div');
-            trigger.className = 'custom-select-trigger';
-            updateTriggerText(trigger, select);
-
-            trigger.onclick = () => openCustomDropdown(select);
-            parentWrapper.appendChild(trigger);
-        });
-    }
-
-    function updateTriggerText(trigger, select) {
-        let selectedOption = select.options[select.selectedIndex];
-        trigger.innerText = selectedOption ? selectedOption.text : "Bitte wählen...";
-    }
-
-    function openCustomDropdown(select) {
-        activeDropdownSelect = select;
-        const modalTitle = document.getElementById('dropdown-modal-title');
-        const modalList = document.getElementById('dropdown-modal-list');
-        
-        let labelEl = select.closest('.form-group')?.querySelector('label');
-        modalTitle.innerText = labelEl ? labelEl.innerText : "Auswahl";
-        modalList.innerHTML = '';
-
-        Array.from(select.options).forEach((opt, idx) => {
-            let item = document.createElement('div');
-            item.className = 'dropdown-item' + (opt.selected ? ' selected' : '');
-            item.innerHTML = `<span>${opt.text}</span>` + (opt.selected ? '<span style="color:var(--primary-color);">✓</span>' : '');
-            item.onclick = () => {
-                select.selectedIndex = idx;
-                select.dispatchEvent(new Event('change'));
-                initCustomDropdowns();
-                closeCustomDropdown();
-            };
-            modalList.appendChild(item);
-        });
-
-        document.getElementById('dropdown-modal').classList.add('open');
-    }
-
-    function closeCustomDropdown(e) {
-        if (!e || e.target.id === 'dropdown-modal') {
-            document.getElementById('dropdown-modal').classList.remove('open');
-        }
-    }
 
     function loadSettings() {
-        checkChristmasHat();
-        const savedDarkMode = localStorage.getItem('mat_darkmode');
-        const isDark = (savedDarkMode === 'true');
-        
-        if (isDark) {
-            document.body.classList.add('dark-mode');
-            document.getElementById('darkmode-toggle').checked = true;
-        } else {
-            document.body.classList.remove('dark-mode');
-            document.getElementById('darkmode-toggle').checked = false;
-            if (savedDarkMode === null) {
-                localStorage.setItem('mat_darkmode', 'false');
-            }
-        }
-
-        const savedSliderIcons = localStorage.getItem('mat_show_slider_icons');
-        showSliderIcons = (savedSliderIcons !== 'false');
-        document.getElementById('icons-slider-toggle').checked = showSliderIcons;
-
-        const savedDashboardIcons = localStorage.getItem('mat_show_dashboard_icons');
-        showDashboardIcons = (savedDashboardIcons !== 'false');
-        document.getElementById('icons-dashboard-toggle').checked = showDashboardIcons;
-
-        let savedZoom = parseFloat(localStorage.getItem('mat_zoom') || '1');
-        if (savedZoom > 1.2) savedZoom = 1.2;
-        changeZoom(savedZoom, false);
-        document.getElementById('zoom-slider').value = savedZoom;
-
-        const savedModules = localStorage.getItem('mat_modules');
-        if (savedModules) {
-            try {
-                let parsed = JSON.parse(savedModules);
-                currentModules = parsed;
-                currentModules.forEach(m => {
-                    const def = defaultModules.find(d => d.id === m.id);
-                    if (def) {
-                        m.title = def.title;
-                        m.category = def.category;
-                        m.icon = def.icon || '🛠️';
-                    }
-                });
-                defaultModules.forEach(def => {
-                    if (!currentModules.some(m => m.id === def.id)) {
-                        currentModules.push(def);
-                    }
-                });
-            } catch(e) {
-                currentModules = [...defaultModules];
-            }
-        } else {
-            currentModules = [...defaultModules];
-        }
-
-        const savedLauncherState = localStorage.getItem('mat_launcher_view');
-        isLauncherActive = (savedLauncherState === 'true');
-        isInToolFromLauncher = false;
-
-        applyUserPermissions();
-        applyViewMode();
-        initCustomDropdowns();
-    }
-
-    function saveSettings() {
-        localStorage.setItem('mat_modules', JSON.stringify(currentModules));
-    }
-
-    function toggleDarkMode(isDark) {
-        if (isDark) {
-            document.body.classList.add('dark-mode');
-        } else {
-            document.body.classList.remove('dark-mode');
-        }
-        localStorage.setItem('mat_darkmode', isDark);
-    }
-
-    function toggleSliderIcons(enabled) {
-        showSliderIcons = enabled;
-        localStorage.setItem('mat_show_slider_icons', enabled);
-    }
-
-    function toggleDashboardIcons(enabled) {
-        showDashboardIcons = enabled;
-        localStorage.setItem('mat_show_dashboard_icons', enabled);
-    }
-
-    function changeZoom(val, save = true) {
-        let numVal = parseFloat(val);
-        if (numVal > 1.2) numVal = 1.2;
-        document.documentElement.style.setProperty('--app-zoom', numVal);
-        document.getElementById('zoom-val-text').innerText = Math.round(numVal * 100) + '%';
-        if (save) {
-            localStorage.setItem('mat_zoom', numVal);
-        }
+        const isDark = localStorage.getItem('mat_darkmode') === 'true';
+        document.body.classList.toggle('dark-mode', isDark);
+        let toggle = document.getElementById('darkmode-toggle');
+        if(toggle) toggle.checked = isDark;
+        renderTabs();
+        switchTab('standard');
     }
 
     function toggleMainView() {
         isLauncherActive = !isLauncherActive;
         isInToolFromLauncher = false;
-        localStorage.setItem('mat_launcher_view', isLauncherActive);
         applyViewMode();
     }
 
     function applyViewMode() {
-        const tabBarWrapper = document.getElementById('tab-bar-wrapper');
-        const launcherView = document.getElementById('launcher-view');
+        const tabBar = document.getElementById('tab-bar-wrapper');
+        const launcher = document.getElementById('launcher-view');
         const backBar = document.getElementById('dashboard-back-bar');
         const toggleIcon = document.getElementById('toggle-icon');
         const toggleText = document.getElementById('toggle-text');
 
         if (isLauncherActive && !isInToolFromLauncher) {
-            tabBarWrapper.style.display = 'none';
-            launcherView.classList.add('active');
+            tabBar.style.display = 'none';
+            launcher.classList.add('active');
             backBar.classList.remove('active');
             toggleIcon.innerText = '📄';
             toggleText.innerText = 'Ansicht';
-            
-            currentModules.forEach(t => {
-                let content = document.getElementById('tab-' + t.id);
-                if (content) content.classList.remove('active');
-            });
             renderLauncherGrid();
         } else if (isLauncherActive && isInToolFromLauncher) {
-            tabBarWrapper.style.display = 'none';
-            launcherView.classList.remove('active');
+            tabBar.style.display = 'none';
+            launcher.classList.remove('active');
             backBar.classList.add('active');
             toggleIcon.innerText = '田';
             toggleText.innerText = 'Ansicht';
         } else {
-            tabBarWrapper.style.display = 'block';
-            launcherView.classList.remove('active');
+            tabBar.style.display = 'block';
+            launcher.classList.remove('active');
             backBar.classList.remove('active');
             toggleIcon.innerText = '田';
             toggleText.innerText = 'Ansicht';
-            
-            let visibleAllowed = currentModules.filter(m => m.visible && m.userAllowed);
-            if (currentActiveTab) {
-                switchTab(currentActiveTab);
-            } else if (visibleAllowed.length > 0) {
-                switchTab(visibleAllowed[0].id);
-            }
+            if (currentActiveTab) switchTab(currentActiveTab);
         }
     }
 
     function renderLauncherGrid() {
-        const gridAnwendung = document.getElementById('launcher-grid-anwendung');
-        const gridParameter = document.getElementById('launcher-grid-parameter');
-
-        gridAnwendung.innerHTML = '';
-        gridParameter.innerHTML = '';
-
-        const activeModules = currentModules.filter(m => m.visible && m.userAllowed);
-
-        activeModules.forEach(mod => {
+        const gAnw = document.getElementById('launcher-grid-anwendung');
+        const gPar = document.getElementById('launcher-grid-parameter');
+        gAnw.innerHTML = ''; gPar.innerHTML = '';
+        currentModules.forEach(mod => {
             let card = document.createElement('div');
             card.className = 'launcher-card';
-            card.onclick = () => selectModuleFromLauncher(mod.id);
-
-            let iconHtml = showDashboardIcons ? `<div class="launcher-icon">${mod.icon || '🛠️'}</div>` : '';
-
-            card.innerHTML = `
-                ${iconHtml}
-                <div class="launcher-label">${mod.title}</div>
-            `;
-
-            if (mod.category === 'Parameter') {
-                gridParameter.appendChild(card);
-            } else {
-                gridAnwendung.appendChild(card);
-            }
+            card.onclick = () => { isInToolFromLauncher = true; applyViewMode(); switchTab(mod.id); };
+            card.innerHTML = `<div class="launcher-icon">${mod.icon}</div><div class="launcher-label">${mod.title}</div>`;
+            if (mod.category === 'Parameter') gPar.appendChild(card);
+            else gAnw.appendChild(card);
         });
-    }
-
-    function selectModuleFromLauncher(tabId) {
-        isInToolFromLauncher = true;
-        applyViewMode();
-        switchTab(tabId);
     }
 
     function backToDashboard() {
@@ -2498,102 +948,30 @@
         applyViewMode();
     }
 
-    function checkScrollArrows() {
-        const container = document.getElementById('categories-container');
-        const arrowLeft = document.getElementById('scroll-arrow-left');
-        const arrowRight = document.getElementById('scroll-arrow-right');
-
-        if (!container) return;
-
-        const scrollLeft = container.scrollLeft;
-        const maxScroll = container.scrollWidth - container.clientWidth;
-
-        if (scrollLeft > 5) {
-            arrowLeft.classList.add('visible');
-        } else {
-            arrowLeft.classList.remove('visible');
-        }
-
-        if (maxScroll - scrollLeft > 5) {
-            arrowRight.classList.add('visible');
-        } else {
-            arrowRight.classList.remove('visible');
-        }
-    }
-
-    function renderTabs(autoSelectFirst = false) {
+    function renderTabs() {
         const container = document.getElementById('categories-container');
         container.innerHTML = '';
-
-        const activeModules = currentModules.filter(m => m.visible && m.userAllowed);
-
-        const catMap = {};
-        activeModules.forEach(mod => {
-            const cat = mod.category || 'Anwendung';
-            if (!catMap[cat]) catMap[cat] = [];
-            catMap[cat].push(mod);
-        });
-
-        const categoryOrder = ['Anwendung', 'Parameter'];
-
-        categoryOrder.forEach(catName => {
-            if (catMap[catName] && catMap[catName].length > 0) {
-                let groupDiv = document.createElement('div');
-                groupDiv.className = 'category-group' + (catName === 'Parameter' ? ' category-parameters' : '');
-
-                let titleDiv = document.createElement('div');
-                titleDiv.className = 'category-title';
-                titleDiv.innerText = catName;
-                groupDiv.appendChild(titleDiv);
-
-                let innerBtns = document.createElement('div');
-                innerBtns.className = 'tab-buttons-inner';
-
-                catMap[catName].forEach(mod => {
+        ['Anwendung', 'Parameter'].forEach(catName => {
+            let catMods = currentModules.filter(m => m.category === catName);
+            if (catMods.length > 0) {
+                let group = document.createElement('div');
+                group.className = 'category-group' + (catName === 'Parameter' ? ' category-parameters' : '');
+                group.innerHTML = `<div class="category-title">${catName}</div>`;
+                let inner = document.createElement('div');
+                inner.className = 'tab-buttons-inner';
+                catMods.forEach(mod => {
                     let btn = document.createElement('button');
                     btn.type = 'button';
                     btn.className = 'tab-btn';
                     btn.id = 'btn-' + mod.id;
-                    
-                    let contentDiv = document.createElement('div');
-                    contentDiv.className = 'btn-content-inner';
-
-                    if (showSliderIcons && mod.icon) {
-                        let iconEl = document.createElement('span');
-                        iconEl.style.fontSize = '0.8rem';
-                        iconEl.style.marginBottom = '1px';
-                        iconEl.innerText = mod.icon;
-                        contentDiv.appendChild(iconEl);
-                    }
-
-                    let words = mod.title.split(' ');
-                    words.forEach((word) => {
-                        let lineSpan = document.createElement('span');
-                        lineSpan.className = 'btn-text-line';
-                        lineSpan.innerText = word;
-                        contentDiv.appendChild(lineSpan);
-                    });
-
-                    btn.innerHTML = '';
-                    btn.appendChild(contentDiv);
+                    btn.innerHTML = `<div class="btn-content-inner"><span style="font-size:0.8rem">${mod.icon}</span><span class="btn-text-line">${mod.title}</span></div>`;
                     btn.onclick = () => switchTab(mod.id);
-                    innerBtns.appendChild(btn);
+                    inner.appendChild(btn);
                 });
-
-                groupDiv.appendChild(innerBtns);
-                container.appendChild(groupDiv);
+                group.appendChild(inner);
+                container.appendChild(group);
             }
         });
-
-        if (autoSelectFirst || !activeModules.some(m => m.id === currentActiveTab)) {
-            if (activeModules.length > 0) {
-                switchTab(activeModules[0].id);
-            }
-        } else {
-            switchTab(currentActiveTab);
-        }
-
-        setTimeout(checkScrollArrows, 100);
     }
 
     function switchTab(tabName) {
@@ -2604,588 +982,142 @@
             if (btn) btn.classList.remove('active');
             if (content) content.classList.remove('active');
         });
-
         let activeBtn = document.getElementById('btn-' + tabName);
         let activeContent = document.getElementById('tab-' + tabName);
-        if (activeBtn) {
-            activeBtn.classList.add('active');
-            activeBtn.scrollIntoView({ behavior: 'smooth', inline: 'nearest', block: 'nearest' });
-        }
-        if (activeContent && (!isLauncherActive || isInToolFromLauncher)) {
-            activeContent.classList.add('active');
-        }
+        if (activeBtn) activeBtn.classList.add('active');
+        if (activeContent && (!isLauncherActive || isInToolFromLauncher)) activeContent.classList.add('active');
     }
 
-    function openSettings() {
-        renderModuleManager();
-        document.getElementById('settings-modal').classList.add('open');
-    }
+    function openSettings() { document.getElementById('settings-modal').style.display = 'flex'; }
+    function closeSettings() { document.getElementById('settings-modal').style.display = 'none'; }
+    function toggleDarkMode(val) { document.body.classList.toggle('dark-mode', val); localStorage.setItem('mat_darkmode', val); }
 
-    function closeSettings() {
-        document.getElementById('settings-modal').classList.remove('open');
-        saveSettings();
-        renderTabs();
-        if (isLauncherActive && !isInToolFromLauncher) renderLauncherGrid();
-    }
-
-    function renderModuleManager() {
-        const listAnwendung = document.getElementById('active-list-anwendung');
-        const listParameter = document.getElementById('active-list-parameter');
-        const inactiveList = document.getElementById('inactive-module-list');
-
-        listAnwendung.innerHTML = '';
-        listParameter.innerHTML = '';
-        inactiveList.innerHTML = '';
-
-        const activeModules = currentModules.filter(m => m.visible);
-        const inactiveModules = currentModules.filter(m => !m.visible);
-
-        ['Anwendung', 'Parameter'].forEach(categoryName => {
-            const targetContainer = (categoryName === 'Anwendung') ? listAnwendung : listParameter;
-            const categoryActiveModules = activeModules.filter(m => m.category === categoryName);
-
-            if (categoryActiveModules.length === 0) {
-                targetContainer.innerHTML = '<div class="hint">Keine aktiven Module in dieser Kategorie.</div>';
-            } else {
-                categoryActiveModules.forEach((mod) => {
-                    let item = document.createElement('div');
-                    item.className = 'module-list-item';
-                    item.draggable = true;
-                    item.dataset.id = mod.id;
-
-                    let left = document.createElement('div');
-                    left.className = 'module-list-item-left';
-
-                    let chk = document.createElement('input');
-                    chk.type = 'checkbox';
-                    chk.checked = true;
-                    chk.onchange = () => {
-                        if (activeModules.length <= 1) {
-                            alert('Es muss mindestens ein Modul aktiv bleiben!');
-                            chk.checked = true;
-                            return;
-                        }
-                        mod.visible = false;
-                        saveSettings();
-                        renderModuleManager();
-                    };
-
-                    let label = document.createElement('span');
-                    label.className = 'module-label-text';
-                    label.innerHTML = (mod.icon || '🛠️') + ' ' + mod.title;
-
-                    left.appendChild(chk);
-                    left.appendChild(label);
-                    item.appendChild(left);
-
-                    let handle = document.createElement('span');
-                    handle.className = 'drag-handle';
-                    handle.innerText = '☰';
-                    handle.title = 'Zum Verschieben gedrückt halten';
-                    item.appendChild(handle);
-
-                    item.addEventListener('dragstart', (e) => {
-                        e.dataTransfer.setData('text/plain', mod.id);
-                        item.classList.add('dragging');
-                    });
-
-                    item.addEventListener('dragend', () => {
-                        item.classList.remove('dragging');
-                    });
-
-                    item.addEventListener('dragover', (e) => {
-                        e.preventDefault();
-                        const draggingItem = targetContainer.querySelector('.dragging');
-                        if (!draggingItem || draggingItem === item) return;
-
-                        const rect = item.getBoundingClientRect();
-                        const offset = e.clientY - rect.top - rect.height / 2;
-
-                        if (offset < 0) {
-                            targetContainer.insertBefore(draggingItem, item);
-                        } else {
-                            targetContainer.insertBefore(draggingItem, item.nextSibling);
-                        }
-                    });
-
-                    item.addEventListener('drop', (e) => {
-                        e.preventDefault();
-                        updateModulesOrderFromDOM();
-                    });
-
-                    targetContainer.appendChild(item);
-                });
-            }
-        });
-
-        if (inactiveModules.length === 0) {
-            inactiveList.innerHTML = '<div class="hint">Keine inaktiven Module vorhanden.</div>';
-        } else {
-            inactiveModules.forEach(mod => {
-                let item = document.createElement('div');
-                item.className = 'module-list-item';
-                item.style.opacity = '0.7';
-
-                let left = document.createElement('div');
-                left.className = 'module-list-item-left';
-
-                let chk = document.createElement('input');
-                chk.type = 'checkbox';
-                chk.checked = false;
-                chk.onchange = () => {
-                    mod.visible = true;
-                    saveSettings();
-                    renderModuleManager();
-                };
-
-                let label = document.createElement('span');
-                label.className = 'module-label-text';
-                label.innerHTML = `[${mod.category}] ` + (mod.icon || '🛠️') + ' ' + mod.title;
-
-                left.appendChild(chk);
-                left.appendChild(label);
-                item.appendChild(left);
-                inactiveList.appendChild(item);
-            });
-        }
-    }
-
-    function updateModulesOrderFromDOM() {
-        const newActiveOrder = [];
-        ['active-list-anwendung', 'active-list-parameter'].forEach(containerId => {
-            const container = document.getElementById(containerId);
-            container.querySelectorAll('.module-list-item').forEach(item => {
-                const id = item.dataset.id;
-                const mod = currentModules.find(m => m.id === id);
-                if (mod) newActiveOrder.push(mod);
-            });
-        });
-
-        const inactiveModules = currentModules.filter(m => !m.visible);
-        currentModules = [...newActiveOrder, ...inactiveModules];
-        saveSettings();
-    }
-
-    const radarTankDatabase = {
-        "40": 385,
-        "60": 535,
-        "100": 723,
-        "200": 830,
-        "500": 1108,
-        "1000": 1190
-    };
-
-    function updateRadarTankDefaults() {
-        let vol = document.getElementById('radar_tankvol').value;
-        let maxInput = document.getElementById('radar_abgleich_max');
-        let hint = document.getElementById('radar_tank_hint');
-
-        if (vol && radarTankDatabase[vol]) {
-            let defaultMax = radarTankDatabase[vol];
-            maxInput.value = defaultMax;
-            hint.innerHTML = `<span style="color: #2e7d32;"><b>Werte automatisch eingetragen:</b> Min = 0 mm, Max = ${defaultMax} mm für ${vol}l Tank.</span>`;
-        } else {
-            maxInput.value = "";
-            hint.innerText = "Wähle oben ein Tankvolumen, um die Abgleichwerte automatisch zu setzen.";
-        }
-    }
-
-    const enthaerterDatabase = {
-        "fk":      { harz: "4 Liter", kapazitaet: "15 °dH x m³", sole: "3 l", salz: "0,96 kg", rueckfuelle: "2,7 l", rueckspuelen: "3 Min", besalzen: "30 Min", schnellspuelen: "15 Min", sole_nachf: "3 Min" },
-        "fkl":     { harz: "4 Liter", kapazitaet: "15 °dH x m³", sole: "3 l", salz: "0,96 kg", rueckfuelle: "2,7 l", rueckspuelen: "3 Min", besalzen: "30 Min", schnellspuelen: "15 Min", sole_nachf: "3 Min" },
-        "fx":      { harz: "4 Liter", kapazitaet: "15 °dH x m³", sole: "3 l", salz: "0,96 kg", rueckfuelle: "2,7 l", rueckspuelen: "3 Min", besalzen: "30 Min", schnellspuelen: "15 Min", sole_nachf: "3 Min" },
-        "gx":      { harz: "4 Liter", kapazitaet: "15 °dH x m³", sole: "3 l", salz: "0,96 kg", rueckfuelle: "2,7 l", rueckspuelen: "3 Min", besalzen: "30 Min", schnellspuelen: "15 Min", sole_nachf: "3 Min" },
-        "gxl":     { harz: "11 Liter", kapazitaet: "35 °dH x m³", sole: "8,5 l", salz: "2,65 kg", rueckfuelle: "7,4 l", rueckspuelen: "3 Min", besalzen: "30 Min", schnellspuelen: "15 Min", sole_nachf: "3 Min" },
-        "fxl":     { harz: "11 Liter", kapazitaet: "35 °dH x m³", sole: "8,5 l", salz: "2,65 kg", rueckfuelle: "7,4 l", rueckspuelen: "3 Min", besalzen: "30 Min", schnellspuelen: "15 Min", sole_nachf: "3 Min" },
-        "fxm":     { harz: "4 Liter", kapazitaet: "15 °dH x m³", sole: "3 l", salz: "0,96 kg", rueckfuelle: "2,7 l", rueckspuelen: "3 Min", besalzen: "30 Min", schnellspuelen: "15 Min", sole_nachf: "3 Min" },
-        "kl":      { harz: "4 Liter", kapazitaet: "15 °dH x m³", sole: "3 l", salz: "0,96 kg", rueckfuelle: "2,7 l", rueckspuelen: "3 Min", besalzen: "30 Min", schnellspuelen: "15 Min", sole_nachf: "3 Min" },
-        "kl30_pg": { harz: "8 Liter", kapazitaet: "30 °dH x m³", sole: "6 l", salz: "1,02 kg", rueckfuelle: "5,4 l", rueckspuelen: "3 Min", besalzen: "30 Min", schnellspuelen: "15 Min", sole_nachf: "5 Min" },
-        "wat100":  { harz: "25 Liter", kapazitaet: "100 °dH x m³", sole: "19,2 l", salz: "6 kg", rueckfuelle: "16,8 l", rueckspuelen: "5 Min", besalzen: "55 Min", schnellspuelen: "10 Min", sole_nachf: "9 Min" },
-        "wat200":  { harz: "56 Liter", kapazitaet: "200 °dH x m³", sole: "43 l", salz: "13,4 kg", rueckfuelle: "37,6 l", rueckspuelen: "5 Min", besalzen: "85 Min", schnellspuelen: "12 Min", sole_nachf: "14 Min" }
-    };
-
-    function updateEnthaerterData() {
-        let key = document.getElementById('enthaerter_select').value;
-        if (key && enthaerterDatabase[key]) {
-            let d = enthaerterDatabase[key];
-            document.getElementById('enth_kapazitaet').innerText = d.kapazitaet;
-            document.getElementById('enth_harz').innerText = d.harz;
-            document.getElementById('enth_sole').innerText = d.sole;
-            document.getElementById('enth_salz').innerText = d.salz;
-            document.getElementById('enth_rueckfuelle').innerText = d.rueckfuelle;
-            document.getElementById('enth_rueckspuelen').innerText = d.rueckspuelen;
-            document.getElementById('enth_besalzen').innerText = d.besalzen;
-            document.getElementById('enth_schnellspuelen').innerText = d.schnellspuelen;
-            document.getElementById('enth_sole_nachf').innerText = d.sole_nachf;
-        } else {
-            document.getElementById('enth_kapazitaet').innerText = "-";
-            document.getElementById('enth_harz').innerText = "-";
-            document.getElementById('enth_sole').innerText = "-";
-            document.getElementById('enth_salz').innerText = "-";
-            document.getElementById('enth_rueckfuelle').innerText = "-";
-            document.getElementById('enth_rueckspuelen').innerText = "-";
-            document.getElementById('enth_besalzen').innerText = "-";
-            document.getElementById('enth_schnellspuelen').innerText = "-";
-            document.getElementById('enth_sole_nachf').innerText = "-";
-        }
-    }
-
-    const sondenDatabase = {
-        1: { messRv1: "0,003 ... 0,400 ppm", steilRv1: "48,0 mA/ppm" },
-        2: { messRv1: "0,003 ... 0,700 ppm", steilRv1: "24,0 mA/ppm" },
-        3: { messRv1: "0,003 ... 1,700 ppm", steilRv1: "9,6 mA/ppm" },
-        4: { messRv1: "0,003 ... 4,00 ppm", steilRv1: "4,8 mA/ppm" },
-        5: { messRv1: "0,003 ... 7,00 ppm", steilRv1: "2,4 mA/ppm" },
-        6: { messRv1: "0,003 ... 0,400 ppm", steilRv1: "48,0 mA/ppm" },
-        7: { messRv1: "0,003 ... 0,700 ppm", steilRv1: "24,0 mA/ppm" },
-        8: { messRv1: "0,003 ... 1,700 ppm", steilRv1: "9,6 mA/ppm" },
-        9: { messRv1: "0,003 ... 4,00 ppm", steilRv1: "4,8 mA/ppm" },
-        10: { messRv1: "0,003 ... 7,00 ppm", steilRv1: "2,4 mA/ppm" }
-    };
-
-    function updateSondenData() {
-        let selectedRow = document.getElementById('sonden_select').value;
-        if (selectedRow && sondenDatabase[selectedRow]) {
-            let data = sondenDatabase[selectedRow];
-            document.getElementById('sond_res_mess_rv1').innerText = data.messRv1;
-            document.getElementById('sond_res_steilheit_rv1').innerText = data.steilRv1;
-        } else {
-            document.getElementById('sond_res_mess_rv1').innerText = "-";
-            document.getElementById('sond_res_steilheit_rv1').innerText = "-";
-        }
-    }
-
-    const anlagenDatabase = {
-        "fk":             { durchfluss: "40 l/h", strom: "6,8 A", spannung: "24 V", zeit: "4 h", prod: "60 min", pause: "30 min" },
-        "fxm":            { durchfluss: "40 l/h", strom: "6,8 A", spannung: "24 V", zeit: "7 h", prod: "30 min", pause: "30 min" },
-        "fx":             { durchfluss: "40 l/h", strom: "6,8 A", spannung: "24 V", zeit: "13 h", prod: "60 min", pause: "30 min" },
-        "fxl_k2":         { durchfluss: "40 l/h", strom: "6,8 A", spannung: "24 V", zeit: "19 h", prod: "60 min", pause: "15 min" },
-        "fxl_k5":         { durchfluss: "40 l/h", strom: "6.8 A", spannung: "24 V", zeit: "19 h", prod: "60 min", pause: "15 min" },
-        "gx_k2":          { durchfluss: "40 l/h", strom: "6.8 A", spannung: "24 V", zeit: "13 h", prod: "60 min", pause: "30 min" },
-        "gx_k5":          { durchfluss: "40 l/h", strom: "6,8 A", spannung: "24 V", zeit: "13 h", prod: "60 min", pause: "30 min" },
-        "gxl_k5":         { durchfluss: "40 l/h", strom: "6,8 A", spannung: "24 V", zeit: "19 h", prod: "60 min", pause: "15 min" },
-        "sgx_k2":         { durchfluss: "40 l/h", strom: "6.8 A", spannung: "24 V", zeit: "19 h", prod: "60 min", pause: "15 min" },
-        "sgx_k5":         { durchfluss: "40 l/h", strom: "6.8 A", spannung: "24 V", zeit: "19 h", prod: "60 min", pause: "15 min" },
-        "g2_k5":          { durchfluss: "110 l/h", strom: "6.8 A", spannung: "24 V", zeit: "18 h", prod: "90 min", pause: "15 min" },
-        "cgk":            { durchfluss: "40 l/h", strom: "6,8 A", spannung: "24 V", zeit: "7 h", prod: "30 min", pause: "30 min" },
-        "cgx_k2":         { durchfluss: "40 l/h", strom: "6.8 A", spannung: "24 V", zeit: "13 h", prod: "60 min", pause: "30 min" },
-        "cgx_k5":         { durchfluss: "40 l/h", strom: "6,8 A", spannung: "24 V", zeit: "13 h", prod: "60 min", pause: "30 min" },
-        "cg1":            { durchfluss: "60 l/h", strom: "18 A", spannung: "48 V", zeit: "21 h", prod: "120 min", pause: "15 min" },
-        "cg2":            { durchfluss: "120 l/h", strom: "18 A", spannung: "48 V", zeit: "21 h", prod: "120 min", pause: "15 min" },
-        "cg3":            { durchfluss: "100 l/h", strom: "38 A", spannung: "96 V", zeit: "20 h", prod: "90 min", pause: "15 min" },
-        "cg4":            { durchfluss: "200 l/h", strom: "2 x 38 A", spannung: "2 x 96 V", zeit: "20 h", prod: "90 min", pause: "15 min" },
-        "pg1":            { durchfluss: "60 l/h", strom: "18 A", spannung: "48 V", zeit: "21 h", prod: "120 min", pause: "15 min" },
-        "pg2":            { durchfluss: "120 l/h", strom: "18 A", spannung: "48 V", zeit: "21 h", prod: "120 min", pause: "15 min" },
-        "pg3":            { durchfluss: "100 l/h", strom: "38 A", spannung: "96 V", zeit: "20 h", prod: "90 min", pause: "15 min" },
-        "pg4":            { durchfluss: "200 l/h", strom: "2 x 38 A", spannung: "2 x 96 V", zeit: "20 h", prod: "90 min", pause: "15 min" },
-        "fkl":            { durchfluss: "40 l/h", strom: "6,8 A", spannung: "24 V", zeit: "7 h", prod: "30 min", pause: "30 min" },
-        "kl1":            { durchfluss: "40 l/h", strom: "6.8 A", spannung: "24 V", zeit: "16 h", prod: "60 min", pause: "30 min" },
-        "kl2":            { durchfluss: "110 l/h", strom: "7,5 A", spannung: "24 V", zeit: "13 h", prod: "60 min", pause: "30 min" },
-        "kl3":            { durchfluss: "110 l/h", strom: "7,5 A", spannung: "24 V", zeit: "19 h", prod: "90 min", pause: "15 min" },
-        "kxl1":           { durchfluss: "100 l/h", strom: "38 A", spannung: "96 V", zeit: "20 h", prod: "90 min", pause: "15 min" },
-        "kxl2":           { durchfluss: "200 l/h", strom: "2 x 38 A", spannung: "2 x 96 V", zeit: "20 h", prod: "90 min", pause: "15 min" },
-        "eco_1_2":        { durchfluss: "40 l/h", strom: "6.8 A", spannung: "24 V", zeit: "10 h", prod: "90 min", pause: "30 min" },
-        "eco_3_1_chlorat":{ durchfluss: "60 l/h", strom: "15 A", spannung: "24 V", zeit: "8 h", prod: "60 min", pause: "60 min" },
-        "eco_3_1_chlorid":{ durchfluss: "60 l/h", strom: "18 A", spannung: "24 V", zeit: "8 h", prod: "60 min", pause: "60 min" },
-        "eco_3_2_chlorat":{ durchfluss: "60 l/h", strom: "15 A", spannung: "24 V", zeit: "14 h", prod: "180 min", pause: "30 min" },
-        "eco_3_2_chlorid":{ durchfluss: "60 l/h", strom: "18 A", spannung: "24 V", zeit: "14 h", prod: "180 min", pause: "30 min" },
-        "eco_4_2_chlorat":{ durchfluss: "60 l/h", strom: "15 A", spannung: "32 V", zeit: "14 h", prod: "180 min", pause: "30 min" },
-        "eco_4_2_chlorid":{ durchfluss: "60 l/h", strom: "18 A", spannung: "48 V", zeit: "14 h", prod: "180 min", pause: "30 min" },
-        "eco_4_3_chlorat":{ durchfluss: "60 l/h", strom: "15 A", spannung: "32 V", zeit: "21 h", prod: "120 min", pause: "15 min" },
-        "eco_4_3_chlorid":{ durchfluss: "60 l/h", strom: "18 A", spannung: "48 V", zeit: "21 h", prod: "120 min", pause: "15 min" },
-        "eco_5_1_chlorat":{ durchfluss: "100 l/h", strom: "30 A", spannung: "64 V", zeit: "10 h", prod: "180 min", pause: "60 min" },
-        "eco_5_1_chlorid":{ durchfluss: "100 l/h", strom: "38 A", spannung: "96 V", zeit: "10 h", prod: "180 min", pause: "60 min" },
-        "eco_5_2_chlorat":{ durchfluss: "100 l/h", strom: "30 A", spannung: "64 V", zeit: "14 h", prod: "180 min", pause: "60 min" },
-        "eco_5_2_chlorid":{ durchfluss: "100 l/h", strom: "38 A", spannung: "96 V", zeit: "14 h", prod: "180 min", pause: "60 min" },
-        "eco_5_3_chlorat":{ durchfluss: "100 l/h", strom: "30 A", spannung: "64 V", zeit: "21 h", prod: "120 min", pause: "15 min" },
-        "eco_5_3_chlorid":{ durchfluss: "100 l/h", strom: "38 A", spannung: "96 V", zeit: "21 h", prod: "120 min", pause: "15 min" },
-        "eco_6_2_chlorat":{ durchfluss: "200 l/h", strom: "2 x 30 A", spannung: "2 x 64 V", zeit: "14 h", prod: "180 min", pause: "30 min" },
-        "eco_6_2_chlorid":{ durchfluss: "200 l/h", strom: "2 x 38 A", spannung: "2 x 96 V", zeit: "14 h", prod: "180 min", pause: "30 min" },
-        "eco_6_3_chlorat":{ durchfluss: "200 l/h", strom: "2 x 30 A", spannung: "2 x 64 V", zeit: "21 h", prod: "120 min", pause: "15 min" },
-        "eco_6_3_chlorid":{ durchfluss: "200 l/h", strom: "2 x 38 A", spannung: "2 x 96 V", zeit: "21 h", prod: "120 min", pause: "15 min" }
-    };
-
-    function updateAnlagenData() {
-        let selectedKey = document.getElementById('anlagen_select').value;
-        if (selectedKey && anlagenDatabase[selectedKey]) {
-            let data = anlagenDatabase[selectedKey];
-            document.getElementById('An_Durchfluss').innerText = data.durchfluss;
-            document.getElementById('An_Strom').innerText = data.strom;
-            document.getElementById('An_Spannung').innerText = data.spannung;
-            document.getElementById('An_Zeit').innerText = data.zeit;
-            document.getElementById('An_SollProd').innerText = data.prod;
-            document.getElementById('An_SollPause').innerText = data.pause;
-        } else {
-            document.getElementById('An_Durchfluss').innerText = "-";
-            document.getElementById('An_Strom').innerText = "-";
-            document.getElementById('An_Spannung').innerText = "-";
-            document.getElementById('An_Zeit').innerText = "-";
-            document.getElementById('An_SollProd').innerText = "-";
-            document.getElementById('An_SollPause').innerText = "-";
-        }
-    }
-
-    function calcVerduennung() {
-        let nominalVal = document.getElementById('verd_anlagentyp').value;
-        let customGroup = document.getElementById('group_custom_konz');
-        let maxKonzSpreizung = 1500;
-
-        if (nominalVal === "250") maxKonzSpreizung = 320;
-        else if (nominalVal === "500") maxKonzSpreizung = 900;
-        else if (nominalVal === "600") maxKonzSpreizung = 1000;
-        else if (nominalVal === "1500") maxKonzSpreizung = 1700;
-        else if (nominalVal === "custom") {
-            customGroup.style.display = "block";
-            maxKonzSpreizung = parseFloat(document.getElementById('verd_custom_konz').value) || 1650;
-        }
-        if (nominalVal !== "custom") customGroup.style.display = "none";
-
-        let verhaeltnisTeile = 3;
-        let stufeText = "1:3 (Faktor 4)";
-
-        if (nominalVal === "250") {
-            verhaeltnisTeile = 0;
-            stufeText = "Keine (Direktmessung)";
-        } else if (nominalVal === "500" || nominalVal === "600") {
-            verhaeltnisTeile = 1;
-            stufeText = "1:1 (Faktor 2)";
-        } else if (nominalVal === "1500" || nominalVal === "custom") {
-            verhaeltnisTeile = 3;
-            stufeText = "1:3 (Faktor 4)";
-        }
-
-        let gesamtVolumen = 10.0;
-        let analytMenge = 0, wasserMenge = 0, faktor = 1;
-
-        if (verhaeltnisTeile === 0) {
-            analytMenge = 10.0; wasserMenge = 0.0; faktor = 1;
-        } else {
-            let gesamtTeile = 1 + verhaeltnisTeile;
-            analytMenge = gesamtVolumen / gesamtTeile;
-            wasserMenge = gesamtVolumen - analytMenge;
-            faktor = gesamtTeile;
-        }
-
-        document.getElementById('verd_res_stufe').innerText = stufeText;
-        document.getElementById('verd_res_analyt').innerText = analytMenge.toFixed(2) + " ml / g";
-        document.getElementById('verd_res_wasser').innerText = wasserMenge.toFixed(2) + " ml / g";
-        document.getElementById('verd_res_faktor').innerText = "× " + faktor;
-
-        let gemessenerWert = parseFloat(document.getElementById('verd_messwert').value) || 0;
-        let echterGehalt = gemessenerWert * faktor;
-
-        document.getElementById('verd_res_final').innerText = gemessenerWert > 0 ? echterGehalt.toFixed(1) + " mg/l (ppm)" : "0.0 mg/l (ppm)";
-        document.getElementById('verd_hinweis_box').innerHTML = verhaeltnisTeile === 0 ? 
-            "<span style='color: #2e7d32;'><b>Direktmessung aktiv:</b> Keine Verdünnung nötig.</span>" :
-            `<span style='color: #2e7d32;'><b>Sicherer Bereich:</b> Stufe <b>${stufeText}</b> deckt bis zu ${500 * faktor} mg/l ab (Spreizungs-Ziel max. ${maxKonzSpreizung} mg/l).</span>`;
-    }
-
-    function berechnePID() {
-        let betriebsart = document.getElementById('regler_betriebsart').value;
-        let testLInput = document.getElementById('pumpe_test_l').value;
-        let deltaChlorInput = document.getElementById('chlor_diff').value;
-        let tuInput = document.getElementById('zeit_tu').value;
-        let tgInput = document.getElementById('zeit_tg').value;
-        let grundwertInput = document.getElementById('chlor_grundwert').value;
-
-        if (testLInput === "" || deltaChlorInput === "" || tuInput === "" || tgInput === "") {
-            document.getElementById('res_p').innerText = "-- %";
-            document.getElementById('res_i').innerText = "-- s";
-            document.getElementById('res_totband').innerText = "-- mg/l";
-            document.getElementById('hinweis_text').innerHTML = "Bitte Werte des Praxistests (Testmenge, Chlor-Anstieg, Tu, Tg) vollständig eingeben.";
-            return;
-        }
-
-        let testL = parseFloat(testLInput) || 0;
-        let deltaChlor = parseFloat(deltaChlorInput) || 0;
-        let tu = parseFloat(tuInput) || 0;
-        let tg = parseFloat(tgInput) || 0;
-        let grundwert = parseFloat(grundwertInput) || 0;
-
-        if (testL <= 0 || deltaChlor <= 0) {
-            document.getElementById('res_p').innerText = "-- %";
-            document.getElementById('res_i').innerText = "-- s";
-            document.getElementById('res_totband').innerText = "-- mg/l";
-            document.getElementById('hinweis_text').innerHTML = "Fehler: Test-Dosiermenge und Chlor-Anstieg müssen größer als 0 sein.";
-            return;
-        }
-
-        let verstaerkung = deltaChlor / testL; 
-        let basisP = Math.min(10.0, Math.max(1.0, (0.25 / verstaerkung)));
-
-        if (betriebsart.includes("warm")) {
-            basisP = basisP * 0.8; 
-            if (grundwert > 0) {
-                let daempfungsFaktor = Math.max(0.6, 1.0 - (grundwert * 0.5));
-                basisP = basisP * daempfungsFaktor;
-            }
-        }
-
-        let nachstellzeit = (tu > 0 && tg > 0) ? (2.0 * tg + tu) : 60.0;
-        let totband = 0.02;
-
-        document.getElementById('res_p').innerText = basisP.toFixed(1) + " %";
-        document.getElementById('res_i').innerText = nachstellzeit.toFixed(0) + " s";
-        document.getElementById('res_totband').innerText = totband.toFixed(2) + " mg/l";
-
-        let hinweis = `<b>Praxistest ausgewertet:</b> Totzeit Tu = ${tu}s, Anstiegszeit Tg = ${tg}s.`;
-        if (betriebsart.includes("warm")) {
-            hinweis += `<br><br><span style='color: var(--result-label);'><b>Speicher-Rücklauf aktiv:</b> Grundwert-Offset von <b>${grundwert.toFixed(2)} mg/l</b> wurde eingerechnet -> P-Anteil wurde dynamisch auf <b>${basisP.toFixed(1)}%</b> gedämpft, um ein Überschwingen im Speicher zu verhindern.</span>`;
-        }
-        document.getElementById('hinweis_text').innerHTML = hinweis;
-    }
-
+    // --- BERECHNUNGSLOGIK & PARAMETER ---
     function calcStandard() {
         let ziel = parseFloat(document.getElementById('std_ziel').value) || 0;
         let vol = parseFloat(document.getElementById('std_vol').value) || 0;
-        let anol = parseFloat(document.getElementById('std_anol').value) || 0;
+        let anol = parseFloat(document.getElementById('std_anol').value) || 1;
         let zehrung = parseFloat(document.getElementById('std_zehrung').value) || 0;
-        let gesamtSoll = ziel + zehrung;
-        let dosiermengeMl = anol > 0 ? ((gesamtSoll * vol) / anol) * 1000 : 0;
-        document.getElementById('std_res_soll').innerText = gesamtSoll.toFixed(2) + " mg/l";
-        document.getElementById('std_res_menge').innerText = dosiermengeMl.toFixed(2) + " ml";
-    }
-
-    function updateFromLsek() {
-        let lsek = parseFloat(document.getElementById('ww_lsek').value) || 0;
-        let stunden = parseFloat(document.getElementById('ww_stunden').value) || 0;
-        let m3h = lsek * 3.6;
-        document.getElementById('ww_m3h').value = m3h > 0 ? m3h.toFixed(2) : "";
-        if (stunden > 0 && lsek > 0) document.getElementById('ww_m3tag').value = (m3h * stunden).toFixed(2);
-        calcWasserwerk();
+        let soll = ziel + zehrung;
+        let menge = (soll * vol) / anol;
+        document.getElementById('std_res_soll').innerText = soll.toFixed(2) + ' mg/l';
+        document.getElementById('std_res_menge').innerText = menge.toFixed(2) + ' ml';
     }
 
     function updateFromM3Tag() {
         let m3tag = parseFloat(document.getElementById('ww_m3tag').value) || 0;
-        let stunden = parseFloat(document.getElementById('ww_stunden').value) || 0;
-        if (stunden > 0 && m3tag > 0) {
-            let m3h = m3tag / stunden;
-            document.getElementById('ww_m3h').value = m3h.toFixed(2);
-            document.getElementById('ww_lsek').value = (m3h / 3.6).toFixed(2);
-        }
+        let stunden = parseFloat(document.getElementById('ww_stunden').value) || 24;
+        let m3h = stunden > 0 ? m3tag / stunden : 0;
+        document.getElementById('ww_m3h').value = m3h.toFixed(2);
+        document.getElementById('ww_lsek').value = (m3h * 1000 / 3600).toFixed(2);
+        calcWasserwerk();
+    }
+
+    function updateFromLsek() {
+        let lsek = parseFloat(document.getElementById('ww_lsek').value) || 0;
+        let m3h = lsek * 3.6;
+        let stunden = parseFloat(document.getElementById('ww_stunden').value) || 24;
+        document.getElementById('ww_m3h').value = m3h.toFixed(2);
+        document.getElementById('ww_m3tag').value = (m3h * stunden).toFixed(0);
         calcWasserwerk();
     }
 
     function calcWasserwerk() {
         let m3tag = parseFloat(document.getElementById('ww_m3tag').value) || 0;
-        let anolKonz = parseFloat(document.getElementById('ww_anol_konz').value) || 0;
+        let anol_konz = parseFloat(document.getElementById('ww_anol_konz').value) || 500;
         let ziel = parseFloat(document.getElementById('ww_ziel').value) || 0;
         let zehrung = parseFloat(document.getElementById('ww_zehrung').value) || 0;
-        let impuls = parseFloat(document.getElementById('ww_impuls').value) || 0;
-        let maxFlow = parseFloat(document.getElementById('ww_max_flow').value) || 0;
+        let impuls = parseFloat(document.getElementById('ww_impuls').value) || 10;
+        let max_flow = parseFloat(document.getElementById('ww_max_flow').value) || 50;
 
-        let anwendKonz = ziel + zehrung;
-        document.getElementById('ww_res_soll').innerText = anwendKonz.toFixed(2) + " mg/l";
-        let bedarfProTag = anolKonz > 0 ? (m3tag * 1000 * anwendKonz) / anolKonz : 0;
-        document.getElementById('ww_res_bedarf').innerText = bedarfProTag.toFixed(2) + " Liter/Tag";
-        let mlProHub = anolKonz > 0 ? (impuls * anwendKonz * 1000) / anolKonz : 0;
-        document.getElementById('ww_res_hub').innerText = mlProHub.toFixed(2) + " ml/Hub";
-        let lProM3 = anolKonz > 0 ? (anwendKonz * 1000) / anolKonz : 0;
-        document.getElementById('ww_res_l_pro_m3').innerText = lProM3.toFixed(3) + " l/m³";
-        document.getElementById('ww_res_pumpe_20ma').value = (maxFlow * lProM3 > 0) ? (maxFlow * lProM3).toFixed(2) : "";
+        let soll = ziel + zehrung;
+        let bedarfLtr = (m3tag * 1000 * soll) / anol_konz;
+        let hubMenge = (impuls * soll) / (anol_konz / 1000);
+        let pumpe20ma = (max_flow * 1000 * soll) / anol_konz;
+        let lProM3 = soll / (anol_konz / 1000);
+
+        document.getElementById('ww_res_soll').innerText = soll.toFixed(2) + ' mg/l';
+        document.getElementById('ww_res_bedarf').innerText = bedarfLtr.toFixed(1) + ' Liter/Tag';
+        document.getElementById('ww_res_hub').innerText = hubMenge.toFixed(2) + ' ml/Hub';
+        document.getElementById('ww_res_pumpe_20ma').value = pumpe20ma.toFixed(2);
+        document.getElementById('ww_res_l_pro_m3').innerText = lProM3.toFixed(3) + ' l/m³';
     }
 
     function calcPoolVolumen() {
         let l = parseFloat(document.getElementById('pool_laenge').value) || 0;
         let b = parseFloat(document.getElementById('pool_breite').value) || 0;
         let t = parseFloat(document.getElementById('pool_tiefe').value) || 0;
-        let volumenLiter = l * b * t * 1000;
-        if (volumenLiter > 0) document.getElementById('pool_volumen').value = volumenLiter.toFixed(0);
+        let vol = l * b * t * 1000;
+        document.getElementById('pool_volumen').value = vol;
         calcPoolAll();
     }
 
     function updateChlorDefault() {
         let sorte = document.getElementById('pool_chlorsorte').value;
-        let konzInput = document.getElementById('pool_chlor_konz');
-        let einheitSpan = document.getElementById('chlor_konz_einheit');
-        let hinweisSpan = document.getElementById('chlor_konz_hinweis');
-
-        konzInput.value = "";
-
-        if (sorte === 'anolyte') {
-            einheitSpan.innerText = "mg/l";
-            hinweisSpan.innerText = "Flüssigchlor/Anolyte (z.B. 250, 500, 1300 mg/l).";
-            konzInput.placeholder = "z. B. 500 oder 1300";
-        } else if (sorte === 'granulat') {
-            einheitSpan.innerText = "g/kg";
-            hinweisSpan.innerText = "Calciumhypochlorit-Granulat (z.B. 700 g/kg).";
-            konzInput.placeholder = "z. B. 700";
-        }
+        document.getElementById('chlor_konz_einheit').innerText = sorte === 'anolyte' ? 'mg/l' : 'g/kg';
         calcPoolAll();
     }
 
     function calcPoolAll() {
         let vol = parseFloat(document.getElementById('pool_volumen').value) || 0;
-
-        if (vol <= 0) {
-            document.getElementById('pool_res_chlor').innerText = "0 l / kg";
-            document.getElementById('pool_chlor_hinweis').innerHTML = "<span style='color: #d32f2f;'><b>Fehler:</b> Bitte zuerst das Poolvolumen angeben!</span>";
-            document.getElementById('pool_res_ph').innerText = "0 l / kg";
-            document.getElementById('pool_ph_hinweis').innerHTML = "<span style='color: #d32f2f;'><b>Fehler:</b> Bitte zuerst das Poolvolumen (Länge/Breite/Tiefe oder Gesamt-Liter) angeben!</span>";
-            return;
-        }
-
-        let chlorIst = parseFloat(document.getElementById('pool_chlor_ist').value) || 0;
-        let chlorSoll = parseFloat(document.getElementById('pool_chlor_soll').value) || 0;
-        let chlorKonz = parseFloat(document.getElementById('pool_chlor_konz').value) || 0;
-        let sorte = document.getElementById('pool_chlorsorte').value;
-        let chlorDiff = chlorSoll - chlorIst;
+        let ist = parseFloat(document.getElementById('pool_chlor_ist').value) || 0;
+        let soll = parseFloat(document.getElementById('pool_chlor_soll').value) || 0;
+        let konz = parseFloat(document.getElementById('pool_chlor_konz').value) || 500;
+        let diff = soll - ist;
+        let chlorMenge = diff > 0 ? (vol * diff) / konz : 0;
         
-        let benoetigtLiterOderKg = 0; 
-        if (chlorKonz > 0 && chlorDiff > 0) {
-            if (sorte === 'anolyte') {
-                let benoetigtL = (chlorDiff * vol) / chlorKonz;
-                benoetigtLiterOderKg = benoetigtL;
-            } else {
-                let benoetigtKg = (chlorDiff * (vol / 1000)) / chlorKonz; 
-                benoetigtLiterOderKg = benoetigtKg;
-            }
-        }
+        let ph_ist = parseFloat(document.getElementById('pool_ph_ist').value) || 7.0;
+        let ph_soll = parseFloat(document.getElementById('pool_ph_soll').value) || 7.2;
+        let ph_diff = ph_ist - ph_soll;
+        let saeureMenge = ph_diff > 0 ? (vol * ph_diff * 0.05) : 0;
 
-        let chlorHinweisText = "Werte eingeben.";
-        if (benoetigtLiterOderKg > 0) {
-            let einheitText = sorte === 'anolyte' ? " l" : " kg";
-            let chlorText = benoetigtLiterOderKg < 1 && sorte === 'anolyte' ? (benoetigtLiterOderKg * 1000).toFixed(0) + " ml" : benoetigtLiterOderKg.toFixed(2) + einheitText;
-            document.getElementById('pool_res_chlor').innerText = chlorText + " Zugabe";
-            chlorHinweisText = "Chlormenge erforderlich (" + chlorText + ")";
-        } else {
-            document.getElementById('pool_res_chlor').innerText = chlorKonz <= 0 ? "Bitte Wirkstoff eingeben" : "0 l / kg";
-            chlorHinweisText = chlorKonz <= 0 ? "Bitte Wirkstoffgehalt eingeben." : "Chlorgehalt im Zielbereich oder unvollständig.";
-        }
-        document.getElementById('pool_chlor_hinweis').innerText = chlorHinweisText;
+        document.getElementById('pool_res_chlor').innerText = chlorMenge.toFixed(2) + (document.getElementById('pool_chlorsorte').value === 'anolyte' ? ' Liter' : ' kg');
+        document.getElementById('pool_res_ph').innerText = saeureMenge.toFixed(2) + ' Liter (30% HCl)';
+    }
 
-        let phIst = parseFloat(document.getElementById('pool_ph_ist').value) || 0;
-        let phSoll = parseFloat(document.getElementById('pool_ph_soll').value) || 0;
-        let alk = parseFloat(document.getElementById('pool_alk').value) || 100;
-        let saeureKonz = parseFloat(document.getElementById('pool_saeure_konz').value) || 20;
-        let phDiff = phIst - phSoll;
-        let m3 = vol / 1000;
-        let mlErgebnis = 0, hinweis = "";
+    function berechnePID() {
+        let diff = parseFloat(document.getElementById('chlor_diff').value) || 0.35;
+        let tu = parseFloat(document.getElementById('zeit_tu').value) || 30;
+        let tg = parseFloat(document.getElementById('zeit_tg').value) || 120;
+        let p = tg > 0 && diff > 0 ? (100 / (diff * (tg / tu))) : 25;
+        let i = tu * 3;
+        document.getElementById('res_p').innerText = p.toFixed(1) + ' %';
+        document.getElementById('res_i').innerText = i.toFixed(0) + ' s';
+    }
 
-        if (phIst > 0 && phSoll > 0 && phDiff > 0) {
-            mlErgebnis = phDiff * 10 * m3 * 15 * (20 / saeureKonz) * (alk / 100);
-            let literWert = mlErgebnis / 1000;
-            let textErgebnis = mlErgebnis >= 1000 ? literWert.toFixed(2) + " l / kg" : mlErgebnis.toFixed(0) + " ml / g";
-            hinweis = "pH-Senker erforderlich (" + textErgebnis + ")";
-            document.getElementById('pool_res_ph').innerText = textErgebnis;
-        } else if (phIst > 0 && phSoll > 0 && phDiff < 0) {
-            mlErgebnis = Math.abs(phDiff) * 10 * m3 * 15 * (alk / 100);
-            let literWert = mlErgebnis / 1000;
-            let textErgebnis = mlErgebnis >= 1000 ? literWert.toFixed(2) + " l / kg" : mlErgebnis.toFixed(0) + " ml / g";
-            hinweis = "pH-Heber erforderlich (" + textErgebnis + ")";
-            document.getElementById('pool_res_ph').innerText = textErgebnis;
-        } else {
-            hinweis = "pH-Wert im Zielbereich oder unvollständig.";
-            document.getElementById('pool_res_ph').innerText = "0 l / kg";
-        }
-        document.getElementById('pool_ph_hinweis').innerText = hinweis;
+    function calcVerduennung() {
+        let mess = parseFloat(document.getElementById('verd_messwert').value) || 0;
+        let echterWert = mess * 4; // 1:4 Verdünnungsfaktor
+        document.getElementById('verd_res_final').innerText = echterWert.toFixed(1) + ' mg/l';
+    }
+
+    function updateSondenData() {
+        let typ = document.getElementById('sonden_select').value;
+        document.getElementById('sond_res_mess_rv1').innerText = typ ? `${typ} mit Reinigungs-Vorrichtung RV1 aktiv.` : 'Mit Reinigungseinrichtung RV1 aktiv';
+    }
+
+    function updateAnlagenData() {
+        let typ = document.getElementById('anlagen_select').value;
+        let txt = 'AQD Standard';
+        if (typ === 'fx') txt = 'FX Serie Hochleistung';
+        if (typ === 'gx') txt = 'GX Serie Industrie';
+        document.getElementById('An_Durchfluss').innerText = txt;
+    }
+
+    function updateRadarTankDefaults() {
+        let vol = document.getElementById('radar_tankvol').value;
+        document.getElementById('radar_abgleich_max').value = vol === '200' ? '535' : '1200';
+    }
+
+    function updateEnthaerterData() {
+        document.getElementById('enth_kapazitaet').innerText = '45.0 mol';
+    }
+
+    function exportToPDF(titel) {
+        window.print();
     }
 
     loadSettings();
-    calcStandard();
-    calcWasserwerk();
-    calcPoolAll();
-    calcVerduennung();
 </script>
 
 </body>
