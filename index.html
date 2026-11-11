@@ -10,7 +10,7 @@
     <meta name="theme-color" content="#0d47a1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
-    <title>INNOWATΞCH Service Tool v3.3</title>
+    <title>INNOWATΞCH Service Tool v3.6</title>
     
     <!-- PWA / App Manifest -->
     <link rel="manifest" href="manifest.json">
@@ -786,7 +786,6 @@
             position: relative;
         }
 
-        /* Scroll-Pfeil Indikator fürs Einstellungs-Modal */
         .modal-scroll-indicator {
             position: absolute;
             bottom: 10px;
@@ -1068,18 +1067,18 @@
 </head>
 <body>
 
-<!-- App-Start Login (Auth-Guard) komplett leer ohne Vorschläge -->
+<!-- App-Start Login (Auth-Guard) -->
 <div class="app-login-overlay" id="appLoginOverlay">
     <div class="app-login-box">
         <h2 style="color: var(--primary-color); margin-top: 0; font-size: 1.2rem;">INNOWATΞCH Service</h2>
         <p style="font-size: 0.85rem; color: var(--subtext-color); margin-bottom: 15px;">Bitte mit Kürzel und PIN anmelden</p>
         <div class="form-group" style="text-align: left;">
             <label>Kürzel (z.B. MAT)</label>
-            <input type="text" id="appLoginUser" maxlength="3" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="z.B. MAT" value="" style="width:100%; padding:9px; border:1px solid var(--border-color); border-radius:4px; background:var(--input-bg); color:var(--text-color); text-transform:uppercase; font-size: 1rem; box-sizing: border-box;">
+            <input type="text" id="appLoginUser" maxlength="5" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="z.B. MAT" value="" style="width:100%; padding:9px; border:1px solid var(--border-color); border-radius:4px; background:var(--input-bg); color:var(--text-color); text-transform:uppercase; font-size: 1rem; box-sizing: border-box;">
         </div>
         <div class="form-group" style="text-align: left; margin-top: 10px;">
-            <label>PIN</label>
-            <input type="password" id="appLoginPin" maxlength="5" autocomplete="new-password" placeholder="•••••" value="" style="width:100%; padding:9px; border:1px solid var(--border-color); border-radius:4px; background:var(--input-bg); color:var(--text-color); font-size: 1rem; box-sizing: border-box;">
+            <label>PIN (Passwort)</label>
+            <input type="password" id="appLoginPin" autocomplete="new-password" placeholder="••••••••" value="" style="width:100%; padding:9px; border:1px solid var(--border-color); border-radius:4px; background:var(--input-bg); color:var(--text-color); font-size: 1rem; box-sizing: border-box;">
         </div>
         <button type="button" class="admin-btn admin-btn-primary" style="margin-top: 15px;" onclick="performAppLogin()">Anmelden</button>
     </div>
@@ -1841,14 +1840,14 @@
         <button type="button" class="pdf-export-btn" onclick="exportToPDF('Enthärtungsanlagen')">📄 Als PDF speichern / drucken</button>
     </div>
 
-    <!-- Footer mit Version v3.3 -->
+    <!-- Footer mit Version v3.6 -->
     <div class="footer">
         <span>© 2026 #MAT</span>
-        <span class="footer-version" onclick="handleVersionClick()">v3.3</span>
+        <span class="footer-version" onclick="handleVersionClick()">v3.6</span>
     </div>
 </div>
 
-<!-- Einstellungen Modal mit Scroll-Indikator und Abmelde-Button -->
+<!-- Einstellungen Modal -->
 <div class="modal-overlay" id="settings-modal">
     <div class="modal-content" onscroll="checkSettingsScroll(this)">
         <div class="modal-header">
@@ -1905,22 +1904,19 @@
     </div>
 </div>
 
-<!-- Admin Authentifizierung Modal komplett leer ohne Vorschläge -->
+<!-- Admin Authentifizierung Modal (8-stellige PIN) -->
 <div class="admin-modal-overlay" id="adminAuthModal">
     <div class="admin-modal-content">
         <div class="admin-modal-header">
-            <span>Admin Authentifizierung (v3.3)</span>
+            <span>Admin Authentifizierung (v3.6)</span>
             <button type="button" class="modal-close-btn" style="color:var(--primary-color);" onclick="closeAdminModal('adminAuthModal')">✕</button>
         </div>
-        <div class="form-group">
-            <label>Admin-Kürzel</label>
-            <input type="text" id="adminUser" maxlength="3" value="" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="z.B. MAT" style="width:100%; padding:8px; border:1px solid var(--border-color); border-radius:4px; background:var(--input-bg); color:var(--text-color); text-transform:uppercase;">
-        </div>
+        <p style="font-size: 0.82rem; color: var(--subtext-color); margin-bottom: 12px;">Bitte die Admin-PIN eingeben:</p>
         <div class="form-group">
             <label>Admin-PIN</label>
-            <input type="password" id="adminPin" maxlength="5" value="" autocomplete="new-password" placeholder="•••••" style="width:100%; padding:8px; border:1px solid var(--border-color); border-radius:4px; background:var(--input-bg); color:var(--text-color);">
+            <input type="password" id="adminPin8" value="" autocomplete="new-password" placeholder="••••••••" style="width:100%; padding:9px; border:1px solid var(--border-color); border-radius:4px; background:var(--input-bg); color:var(--text-color); font-size: 1.1rem; letter-spacing: 2px;">
         </div>
-        <button type="button" class="admin-btn admin-btn-primary" onclick="verifyAdminAuth()">Admin Console öffnen</button>
+        <button type="button" class="admin-btn admin-btn-primary" style="margin-top: 10px;" onclick="verifyAdminAuth8()">Admin Console öffnen</button>
     </div>
 </div>
 
@@ -1938,12 +1934,12 @@
 
         <h3 style="font-size: 0.9rem; margin-bottom: 6px; color: var(--primary-color);" id="adminFormTitle">Neuen Techniker anlegen / anpassen</h3>
         <div class="form-group">
-            <label>Kürzel (3 Buchstaben)</label>
-            <input type="text" id="newKuerzel" maxlength="3" placeholder="z. B. JUT" value="" style="width:100%; padding:8px; border:1px solid var(--border-color); border-radius:4px; background:var(--input-bg); color:var(--text-color); text-transform:uppercase;">
+            <label>Kürzel (z.B. MAT)</label>
+            <input type="text" id="newKuerzel" maxlength="5" placeholder="z. B. JUT" value="" style="width:100%; padding:8px; border:1px solid var(--border-color); border-radius:4px; background:var(--input-bg); color:var(--text-color); text-transform:uppercase;">
         </div>
         <div class="form-group">
-            <label>5-stellige PIN</label>
-            <input type="password" id="newPin" maxlength="5" placeholder="72186" value="" style="width:100%; padding:8px; border:1px solid var(--border-color); border-radius:4px; background:var(--input-bg); color:var(--text-color);">
+            <label>PIN für Techniker</label>
+            <input type="password" id="newPin" placeholder="PIN eingeben" value="" style="width:100%; padding:8px; border:1px solid var(--border-color); border-radius:4px; background:var(--input-bg); color:var(--text-color);">
         </div>
 
         <div class="form-group">
@@ -1990,6 +1986,11 @@
     const USERS_JSON_URL = './users.json'; 
 
     async function hashPin(pin) {
+        if (!pin) return "";
+        // Falls es bereits ein 64-Zeichen langer SHA-256 Hash ist, direkt zurückgeben
+        if (pin.length === 64 && /^[0-9a-fA-F]{64}$/.test(pin)) {
+            return pin;
+        }
         const encoder = new TextEncoder();
         const data = encoder.encode(pin);
         const hashBuffer = await crypto.subtle.digest('SHA-256', data);
@@ -2001,7 +2002,18 @@
         try {
             let response = await fetch(USERS_JSON_URL + '?t=' + new Date().getTime());
             if (response.ok) {
-                dbUsers = await response.json();
+                let rawUsers = await response.json();
+                // Automatische Konvertierung von Klartext-PINs in Hashes beim Laden
+                dbUsers = {};
+                for (let k in rawUsers) {
+                    let u = rawUsers[k];
+                    dbUsers[k] = {
+                        pinHash: await hashPin(u.pinHash),
+                        status: u.status || 'active',
+                        isAdmin: u.isAdmin || false,
+                        modules: u.modules || []
+                    };
+                }
             } else {
                 throw new Error("users.json nicht gefunden");
             }
@@ -2010,11 +2022,19 @@
             if (localFallback) {
                 dbUsers = JSON.parse(localFallback);
             } else {
-                let defaultAdminHash = await hashPin("72186");
+                let adminHash = await hashPin("07062509");
+                let matHash = await hashPin("72186");
                 dbUsers = {
-                    "MAT": {
-                        pinHash: defaultAdminHash,
+                    "ADMIN": {
+                        pinHash: adminHash,
                         status: 'active',
+                        isAdmin: true,
+                        modules: ['standard', 'wasserwerk', 'schwimmbad', 'pid', 'verdünnung', 'sonden', 'anlagen', 'radar', 'enthaerter']
+                    },
+                    "MAT": {
+                        pinHash: matHash,
+                        status: 'active',
+                        isAdmin: false,
                         modules: ['standard', 'wasserwerk', 'schwimmbad', 'pid', 'verdünnung', 'sonden', 'anlagen', 'radar', 'enthaerter']
                     }
                 };
@@ -2028,6 +2048,15 @@
     }
 
     function downloadUsersJson() {
+        // Sicherstellen, dass ADMIN immer im Export enthalten ist
+        if (!dbUsers["ADMIN"]) {
+            dbUsers["ADMIN"] = {
+                pinHash: "07062509", // Wird beim nächsten Laden automatisch gehasht
+                status: "active",
+                isAdmin: true,
+                modules: ['standard', 'wasserwerk', 'schwimmbad', 'pid', 'verdünnung', 'sonden', 'anlagen', 'radar', 'enthaerter']
+            };
+        }
         let dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(dbUsers, null, 2));
         let downloadAnchor = document.createElement('a');
         downloadAnchor.setAttribute("href", dataStr);
@@ -2089,9 +2118,7 @@
         if (clickTimer) clearTimeout(clickTimer);
         if (clickCount >= 5) {
             clickCount = 0;
-            let uField = document.getElementById('adminUser');
-            let pField = document.getElementById('adminPin');
-            if(uField) uField.value = "";
+            let pField = document.getElementById('adminPin8');
             if(pField) pField.value = "";
             openAdminModal('adminAuthModal');
         } else {
@@ -2099,29 +2126,20 @@
         }
     }
 
-    async function verifyAdminAuth() {
-        let u = document.getElementById('adminUser').value.trim().toUpperCase();
-        let p = document.getElementById('adminPin').value.trim();
-
-        // STRENGER ADMIN-CHECK: Nur MAT (oder definierter Admin) darf rein!
-        if (u !== "MAT") {
-            alert("Zugriff verweigert! Nur der Administrator (MAT) hat Zugriff auf die Admin-Konsole.");
-            return;
-        }
-
-        if (!dbUsers[u]) {
-            alert("Unbekanntes Admin-Kürzel!");
-            return;
-        }
-
+    async function verifyAdminAuth8() {
+        let p = document.getElementById('adminPin8').value.trim();
         let enteredHash = await hashPin(p);
-        if (dbUsers[u].pinHash === enteredHash && dbUsers[u].status === 'active') {
+        
+        // Prüfen, ob die eingegebene Admin-PIN auf den Benutzer ADMIN passt
+        let adminUser = dbUsers["ADMIN"] || Object.values(dbUsers).find(u => u.isAdmin);
+        
+        if (adminUser && adminUser.pinHash === enteredHash) {
             closeAdminModal('adminAuthModal');
             renderUserList();
             renderAdminModuleCheckboxes();
             openAdminModal('adminConsoleModal');
         } else {
-            alert("Ungültige Admin-PIN oder Benutzer gesperrt!");
+            alert("Ungültige Admin-PIN!");
         }
     }
 
@@ -2147,8 +2165,8 @@
         let kuerzel = document.getElementById('newKuerzel').value.trim().toUpperCase();
         let pin = document.getElementById('newPin').value.trim();
 
-        if (kuerzel.length !== 3) {
-            alert("Das Kürzel muss exakt 3 Buchstaben lang sein!");
+        if (kuerzel.length < 2) {
+            alert("Das Kürzel muss mindestens 2 Zeichen lang sein!");
             return;
         }
 
@@ -2158,18 +2176,19 @@
         });
 
         let pHash;
-        if (pin.length === 5) {
+        if (pin.length > 0) {
             pHash = await hashPin(pin);
         } else if (dbUsers[kuerzel] && dbUsers[kuerzel].pinHash) {
             pHash = dbUsers[kuerzel].pinHash;
         } else {
-            alert("Die PIN muss exakt 5 Ziffern lang sein!");
+            alert("Bitte eine PIN eingeben!");
             return;
         }
 
         dbUsers[kuerzel] = {
             pinHash: pHash,
             status: dbUsers[kuerzel] ? dbUsers[kuerzel].status : 'active',
+            isAdmin: (kuerzel === 'ADMIN' || (dbUsers[kuerzel] ? dbUsers[kuerzel].isAdmin : false)),
             modules: allowedModules
         };
 
@@ -2199,7 +2218,7 @@
         document.getElementById('newKuerzel').value = '';
         document.getElementById('newKuerzel').disabled = false;
         document.getElementById('newPin').value = '';
-        document.getElementById('newPin').placeholder = "72186";
+        document.getElementById('newPin').placeholder = "PIN eingeben";
         document.getElementById('adminFormTitle').innerText = "Neuen Techniker anlegen / anpassen";
         document.getElementById('saveUserBtn').innerText = "Techniker Speichern";
         document.getElementById('cancelEditBtn').style.display = "none";
@@ -2217,15 +2236,13 @@
             div.className = 'user-item';
             div.innerHTML = `
                 <div>
-                    <strong>${k}</strong> (${u.status === 'active' ? 'Freigeschaltet' : 'Gesperrt'})<br>
+                    <strong>${k}</strong> ${u.isAdmin ? '(Admin)' : ''} (${u.status === 'active' ? 'Freigeschaltet' : 'Gesperrt'})<br>
                     <small style="color:var(--subtext-color);">Module: ${u.modules ? u.modules.length : 0}</small>
                 </div>
                 <div style="display:flex; gap:4px;">
                     <button type="button" class="admin-btn-sm admin-btn-primary" onclick="editUser('${k}')" style="background:#0288d1;">✏️</button>
-                    <button type="button" class="admin-btn-sm ${u.status === 'active' ? 'admin-btn-danger' : 'admin-btn-success'}" onclick="toggleUserStatus('${k}')">
-                        ${u.status === 'active' ? 'Sperren' : 'Freigeben'}
-                    </button>
-                    <button type="button" class="admin-btn-sm admin-btn-danger" onclick="deleteUser('${k}')">🗑️</button>
+                    ${k !== 'ADMIN' ? `<button type="button" class="admin-btn-sm ${u.status === 'active' ? 'admin-btn-danger' : 'admin-btn-success'}" onclick="toggleUserStatus('${k}')">${u.status === 'active' ? 'Sperren' : 'Freigeben'}</button>` : ''}
+                    ${k !== 'ADMIN' ? `<button type="button" class="admin-btn-sm admin-btn-danger" onclick="deleteUser('${k}')">🗑️</button>` : ''}
                 </div>
             `;
             container.appendChild(div);
@@ -2233,12 +2250,17 @@
     }
 
     function toggleUserStatus(k) {
+        if (k === 'ADMIN') return;
         dbUsers[k].status = dbUsers[k].status === 'active' ? 'blocked' : 'active';
         saveUsersToLocalStorage();
         renderUserList();
     }
 
     function deleteUser(k) {
+        if (k === 'ADMIN') {
+            alert("Der Administrator kann nicht gelöscht werden!");
+            return;
+        }
         if (confirm(`Techniker ${k} wirklich löschen?`)) {
             delete dbUsers[k];
             saveUsersToLocalStorage();
@@ -2265,7 +2287,9 @@
             currentModules.forEach(m => m.userAllowed = true);
         } else {
             let user = dbUsers[activeUser];
-            if (!user || user.status !== 'active') {
+            if (user && user.isAdmin) {
+                currentModules.forEach(m => m.userAllowed = true);
+            } else if (!user || user.status !== 'active') {
                 currentModules.forEach(m => m.userAllowed = false);
             } else {
                 currentModules.forEach(m => {
@@ -3264,7 +3288,7 @@
             document.getElementById('pool_res_ph').innerText = textErgebnis;
         } else {
             hinweis = "pH-Wert im Zielbereich oder unvollständig.";
-            document.getElementById('pool_res_ph').innerText = "0 l / kg";
+            document.getElementById('pool_res_ph'].innerText = "0 l / kg";
         }
         document.getElementById('pool_ph_hinweis').innerText = hinweis;
     }
