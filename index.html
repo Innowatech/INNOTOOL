@@ -10,7 +10,7 @@
     <meta name="theme-color" content="#0d47a1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
-    <title>INNOWATΞCH Service Tool v3.2</title>
+    <title>INNOWATΞCH Service Tool v3.3</title>
     
     <!-- PWA / App Manifest -->
     <link rel="manifest" href="manifest.json">
@@ -1841,10 +1841,10 @@
         <button type="button" class="pdf-export-btn" onclick="exportToPDF('Enthärtungsanlagen')">📄 Als PDF speichern / drucken</button>
     </div>
 
-    <!-- Footer mit Version v3.2 -->
+    <!-- Footer mit Version v3.3 -->
     <div class="footer">
         <span>© 2026 #MAT</span>
-        <span class="footer-version" onclick="handleVersionClick()">v3.2</span>
+        <span class="footer-version" onclick="handleVersionClick()">v3.3</span>
     </div>
 </div>
 
@@ -1909,7 +1909,7 @@
 <div class="admin-modal-overlay" id="adminAuthModal">
     <div class="admin-modal-content">
         <div class="admin-modal-header">
-            <span>Admin Authentifizierung (v3.2)</span>
+            <span>Admin Authentifizierung (v3.3)</span>
             <button type="button" class="modal-close-btn" style="color:var(--primary-color);" onclick="closeAdminModal('adminAuthModal')">✕</button>
         </div>
         <div class="form-group">
@@ -2040,7 +2040,6 @@
 
     function checkAuthGuard() {
         if (!activeUser || !dbUsers[activeUser] || dbUsers[activeUser].status !== 'active') {
-            // Felder absolut sauber leeren beim Öffnen des Logins
             let uField = document.getElementById('appLoginUser');
             let pField = document.getElementById('appLoginPin');
             if(uField) uField.value = "";
@@ -2104,8 +2103,14 @@
         let u = document.getElementById('adminUser').value.trim().toUpperCase();
         let p = document.getElementById('adminPin').value.trim();
 
+        // STRENGER ADMIN-CHECK: Nur MAT (oder definierter Admin) darf rein!
+        if (u !== "MAT") {
+            alert("Zugriff verweigert! Nur der Administrator (MAT) hat Zugriff auf die Admin-Konsole.");
+            return;
+        }
+
         if (!dbUsers[u]) {
-            alert("Unbekanntes Kürzel!");
+            alert("Unbekanntes Admin-Kürzel!");
             return;
         }
 
@@ -2116,7 +2121,7 @@
             renderAdminModuleCheckboxes();
             openAdminModal('adminConsoleModal');
         } else {
-            alert("Ungültige PIN oder Benutzer gesperrt!");
+            alert("Ungültige Admin-PIN oder Benutzer gesperrt!");
         }
     }
 
