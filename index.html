@@ -1840,10 +1840,10 @@
         <button type="button" class="pdf-export-btn" onclick="exportToPDF('Enthärtungsanlagen')">📄 Als PDF speichern / drucken</button>
     </div>
 
-    <!-- Footer mit Version v3.7 -->
+    <!-- Footer mit Version v3.8 -->
     <div class="footer">
         <span>© 2026 #MAT</span>
-        <span class="footer-version" onclick="handleVersionClick()">v3.7</span>
+        <span class="footer-version" onclick="handleVersionClick()">v3.8</span>
     </div>
 </div>
 
@@ -1908,7 +1908,7 @@
 <div class="admin-modal-overlay" id="adminAuthModal">
     <div class="admin-modal-content">
         <div class="admin-modal-header">
-            <span>Admin Authentifizierung (v3.7)</span>
+            <span>Admin Authentifizierung (v3.8)</span>
             <button type="button" class="modal-close-btn" style="color:var(--primary-color);" onclick="closeAdminModal('adminAuthModal')">✕</button>
         </div>
         <p style="font-size: 0.82rem; color: var(--subtext-color); margin-bottom: 12px;">Bitte die Admin-PIN eingeben:</p>
@@ -1990,11 +1990,15 @@
         if (pin.length === 64 && /^[0-9a-fA-F]{64}$/.test(pin)) {
             return pin;
         }
-        const encoder = new TextEncoder();
-        const data = encoder.encode(pin);
-        const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-        const hashArray = Array.from(new Uint8Array(hashBuffer));
-        return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        try {
+            const encoder = new TextEncoder();
+            const data = encoder.encode(pin);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        } catch (e) {
+            return pin; // Fallback falls Crypto API blockiert
+        }
     }
 
     async function loadUsersDatabase() {
@@ -2018,8 +2022,13 @@
         } catch (err) {
             let localFallback = localStorage.getItem('innowatech_users_fallback');
             if (localFallback) {
-                dbUsers = JSON.parse(localFallback);
-            } else {
+                try {
+                    dbUsers = JSON.parse(localFallback);
+                } catch(e) {
+                    dbUsers = {};
+                }
+            }
+            if (!dbUsers || Object.keys(dbUsers).length === 0) {
                 let adminHash = await hashPin("07062509");
                 let matHash = await hashPin("72186");
                 dbUsers = {
@@ -2038,7 +2047,12 @@
                 };
             }
         }
-        checkAuthGuard();
+        // Absicherung: UI darf niemals hängen bleiben
+        try {
+            checkAuthGuard();
+        } catch(e) {
+            document.getElementById('appLoginOverlay').classList.remove('active');
+        }
     }
 
     function saveUsersToLocalStorage() {
@@ -3284,7 +3298,7 @@
             document.getElementById('pool_res_ph').innerText = textErgebnis;
         } else {
             hinweis = "pH-Wert im Zielbereich oder unvollständig.";
-            document.getElementById('pool_res_ph'].innerText = "0 l / kg";
+            document.getElementById('pool_res_ph').innerText = "0 l / kg";
         }
         document.getElementById('pool_ph_hinweis').innerText = hinweis;
     }
