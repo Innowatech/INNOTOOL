@@ -1,14 +1,242 @@
 {
   "ADMIN": {
-    "pinHash": "07062509",
+    "pinHash": "16f75b23573c152c0c6a34dd485e807aa58b89d61f1634470898657e7a6d22ee",
     "status": "active",
     "isAdmin": true,
-    "modules": ["standard", "wasserwerk", 'schwimmbad', 'pid', 'verdünnung', 'sonden', 'anlagen', 'radar', 'enthaerter']
+    "modules": [
+      "standard",
+      "wasserwerk",
+      "schwimmbad",
+      "pid",
+      "verdünnung",
+      "sonden",
+      "anlagen",
+      "radar",
+      "enthaerter"
+    ]
   },
   "MAT": {
-    "pinHash": "72186",
+    "pinHash": "7b7c6cb27f053e343e64130d8f50496ddeb4000e42ec619d6fcb763715cf55da",
     "status": "active",
     "isAdmin": false,
-    "modules": ["standard", "wasserwerk", 'schwimmbad', 'pid', 'verdünnung', 'sonden', 'anlagen', 'radar', 'enthaerter']
+    "modules": [
+      "standard",
+      "wasserwerk",
+      "schwimmbad",
+      "pid",
+      "verdünnung",
+      "sonden",
+      "anlagen",
+      "radar",
+      "enthaerter"
+    ]
+  },
+  "MÜR": {
+    "pinHash": "7b7c6cb27f053e343e64130d8f50496ddeb4000e42ec619d6fcb763715cf55da",
+    "status": "active",
+    "isAdmin": false,
+    "modules": [
+      "standard",
+      "wasserwerk",
+      "schwimmbad",
+      "pid",
+      "verdünnung",
+      "sonden",
+      "anlagen",
+      "radar",
+      "enthaerter"
+    ]
+  },
+  "RIT": {
+    "pinHash": "7b7c6cb27f053e343e64130d8f50496ddeb4000e42ec619d6fcb763715cf55da",
+    "status": "active",
+    "isAdmin": false,
+    "modules": [
+      "standard",
+      "wasserwerk",
+      "schwimmbad",
+      "pid",
+      "verdünnung",
+      "sonden",
+      "anlagen",
+      "radar",
+      "enthaerter"
+    ]
+  },
+  "GUM": {
+    "pinHash": "7b7c6cb27f053e343e64130d8f50496ddeb4000e42ec619d6fcb763715cf55da",
+    "status": "active",
+    "isAdmin": false,
+    "modules": [
+      "standard",
+      "wasserwerk",
+      "schwimmbad",
+      "pid",
+      "verdünnung",
+      "sonden",
+      "anlagen",
+      "radar",
+      "enthaerter"
+    ]
+  },
+  "FIV": {
+    "pinHash": "7b7c6cb27f053e343e64130d8f50496ddeb4000e42ec619d6fcb763715cf55da",
+    "status": "active",
+    "isAdmin": false,
+    "modules": [
+      "standard",
+      "wasserwerk",
+      "schwimmbad",
+      "pid",
+      "verdünnung",
+      "sonden",
+      "anlagen",
+      "radar",
+      "enthaerter"
+    ]
+  },
+  "SAG": {
+    "pinHash": "7b7c6cb27f053e343e64130d8f50496ddeb4000e42ec619d6fcb763715cf55da",
+    "status": "active",
+    "isAdmin": false,
+    "modules": [
+      "standard",
+      "wasserwerk",
+      "schwimmbad",
+      "pid",
+      "verdünnung",
+      "sonden",
+      "anlagen",
+      "radar",
+      "enthaerter"
+    ]
+  },
+  "KAM": {
+    "pinHash": "7b7c6cb27f053e343e64130d8f50496ddeb4000e42ec619d6fcb763715cf55da",
+    "status": "active",
+    "isAdmin": false,
+    "modules": [
+      "standard",
+      "wasserwerk",
+      "schwimmbad",
+      "pid",
+      "verdünnung",
+      "sonden",
+      "anlagen",
+      "radar",
+      "enthaerter"
+    ]
+  },
+  "NAM": {
+    "pinHash": "7b7c6cb27f053e343e64130d8f50496ddeb4000e42ec619d6fcb763715cf55da",
+    "status": "active",
+    "isAdmin": false,
+    "modules": [
+      "standard",
+      "wasserwerk",
+      "schwimmbad",
+      "pid",
+      "verdünnung",
+      "sonden",
+      "anlagen",
+      "radar",
+      "enthaerter"
+    ]
+  },
+  "CRC": {
+    "pinHash": "7b7c6cb27f053e343e64130d8f50496ddeb4000e42ec619d6fcb763715cf55da",
+    "status": "active",
+    "isAdmin": false,
+    "modules": [
+      "standard",
+      "wasserwerk",
+      "schwimmbad",
+      "pid",
+      "verdünnung",
+      "sonden",
+      "anlagen",
+      "radar",
+      "enthaerter"
+    ]
+  },
+  "KNM": {
+    "pinHash": "7b7c6cb27f053e343e64130d8f50496ddeb4000e42ec619d6fcb763715cf55da",
+    "status": "active",
+    "isAdmin": false,
+    "modules": [
+      "standard",
+      "wasserwerk",
+      "schwimmbad",
+      "pid",
+      "verdünnung",
+      "sonden",
+      "anlagen",
+      "radar",
+      "enthaerter"
+    ]
+  },
+  "FEC": {
+    "pinHash": "7b7c6cb27f053e343e64130d8f50496ddeb4000e42ec619d6fcb763715cf55da",
+    "status": "active",
+    "isAdmin": false,
+    "modules": [
+      "standard",
+      "wasserwerk",
+      "schwimmbad",
+      "pid",
+      "verdünnung",
+      "sonden",
+      "anlagen",
+      "radar",
+      "enthaerter"
+    ]
+  },
+  "FUM": {
+    "pinHash": "7b7c6cb27f053e343e64130d8f50496ddeb4000e42ec619d6fcb763715cf55da",
+    "status": "active",
+    "isAdmin": false,
+    "modules": [
+      "standard",
+      "wasserwerk",
+      "schwimmbad",
+      "pid",
+      "verdünnung",
+      "sonden",
+      "anlagen",
+      "radar",
+      "enthaerter"
+    ]
+  },
+  "HEW": {
+    "pinHash": "7b7c6cb27f053e343e64130d8f50496ddeb4000e42ec619d6fcb763715cf55da",
+    "status": "active",
+    "isAdmin": false,
+    "modules": [
+      "standard",
+      "wasserwerk",
+      "schwimmbad",
+      "pid",
+      "verdünnung",
+      "sonden",
+      "anlagen",
+      "radar",
+      "enthaerter"
+    ]
+  },
+  "KAG": {
+    "pinHash": "7b7c6cb27f053e343e64130d8f50496ddeb4000e42ec619d6fcb763715cf55da",
+    "status": "active",
+    "isAdmin": false,
+    "modules": [
+      "standard",
+      "wasserwerk",
+      "schwimmbad",
+      "pid",
+      "verdünnung",
+      "sonden",
+      "anlagen",
+      "radar",
+      "enthaerter"
+    ]
   }
 }
