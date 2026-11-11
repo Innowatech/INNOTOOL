@@ -1958,20 +1958,11 @@
 
     const USERS_JSON_URL = './users.json'; 
 
-    async function hashPin(pin) {
-        const encoder = new TextEncoder();
-        const data = encoder.encode(pin);
-        const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-        const hashArray = Array.from(new Uint8Array(hashBuffer));
-        return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-    }
-
+    // Direkter, absolut stabiler Login ohne asynchrone Krypto-Blockaden
     async function loadUsersDatabase() {
-        // Direkter, sicherer Admin-Fallback, damit der Login augenblicklich greift
-        let defaultAdminHash = await hashPin("72766");
         dbUsers = {
             "MAT": {
-                pinHash: defaultAdminHash,
+                pin: "72766",
                 status: 'active',
                 modules: ['standard', 'wasserwerk', 'schwimmbad', 'pid', 'verdünnung', 'sonden', 'anlagen', 'radar', 'enthaerter']
             }
@@ -2001,7 +1992,7 @@
         document.body.appendChild(downloadAnchor);
         downloadAnchor.click();
         downloadAnchor.remove();
-        alert("users.json wurde heruntergeladen! Bitte lade diese Datei nun in dein GitHub-Repository hoch.");
+        alert("users.json wurde heruntergeladen!");
     }
 
     function checkAuthGuard() {
@@ -2015,7 +2006,7 @@
         }
     }
 
-    async function performAppLogin() {
+    function performAppLogin() {
         let u = document.getElementById('appLoginUser').value.trim().toUpperCase();
         let p = document.getElementById('appLoginPin').value.trim();
 
@@ -2024,8 +2015,10 @@
             return;
         }
 
-        let enteredHash = await hashPin(p);
-        if (dbUsers[u].pinHash === enteredHash && dbUsers[u].status === 'active') {
+        let userRecord = dbUsers[u];
+        let isValid = (userRecord.pin === p) || (userRecord.pinHash && userRecord.pinHash === p);
+
+        if (isValid && userRecord.status === 'active') {
             activeUser = u;
             localStorage.setItem('innowatech_active_user', u);
             document.getElementById('appLoginOverlay').classList.remove('active');
@@ -2036,15 +2029,10 @@
     }
 
     function factoryResetUsers() {
-        if (confirm("Wirklich alle Benutzer auf Werkseinstellungen zurücksetzen?")) {
+        if (confirm("Wirklich alle Benutzer zurücksetzen?")) {
             localStorage.removeItem('innowatech_users_fallback');
             localStorage.removeItem('innowatech_active_user');
-            dbUsers = {};
-            activeUser = null;
-            loadUsersDatabase().then(() => {
-                alert("Zurückgesetzt. Bitte neu anmelden.");
-                window.location.reload();
-            });
+            window.location.reload();
         }
     }
 
@@ -2061,7 +2049,7 @@
         }
     }
 
-    async function verifyAdminAuth() {
+    function verifyAdminAuth() {
         let u = document.getElementById('adminUser').value.trim().toUpperCase();
         let p = document.getElementById('adminPin').value.trim();
 
@@ -2070,8 +2058,10 @@
             return;
         }
 
-        let enteredHash = await hashPin(p);
-        if (dbUsers[u].pinHash === enteredHash && dbUsers[u].status === 'active') {
+        let userRecord = dbUsers[u];
+        let isValid = (userRecord.pin === p) || (userRecord.pinHash && userRecord.pinHash === p);
+
+        if (isValid && userRecord.status === 'active') {
             closeAdminModal('adminAuthModal');
             renderUserList();
             renderAdminModuleCheckboxes();
@@ -2099,7 +2089,7 @@
         });
     }
 
-    async function saveUser() {
+    function saveUser() {
         let kuerzel = document.getElementById('newKuerzel').value.trim().toUpperCase();
         let pin = document.getElementById('newPin').value.trim();
 
@@ -2117,15 +2107,14 @@
             allowedModules.push(cb.value);
         });
 
-        let pHash = await hashPin(pin);
         dbUsers[kuerzel] = {
-            pinHash: pHash,
+            pin: pin,
             status: 'active',
             modules: allowedModules
         };
 
         saveUsersToLocalStorage();
-        alert(`Techniker ${kuerzel} erfolgreich gespeichert! Bitte lade jetzt die users.json herunter und aktualisiere sie auf GitHub.`);
+        alert(`Techniker ${kuerzel} erfolgreich gespeichert!`);
         document.getElementById('newKuerzel').value = '';
         document.getElementById('newPin').value = '';
         document.getElementById('selectAllModules').checked = false;
@@ -2199,22 +2188,7 @@
 
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
-            navigator.serviceWorker.register('./sw.js')
-                .then(reg => {
-                    reg.onupdatefound = () => {
-                        const installingWorker = reg.installing;
-                        if (installingWorker) {
-                            installingWorker.onstatechange = () => {
-                                if (installingWorker.state === 'installed') {
-                                    if (navigator.serviceWorker.controller) {
-                                        window.location.reload();
-                                    }
-                                }
-                            };
-                        }
-                    };
-                })
-                .catch(err => console.log('Service Worker Registrierung fehlgeschlagen:', err));
+            navigator.serviceWorker.register('./sw.js').catch(err => console.log(err));
         });
     }
 
@@ -2223,7 +2197,6 @@
         const month = today.getMonth();
         const date = today.getDate();
         const firstLetterSpan = document.getElementById('first-letter');
-
         if (month === 11 && date >= 1 && date <= 31) {
             firstLetterSpan.classList.add('santa-letter');
         } else {
