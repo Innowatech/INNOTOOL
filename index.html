@@ -10,7 +10,7 @@
     <meta name="theme-color" content="#0d47a1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
-    <title>INNOWATΞCH Service Tool v2.5</title>
+    <title>INNOWATΞCH Service Tool v2.6</title>
     
     <!-- PWA / App Manifest -->
     <link rel="manifest" href="manifest.json">
@@ -1048,11 +1048,11 @@
 </head>
 <body>
 
-<!-- App-Start Login (Auth-Guard): Erzwingt Anmeldung beim App-Öffnen -->
+<!-- App-Start Login (Auth-Guard) -->
 <div class="app-login-overlay" id="appLoginOverlay">
     <div class="app-login-box">
         <h2 style="color: var(--primary-color); margin-top: 0; font-size: 1.2rem;">INNOWATΞCH Service</h2>
-        <p style="font-size: 0.85rem; color: var(--subtext-color); margin-bottom: 15px;">Bitte mit Techniker- oder Admin-Kürzel anmelden</p>
+        <p style="font-size: 0.85rem; color: var(--subtext-color); margin-bottom: 15px;">Bitte mit Kürzel und PIN anmelden</p>
         <div class="form-group" style="text-align: left;">
             <label>Kürzel (z.B. MAT)</label>
             <input type="text" id="appLoginUser" maxlength="3" autocomplete="off" placeholder="MAT" style="width:100%; padding:9px; border:1px solid var(--border-color); border-radius:4px; background:var(--input-bg); color:var(--text-color); text-transform:uppercase; font-size: 1rem; box-sizing: border-box;">
@@ -1822,10 +1822,10 @@
         <button type="button" class="pdf-export-btn" onclick="exportToPDF('Enthärtungsanlagen')">📄 Als PDF speichern / drucken</button>
     </div>
 
-    <!-- Footer mit Version v2.5 -->
+    <!-- Footer mit Version v2.6 -->
     <div class="footer">
         <span>© 2026 #MAT</span>
-        <span class="footer-version" onclick="handleVersionClick()">v2.5</span>
+        <span class="footer-version" onclick="handleVersionClick()">v2.6</span>
     </div>
 </div>
 
@@ -1882,7 +1882,7 @@
 <div class="admin-modal-overlay" id="adminAuthModal">
     <div class="admin-modal-content">
         <div class="admin-modal-header">
-            <span>Admin Authentifizierung (v2.5)</span>
+            <span>Admin Authentifizierung (v2.6)</span>
             <button type="button" class="modal-close-btn" style="color:var(--primary-color);" onclick="closeAdminModal('adminAuthModal')">✕</button>
         </div>
         <div class="form-group">
@@ -1901,8 +1901,12 @@
 <div class="admin-modal-overlay" id="adminConsoleModal">
     <div class="admin-modal-content">
         <div class="admin-modal-header">
-            <span>Admin Konsole (Benutzerverwaltung)</span>
+            <span>Admin Konsole (users.json Sync)</span>
             <button type="button" class="modal-close-btn" style="color:var(--primary-color);" onclick="closeAdminModal('adminConsoleModal')">✕</button>
+        </div>
+
+        <div style="background: var(--result-bg); border: 1px solid var(--result-border); padding: 8px; border-radius: 6px; margin-bottom: 12px; font-size: 0.78rem;">
+            <b>GitHub Sync Info:</b> Nach Änderungen hier unten auf <i>"users.json herunterladen"</i> klicken und die Datei ins GitHub-Repo hochladen.
         </div>
 
         <h3 style="font-size: 0.9rem; margin-bottom: 6px; color: var(--primary-color);">Neuen Techniker anlegen / anpassen</h3>
@@ -1927,12 +1931,13 @@
         </div>
 
         <button type="button" class="admin-btn admin-btn-success" onclick="saveUser()">Techniker Speichern</button>
+        <button type="button" class="admin-btn admin-btn-primary" onclick="downloadUsersJson()" style="background: #0288d1;">📥 users.json herunterladen</button>
 
         <div style="margin-top: 15px; border-top: 1px solid var(--border-color); padding-top: 10px;">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
                 <h3 style="font-size: 0.9rem; margin: 0; color: var(--primary-color);">Vorhandene Techniker</h3>
                 <div style="display:flex; gap:4px;">
-                    <button type="button" class="admin-btn-sm admin-btn-danger" onclick="factoryResetUsers()">Reset Data</button>
+                    <button type="button" class="admin-btn-sm admin-btn-danger" onclick="factoryResetUsers()">Reset</button>
                     <button type="button" class="admin-btn-sm admin-btn-primary" onclick="performLogout()">Abmelden</button>
                 </div>
             </div>
@@ -1949,10 +1954,13 @@
 </div>
 
 <script>
-    let dbUsers = JSON.parse(localStorage.getItem('innowatech_users')) || {};
+    let dbUsers = {};
     let activeUser = localStorage.getItem('innowatech_active_user') || null;
     let clickCount = 0;
     let clickTimer = null;
+
+    // URL zu deiner users.json auf GitHub (z.B. Raw-Link oder direkte URL im Repo)
+    const USERS_JSON_URL = './users.json'; 
 
     async function hashPin(pin) {
         const encoder = new TextEncoder();
@@ -1962,19 +1970,48 @@
         return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
     }
 
-    // Initiale users.json Standardstruktur anlegen (Admin MAT mit PIN 12345)
-    async function initDefaultUsers() {
-        if (Object.keys(dbUsers).length === 0) {
-            let defaultAdminHash = await hashPin("12345");
-            dbUsers["MAT"] = {
-                pinHash: defaultAdminHash,
-                status: 'active',
-                modules: ['standard', 'wasserwerk', 'schwimmbad', 'pid', 'verdünnung', 'sonden', 'anlagen', 'radar', 'enthaerter']
-            };
-            localStorage.setItem('innowatech_users', JSON.stringify(dbUsers));
+    // Läd die users.json vom Server/GitHub oder erstellt Default-Admin falls nicht erreichbar
+    async function loadUsersDatabase() {
+        try {
+            let response = await fetch(USERS_JSON_URL + '?t=' + new Date().getTime());
+            if (response.ok) {
+                dbUsers = await response.json();
+            } else {
+                throw new Error("users.json nicht gefunden");
+            }
+        } catch (err) {
+            // Fallback falls offline oder Datei noch nicht auf GitHub liegt
+            let localFallback = localStorage.getItem('innowatech_users_fallback');
+            if (localFallback) {
+                dbUsers = JSON.parse(localFallback);
+            } else {
+                let defaultAdminHash = await hashPin("12345");
+                dbUsers = {
+                    "MAT": {
+                        pinHash: defaultAdminHash,
+                        status: 'active',
+                        modules: ['standard', 'wasserwerk', 'schwimmbad', 'pid', 'verdünnung', 'sonden', 'anlagen', 'radar', 'enthaerter']
+                    }
+                };
+            }
         }
+        checkAuthGuard();
     }
-    initDefaultUsers();
+
+    function saveUsersToLocalStorage() {
+        localStorage.setItem('innowatech_users_fallback', JSON.stringify(dbUsers));
+    }
+
+    function downloadUsersJson() {
+        let dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(dbUsers, null, 2));
+        let downloadAnchor = document.createElement('a');
+        downloadAnchor.setAttribute("href", dataStr);
+        downloadAnchor.setAttribute("download", "users.json");
+        document.body.appendChild(downloadAnchor);
+        downloadAnchor.click();
+        downloadAnchor.remove();
+        alert("users.json wurde heruntergeladen! Bitte lade diese Datei nun in dein GitHub-Repository hoch.");
+    }
 
     function checkAuthGuard() {
         if (!activeUser || !dbUsers[activeUser] || dbUsers[activeUser].status !== 'active') {
@@ -2010,13 +2047,13 @@
     }
 
     function factoryResetUsers() {
-        if (confirm("Wirklich alle gespeicherten Benutzer im Speicher löschen? (Standard-Admin MAT PIN 12345 wird neu angelegt)")) {
-            localStorage.removeItem('innowatech_users');
+        if (confirm("Wirklich alle Benutzer auf Werkseinstellungen zurücksetzen?")) {
+            localStorage.removeItem('innowatech_users_fallback');
             localStorage.removeItem('innowatech_active_user');
             dbUsers = {};
             activeUser = null;
-            initDefaultUsers().then(() => {
-                alert("Daten zurückgesetzt. Bitte neu anmelden.");
+            loadUsersDatabase().then(() => {
+                alert("Zurückgesetzt. Bitte neu anmelden.");
                 window.location.reload();
             });
         }
@@ -2098,8 +2135,8 @@
             modules: allowedModules
         };
 
-        localStorage.setItem('innowatech_users', JSON.stringify(dbUsers));
-        alert(`Techniker ${kuerzel} erfolgreich gespeichert!`);
+        saveUsersToLocalStorage();
+        alert(`Techniker ${kuerzel} erfolgreich gespeichert! Bitte lade jetzt die users.json herunter und aktualisiere sie auf GitHub.`);
         document.getElementById('newKuerzel').value = '';
         document.getElementById('newPin').value = '';
         document.getElementById('selectAllModules').checked = false;
@@ -2132,14 +2169,14 @@
 
     function toggleUserStatus(k) {
         dbUsers[k].status = dbUsers[k].status === 'active' ? 'blocked' : 'active';
-        localStorage.setItem('innowatech_users', JSON.stringify(dbUsers));
+        saveUsersToLocalStorage();
         renderUserList();
     }
 
     function deleteUser(k) {
         if (confirm(`Techniker ${k} wirklich löschen?`)) {
             delete dbUsers[k];
-            localStorage.setItem('innowatech_users', JSON.stringify(dbUsers));
+            saveUsersToLocalStorage();
             renderUserList();
         }
     }
@@ -2351,7 +2388,7 @@
         isLauncherActive = (savedLauncherState === 'true');
         isInToolFromLauncher = false;
 
-        checkAuthGuard();
+        loadUsersDatabase();
         applyViewMode();
         initCustomDropdowns();
     }
