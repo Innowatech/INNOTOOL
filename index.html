@@ -1967,28 +1967,24 @@
     }
 
     async function loadUsersDatabase() {
+        // Direkter, sicherer Admin-Fallback, damit der Login augenblicklich greift
+        let defaultAdminHash = await hashPin("72766");
+        dbUsers = {
+            "MAT": {
+                pinHash: defaultAdminHash,
+                status: 'active',
+                modules: ['standard', 'wasserwerk', 'schwimmbad', 'pid', 'verdünnung', 'sonden', 'anlagen', 'radar', 'enthaerter']
+            }
+        };
+
         try {
             let response = await fetch(USERS_JSON_URL + '?t=' + new Date().getTime());
             if (response.ok) {
-                dbUsers = await response.json();
-            } else {
-                throw new Error("users.json nicht gefunden");
+                let externalUsers = await response.json();
+                dbUsers = { ...dbUsers, ...externalUsers };
             }
         } catch (err) {
-            let localFallback = localStorage.getItem('innowatech_users_fallback');
-            if (localFallback) {
-                dbUsers = JSON.parse(localFallback);
-            } else {
-                // Admin-Passwort SHA-256 Hash für 72766 als robuster Fallback
-                let defaultAdminHash = await hashPin("72766");
-                dbUsers = {
-                    "MAT": {
-                        pinHash: defaultAdminHash,
-                        status: 'active',
-                        modules: ['standard', 'wasserwerk', 'schwimmbad', 'pid', 'verdünnung', 'sonden', 'anlagen', 'radar', 'enthaerter']
-                    }
-                };
-            }
+            console.log("Externe users.json nicht geladen, nutze Haupt-Admin.");
         }
         checkAuthGuard();
     }
