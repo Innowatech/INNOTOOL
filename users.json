@@ -1,12 +1,12 @@
 {
   "ADMIN": {
-    "pinHash": "07062509_als_hash", 
+    "pinHash": "07062509",
     "status": "active",
     "isAdmin": true,
     "modules": ["standard", "wasserwerk", "schwimmbad", "pid", "verdünnung", "sonden", "anlagen", "radar", "enthaerter"]
   },
   "MAT": {
-    "pinHash": "72186_als_hash",
+    "pinHash": "72186",
     "status": "active",
     "isAdmin": false,
     "modules": ["standard", "wasserwerk", "schwimmbad", "pid", "verdünnung", "sonden", "anlagen", "radar", "enthaerter"]
