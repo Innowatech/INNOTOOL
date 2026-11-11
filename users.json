@@ -1,5 +1,6 @@
 {
   "MAT": {
+    "pin": "72766",
     "pinHash": "7fb438670d898555e7149a464273e8785aa2d59cf501be85e9262f275eb1f887",
     "status": "active",
     "modules": [
@@ -15,4 +16,3 @@
     ]
   }
 }
-
