@@ -10,7 +10,7 @@
     <meta name="theme-color" content="#0d47a1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
-    <title>INNOWATΞCH Service Tool v3.0</title>
+    <title>INNOWATΞCH Service Tool v3.1</title>
     
     <!-- PWA / App Manifest -->
     <link rel="manifest" href="manifest.json">
@@ -783,6 +783,38 @@
             display: flex;
             flex-direction: column;
             overflow: hidden;
+            position: relative;
+        }
+
+        /* Scroll-Pfeil Indikator fürs Einstellungs-Modal */
+        .modal-scroll-indicator {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--primary-color);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+            z-index: 10;
+        }
+        .modal-scroll-indicator.visible {
+            opacity: 0.9;
+            animation: bounceIndicator 1.5s infinite;
+        }
+        @keyframes bounceIndicator {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0) translateX(-50%); }
+            40% { transform: translateY(4px) translateX(-50%); }
+            60% { transform: translateY(2px) translateX(-50%); }
         }
 
         .modal-header {
@@ -1036,18 +1068,18 @@
 </head>
 <body>
 
-<!-- App-Start Login (Auth-Guard) -->
+<!-- App-Start Login (Auth-Guard) ohne Browser-Autofill Vorschläge -->
 <div class="app-login-overlay" id="appLoginOverlay">
     <div class="app-login-box">
         <h2 style="color: var(--primary-color); margin-top: 0; font-size: 1.2rem;">INNOWATΞCH Service</h2>
         <p style="font-size: 0.85rem; color: var(--subtext-color); margin-bottom: 15px;">Bitte mit Kürzel und PIN anmelden</p>
         <div class="form-group" style="text-align: left;">
             <label>Kürzel (z.B. MAT)</label>
-            <input type="text" id="appLoginUser" maxlength="3" autocomplete="off" placeholder="MAT" style="width:100%; padding:9px; border:1px solid var(--border-color); border-radius:4px; background:var(--input-bg); color:var(--text-color); text-transform:uppercase; font-size: 1rem; box-sizing: border-box;">
+            <input type="text" id="appLoginUser" maxlength="3" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="z.B. MAT" style="width:100%; padding:9px; border:1px solid var(--border-color); border-radius:4px; background:var(--input-bg); color:var(--text-color); text-transform:uppercase; font-size: 1rem; box-sizing: border-box;">
         </div>
         <div class="form-group" style="text-align: left; margin-top: 10px;">
             <label>PIN</label>
-            <input type="password" id="appLoginPin" maxlength="5" autocomplete="current-password" placeholder="*****" style="width:100%; padding:9px; border:1px solid var(--border-color); border-radius:4px; background:var(--input-bg); color:var(--text-color); font-size: 1rem; box-sizing: border-box;">
+            <input type="password" id="appLoginPin" maxlength="5" autocomplete="new-password" placeholder="•••••" style="width:100%; padding:9px; border:1px solid var(--border-color); border-radius:4px; background:var(--input-bg); color:var(--text-color); font-size: 1rem; box-sizing: border-box;">
         </div>
         <button type="button" class="admin-btn admin-btn-primary" style="margin-top: 15px;" onclick="performAppLogin()">Anmelden</button>
     </div>
@@ -1809,20 +1841,21 @@
         <button type="button" class="pdf-export-btn" onclick="exportToPDF('Enthärtungsanlagen')">📄 Als PDF speichern / drucken</button>
     </div>
 
-    <!-- Footer mit Version v3.0 -->
+    <!-- Footer mit Version v3.1 -->
     <div class="footer">
         <span>© 2026 #MAT</span>
-        <span class="footer-version" onclick="handleVersionClick()">v3.0</span>
+        <span class="footer-version" onclick="handleVersionClick()">v3.1</span>
     </div>
 </div>
 
+<!-- Einstellungen Modal mit Scroll-Indikator und Abmelde-Button -->
 <div class="modal-overlay" id="settings-modal">
-    <div class="modal-content">
+    <div class="modal-content" onscroll="checkSettingsScroll(this)">
         <div class="modal-header">
             <h2>⚙️ Einstellungen</h2>
             <button type="button" class="modal-close-btn" onclick="closeSettings()">✕</button>
         </div>
-        <div class="modal-body">
+        <div class="modal-body" id="settings-modal-body" onscroll="checkSettingsScroll(this)">
             <div class="setting-section">
                 <div class="setting-section-title">Erscheinungsbild & Icons</div>
                 <div class="toggle-row">
@@ -1853,32 +1886,41 @@
 
             <div class="setting-section">
                 <div class="setting-section-title" style="color: #0d47a1;">Kategorie: Anwendung (Per Griff ☰ verschiebbar)</div>
+                <div class="hint" style="margin-bottom: 6px;">Haken setzen = Modul aktiv | Haken entfernen = Modul inaktiv</div>
                 <div id="active-list-anwendung"></div>
 
                 <div class="setting-section-title" style="margin-top: 12px; color: #1b5e20;">Kategorie: Parameter (Per Griff ☰ verschiebbar)</div>
+                <div class="hint" style="margin-bottom: 6px;">Haken setzen = Modul aktiv | Haken entfernen = Modul inaktiv</div>
                 <div id="active-list-parameter"></div>
 
                 <div class="setting-section-title" style="margin-top: 12px; opacity: 0.8;">Inaktive Module</div>
                 <div id="inactive-module-list"></div>
             </div>
+
+            <!-- Neuer Abmelde-Button im Zahnrad-Menü -->
+            <div class="setting-section" style="border-bottom: none; padding-bottom: 0;">
+                <button type="button" class="admin-btn admin-btn-danger" onclick="performLogoutFromSettings()">🚪 Als Techniker abmelden</button>
+            </div>
         </div>
+        <!-- Scroll-Pfeil Indikator -->
+        <div class="modal-scroll-indicator" id="settings-scroll-indicator">▼</div>
     </div>
 </div>
 
-<!-- Admin Authentifizierung Modal -->
+<!-- Admin Authentifizierung Modal ohne Autofill Vorschläge -->
 <div class="admin-modal-overlay" id="adminAuthModal">
     <div class="admin-modal-content">
         <div class="admin-modal-header">
-            <span>Admin Authentifizierung (v3.0)</span>
+            <span>Admin Authentifizierung (v3.1)</span>
             <button type="button" class="modal-close-btn" style="color:var(--primary-color);" onclick="closeAdminModal('adminAuthModal')">✕</button>
         </div>
         <div class="form-group">
             <label>Admin-Kürzel</label>
-            <input type="text" id="adminUser" maxlength="3" value="" autocomplete="off" placeholder="MAT" style="width:100%; padding:8px; border:1px solid var(--border-color); border-radius:4px; background:var(--input-bg); color:var(--text-color); text-transform:uppercase;">
+            <input type="text" id="adminUser" maxlength="3" value="" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="z.B. MAT" style="width:100%; padding:8px; border:1px solid var(--border-color); border-radius:4px; background:var(--input-bg); color:var(--text-color); text-transform:uppercase;">
         </div>
         <div class="form-group">
             <label>Admin-PIN</label>
-            <input type="password" id="adminPin" maxlength="5" value="" autocomplete="new-password" placeholder="*****" style="width:100%; padding:8px; border:1px solid var(--border-color); border-radius:4px; background:var(--input-bg); color:var(--text-color);">
+            <input type="password" id="adminPin" maxlength="5" value="" autocomplete="new-password" placeholder="•••••" style="width:100%; padding:8px; border:1px solid var(--border-color); border-radius:4px; background:var(--input-bg); color:var(--text-color);">
         </div>
         <button type="button" class="admin-btn admin-btn-primary" onclick="verifyAdminAuth()">Admin Console öffnen</button>
     </div>
@@ -1970,7 +2012,6 @@
             if (localFallback) {
                 dbUsers = JSON.parse(localFallback);
             } else {
-                // Neuer Default Admin PIN 72186
                 let defaultAdminHash = await hashPin("72186");
                 dbUsers = {
                     "MAT": {
@@ -2201,6 +2242,13 @@
         activeUser = null;
         localStorage.removeItem('innowatech_active_user');
         closeAdminModal('adminConsoleModal');
+        checkAuthGuard();
+    }
+
+    function performLogoutFromSettings() {
+        activeUser = null;
+        localStorage.removeItem('innowatech_active_user');
+        closeSettings();
         checkAuthGuard();
     }
 
@@ -2641,6 +2689,9 @@
     function openSettings() {
         renderModuleManager();
         document.getElementById('settings-modal').classList.add('open');
+        setTimeout(() => {
+            checkSettingsScroll(document.getElementById('settings-modal-body'));
+        }, 50);
     }
 
     function closeSettings() {
@@ -2648,6 +2699,18 @@
         saveSettings();
         renderTabs();
         if (isLauncherActive && !isInToolFromLauncher) renderLauncherGrid();
+    }
+
+    function checkSettingsScroll(el) {
+        if (!el) return;
+        const indicator = document.getElementById('settings-scroll-indicator');
+        if (!indicator) return;
+        const scrollBottom = el.scrollHeight - el.scrollTop - el.clientHeight;
+        if (scrollBottom > 20) {
+            indicator.classList.add('visible');
+        } else {
+            indicator.classList.remove('visible');
+        }
     }
 
     function renderModuleManager() {
