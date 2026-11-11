@@ -1,6 +1,36 @@
 {
   "MAT": {
-    "pinHash": "5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5",
+    "pinHash": "7b7c6cb27f053e343e64130d8f50496ddeb4000e42ec619d6fcb763715cf55da",
+    "status": "active",
+    "modules": [
+      "standard",
+      "wasserwerk",
+      "schwimmbad",
+      "pid",
+      "verdünnung",
+      "sonden",
+      "anlagen",
+      "radar",
+      "enthaerter"
+    ]
+  },
+  "RIT": {
+    "pinHash": "7b7c6cb27f053e343e64130d8f50496ddeb4000e42ec619d6fcb763715cf55da",
+    "status": "active",
+    "modules": [
+      "standard",
+      "wasserwerk",
+      "schwimmbad",
+      "pid",
+      "verdünnung",
+      "sonden",
+      "anlagen",
+      "radar",
+      "enthaerter"
+    ]
+  },
+  "SAG": {
+    "pinHash": "7b7c6cb27f053e343e64130d8f50496ddeb4000e42ec619d6fcb763715cf55da",
     "status": "active",
     "modules": [
       "standard",
