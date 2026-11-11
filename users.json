@@ -1,14 +1,14 @@
 {
-  "ADMIN": {
-    "pinHash": "07062509",
-    "status": "active",
-    "isAdmin": true,
-    "modules": ["standard", "wasserwerk", "schwimmbad", "pid", "verdünnung", "sonden", "anlagen", "radar", "enthaerter"]
-  },
-  "MAT": {
-    "pinHash": "72186",
-    "status": "active",
-    "isAdmin": false,
-    "modules": ["standard", "wasserwerk", "schwimmbad", "pid", "verdünnung", "sonden", "anlagen", "radar", "enthaerter"]
-  }
+  "users": [
+    {
+      "username": "ADMIN",
+      "pinHash": "07062509",
+      "role": "admin"
+    },
+    {
+      "username": "MAT",
+      "pinHash": "72186",
+      "role": "technician"
+    }
+  ]
 }
