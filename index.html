@@ -10,7 +10,7 @@
     <meta name="theme-color" content="#0d47a1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
-    <title>INNOWATΞCH Service Tool v2.6</title>
+    <title>INNOWATΞCH Service Tool v2.7</title>
     
     <!-- PWA / App Manifest -->
     <link rel="manifest" href="manifest.json">
@@ -287,18 +287,6 @@
             font-size: 0.68rem;
             font-weight: bold;
             gap: 3px;
-        }
-
-        .active-user-badge {
-            font-size: 0.65rem;
-            background: rgba(255,255,255,0.25);
-            border: 1px solid rgba(255,255,255,0.4);
-            padding: 3px 6px;
-            border-radius: 4px;
-            font-weight: bold;
-            color: white;
-            white-space: nowrap;
-            cursor: pointer;
         }
 
         .santa-letter {
@@ -1071,7 +1059,6 @@
             <button type="button" class="header-btn view-toggle-btn" id="view-toggle-btn" onclick="toggleMainView()" title="Ansicht umschalten">
                 <span id="toggle-icon">田</span> <span id="toggle-text">Ansicht</span>
             </button>
-            <span id="activeUserBadge" class="active-user-badge" onclick="performLogout()" title="Klicken zum Abmelden"></span>
         </div>
         <div class="header-center">
             <h1 id="app-title"><span id="first-letter">I</span>NNOWATΞCH</h1>
@@ -1822,10 +1809,10 @@
         <button type="button" class="pdf-export-btn" onclick="exportToPDF('Enthärtungsanlagen')">📄 Als PDF speichern / drucken</button>
     </div>
 
-    <!-- Footer mit Version v2.6 -->
+    <!-- Footer mit Version v2.7 -->
     <div class="footer">
         <span>© 2026 #MAT</span>
-        <span class="footer-version" onclick="handleVersionClick()">v2.6</span>
+        <span class="footer-version" onclick="handleVersionClick()">v2.7</span>
     </div>
 </div>
 
@@ -1882,7 +1869,7 @@
 <div class="admin-modal-overlay" id="adminAuthModal">
     <div class="admin-modal-content">
         <div class="admin-modal-header">
-            <span>Admin Authentifizierung (v2.6)</span>
+            <span>Admin Authentifizierung (v2.7)</span>
             <button type="button" class="modal-close-btn" style="color:var(--primary-color);" onclick="closeAdminModal('adminAuthModal')">✕</button>
         </div>
         <div class="form-group">
@@ -1959,7 +1946,6 @@
     let clickCount = 0;
     let clickTimer = null;
 
-    // URL zu deiner users.json auf GitHub (z.B. Raw-Link oder direkte URL im Repo)
     const USERS_JSON_URL = './users.json'; 
 
     async function hashPin(pin) {
@@ -1970,7 +1956,6 @@
         return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
     }
 
-    // Läd die users.json vom Server/GitHub oder erstellt Default-Admin falls nicht erreichbar
     async function loadUsersDatabase() {
         try {
             let response = await fetch(USERS_JSON_URL + '?t=' + new Date().getTime());
@@ -1980,19 +1965,12 @@
                 throw new Error("users.json nicht gefunden");
             }
         } catch (err) {
-            // Fallback falls offline oder Datei noch nicht auf GitHub liegt
             let localFallback = localStorage.getItem('innowatech_users_fallback');
             if (localFallback) {
                 dbUsers = JSON.parse(localFallback);
             } else {
-                let defaultAdminHash = await hashPin("12345");
-                dbUsers = {
-                    "MAT": {
-                        pinHash: defaultAdminHash,
-                        status: 'active',
-                        modules: ['standard', 'wasserwerk', 'schwimmbad', 'pid', 'verdünnung', 'sonden', 'anlagen', 'radar', 'enthaerter']
-                    }
-                };
+                // Keinerlei harte Fallback-Passwörter im Code – rein dynamisch via users.json
+                dbUsers = {};
             }
         }
         checkAuthGuard();
@@ -2020,7 +1998,6 @@
             document.getElementById('appLoginOverlay').classList.add('active');
         } else {
             document.getElementById('appLoginOverlay').classList.remove('active');
-            updateActiveUserBadge();
             applyUserPermissions();
         }
     }
@@ -2039,7 +2016,6 @@
             activeUser = u;
             localStorage.setItem('innowatech_active_user', u);
             document.getElementById('appLoginOverlay').classList.remove('active');
-            updateActiveUserBadge();
             applyUserPermissions();
         } else {
             alert("Ungültige PIN oder Benutzer gesperrt!");
@@ -2188,16 +2164,6 @@
         checkAuthGuard();
     }
 
-    function updateActiveUserBadge() {
-        let badge = document.getElementById('activeUserBadge');
-        if (activeUser) {
-            badge.textContent = activeUser;
-            badge.style.display = 'inline-block';
-        } else {
-            badge.style.display = 'none';
-        }
-    }
-
     function applyUserPermissions() {
         if (!activeUser) {
             currentModules.forEach(m => m.userAllowed = true);
@@ -2305,17 +2271,19 @@
         const modalList = document.getElementById('dropdown-modal-list');
         
         let labelEl = select.closest('.form-group')?.querySelector('label');
-        modalTitle.innerText = labelEl ? labelEl.innerText : "Auswahl";
+        modalTitle.innerText = labelEl ? labelEl.innerText : "Auswahl treffen";
+        
         modalList.innerHTML = '';
-
         Array.from(select.options).forEach((opt, idx) => {
             let item = document.createElement('div');
-            item.className = 'dropdown-item' + (opt.selected ? ' selected' : '');
-            item.innerHTML = `<span>${opt.text}</span>` + (opt.selected ? '<span style="color:var(--primary-color);">✓</span>' : '');
+            item.className = 'dropdown-item';
+            if (idx === select.selectedIndex) item.classList.add('selected');
+            item.innerHTML = `<span>${opt.text}</span>`;
             item.onclick = () => {
                 select.selectedIndex = idx;
                 select.dispatchEvent(new Event('change'));
-                initCustomDropdowns();
+                let trigger = select.parentElement.querySelector('.custom-select-trigger');
+                if (trigger) updateTriggerText(trigger, select);
                 closeCustomDropdown();
             };
             modalList.appendChild(item);
@@ -2327,882 +2295,15 @@
     function closeCustomDropdown(e) {
         if (!e || e.target.id === 'dropdown-modal') {
             document.getElementById('dropdown-modal').classList.remove('open');
+            activeDropdownSelect = null;
         }
     }
 
-    function loadSettings() {
-        checkChristmasHat();
-        const savedDarkMode = localStorage.getItem('mat_darkmode');
-        const isDark = (savedDarkMode === 'true');
-        
-        if (isDark) {
-            document.body.classList.add('dark-mode');
-            document.getElementById('darkmode-toggle').checked = true;
-        } else {
-            document.body.classList.remove('dark-mode');
-            document.getElementById('darkmode-toggle').checked = false;
-            if (savedDarkMode === null) {
-                localStorage.setItem('mat_darkmode', 'false');
-            }
-        }
-
-        const savedSliderIcons = localStorage.getItem('mat_show_slider_icons');
-        showSliderIcons = (savedSliderIcons !== 'false');
-        document.getElementById('icons-slider-toggle').checked = showSliderIcons;
-
-        const savedDashboardIcons = localStorage.getItem('mat_show_dashboard_icons');
-        showDashboardIcons = (savedDashboardIcons !== 'false');
-        document.getElementById('icons-dashboard-toggle').checked = showDashboardIcons;
-
-        let savedZoom = parseFloat(localStorage.getItem('mat_zoom') || '1');
-        if (savedZoom > 1.2) savedZoom = 1.2;
-        changeZoom(savedZoom, false);
-        document.getElementById('zoom-slider').value = savedZoom;
-
-        const savedModules = localStorage.getItem('mat_modules');
-        if (savedModules) {
-            try {
-                let parsed = JSON.parse(savedModules);
-                currentModules = parsed;
-                currentModules.forEach(m => {
-                    const def = defaultModules.find(d => d.id === m.id);
-                    if (def) {
-                        m.title = def.title;
-                        m.category = def.category;
-                        m.icon = def.icon || '🛠️';
-                    }
-                });
-                defaultModules.forEach(def => {
-                    if (!currentModules.some(m => m.id === def.id)) {
-                        currentModules.push(def);
-                    }
-                });
-            } catch(e) {
-                currentModules = [...defaultModules];
-            }
-        } else {
-            currentModules = [...defaultModules];
-        }
-
-        const savedLauncherState = localStorage.getItem('mat_launcher_view');
-        isLauncherActive = (savedLauncherState === 'true');
-        isInToolFromLauncher = false;
-
+    window.addEventListener('DOMContentLoaded', () => {
         loadUsersDatabase();
-        applyViewMode();
+        checkChristmasHat();
         initCustomDropdowns();
-    }
-
-    function saveSettings() {
-        localStorage.setItem('mat_modules', JSON.stringify(currentModules));
-    }
-
-    function toggleDarkMode(isDark) {
-        if (isDark) {
-            document.body.classList.add('dark-mode');
-        } else {
-            document.body.classList.remove('dark-mode');
-        }
-        localStorage.setItem('mat_darkmode', isDark);
-    }
-
-    function toggleSliderIcons(enabled) {
-        showSliderIcons = enabled;
-        localStorage.setItem('mat_show_slider_icons', enabled);
-    }
-
-    function toggleDashboardIcons(enabled) {
-        showDashboardIcons = enabled;
-        localStorage.setItem('mat_show_dashboard_icons', enabled);
-    }
-
-    function changeZoom(val, save = true) {
-        let numVal = parseFloat(val);
-        if (numVal > 1.2) numVal = 1.2;
-        document.documentElement.style.setProperty('--app-zoom', numVal);
-        document.getElementById('zoom-val-text').innerText = Math.round(numVal * 100) + '%';
-        if (save) {
-            localStorage.setItem('mat_zoom', numVal);
-        }
-    }
-
-    function toggleMainView() {
-        isLauncherActive = !isLauncherActive;
-        isInToolFromLauncher = false;
-        localStorage.setItem('mat_launcher_view', isLauncherActive);
-        applyViewMode();
-    }
-
-    function applyViewMode() {
-        const tabBarWrapper = document.getElementById('tab-bar-wrapper');
-        const launcherView = document.getElementById('launcher-view');
-        const backBar = document.getElementById('dashboard-back-bar');
-        const toggleIcon = document.getElementById('toggle-icon');
-        const toggleText = document.getElementById('toggle-text');
-
-        if (isLauncherActive && !isInToolFromLauncher) {
-            tabBarWrapper.style.display = 'none';
-            launcherView.classList.add('active');
-            backBar.classList.remove('active');
-            toggleIcon.innerText = '📄';
-            toggleText.innerText = 'Ansicht';
-            
-            currentModules.forEach(t => {
-                let content = document.getElementById('tab-' + t.id);
-                if (content) content.classList.remove('active');
-            });
-            renderLauncherGrid();
-        } else if (isLauncherActive && isInToolFromLauncher) {
-            tabBarWrapper.style.display = 'none';
-            launcherView.classList.remove('active');
-            backBar.classList.add('active');
-            toggleIcon.innerText = '田';
-            toggleText.innerText = 'Ansicht';
-        } else {
-            tabBarWrapper.style.display = 'block';
-            launcherView.classList.remove('active');
-            backBar.classList.remove('active');
-            toggleIcon.innerText = '田';
-            toggleText.innerText = 'Ansicht';
-            
-            let visibleAllowed = currentModules.filter(m => m.visible && m.userAllowed);
-            if (currentActiveTab) {
-                switchTab(currentActiveTab);
-            } else if (visibleAllowed.length > 0) {
-                switchTab(visibleAllowed[0].id);
-            }
-        }
-    }
-
-    function renderLauncherGrid() {
-        const gridAnwendung = document.getElementById('launcher-grid-anwendung');
-        const gridParameter = document.getElementById('launcher-grid-parameter');
-
-        gridAnwendung.innerHTML = '';
-        gridParameter.innerHTML = '';
-
-        const activeModules = currentModules.filter(m => m.visible && m.userAllowed);
-
-        activeModules.forEach(mod => {
-            let card = document.createElement('div');
-            card.className = 'launcher-card';
-            card.onclick = () => selectModuleFromLauncher(mod.id);
-
-            let iconHtml = showDashboardIcons ? `<div class="launcher-icon">${mod.icon || '🛠️'}</div>` : '';
-
-            card.innerHTML = `
-                ${iconHtml}
-                <div class="launcher-label">${mod.title}</div>
-            `;
-
-            if (mod.category === 'Parameter') {
-                gridParameter.appendChild(card);
-            } else {
-                gridAnwendung.appendChild(card);
-            }
-        });
-    }
-
-    function selectModuleFromLauncher(tabId) {
-        isInToolFromLauncher = true;
-        applyViewMode();
-        switchTab(tabId);
-    }
-
-    function backToDashboard() {
-        isInToolFromLauncher = false;
-        applyViewMode();
-    }
-
-    function checkScrollArrows() {
-        const container = document.getElementById('categories-container');
-        const arrowLeft = document.getElementById('scroll-arrow-left');
-        const arrowRight = document.getElementById('scroll-arrow-right');
-
-        if (!container) return;
-
-        const scrollLeft = container.scrollLeft;
-        const maxScroll = container.scrollWidth - container.clientWidth;
-
-        if (scrollLeft > 5) {
-            arrowLeft.classList.add('visible');
-        } else {
-            arrowLeft.classList.remove('visible');
-        }
-
-        if (maxScroll - scrollLeft > 5) {
-            arrowRight.classList.add('visible');
-        } else {
-            arrowRight.classList.remove('visible');
-        }
-    }
-
-    function renderTabs(autoSelectFirst = false) {
-        const container = document.getElementById('categories-container');
-        container.innerHTML = '';
-
-        const activeModules = currentModules.filter(m => m.visible && m.userAllowed);
-
-        const catMap = {};
-        activeModules.forEach(mod => {
-            const cat = mod.category || 'Anwendung';
-            if (!catMap[cat]) catMap[cat] = [];
-            catMap[cat].push(mod);
-        });
-
-        const categoryOrder = ['Anwendung', 'Parameter'];
-
-        categoryOrder.forEach(catName => {
-            if (catMap[catName] && catMap[catName].length > 0) {
-                let groupDiv = document.createElement('div');
-                groupDiv.className = 'category-group' + (catName === 'Parameter' ? ' category-parameters' : '');
-
-                let titleDiv = document.createElement('div');
-                titleDiv.className = 'category-title';
-                titleDiv.innerText = catName;
-                groupDiv.appendChild(titleDiv);
-
-                let innerBtns = document.createElement('div');
-                innerBtns.className = 'tab-buttons-inner';
-
-                catMap[catName].forEach(mod => {
-                    let btn = document.createElement('button');
-                    btn.type = 'button';
-                    btn.className = 'tab-btn';
-                    btn.id = 'btn-' + mod.id;
-                    
-                    let contentDiv = document.createElement('div');
-                    contentDiv.className = 'btn-content-inner';
-
-                    if (showSliderIcons && mod.icon) {
-                        let iconEl = document.createElement('span');
-                        iconEl.style.fontSize = '0.8rem';
-                        iconEl.style.marginBottom = '1px';
-                        iconEl.innerText = mod.icon;
-                        contentDiv.appendChild(iconEl);
-                    }
-
-                    let words = mod.title.split(' ');
-                    words.forEach((word) => {
-                        let lineSpan = document.createElement('span');
-                        lineSpan.className = 'btn-text-line';
-                        lineSpan.innerText = word;
-                        contentDiv.appendChild(lineSpan);
-                    });
-
-                    btn.innerHTML = '';
-                    btn.appendChild(contentDiv);
-                    btn.onclick = () => switchTab(mod.id);
-                    innerBtns.appendChild(btn);
-                });
-
-                groupDiv.appendChild(innerBtns);
-                container.appendChild(groupDiv);
-            }
-        });
-
-        if (autoSelectFirst || !activeModules.some(m => m.id === currentActiveTab)) {
-            if (activeModules.length > 0) {
-                switchTab(activeModules[0].id);
-            }
-        } else {
-            switchTab(currentActiveTab);
-        }
-
-        setTimeout(checkScrollArrows, 100);
-    }
-
-    function switchTab(tabName) {
-        currentActiveTab = tabName;
-        currentModules.forEach(t => {
-            let btn = document.getElementById('btn-' + t.id);
-            let content = document.getElementById('tab-' + t.id);
-            if (btn) btn.classList.remove('active');
-            if (content) content.classList.remove('active');
-        });
-
-        let activeBtn = document.getElementById('btn-' + tabName);
-        let activeContent = document.getElementById('tab-' + tabName);
-        if (activeBtn) {
-            activeBtn.classList.add('active');
-            activeBtn.scrollIntoView({ behavior: 'smooth', inline: 'nearest', block: 'nearest' });
-        }
-        if (activeContent && (!isLauncherActive || isInToolFromLauncher)) {
-            activeContent.classList.add('active');
-        }
-    }
-
-    function openSettings() {
-        renderModuleManager();
-        document.getElementById('settings-modal').classList.add('open');
-    }
-
-    function closeSettings() {
-        document.getElementById('settings-modal').classList.remove('open');
-        saveSettings();
-        renderTabs();
-        if (isLauncherActive && !isInToolFromLauncher) renderLauncherGrid();
-    }
-
-    function renderModuleManager() {
-        const listAnwendung = document.getElementById('active-list-anwendung');
-        const listParameter = document.getElementById('active-list-parameter');
-        const inactiveList = document.getElementById('inactive-module-list');
-
-        listAnwendung.innerHTML = '';
-        listParameter.innerHTML = '';
-        inactiveList.innerHTML = '';
-
-        const activeModules = currentModules.filter(m => m.visible);
-        const inactiveModules = currentModules.filter(m => !m.visible);
-
-        ['Anwendung', 'Parameter'].forEach(categoryName => {
-            const targetContainer = (categoryName === 'Anwendung') ? listAnwendung : listParameter;
-            const categoryActiveModules = activeModules.filter(m => m.category === categoryName);
-
-            if (categoryActiveModules.length === 0) {
-                targetContainer.innerHTML = '<div class="hint">Keine aktiven Module in dieser Kategorie.</div>';
-            } else {
-                categoryActiveModules.forEach((mod) => {
-                    let item = document.createElement('div');
-                    item.className = 'module-list-item';
-                    item.draggable = true;
-                    item.dataset.id = mod.id;
-
-                    let left = document.createElement('div');
-                    left.className = 'module-list-item-left';
-
-                    let chk = document.createElement('input');
-                    chk.type = 'checkbox';
-                    chk.checked = true;
-                    chk.onchange = () => {
-                        if (activeModules.length <= 1) {
-                            alert('Es muss mindestens ein Modul aktiv bleiben!');
-                            chk.checked = true;
-                            return;
-                        }
-                        mod.visible = false;
-                        saveSettings();
-                        renderModuleManager();
-                    };
-
-                    let label = document.createElement('span');
-                    label.className = 'module-label-text';
-                    label.innerHTML = (mod.icon || '🛠️') + ' ' + mod.title;
-
-                    left.appendChild(chk);
-                    left.appendChild(label);
-                    item.appendChild(left);
-
-                    let handle = document.createElement('span');
-                    handle.className = 'drag-handle';
-                    handle.innerText = '☰';
-                    handle.title = 'Zum Verschieben gedrückt halten';
-                    item.appendChild(handle);
-
-                    item.addEventListener('dragstart', (e) => {
-                        e.dataTransfer.setData('text/plain', mod.id);
-                        item.classList.add('dragging');
-                    });
-
-                    item.addEventListener('dragend', () => {
-                        item.classList.remove('dragging');
-                    });
-
-                    item.addEventListener('dragover', (e) => {
-                        e.preventDefault();
-                        const draggingItem = targetContainer.querySelector('.dragging');
-                        if (!draggingItem || draggingItem === item) return;
-
-                        const rect = item.getBoundingClientRect();
-                        const offset = e.clientY - rect.top - rect.height / 2;
-
-                        if (offset < 0) {
-                            targetContainer.insertBefore(draggingItem, item);
-                        } else {
-                            targetContainer.insertBefore(draggingItem, item.nextSibling);
-                        }
-                    });
-
-                    item.addEventListener('drop', (e) => {
-                        e.preventDefault();
-                        updateModulesOrderFromDOM();
-                    });
-
-                    targetContainer.appendChild(item);
-                });
-            }
-        });
-
-        if (inactiveModules.length === 0) {
-            inactiveList.innerHTML = '<div class="hint">Keine inaktiven Module vorhanden.</div>';
-        } else {
-            inactiveModules.forEach(mod => {
-                let item = document.createElement('div');
-                item.className = 'module-list-item';
-                item.style.opacity = '0.7';
-
-                let left = document.createElement('div');
-                left.className = 'module-list-item-left';
-
-                let chk = document.createElement('input');
-                chk.type = 'checkbox';
-                chk.checked = false;
-                chk.onchange = () => {
-                    mod.visible = true;
-                    saveSettings();
-                    renderModuleManager();
-                };
-
-                let label = document.createElement('span');
-                label.className = 'module-label-text';
-                label.innerHTML = `[${mod.category}] ` + (mod.icon || '🛠️') + ' ' + mod.title;
-
-                left.appendChild(chk);
-                left.appendChild(label);
-                item.appendChild(left);
-                inactiveList.appendChild(item);
-            });
-        }
-    }
-
-    function updateModulesOrderFromDOM() {
-        const newActiveOrder = [];
-        ['active-list-anwendung', 'active-list-parameter'].forEach(containerId => {
-            const container = document.getElementById(containerId);
-            container.querySelectorAll('.module-list-item').forEach(item => {
-                const id = item.dataset.id;
-                const mod = currentModules.find(m => m.id === id);
-                if (mod) newActiveOrder.push(mod);
-            });
-        });
-
-        const inactiveModules = currentModules.filter(m => !m.visible);
-        currentModules = [...newActiveOrder, ...inactiveModules];
-        saveSettings();
-    }
-
-    const radarTankDatabase = {
-        "40": 385,
-        "60": 535,
-        "100": 723,
-        "200": 830,
-        "500": 1108,
-        "1000": 1190
-    };
-
-    function updateRadarTankDefaults() {
-        let vol = document.getElementById('radar_tankvol').value;
-        let maxInput = document.getElementById('radar_abgleich_max');
-        let hint = document.getElementById('radar_tank_hint');
-
-        if (vol && radarTankDatabase[vol]) {
-            let defaultMax = radarTankDatabase[vol];
-            maxInput.value = defaultMax;
-            hint.innerHTML = `<span style="color: #2e7d32;"><b>Werte automatisch eingetragen:</b> Min = 0 mm, Max = ${defaultMax} mm für ${vol}l Tank.</span>`;
-        } else {
-            maxInput.value = "";
-            hint.innerText = "Wähle oben ein Tankvolumen, um die Abgleichwerte automatisch zu setzen.";
-        }
-    }
-
-    const enthaerterDatabase = {
-        "fk":      { harz: "4 Liter", kapazitaet: "15 °dH x m³", sole: "3 l", salz: "0,96 kg", rueckfuelle: "2,7 l", rueckspuelen: "3 Min", besalzen: "30 Min", schnellspuelen: "15 Min", sole_nachf: "3 Min" },
-        "fkl":     { harz: "4 Liter", kapazitaet: "15 °dH x m³", sole: "3 l", salz: "0,96 kg", rueckfuelle: "2,7 l", rueckspuelen: "3 Min", besalzen: "30 Min", schnellspuelen: "15 Min", sole_nachf: "3 Min" },
-        "fx":      { harz: "4 Liter", kapazitaet: "15 °dH x m³", sole: "3 l", salz: "0,96 kg", rueckfuelle: "2,7 l", rueckspuelen: "3 Min", besalzen: "30 Min", schnellspuelen: "15 Min", sole_nachf: "3 Min" },
-        "gx":      { harz: "4 Liter", kapazitaet: "15 °dH x m³", sole: "3 l", salz: "0,96 kg", rueckfuelle: "2,7 l", rueckspuelen: "3 Min", besalzen: "30 Min", schnellspuelen: "15 Min", sole_nachf: "3 Min" },
-        "gxl":     { harz: "11 Liter", kapazitaet: "35 °dH x m³", sole: "8,5 l", salz: "2,65 kg", rueckfuelle: "7,4 l", rueckspuelen: "3 Min", besalzen: "30 Min", schnellspuelen: "15 Min", sole_nachf: "3 Min" },
-        "fxl":     { harz: "11 Liter", kapazitaet: "35 °dH x m³", sole: "8,5 l", salz: "2,65 kg", rueckfuelle: "7,4 l", rueckspuelen: "3 Min", besalzen: "30 Min", schnellspuelen: "15 Min", sole_nachf: "3 Min" },
-        "fxm":     { harz: "4 Liter", kapazitaet: "15 °dH x m³", sole: "3 l", salz: "0,96 kg", rueckfuelle: "2,7 l", rueckspuelen: "3 Min", besalzen: "30 Min", schnellspuelen: "15 Min", sole_nachf: "3 Min" },
-        "kl":      { harz: "4 Liter", kapazitaet: "15 °dH x m³", sole: "3 l", salz: "0,96 kg", rueckfuelle: "2,7 l", rueckspuelen: "3 Min", besalzen: "30 Min", schnellspuelen: "15 Min", sole_nachf: "3 Min" },
-        "kl30_pg": { harz: "8 Liter", kapazitaet: "30 °dH x m³", sole: "6 l", salz: "1,02 kg", rueckfuelle: "5,4 l", rueckspuelen: "3 Min", besalzen: "30 Min", schnellspuelen: "15 Min", sole_nachf: "5 Min" },
-        "wat100":  { harz: "25 Liter", kapazitaet: "100 °dH x m³", sole: "19,2 l", salz: "6 kg", rueckfuelle: "16,8 l", rueckspuelen: "5 Min", besalzen: "55 Min", schnellspuelen: "10 Min", sole_nachf: "9 Min" },
-        "wat200":  { harz: "56 Liter", kapazitaet: "200 °dH x m³", sole: "43 l", salz: "13,4 kg", rueckfuelle: "37,6 l", rueckspuelen: "5 Min", besalzen: "85 Min", schnellspuelen: "12 Min", sole_nachf: "14 Min" }
-    };
-
-    function updateEnthaerterData() {
-        let key = document.getElementById('enthaerter_select').value;
-        if (key && enthaerterDatabase[key]) {
-            let d = enthaerterDatabase[key];
-            document.getElementById('enth_kapazitaet').innerText = d.kapazitaet;
-            document.getElementById('enth_harz').innerText = d.harz;
-            document.getElementById('enth_sole').innerText = d.sole;
-            document.getElementById('enth_salz').innerText = d.salz;
-            document.getElementById('enth_rueckfuelle').innerText = d.rueckfuelle;
-            document.getElementById('enth_rueckspuelen').innerText = d.rueckspuelen;
-            document.getElementById('enth_besalzen').innerText = d.besalzen;
-            document.getElementById('enth_schnellspuelen').innerText = d.schnellspuelen;
-            document.getElementById('enth_sole_nachf').innerText = d.sole_nachf;
-        } else {
-            document.getElementById('enth_kapazitaet').innerText = "-";
-            document.getElementById('enth_harz').innerText = "-";
-            document.getElementById('enth_sole').innerText = "-";
-            document.getElementById('enth_salz').innerText = "-";
-            document.getElementById('enth_rueckfuelle').innerText = "-";
-            document.getElementById('enth_rueckspuelen').innerText = "-";
-            document.getElementById('enth_besalzen').innerText = "-";
-            document.getElementById('enth_schnellspuelen').innerText = "-";
-            document.getElementById('enth_sole_nachf').innerText = "-";
-        }
-    }
-
-    const sondenDatabase = {
-        1: { messRv1: "0,003 ... 0,400 ppm", steilRv1: "48,0 mA/ppm" },
-        2: { messRv1: "0,003 ... 0,700 ppm", steilRv1: "24,0 mA/ppm" },
-        3: { messRv1: "0,003 ... 1,700 ppm", steilRv1: "9,6 mA/ppm" },
-        4: { messRv1: "0,003 ... 4,00 ppm", steilRv1: "4,8 mA/ppm" },
-        5: { messRv1: "0,003 ... 7,00 ppm", steilRv1: "2,4 mA/ppm" },
-        6: { messRv1: "0,003 ... 0,400 ppm", steilRv1: "48,0 mA/ppm" },
-        7: { messRv1: "0,003 ... 0,700 ppm", steilRv1: "24,0 mA/ppm" },
-        8: { messRv1: "0,003 ... 1,700 ppm", steilRv1: "9,6 mA/ppm" },
-        9: { messRv1: "0,003 ... 4,00 ppm", steilRv1: "4,8 mA/ppm" },
-        10: { messRv1: "0,003 ... 7,00 ppm", steilRv1: "2,4 mA/ppm" }
-    };
-
-    function updateSondenData() {
-        let selectedRow = document.getElementById('sonden_select').value;
-        if (selectedRow && sondenDatabase[selectedRow]) {
-            let data = sondenDatabase[selectedRow];
-            document.getElementById('sond_res_mess_rv1').innerText = data.messRv1;
-            document.getElementById('sond_res_steilheit_rv1').innerText = data.steilRv1;
-        } else {
-            document.getElementById('sond_res_mess_rv1').innerText = "-";
-            document.getElementById('sond_res_steilheit_rv1').innerText = "-";
-        }
-    }
-
-    const anlagenDatabase = {
-        "fk":             { durchfluss: "40 l/h", strom: "6,8 A", spannung: "24 V", zeit: "4 h", prod: "60 min", pause: "30 min" },
-        "fxm":            { durchfluss: "40 l/h", strom: "6,8 A", spannung: "24 V", zeit: "7 h", prod: "30 min", pause: "30 min" },
-        "fx":             { durchfluss: "40 l/h", strom: "6,8 A", spannung: "24 V", zeit: "13 h", prod: "60 min", pause: "30 min" },
-        "fxl_k2":         { durchfluss: "40 l/h", strom: "6,8 A", spannung: "24 V", zeit: "19 h", prod: "60 min", pause: "15 min" },
-        "fxl_k5":         { durchfluss: "40 l/h", strom: "6.8 A", spannung: "24 V", zeit: "19 h", prod: "60 min", pause: "15 min" },
-        "gx_k2":          { durchfluss: "40 l/h", strom: "6.8 A", spannung: "24 V", zeit: "13 h", prod: "60 min", pause: "30 min" },
-        "gx_k5":          { durchfluss: "40 l/h", strom: "6,8 A", spannung: "24 V", zeit: "13 h", prod: "60 min", pause: "30 min" },
-        "gxl_k5":         { durchfluss: "40 l/h", strom: "6,8 A", spannung: "24 V", zeit: "19 h", prod: "60 min", pause: "15 min" },
-        "sgx_k2":         { durchfluss: "40 l/h", strom: "6.8 A", spannung: "24 V", zeit: "19 h", prod: "60 min", pause: "15 min" },
-        "sgx_k5":         { durchfluss: "40 l/h", strom: "6.8 A", spannung: "24 V", zeit: "19 h", prod: "60 min", pause: "15 min" },
-        "g2_k5":          { durchfluss: "110 l/h", strom: "6.8 A", spannung: "24 V", zeit: "18 h", prod: "90 min", pause: "15 min" },
-        "cgk":            { durchfluss: "40 l/h", strom: "6,8 A", spannung: "24 V", zeit: "7 h", prod: "30 min", pause: "30 min" },
-        "cgx_k2":         { durchfluss: "40 l/h", strom: "6.8 A", spannung: "24 V", zeit: "13 h", prod: "60 min", pause: "30 min" },
-        "cgx_k5":         { durchfluss: "40 l/h", strom: "6,8 A", spannung: "24 V", zeit: "13 h", prod: "60 min", pause: "30 min" },
-        "cg1":            { durchfluss: "60 l/h", strom: "18 A", spannung: "48 V", zeit: "21 h", prod: "120 min", pause: "15 min" },
-        "cg2":            { durchfluss: "120 l/h", strom: "18 A", spannung: "48 V", zeit: "21 h", prod: "120 min", pause: "15 min" },
-        "cg3":            { durchfluss: "100 l/h", strom: "38 A", spannung: "96 V", zeit: "20 h", prod: "90 min", pause: "15 min" },
-        "cg4":            { durchfluss: "200 l/h", strom: "2 x 38 A", spannung: "2 x 96 V", zeit: "20 h", prod: "90 min", pause: "15 min" },
-        "pg1":            { durchfluss: "60 l/h", strom: "18 A", spannung: "48 V", zeit: "21 h", prod: "120 min", pause: "15 min" },
-        "pg2":            { durchfluss: "120 l/h", strom: "18 A", spannung: "48 V", zeit: "21 h", prod: "120 min", pause: "15 min" },
-        "pg3":            { durchfluss: "100 l/h", strom: "38 A", spannung: "96 V", zeit: "20 h", prod: "90 min", pause: "15 min" },
-        "pg4":            { durchfluss: "200 l/h", strom: "2 x 38 A", spannung: "2 x 96 V", zeit: "20 h", prod: "90 min", pause: "15 min" },
-        "fkl":            { durchfluss: "40 l/h", strom: "6,8 A", spannung: "24 V", zeit: "7 h", prod: "30 min", pause: "30 min" },
-        "kl1":            { durchfluss: "40 l/h", strom: "6.8 A", spannung: "24 V", zeit: "16 h", prod: "60 min", pause: "30 min" },
-        "kl2":            { durchfluss: "110 l/h", strom: "7,5 A", spannung: "24 V", zeit: "13 h", prod: "60 min", pause: "30 min" },
-        "kl3":            { durchfluss: "110 l/h", strom: "7,5 A", spannung: "24 V", zeit: "19 h", prod: "90 min", pause: "15 min" },
-        "kxl1":           { durchfluss: "100 l/h", strom: "38 A", spannung: "96 V", zeit: "20 h", prod: "90 min", pause: "15 min" },
-        "kxl2":           { durchfluss: "200 l/h", strom: "2 x 38 A", spannung: "2 x 96 V", zeit: "20 h", prod: "90 min", pause: "15 min" },
-        "eco_1_2":        { durchfluss: "40 l/h", strom: "6.8 A", spannung: "24 V", zeit: "10 h", prod: "90 min", pause: "30 min" },
-        "eco_3_1_chlorat":{ durchfluss: "60 l/h", strom: "15 A", spannung: "24 V", zeit: "8 h", prod: "60 min", pause: "60 min" },
-        "eco_3_1_chlorid":{ durchfluss: "60 l/h", strom: "18 A", spannung: "24 V", zeit: "8 h", prod: "60 min", pause: "60 min" },
-        "eco_3_2_chlorat":{ durchfluss: "60 l/h", strom: "15 A", spannung: "24 V", zeit: "14 h", prod: "180 min", pause: "30 min" },
-        "eco_3_2_chlorid":{ durchfluss: "60 l/h", strom: "18 A", spannung: "24 V", zeit: "14 h", prod: "180 min", pause: "30 min" },
-        "eco_4_2_chlorat":{ durchfluss: "60 l/h", strom: "15 A", spannung: "32 V", zeit: "14 h", prod: "180 min", pause: "30 min" },
-        "eco_4_2_chlorid":{ durchfluss: "60 l/h", strom: "18 A", spannung: "48 V", zeit: "14 h", prod: "180 min", pause: "30 min" },
-        "eco_4_3_chlorat":{ durchfluss: "60 l/h", strom: "15 A", spannung: "32 V", zeit: "21 h", prod: "120 min", pause: "15 min" },
-        "eco_4_3_chlorid":{ durchfluss: "60 l/h", strom: "18 A", spannung: "48 V", zeit: "21 h", prod: "120 min", pause: "15 min" },
-        "eco_5_1_chlorat":{ durchfluss: "100 l/h", strom: "30 A", spannung: "64 V", zeit: "10 h", prod: "180 min", pause: "60 min" },
-        "eco_5_1_chlorid":{ durchfluss: "100 l/h", strom: "38 A", spannung: "96 V", zeit: "10 h", prod: "180 min", pause: "60 min" },
-        "eco_5_2_chlorat":{ durchfluss: "100 l/h", strom: "30 A", spannung: "64 V", zeit: "14 h", prod: "180 min", pause: "60 min" },
-        "eco_5_2_chlorid":{ durchfluss: "100 l/h", strom: "38 A", spannung: "96 V", zeit: "14 h", prod: "180 min", pause: "60 min" },
-        "eco_5_3_chlorat":{ durchfluss: "100 l/h", strom: "30 A", spannung: "64 V", zeit: "21 h", prod: "120 min", pause: "15 min" },
-        "eco_5_3_chlorid":{ durchfluss: "100 l/h", strom: "38 A", spannung: "96 V", zeit: "21 h", prod: "120 min", pause: "15 min" },
-        "eco_6_2_chlorat":{ durchfluss: "200 l/h", strom: "2 x 30 A", spannung: "2 x 64 V", zeit: "14 h", prod: "180 min", pause: "30 min" },
-        "eco_6_2_chlorid":{ durchfluss: "200 l/h", strom: "2 x 38 A", spannung: "2 x 96 V", zeit: "14 h", prod: "180 min", pause: "30 min" },
-        "eco_6_3_chlorat":{ durchfluss: "200 l/h", strom: "2 x 30 A", spannung: "2 x 64 V", zeit: "21 h", prod: "120 min", pause: "15 min" },
-        "eco_6_3_chlorid":{ durchfluss: "200 l/h", strom: "2 x 38 A", spannung: "2 x 96 V", zeit: "21 h", prod: "120 min", pause: "15 min" }
-    };
-
-    function updateAnlagenData() {
-        let selectedKey = document.getElementById('anlagen_select').value;
-        if (selectedKey && anlagenDatabase[selectedKey]) {
-            let data = anlagenDatabase[selectedKey];
-            document.getElementById('An_Durchfluss').innerText = data.durchfluss;
-            document.getElementById('An_Strom').innerText = data.strom;
-            document.getElementById('An_Spannung').innerText = data.spannung;
-            document.getElementById('An_Zeit').innerText = data.zeit;
-            document.getElementById('An_SollProd').innerText = data.prod;
-            document.getElementById('An_SollPause').innerText = data.pause;
-        } else {
-            document.getElementById('An_Durchfluss').innerText = "-";
-            document.getElementById('An_Strom').innerText = "-";
-            document.getElementById('An_Spannung').innerText = "-";
-            document.getElementById('An_Zeit').innerText = "-";
-            document.getElementById('An_SollProd').innerText = "-";
-            document.getElementById('An_SollPause').innerText = "-";
-        }
-    }
-
-    function calcVerduennung() {
-        let nominalVal = document.getElementById('verd_anlagentyp').value;
-        let customGroup = document.getElementById('group_custom_konz');
-        let maxKonzSpreizung = 1500;
-
-        if (nominalVal === "250") maxKonzSpreizung = 320;
-        else if (nominalVal === "500") maxKonzSpreizung = 900;
-        else if (nominalVal === "600") maxKonzSpreizung = 1000;
-        else if (nominalVal === "1500") maxKonzSpreizung = 1700;
-        else if (nominalVal === "custom") {
-            customGroup.style.display = "block";
-            maxKonzSpreizung = parseFloat(document.getElementById('verd_custom_konz').value) || 1650;
-        }
-        if (nominalVal !== "custom") customGroup.style.display = "none";
-
-        let verhaeltnisTeile = 3;
-        let stufeText = "1:3 (Faktor 4)";
-
-        if (nominalVal === "250") {
-            verhaeltnisTeile = 0;
-            stufeText = "Keine (Direktmessung)";
-        } else if (nominalVal === "500" || nominalVal === "600") {
-            verhaeltnisTeile = 1;
-            stufeText = "1:1 (Faktor 2)";
-        } else if (nominalVal === "1500" || nominalVal === "custom") {
-            verhaeltnisTeile = 3;
-            stufeText = "1:3 (Faktor 4)";
-        }
-
-        let gesamtVolumen = 10.0;
-        let analytMenge = 0, wasserMenge = 0, faktor = 1;
-
-        if (verhaeltnisTeile === 0) {
-            analytMenge = 10.0; wasserMenge = 0.0; faktor = 1;
-        } else {
-            let gesamtTeile = 1 + verhaeltnisTeile;
-            analytMenge = gesamtVolumen / gesamtTeile;
-            wasserMenge = gesamtVolumen - analytMenge;
-            faktor = gesamtTeile;
-        }
-
-        document.getElementById('verd_res_stufe').innerText = stufeText;
-        document.getElementById('verd_res_analyt').innerText = analytMenge.toFixed(2) + " ml / g";
-        document.getElementById('verd_res_wasser').innerText = wasserMenge.toFixed(2) + " ml / g";
-        document.getElementById('verd_res_faktor').innerText = "× " + faktor;
-
-        let gemessenerWert = parseFloat(document.getElementById('verd_messwert').value) || 0;
-        let echterGehalt = gemessenerWert * faktor;
-
-        document.getElementById('verd_res_final').innerText = gemessenerWert > 0 ? echterGehalt.toFixed(1) + " mg/l (ppm)" : "0.0 mg/l (ppm)";
-        document.getElementById('verd_hinweis_box').innerHTML = verhaeltnisTeile === 0 ? 
-            "<span style='color: #2e7d32;'><b>Direktmessung aktiv:</b> Keine Verdünnung nötig.</span>" :
-            `<span style='color: #2e7d32;'><b>Sicherer Bereich:</b> Stufe <b>${stufeText}</b> deckt bis zu ${500 * faktor} mg/l ab (Spreizungs-Ziel max. ${maxKonzSpreizung} mg/l).</span>`;
-    }
-
-    function berechnePID() {
-        let betriebsart = document.getElementById('regler_betriebsart').value;
-        let testLInput = document.getElementById('pumpe_test_l').value;
-        let deltaChlorInput = document.getElementById('chlor_diff').value;
-        let tuInput = document.getElementById('zeit_tu').value;
-        let tgInput = document.getElementById('zeit_tg').value;
-        let grundwertInput = document.getElementById('chlor_grundwert').value;
-
-        if (testLInput === "" || deltaChlorInput === "" || tuInput === "" || tgInput === "") {
-            document.getElementById('res_p').innerText = "-- %";
-            document.getElementById('res_i').innerText = "-- s";
-            document.getElementById('res_totband').innerText = "-- mg/l";
-            document.getElementById('hinweis_text').innerHTML = "Bitte Werte des Praxistests (Testmenge, Chlor-Anstieg, Tu, Tg) vollständig eingeben.";
-            return;
-        }
-
-        let testL = parseFloat(testLInput) || 0;
-        let deltaChlor = parseFloat(deltaChlorInput) || 0;
-        let tu = parseFloat(tuInput) || 0;
-        let tg = parseFloat(tgInput) || 0;
-        let grundwert = parseFloat(grundwertInput) || 0;
-
-        if (testL <= 0 || deltaChlor <= 0) {
-            document.getElementById('res_p').innerText = "-- %";
-            document.getElementById('res_i').innerText = "-- s";
-            document.getElementById('res_totband').innerText = "-- mg/l";
-            document.getElementById('hinweis_text').innerHTML = "Fehler: Test-Dosiermenge und Chlor-Anstieg müssen größer als 0 sein.";
-            return;
-        }
-
-        let verstaerkung = deltaChlor / testL; 
-        let basisP = Math.min(10.0, Math.max(1.0, (0.25 / verstaerkung)));
-
-        if (betriebsart.includes("warm")) {
-            basisP = basisP * 0.8; 
-            if (grundwert > 0) {
-                let daempfungsFaktor = Math.max(0.6, 1.0 - (grundwert * 0.5));
-                basisP = basisP * daempfungsFaktor;
-            }
-        }
-
-        let nachstellzeit = (tu > 0 && tg > 0) ? (2.0 * tg + tu) : 60.0;
-        let totband = 0.02;
-
-        document.getElementById('res_p').innerText = basisP.toFixed(1) + " %";
-        document.getElementById('res_i').innerText = nachstellzeit.toFixed(0) + " s";
-        document.getElementById('res_totband').innerText = totband.toFixed(2) + " mg/l";
-
-        let hinweis = `<b>Praxistest ausgewertet:</b> Totzeit Tu = ${tu}s, Anstiegszeit Tg = ${tg}s.`;
-        if (betriebsart.includes("warm")) {
-            hinweis += `<br><br><span style='color: var(--result-label);'><b>Speicher-Rücklauf aktiv:</b> Grundwert-Offset von <b>${grundwert.toFixed(2)} mg/l</b> wurde eingerechnet -> P-Anteil wurde dynamisch auf <b>${basisP.toFixed(1)}%</b> gedämpft, um ein Überschwingen im Speicher zu verhindern.</span>`;
-        }
-        document.getElementById('hinweis_text').innerHTML = hinweis;
-    }
-
-    function calcStandard() {
-        let ziel = parseFloat(document.getElementById('std_ziel').value) || 0;
-        let vol = parseFloat(document.getElementById('std_vol').value) || 0;
-        let anol = parseFloat(document.getElementById('std_anol').value) || 0;
-        let zehrung = parseFloat(document.getElementById('std_zehrung').value) || 0;
-        let gesamtSoll = ziel + zehrung;
-        let dosiermengeMl = anol > 0 ? ((gesamtSoll * vol) / anol) * 1000 : 0;
-        document.getElementById('std_res_soll').innerText = gesamtSoll.toFixed(2) + " mg/l";
-        document.getElementById('std_res_menge').innerText = dosiermengeMl.toFixed(2) + " ml";
-    }
-
-    function updateFromLsek() {
-        let lsek = parseFloat(document.getElementById('ww_lsek').value) || 0;
-        let stunden = parseFloat(document.getElementById('ww_stunden').value) || 0;
-        let m3h = lsek * 3.6;
-        document.getElementById('ww_m3h').value = m3h > 0 ? m3h.toFixed(2) : "";
-        if (stunden > 0 && lsek > 0) document.getElementById('ww_m3tag').value = (m3h * stunden).toFixed(2);
-        calcWasserwerk();
-    }
-
-    function updateFromM3Tag() {
-        let m3tag = parseFloat(document.getElementById('ww_m3tag').value) || 0;
-        let stunden = parseFloat(document.getElementById('ww_stunden').value) || 0;
-        if (stunden > 0 && m3tag > 0) {
-            let m3h = m3tag / stunden;
-            document.getElementById('ww_m3h').value = m3h.toFixed(2);
-            document.getElementById('ww_lsek').value = (m3h / 3.6).toFixed(2);
-        }
-        calcWasserwerk();
-    }
-
-    function calcWasserwerk() {
-        let m3tag = parseFloat(document.getElementById('ww_m3tag').value) || 0;
-        let anolKonz = parseFloat(document.getElementById('ww_anol_konz').value) || 0;
-        let ziel = parseFloat(document.getElementById('ww_ziel').value) || 0;
-        let zehrung = parseFloat(document.getElementById('ww_zehrung').value) || 0;
-        let impuls = parseFloat(document.getElementById('ww_impuls').value) || 0;
-        let maxFlow = parseFloat(document.getElementById('ww_max_flow').value) || 0;
-
-        let anwendKonz = ziel + zehrung;
-        document.getElementById('ww_res_soll').innerText = anwendKonz.toFixed(2) + " mg/l";
-        let bedarfProTag = anolKonz > 0 ? (m3tag * 1000 * anwendKonz) / anolKonz : 0;
-        document.getElementById('ww_res_bedarf').innerText = bedarfProTag.toFixed(2) + " Liter/Tag";
-        let mlProHub = anolKonz > 0 ? (impuls * anwendKonz * 1000) / anolKonz : 0;
-        document.getElementById('ww_res_hub').innerText = mlProHub.toFixed(2) + " ml/Hub";
-        let lProM3 = anolKonz > 0 ? (anwendKonz * 1000) / anolKonz : 0;
-        document.getElementById('ww_res_l_pro_m3').innerText = lProM3.toFixed(3) + " l/m³";
-        document.getElementById('ww_res_pumpe_20ma').value = (maxFlow * lProM3 > 0) ? (maxFlow * lProM3).toFixed(2) : "";
-    }
-
-    function calcPoolVolumen() {
-        let l = parseFloat(document.getElementById('pool_laenge').value) || 0;
-        let b = parseFloat(document.getElementById('pool_breite').value) || 0;
-        let t = parseFloat(document.getElementById('pool_tiefe').value) || 0;
-        let volumenLiter = l * b * t * 1000;
-        if (volumenLiter > 0) document.getElementById('pool_volumen').value = volumenLiter.toFixed(0);
-        calcPoolAll();
-    }
-
-    function updateChlorDefault() {
-        let sorte = document.getElementById('pool_chlorsorte').value;
-        let konzInput = document.getElementById('pool_chlor_konz');
-        let einheitSpan = document.getElementById('chlor_konz_einheit');
-        let hinweisSpan = document.getElementById('chlor_konz_hinweis');
-
-        konzInput.value = "";
-
-        if (sorte === 'anolyte') {
-            einheitSpan.innerText = "mg/l";
-            hinweisSpan.innerText = "Flüssigchlor/Anolyte (z.B. 250, 500, 1300 mg/l).";
-            konzInput.placeholder = "z. B. 500 oder 1300";
-        } else if (sorte === 'granulat') {
-            einheitSpan.innerText = "g/kg";
-            hinweisSpan.innerText = "Calciumhypochlorit-Granulat (z.B. 700 g/kg).";
-            konzInput.placeholder = "z. B. 700";
-        }
-        calcPoolAll();
-    }
-
-    function calcPoolAll() {
-        let vol = parseFloat(document.getElementById('pool_volumen').value) || 0;
-
-        if (vol <= 0) {
-            document.getElementById('pool_res_chlor').innerText = "0 l / kg";
-            document.getElementById('pool_chlor_hinweis').innerHTML = "<span style='color: #d32f2f;'><b>Fehler:</b> Bitte zuerst das Poolvolumen angeben!</span>";
-            document.getElementById('pool_res_ph').innerText = "0 l / kg";
-            document.getElementById('pool_ph_hinweis').innerHTML = "<span style='color: #d32f2f;'><b>Fehler:</b> Bitte zuerst das Poolvolumen (Länge/Breite/Tiefe oder Gesamt-Liter) angeben!</span>";
-            return;
-        }
-
-        let chlorIst = parseFloat(document.getElementById('pool_chlor_ist').value) || 0;
-        let chlorSoll = parseFloat(document.getElementById('pool_chlor_soll').value) || 0;
-        let chlorKonz = parseFloat(document.getElementById('pool_chlor_konz').value) || 0;
-        let sorte = document.getElementById('pool_chlorsorte').value;
-        let chlorDiff = chlorSoll - chlorIst;
-        
-        let benoetigtLiterOderKg = 0; 
-        if (chlorKonz > 0 && chlorDiff > 0) {
-            if (sorte === 'anolyte') {
-                let benoetigtL = (chlorDiff * vol) / chlorKonz;
-                benoetigtLiterOderKg = benoetigtL;
-            } else {
-                let benoetigtKg = (chlorDiff * (vol / 1000)) / chlorKonz; 
-                benoetigtLiterOderKg = benoetigtKg;
-            }
-        }
-
-        let chlorHinweisText = "Werte eingeben.";
-        if (benoetigtLiterOderKg > 0) {
-            let einheitText = sorte === 'anolyte' ? " l" : " kg";
-            let chlorText = benoetigtLiterOderKg < 1 && sorte === 'anolyte' ? (benoetigtLiterOderKg * 1000).toFixed(0) + " ml" : benoetigtLiterOderKg.toFixed(2) + einheitText;
-            document.getElementById('pool_res_chlor').innerText = chlorText + " Zugabe";
-            chlorHinweisText = "Chlormenge erforderlich (" + chlorText + ")";
-        } else {
-            document.getElementById('pool_res_chlor').innerText = chlorKonz <= 0 ? "Bitte Wirkstoff eingeben" : "0 l / kg";
-            chlorHinweisText = chlorKonz <= 0 ? "Bitte Wirkstoffgehalt eingeben." : "Chlorgehalt im Zielbereich oder unvollständig.";
-        }
-        document.getElementById('pool_chlor_hinweis').innerText = chlorHinweisText;
-
-        let phIst = parseFloat(document.getElementById('pool_ph_ist').value) || 0;
-        let phSoll = parseFloat(document.getElementById('pool_ph_soll').value) || 0;
-        let alk = parseFloat(document.getElementById('pool_alk').value) || 100;
-        let saeureKonz = parseFloat(document.getElementById('pool_saeure_konz').value) || 20;
-        let phDiff = phIst - phSoll;
-        let m3 = vol / 1000;
-        let mlErgebnis = 0, hinweis = "";
-
-        if (phIst > 0 && phSoll > 0 && phDiff > 0) {
-            mlErgebnis = phDiff * 10 * m3 * 15 * (20 / saeureKonz) * (alk / 100);
-            let literWert = mlErgebnis / 1000;
-            let textErgebnis = mlErgebnis >= 1000 ? literWert.toFixed(2) + " l / kg" : mlErgebnis.toFixed(0) + " ml / g";
-            hinweis = "pH-Senker erforderlich (" + textErgebnis + ")";
-            document.getElementById('pool_res_ph').innerText = textErgebnis;
-        } else if (phIst > 0 && phSoll > 0 && phDiff < 0) {
-            mlErgebnis = Math.abs(phDiff) * 10 * m3 * 15 * (alk / 100);
-            let literWert = mlErgebnis / 1000;
-            let textErgebnis = mlErgebnis >= 1000 ? literWert.toFixed(2) + " l / kg" : mlErgebnis.toFixed(0) + " ml / g";
-            hinweis = "pH-Heber erforderlich (" + textErgebnis + ")";
-            document.getElementById('pool_res_ph').innerText = textErgebnis;
-        } else {
-            hinweis = "pH-Wert im Zielbereich oder unvollständig.";
-            document.getElementById('pool_res_ph').innerText = "0 l / kg";
-        }
-        document.getElementById('pool_ph_hinweis').innerText = hinweis;
-    }
-
-    loadSettings();
-    calcStandard();
-    calcWasserwerk();
-    calcPoolAll();
-    calcVerduennung();
+    });
 </script>
-
 </body>
 </html>
