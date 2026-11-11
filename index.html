@@ -10,7 +10,7 @@
     <meta name="theme-color" content="#0d47a1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
-    <title>INNOWATΞCH Service Tool v3.6</title>
+    <title>INNOWATΞCH Service Tool v3.7</title>
     
     <!-- PWA / App Manifest -->
     <link rel="manifest" href="manifest.json">
@@ -1840,10 +1840,10 @@
         <button type="button" class="pdf-export-btn" onclick="exportToPDF('Enthärtungsanlagen')">📄 Als PDF speichern / drucken</button>
     </div>
 
-    <!-- Footer mit Version v3.6 -->
+    <!-- Footer mit Version v3.7 -->
     <div class="footer">
         <span>© 2026 #MAT</span>
-        <span class="footer-version" onclick="handleVersionClick()">v3.6</span>
+        <span class="footer-version" onclick="handleVersionClick()">v3.7</span>
     </div>
 </div>
 
@@ -1908,7 +1908,7 @@
 <div class="admin-modal-overlay" id="adminAuthModal">
     <div class="admin-modal-content">
         <div class="admin-modal-header">
-            <span>Admin Authentifizierung (v3.6)</span>
+            <span>Admin Authentifizierung (v3.7)</span>
             <button type="button" class="modal-close-btn" style="color:var(--primary-color);" onclick="closeAdminModal('adminAuthModal')">✕</button>
         </div>
         <p style="font-size: 0.82rem; color: var(--subtext-color); margin-bottom: 12px;">Bitte die Admin-PIN eingeben:</p>
@@ -1987,7 +1987,6 @@
 
     async function hashPin(pin) {
         if (!pin) return "";
-        // Falls es bereits ein 64-Zeichen langer SHA-256 Hash ist, direkt zurückgeben
         if (pin.length === 64 && /^[0-9a-fA-F]{64}$/.test(pin)) {
             return pin;
         }
@@ -2003,7 +2002,6 @@
             let response = await fetch(USERS_JSON_URL + '?t=' + new Date().getTime());
             if (response.ok) {
                 let rawUsers = await response.json();
-                // Automatische Konvertierung von Klartext-PINs in Hashes beim Laden
                 dbUsers = {};
                 for (let k in rawUsers) {
                     let u = rawUsers[k];
@@ -2048,10 +2046,9 @@
     }
 
     function downloadUsersJson() {
-        // Sicherstellen, dass ADMIN immer im Export enthalten ist
         if (!dbUsers["ADMIN"]) {
             dbUsers["ADMIN"] = {
-                pinHash: "07062509", // Wird beim nächsten Laden automatisch gehasht
+                pinHash: "07062509",
                 status: "active",
                 isAdmin: true,
                 modules: ['standard', 'wasserwerk', 'schwimmbad', 'pid', 'verdünnung', 'sonden', 'anlagen', 'radar', 'enthaerter']
@@ -2129,8 +2126,6 @@
     async function verifyAdminAuth8() {
         let p = document.getElementById('adminPin8').value.trim();
         let enteredHash = await hashPin(p);
-        
-        // Prüfen, ob die eingegebene Admin-PIN auf den Benutzer ADMIN passt
         let adminUser = dbUsers["ADMIN"] || Object.values(dbUsers).find(u => u.isAdmin);
         
         if (adminUser && adminUser.pinHash === enteredHash) {
@@ -2354,7 +2349,7 @@
         { id: 'enthaerter', title: 'Enthärtungsanlagen', icon: '💧', category: 'Parameter', visible: true, userAllowed: true }
     ];
 
-    let currentModules = [];
+    let currentModules = [...defaultModules];
     let currentActiveTab = '';
     let isLauncherActive = false;
     let isInToolFromLauncher = false;
@@ -2416,7 +2411,7 @@
         }
     }
 
-    function loadSettings() {
+    async function loadSettings() {
         checkChristmasHat();
         const savedDarkMode = localStorage.getItem('mat_darkmode');
         const isDark = (savedDarkMode === 'true');
@@ -2474,7 +2469,8 @@
         isLauncherActive = (savedLauncherState === 'true');
         isInToolFromLauncher = false;
 
-        loadUsersDatabase();
+        await loadUsersDatabase();
+        renderTabs(true);
         applyViewMode();
         initCustomDropdowns();
     }
