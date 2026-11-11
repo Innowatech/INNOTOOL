@@ -10,7 +10,7 @@
     <meta name="theme-color" content="#0d47a1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
-    <title>INNOWATΞCH Service Tool v2.6</title>
+    <title>INNOWATΞCH Service Tool v3.0</title>
     
     <!-- PWA / App Manifest -->
     <link rel="manifest" href="manifest.json">
@@ -287,18 +287,6 @@
             font-size: 0.68rem;
             font-weight: bold;
             gap: 3px;
-        }
-
-        .active-user-badge {
-            font-size: 0.65rem;
-            background: rgba(255,255,255,0.25);
-            border: 1px solid rgba(255,255,255,0.4);
-            padding: 3px 6px;
-            border-radius: 4px;
-            font-weight: bold;
-            color: white;
-            white-space: nowrap;
-            cursor: pointer;
         }
 
         .santa-letter {
@@ -1071,7 +1059,6 @@
             <button type="button" class="header-btn view-toggle-btn" id="view-toggle-btn" onclick="toggleMainView()" title="Ansicht umschalten">
                 <span id="toggle-icon">田</span> <span id="toggle-text">Ansicht</span>
             </button>
-            <span id="activeUserBadge" class="active-user-badge" onclick="performLogout()" title="Klicken zum Abmelden"></span>
         </div>
         <div class="header-center">
             <h1 id="app-title"><span id="first-letter">I</span>NNOWATΞCH</h1>
@@ -1154,7 +1141,7 @@
         <div class="section-title">1. Fördermenge & Durchfluss</div>
         
         <div class="form-group">
-            <label>Gesamtverbrauchte Fördermenge pro Tag</label>
+            <label>Gesamtfördermenge pro Tag</label>
             <div class="input-wrapper">
                 <input type="number" id="ww_m3tag" step="1" placeholder="z. B. 500" oninput="updateFromM3Tag()">
                 <span class="unit">m³/Tag</span>
@@ -1822,10 +1809,10 @@
         <button type="button" class="pdf-export-btn" onclick="exportToPDF('Enthärtungsanlagen')">📄 Als PDF speichern / drucken</button>
     </div>
 
-    <!-- Footer mit Version v2.6 -->
+    <!-- Footer mit Version v3.0 -->
     <div class="footer">
         <span>© 2026 #MAT</span>
-        <span class="footer-version" onclick="handleVersionClick()">v2.6</span>
+        <span class="footer-version" onclick="handleVersionClick()">v3.0</span>
     </div>
 </div>
 
@@ -1882,7 +1869,7 @@
 <div class="admin-modal-overlay" id="adminAuthModal">
     <div class="admin-modal-content">
         <div class="admin-modal-header">
-            <span>Admin Authentifizierung (v2.6)</span>
+            <span>Admin Authentifizierung (v3.0)</span>
             <button type="button" class="modal-close-btn" style="color:var(--primary-color);" onclick="closeAdminModal('adminAuthModal')">✕</button>
         </div>
         <div class="form-group">
@@ -1909,14 +1896,14 @@
             <b>GitHub Sync Info:</b> Nach Änderungen hier unten auf <i>"users.json herunterladen"</i> klicken und die Datei ins GitHub-Repo hochladen.
         </div>
 
-        <h3 style="font-size: 0.9rem; margin-bottom: 6px; color: var(--primary-color);">Neuen Techniker anlegen / anpassen</h3>
+        <h3 style="font-size: 0.9rem; margin-bottom: 6px; color: var(--primary-color);" id="adminFormTitle">Neuen Techniker anlegen / anpassen</h3>
         <div class="form-group">
             <label>Kürzel (3 Buchstaben)</label>
             <input type="text" id="newKuerzel" maxlength="3" placeholder="z. B. JUT" style="width:100%; padding:8px; border:1px solid var(--border-color); border-radius:4px; background:var(--input-bg); color:var(--text-color); text-transform:uppercase;">
         </div>
         <div class="form-group">
             <label>5-stellige PIN</label>
-            <input type="password" id="newPin" maxlength="5" placeholder="12345" style="width:100%; padding:8px; border:1px solid var(--border-color); border-radius:4px; background:var(--input-bg); color:var(--text-color);">
+            <input type="password" id="newPin" maxlength="5" placeholder="72186" style="width:100%; padding:8px; border:1px solid var(--border-color); border-radius:4px; background:var(--input-bg); color:var(--text-color);">
         </div>
 
         <div class="form-group">
@@ -1930,7 +1917,8 @@
             </div>
         </div>
 
-        <button type="button" class="admin-btn admin-btn-success" onclick="saveUser()">Techniker Speichern</button>
+        <button type="button" class="admin-btn admin-btn-success" id="saveUserBtn" onclick="saveUser()">Techniker Speichern</button>
+        <button type="button" class="admin-btn admin-btn-primary" onclick="cancelEditUser()" id="cancelEditBtn" style="display:none; background:#757575;">Bearbeiten Abbrechen</button>
         <button type="button" class="admin-btn admin-btn-primary" onclick="downloadUsersJson()" style="background: #0288d1;">📥 users.json herunterladen</button>
 
         <div style="margin-top: 15px; border-top: 1px solid var(--border-color); padding-top: 10px;">
@@ -1959,7 +1947,6 @@
     let clickCount = 0;
     let clickTimer = null;
 
-    // URL zu deiner users.json auf GitHub (z.B. Raw-Link oder direkte URL im Repo)
     const USERS_JSON_URL = './users.json'; 
 
     async function hashPin(pin) {
@@ -1970,7 +1957,6 @@
         return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
     }
 
-    // Läd die users.json vom Server/GitHub oder erstellt Default-Admin falls nicht erreichbar
     async function loadUsersDatabase() {
         try {
             let response = await fetch(USERS_JSON_URL + '?t=' + new Date().getTime());
@@ -1980,12 +1966,12 @@
                 throw new Error("users.json nicht gefunden");
             }
         } catch (err) {
-            // Fallback falls offline oder Datei noch nicht auf GitHub liegt
             let localFallback = localStorage.getItem('innowatech_users_fallback');
             if (localFallback) {
                 dbUsers = JSON.parse(localFallback);
             } else {
-                let defaultAdminHash = await hashPin("12345");
+                // Neuer Default Admin PIN 72186
+                let defaultAdminHash = await hashPin("72186");
                 dbUsers = {
                     "MAT": {
                         pinHash: defaultAdminHash,
@@ -2020,7 +2006,6 @@
             document.getElementById('appLoginOverlay').classList.add('active');
         } else {
             document.getElementById('appLoginOverlay').classList.remove('active');
-            updateActiveUserBadge();
             applyUserPermissions();
         }
     }
@@ -2039,7 +2024,6 @@
             activeUser = u;
             localStorage.setItem('innowatech_active_user', u);
             document.getElementById('appLoginOverlay').classList.remove('active');
-            updateActiveUserBadge();
             applyUserPermissions();
         } else {
             alert("Ungültige PIN oder Benutzer gesperrt!");
@@ -2118,29 +2102,60 @@
             alert("Das Kürzel muss exakt 3 Buchstaben lang sein!");
             return;
         }
-        if (pin.length !== 5) {
-            alert("Die PIN muss exakt 5 Ziffern lang sein!");
-            return;
-        }
 
         let allowedModules = [];
         document.querySelectorAll('.admin-mod-check:checked').forEach(cb => {
             allowedModules.push(cb.value);
         });
 
-        let pHash = await hashPin(pin);
+        let pHash;
+        if (pin.length === 5) {
+            pHash = await hashPin(pin);
+        } else if (dbUsers[kuerzel] && dbUsers[kuerzel].pinHash) {
+            pHash = dbUsers[kuerzel].pinHash;
+        } else {
+            alert("Die PIN muss exakt 5 Ziffern lang sein!");
+            return;
+        }
+
         dbUsers[kuerzel] = {
             pinHash: pHash,
-            status: 'active',
+            status: dbUsers[kuerzel] ? dbUsers[kuerzel].status : 'active',
             modules: allowedModules
         };
 
         saveUsersToLocalStorage();
         alert(`Techniker ${kuerzel} erfolgreich gespeichert! Bitte lade jetzt die users.json herunter und aktualisiere sie auf GitHub.`);
-        document.getElementById('newKuerzel').value = '';
-        document.getElementById('newPin').value = '';
-        document.getElementById('selectAllModules').checked = false;
+        cancelEditUser();
         renderUserList();
+    }
+
+    function editUser(k) {
+        let u = dbUsers[k];
+        if (!u) return;
+        document.getElementById('newKuerzel').value = k;
+        document.getElementById('newKuerzel').disabled = true;
+        document.getElementById('newPin').value = '';
+        document.getElementById('newPin').placeholder = "Neu (optional, bleibt sonst)";
+        document.getElementById('adminFormTitle').innerText = `Techniker ${k} bearbeiten`;
+        document.getElementById('saveUserBtn').innerText = "Änderungen Speichern";
+        document.getElementById('cancelEditBtn').style.display = "block";
+
+        document.querySelectorAll('.admin-mod-check').forEach(cb => {
+            cb.checked = u.modules && u.modules.includes(cb.value);
+        });
+    }
+
+    function cancelEditUser() {
+        document.getElementById('newKuerzel').value = '';
+        document.getElementById('newKuerzel').disabled = false;
+        document.getElementById('newPin').value = '';
+        document.getElementById('newPin').placeholder = "72186";
+        document.getElementById('adminFormTitle').innerText = "Neuen Techniker anlegen / anpassen";
+        document.getElementById('saveUserBtn').innerText = "Techniker Speichern";
+        document.getElementById('cancelEditBtn').style.display = "none";
+        document.querySelectorAll('.admin-mod-check').forEach(cb => cb.checked = false);
+        document.getElementById('selectAllModules').checked = false;
     }
 
     function renderUserList() {
@@ -2154,9 +2169,10 @@
             div.innerHTML = `
                 <div>
                     <strong>${k}</strong> (${u.status === 'active' ? 'Freigeschaltet' : 'Gesperrt'})<br>
-                    <small style="color:var(--subtext-color);">Module: ${u.modules.length}</small>
+                    <small style="color:var(--subtext-color);">Module: ${u.modules ? u.modules.length : 0}</small>
                 </div>
                 <div style="display:flex; gap:4px;">
+                    <button type="button" class="admin-btn-sm admin-btn-primary" onclick="editUser('${k}')" style="background:#0288d1;">✏️</button>
                     <button type="button" class="admin-btn-sm ${u.status === 'active' ? 'admin-btn-danger' : 'admin-btn-success'}" onclick="toggleUserStatus('${k}')">
                         ${u.status === 'active' ? 'Sperren' : 'Freigeben'}
                     </button>
@@ -2188,16 +2204,6 @@
         checkAuthGuard();
     }
 
-    function updateActiveUserBadge() {
-        let badge = document.getElementById('activeUserBadge');
-        if (activeUser) {
-            badge.textContent = activeUser;
-            badge.style.display = 'inline-block';
-        } else {
-            badge.style.display = 'none';
-        }
-    }
-
     function applyUserPermissions() {
         if (!activeUser) {
             currentModules.forEach(m => m.userAllowed = true);
@@ -2207,7 +2213,7 @@
                 currentModules.forEach(m => m.userAllowed = false);
             } else {
                 currentModules.forEach(m => {
-                    m.userAllowed = user.modules.includes(m.id);
+                    m.userAllowed = user.modules && user.modules.includes(m.id);
                 });
             }
         }
@@ -2944,17 +2950,12 @@
     function calcVerduennung() {
         let nominalVal = document.getElementById('verd_anlagentyp').value;
         let customGroup = document.getElementById('group_custom_konz');
-        let maxKonzSpreizung = 1500;
 
-        if (nominalVal === "250") maxKonzSpreizung = 320;
-        else if (nominalVal === "500") maxKonzSpreizung = 900;
-        else if (nominalVal === "600") maxKonzSpreizung = 1000;
-        else if (nominalVal === "1500") maxKonzSpreizung = 1700;
-        else if (nominalVal === "custom") {
+        if (nominalVal === "custom") {
             customGroup.style.display = "block";
-            maxKonzSpreizung = parseFloat(document.getElementById('verd_custom_konz').value) || 1650;
+        } else {
+            customGroup.style.display = "none";
         }
-        if (nominalVal !== "custom") customGroup.style.display = "none";
 
         let verhaeltnisTeile = 3;
         let stufeText = "1:3 (Faktor 4)";
@@ -2993,7 +2994,7 @@
         document.getElementById('verd_res_final').innerText = gemessenerWert > 0 ? echterGehalt.toFixed(1) + " mg/l (ppm)" : "0.0 mg/l (ppm)";
         document.getElementById('verd_hinweis_box').innerHTML = verhaeltnisTeile === 0 ? 
             "<span style='color: #2e7d32;'><b>Direktmessung aktiv:</b> Keine Verdünnung nötig.</span>" :
-            `<span style='color: #2e7d32;'><b>Sicherer Bereich:</b> Stufe <b>${stufeText}</b> deckt bis zu ${500 * faktor} mg/l ab (Spreizungs-Ziel max. ${maxKonzSpreizung} mg/l).</span>`;
+            `<span style='color: #2e7d32;'><b>Sicherer Bereich:</b> Stufe <b>${stufeText}</b> deckt bis zu ${500 * faktor} mg/l ab.</span>`;
     }
 
     function berechnePID() {
@@ -3137,7 +3138,7 @@
             document.getElementById('pool_res_chlor').innerText = "0 l / kg";
             document.getElementById('pool_chlor_hinweis').innerHTML = "<span style='color: #d32f2f;'><b>Fehler:</b> Bitte zuerst das Poolvolumen angeben!</span>";
             document.getElementById('pool_res_ph').innerText = "0 l / kg";
-            document.getElementById('pool_ph_hinweis').innerHTML = "<span style='color: #d32f2f;'><b>Fehler:</b> Bitte zuerst das Poolvolumen (Länge/Breite/Tiefe oder Gesamt-Liter) angeben!</span>";
+            document.getElementById('pool_ph_hinweis').innerHTML = "<span style='color: #d32f2f;'><b>Fehler:</b> Bitte zuerst das Poolvolumen angeben!</span>";
             return;
         }
 
