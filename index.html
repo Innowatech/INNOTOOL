@@ -10,7 +10,7 @@
     <meta name="theme-color" content="#0d47a1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
-    <title>INNOWATΞCH Service Tool v3.1</title>
+    <title>INNOWATΞCH Service Tool v3.2</title>
     
     <!-- PWA / App Manifest -->
     <link rel="manifest" href="manifest.json">
@@ -1068,18 +1068,18 @@
 </head>
 <body>
 
-<!-- App-Start Login (Auth-Guard) ohne Browser-Autofill Vorschläge -->
+<!-- App-Start Login (Auth-Guard) komplett leer ohne Vorschläge -->
 <div class="app-login-overlay" id="appLoginOverlay">
     <div class="app-login-box">
         <h2 style="color: var(--primary-color); margin-top: 0; font-size: 1.2rem;">INNOWATΞCH Service</h2>
         <p style="font-size: 0.85rem; color: var(--subtext-color); margin-bottom: 15px;">Bitte mit Kürzel und PIN anmelden</p>
         <div class="form-group" style="text-align: left;">
             <label>Kürzel (z.B. MAT)</label>
-            <input type="text" id="appLoginUser" maxlength="3" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="z.B. MAT" style="width:100%; padding:9px; border:1px solid var(--border-color); border-radius:4px; background:var(--input-bg); color:var(--text-color); text-transform:uppercase; font-size: 1rem; box-sizing: border-box;">
+            <input type="text" id="appLoginUser" maxlength="3" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="z.B. MAT" value="" style="width:100%; padding:9px; border:1px solid var(--border-color); border-radius:4px; background:var(--input-bg); color:var(--text-color); text-transform:uppercase; font-size: 1rem; box-sizing: border-box;">
         </div>
         <div class="form-group" style="text-align: left; margin-top: 10px;">
             <label>PIN</label>
-            <input type="password" id="appLoginPin" maxlength="5" autocomplete="new-password" placeholder="•••••" style="width:100%; padding:9px; border:1px solid var(--border-color); border-radius:4px; background:var(--input-bg); color:var(--text-color); font-size: 1rem; box-sizing: border-box;">
+            <input type="password" id="appLoginPin" maxlength="5" autocomplete="new-password" placeholder="•••••" value="" style="width:100%; padding:9px; border:1px solid var(--border-color); border-radius:4px; background:var(--input-bg); color:var(--text-color); font-size: 1rem; box-sizing: border-box;">
         </div>
         <button type="button" class="admin-btn admin-btn-primary" style="margin-top: 15px;" onclick="performAppLogin()">Anmelden</button>
     </div>
@@ -1841,10 +1841,10 @@
         <button type="button" class="pdf-export-btn" onclick="exportToPDF('Enthärtungsanlagen')">📄 Als PDF speichern / drucken</button>
     </div>
 
-    <!-- Footer mit Version v3.1 -->
+    <!-- Footer mit Version v3.2 -->
     <div class="footer">
         <span>© 2026 #MAT</span>
-        <span class="footer-version" onclick="handleVersionClick()">v3.1</span>
+        <span class="footer-version" onclick="handleVersionClick()">v3.2</span>
     </div>
 </div>
 
@@ -1897,21 +1897,19 @@
                 <div id="inactive-module-list"></div>
             </div>
 
-            <!-- Neuer Abmelde-Button im Zahnrad-Menü -->
             <div class="setting-section" style="border-bottom: none; padding-bottom: 0;">
                 <button type="button" class="admin-btn admin-btn-danger" onclick="performLogoutFromSettings()">🚪 Als Techniker abmelden</button>
             </div>
         </div>
-        <!-- Scroll-Pfeil Indikator -->
         <div class="modal-scroll-indicator" id="settings-scroll-indicator">▼</div>
     </div>
 </div>
 
-<!-- Admin Authentifizierung Modal ohne Autofill Vorschläge -->
+<!-- Admin Authentifizierung Modal komplett leer ohne Vorschläge -->
 <div class="admin-modal-overlay" id="adminAuthModal">
     <div class="admin-modal-content">
         <div class="admin-modal-header">
-            <span>Admin Authentifizierung (v3.1)</span>
+            <span>Admin Authentifizierung (v3.2)</span>
             <button type="button" class="modal-close-btn" style="color:var(--primary-color);" onclick="closeAdminModal('adminAuthModal')">✕</button>
         </div>
         <div class="form-group">
@@ -1941,11 +1939,11 @@
         <h3 style="font-size: 0.9rem; margin-bottom: 6px; color: var(--primary-color);" id="adminFormTitle">Neuen Techniker anlegen / anpassen</h3>
         <div class="form-group">
             <label>Kürzel (3 Buchstaben)</label>
-            <input type="text" id="newKuerzel" maxlength="3" placeholder="z. B. JUT" style="width:100%; padding:8px; border:1px solid var(--border-color); border-radius:4px; background:var(--input-bg); color:var(--text-color); text-transform:uppercase;">
+            <input type="text" id="newKuerzel" maxlength="3" placeholder="z. B. JUT" value="" style="width:100%; padding:8px; border:1px solid var(--border-color); border-radius:4px; background:var(--input-bg); color:var(--text-color); text-transform:uppercase;">
         </div>
         <div class="form-group">
             <label>5-stellige PIN</label>
-            <input type="password" id="newPin" maxlength="5" placeholder="72186" style="width:100%; padding:8px; border:1px solid var(--border-color); border-radius:4px; background:var(--input-bg); color:var(--text-color);">
+            <input type="password" id="newPin" maxlength="5" placeholder="72186" value="" style="width:100%; padding:8px; border:1px solid var(--border-color); border-radius:4px; background:var(--input-bg); color:var(--text-color);">
         </div>
 
         <div class="form-group">
@@ -2042,8 +2040,11 @@
 
     function checkAuthGuard() {
         if (!activeUser || !dbUsers[activeUser] || dbUsers[activeUser].status !== 'active') {
-            document.getElementById('appLoginUser').value = "";
-            document.getElementById('appLoginPin').value = "";
+            // Felder absolut sauber leeren beim Öffnen des Logins
+            let uField = document.getElementById('appLoginUser');
+            let pField = document.getElementById('appLoginPin');
+            if(uField) uField.value = "";
+            if(pField) pField.value = "";
             document.getElementById('appLoginOverlay').classList.add('active');
         } else {
             document.getElementById('appLoginOverlay').classList.remove('active');
@@ -2089,8 +2090,10 @@
         if (clickTimer) clearTimeout(clickTimer);
         if (clickCount >= 5) {
             clickCount = 0;
-            document.getElementById('adminUser').value = "";
-            document.getElementById('adminPin').value = "";
+            let uField = document.getElementById('adminUser');
+            let pField = document.getElementById('adminPin');
+            if(uField) uField.value = "";
+            if(pField) pField.value = "";
             openAdminModal('adminAuthModal');
         } else {
             clickTimer = setTimeout(() => { clickCount = 0; }, 2000);
