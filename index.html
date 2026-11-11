@@ -1951,15 +1951,34 @@
 </div>
 
 <script>
-    let dbUsers = {};
+   let dbUsers = {};
     let activeUser = localStorage.getItem('innowatech_active_user') || null;
     let clickCount = 0;
     let clickTimer = null;
 
     const USERS_JSON_URL = './users.json'; 
 
-    // Direkter, absolut stabiler Login ohne asynchrone Krypto-Blockaden
-    async function loadUsersDatabase() {
+    const defaultModules = [
+        { id: 'standard', title: 'Trinkwasser', icon: '💧', category: 'Anwendung', visible: true, userAllowed: true },
+        { id: 'wasserwerk', title: 'Wasserwerk', icon: '🏢', category: 'Anwendung', visible: true, userAllowed: true },
+        { id: 'schwimmbad', title: 'Schwimmbad', icon: '🏊', category: 'Anwendung', visible: true, userAllowed: true },
+        { id: 'pid', title: 'PID Regler', icon: '📈', category: 'Anwendung', visible: true, userAllowed: true },
+        { id: 'verdünnung', title: 'Verdünnungsreihe Anolyte', icon: '🧪', category: 'Anwendung', visible: true, userAllowed: true },
+        { id: 'sonden', title: 'Sondendaten', icon: '⚡', category: 'Parameter', visible: true, userAllowed: true },
+        { id: 'anlagen', title: 'Produktionsparameter AQD', icon: '⚙️', category: 'Parameter', visible: true, userAllowed: true },
+        { id: 'radar', title: 'Vega Radarsensor', icon: '📡', category: 'Parameter', visible: true, userAllowed: true },
+        { id: 'enthaerter', title: 'Enthärtungsanlagen', icon: '💧', category: 'Parameter', visible: true, userAllowed: true }
+    ];
+
+    let currentModules = JSON.parse(JSON.stringify(defaultModules));
+    let currentActiveTab = 'standard';
+    let isLauncherActive = false;
+    let isInToolFromLauncher = false;
+    let showSliderIcons = true;
+    let showDashboardIcons = true;
+    let activeDropdownSelect = null;
+
+    function loadUsersDatabase() {
         dbUsers = {
             "MAT": {
                 pin: "72766",
@@ -1968,15 +1987,14 @@
             }
         };
 
-        try {
-            let response = await fetch(USERS_JSON_URL + '?t=' + new Date().getTime());
-            if (response.ok) {
-                let externalUsers = await response.json();
-                dbUsers = { ...dbUsers, ...externalUsers };
-            }
-        } catch (err) {
-            console.log("Externe users.json nicht geladen, nutze Haupt-Admin.");
+        let localFallback = localStorage.getItem('innowatech_users_fallback');
+        if (localFallback) {
+            try {
+                let parsed = JSON.parse(localFallback);
+                dbUsers = { ...dbUsers, ...parsed };
+            } catch(e) {}
         }
+
         checkAuthGuard();
     }
 
@@ -2028,12 +2046,233 @@
         }
     }
 
-    function factoryResetUsers() {
-        if (confirm("Wirklich alle Benutzer zurücksetzen?")) {
-            localStorage.removeItem('innowatech_users_fallback');
-            localStorage.removeItem('innowatech_active_user');
-            window.location.reload();
+    function applyUserPermissions() {
+        if (!activeUser) {
+            currentModules.forEach(m => m.userAllowed = true);
+        } else {
+            let user = dbUsers[activeUser];
+            if (!user || user.status !== 'active') {
+                currentModules.forEach(m => m.userAllowed = false);
+            } else {
+                currentModules.forEach(m => {
+                    m.userAllowed = user.modules.includes(m.id);
+                });
+            }
         }
+        renderTabs();
+        
+        // Ersten erlaubten Tab als aktiv setzen, falls aktueller Tab gesperrt ist
+        let allowed = currentModules.filter(m => m.visible && m.userAllowed);
+        if (allowed.length > 0 && !allowed.some(m => m.id === currentActiveTab)) {
+            currentActiveTab = allowed[0].id;
+        }
+        switchTab(currentActiveTab);
+    }
+
+    function renderTabs() {
+        let container = document.getElementById('categories-container');
+        if (!container) return;
+        container.innerHTML = '';
+
+        let anwendungMods = currentModules.filter(m => m.category === 'Anwendung' && m.visible && m.userAllowed);
+        let paramMods = currentModules.filter(m => m.category === 'Parameter' && m.visible && m.userAllowed);
+
+        if (anwendungMods.length > 0) {
+            let group = document.createElement('div');
+            group.className = 'category-group';
+            group.innerHTML = `<div class="category-title">Anwendung</div>`;
+            let inner = document.createElement('div');
+            inner.className = 'tab-buttons-inner';
+            anwendungMods.forEach(m => inner.appendChild(createTabButton(m)));
+            group.appendChild(inner);
+            container.appendChild(group);
+        }
+
+        if (paramMods.length > 0) {
+            let group = document.createElement('div');
+            group.className = 'category-group category-parameters';
+            group.innerHTML = `<div class="category-title">Parameter</div>`;
+            let inner = document.createElement('div');
+            inner.className = 'tab-buttons-inner';
+            paramMods.forEach(m => inner.appendChild(createTabButton(m)));
+            group.appendChild(inner);
+            container.appendChild(group);
+        }
+    }
+
+    function createTabButton(m) {
+        let btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'tab-btn' + (currentActiveTab === m.id ? ' active' : '');
+        btn.onclick = () => {
+            isInToolFromLauncher = false;
+            switchTab(m.id);
+        };
+
+        let iconHtml = showSliderIcons && m.icon ? `<span style="font-size:0.9rem; margin-right:2px;">${m.icon}</span>` : '';
+        btn.innerHTML = `
+            <div class="btn-content-inner">
+                <span class="btn-text-line">${iconHtml}${m.title}</span>
+            </div>
+        `;
+        return btn;
+    }
+
+    function switchTab(tabId) {
+        currentActiveTab = tabId;
+        document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+        let target = document.getElementById('tab-' + tabId);
+        if (target) target.classList.add('active');
+
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.textContent.includes(currentModules.find(m => m.id === tabId)?.title || ''));
+        });
+
+        if (isLauncherActive && !isInToolFromLauncher) {
+            document.getElementById('launcher-view').classList.remove('active');
+            isLauncherActive = false;
+            document.getElementById('toggle-icon').innerText = '田';
+            document.getElementById('toggle-text').innerText = 'Ansicht';
+        }
+    }
+
+    function toggleMainView() {
+        isLauncherActive = !isLauncherActive;
+        let launcherView = document.getElementById('launcher-view');
+        let tabBar = document.getElementById('tab-bar-wrapper');
+        let backBar = document.getElementById('dashboard-back-bar');
+        let toggleIcon = document.getElementById('toggle-icon');
+        let toggleText = document.getElementById('toggle-text');
+
+        if (isLauncherActive) {
+            launcherView.classList.add('active');
+            tabBar.style.display = 'none';
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            toggleIcon.innerText = '📊';
+            toggleText.innerText = 'Tool';
+            renderLauncherGrid();
+        } else {
+            launcherView.classList.remove('active');
+            tabBar.style.display = 'block';
+            backBar.classList.remove('active');
+            toggleIcon.innerText = '田';
+            toggleText.innerText = 'Ansicht';
+            switchTab(currentActiveTab);
+        }
+    }
+
+    function renderLauncherGrid() {
+        let gridAnw = document.getElementById('launcher-grid-anwendung');
+        let gridParam = document.getElementById('launcher-grid-parameter');
+        if (!gridAnw || !gridParam) return;
+
+        gridAnw.innerHTML = '';
+        gridParam.innerHTML = '';
+
+        currentModules.filter(m => m.category === 'Anwendung' && m.visible && m.userAllowed).forEach(m => {
+            gridAnw.appendChild(createLauncherCard(m));
+        });
+
+        currentModules.filter(m => m.category === 'Parameter' && m.visible && m.userAllowed).forEach(m => {
+            gridParam.appendChild(createLauncherCard(m));
+        });
+    }
+
+    function createLauncherCard(m) {
+        let card = document.createElement('div');
+        card.className = 'launcher-card';
+        card.onclick = () => {
+            isLauncherActive = false;
+            isInToolFromLauncher = true;
+            document.getElementById('launcher-view').classList.remove('active');
+            document.getElementById('tab-bar-wrapper').style.display = 'none';
+            document.getElementById('dashboard-back-bar').classList.add('active');
+            document.getElementById('toggle-icon').innerText = '田';
+            document.getElementById('toggle-text').innerText = 'Ansicht';
+            switchTab(m.id);
+        };
+
+        let iconHtml = showDashboardIcons && m.icon ? `<div class="launcher-icon">${m.icon}</div>` : '';
+        card.innerHTML = `${iconHtml}<div class="launcher-label">${m.title}</div>`;
+        return card;
+    }
+
+    function backToDashboard() {
+        isInToolFromLauncher = false;
+        isLauncherActive = true;
+        document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+        document.getElementById('dashboard-back-bar').classList.remove('active');
+        document.getElementById('tab-bar-wrapper').style.display = 'none';
+        document.getElementById('launcher-view').classList.add('active');
+        document.getElementById('toggle-icon').innerText = '📊';
+        document.getElementById('toggle-text').innerText = 'Tool';
+        renderLauncherGrid();
+    }
+
+    function openSettings() { document.getElementById('settings-modal').classList.add('open'); renderSettingsLists(); }
+    function closeSettings() { document.getElementById('settings-modal').classList.remove('open'); }
+
+    function toggleDarkMode(isDark) {
+        document.body.classList.toggle('dark-mode', isDark);
+        localStorage.setItem('innowatech_dark_mode', isDark ? 'true' : 'false');
+    }
+
+    function toggleSliderIcons(val) {
+        showSliderIcons = val;
+        renderTabs();
+    }
+
+    function toggleDashboardIcons(val) {
+        showDashboardIcons = val;
+        if (isLauncherActive) renderLauncherGrid();
+    }
+
+    function changeZoom(val) {
+        document.documentElement.style.setProperty('--app-zoom', val);
+        document.getElementById('zoom-val-text').innerText = Math.round(val * 100) + '%';
+        localStorage.setItem('innowatech_zoom', val);
+    }
+
+    function renderSettingsLists() {
+        let listAnw = document.getElementById('active-list-anwendung');
+        let listParam = document.getElementById('active-list-parameter');
+        let listInact = document.getElementById('inactive-module-list');
+        if (!listAnw || !listParam || !listInact) return;
+
+        listAnw.innerHTML = '';
+        listParam.innerHTML = '';
+        listInact.innerHTML = '';
+
+        currentModules.forEach((m, idx) => {
+            let item = document.createElement('div');
+            item.className = 'module-list-item';
+            item.innerHTML = `
+                <div class="module-list-item-left">
+                    <span class="drag-handle">☰</span>
+                    <span>${m.icon || '🛠️'}</span>
+                    <span class="module-label-text">${m.title}</span>
+                </div>
+                <div style="display:flex; gap:4px;">
+                    <button type="button" class="admin-btn-sm ${m.visible ? 'admin-btn-danger' : 'admin-btn-success'}" onclick="toggleModuleVisibility(${idx})">
+                        ${m.visible ? 'Ausblenden' : 'Einblenden'}
+                    </button>
+                </div>
+            `;
+            if (!m.visible) {
+                listInact.appendChild(item);
+            } else if (m.category === 'Anwendung') {
+                listAnw.appendChild(item);
+            } else {
+                listParam.appendChild(item);
+            }
+        });
+    }
+
+    function toggleModuleVisibility(idx) {
+        currentModules[idx].visible = !currentModules[idx].visible;
+        renderSettingsLists();
+        renderTabs();
+        if (isLauncherActive) renderLauncherGrid();
     }
 
     function handleVersionClick() {
@@ -2077,6 +2316,7 @@
 
     function renderAdminModuleCheckboxes() {
         let container = document.getElementById('adminModuleCheckboxesContainer');
+        if (!container) return;
         container.innerHTML = '';
         currentModules.forEach(m => {
             let div = document.createElement('div');
@@ -2123,16 +2363,16 @@
 
     function renderUserList() {
         let container = document.getElementById('userListContainer');
+        if (!container) return;
         container.innerHTML = '';
-        let keys = Object.keys(dbUsers);
-        keys.forEach(k => {
+        Object.keys(dbUsers).forEach(k => {
             let u = dbUsers[k];
             let div = document.createElement('div');
             div.className = 'user-item';
             div.innerHTML = `
                 <div>
                     <strong>${k}</strong> (${u.status === 'active' ? 'Freigeschaltet' : 'Gesperrt'})<br>
-                    <small style="color:var(--subtext-color);">Module: ${u.modules.length}</small>
+                    <small style="color:var(--subtext-color);">Module: ${u.modules ? u.modules.length : 0}</small>
                 </div>
                 <div style="display:flex; gap:4px;">
                     <button type="button" class="admin-btn-sm ${u.status === 'active' ? 'admin-btn-danger' : 'admin-btn-success'}" onclick="toggleUserStatus('${k}')">
@@ -2166,67 +2406,12 @@
         checkAuthGuard();
     }
 
-    function applyUserPermissions() {
-        if (!activeUser) {
-            currentModules.forEach(m => m.userAllowed = true);
-        } else {
-            let user = dbUsers[activeUser];
-            if (!user || user.status !== 'active') {
-                currentModules.forEach(m => m.userAllowed = false);
-            } else {
-                currentModules.forEach(m => {
-                    m.userAllowed = user.modules.includes(m.id);
-                });
-            }
-        }
-        renderTabs();
-        if (isLauncherActive) renderLauncherGrid();
-    }
-
     function openAdminModal(id) { document.getElementById(id).classList.add('active'); }
     function closeAdminModal(id) { document.getElementById(id).classList.remove('active'); }
-
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('./sw.js').catch(err => console.log(err));
-        });
-    }
-
-    function checkChristmasHat() {
-        const today = new Date();
-        const month = today.getMonth();
-        const date = today.getDate();
-        const firstLetterSpan = document.getElementById('first-letter');
-        if (month === 11 && date >= 1 && date <= 31) {
-            firstLetterSpan.classList.add('santa-letter');
-        } else {
-            firstLetterSpan.classList.remove('santa-letter');
-        }
-    }
 
     function exportToPDF(modulName) {
         window.print();
     }
-
-    const defaultModules = [
-        { id: 'standard', title: 'Trinkwasser', icon: '💧', category: 'Anwendung', visible: true, userAllowed: true },
-        { id: 'wasserwerk', title: 'Wasserwerk', icon: '🏢', category: 'Anwendung', visible: true, userAllowed: true },
-        { id: 'schwimmbad', title: 'Schwimmbad', icon: '🏊', category: 'Anwendung', visible: true, userAllowed: true },
-        { id: 'pid', title: 'PID Regler', icon: '📈', category: 'Anwendung', visible: true, userAllowed: true },
-        { id: 'verdünnung', title: 'Verdünnungsreihe Anolyte', icon: '🧪', category: 'Anwendung', visible: true, userAllowed: true },
-        { id: 'sonden', title: 'Sondendaten', icon: '⚡', category: 'Parameter', visible: true, userAllowed: true },
-        { id: 'anlagen', title: 'Produktionsparameter AQD', icon: '⚙️', category: 'Parameter', visible: true, userAllowed: true },
-        { id: 'radar', title: 'Vega Radarsensor', icon: '📡', category: 'Parameter', visible: true, userAllowed: true },
-        { id: 'enthaerter', title: 'Enthärtungsanlagen', icon: '💧', category: 'Parameter', visible: true, userAllowed: true }
-    ];
-
-    let currentModules = [];
-    let currentActiveTab = '';
-    let isLauncherActive = false;
-    let isInToolFromLauncher = false;
-    let showSliderIcons = true;
-    let showDashboardIcons = true;
-    let activeDropdownSelect = null;
 
     function initCustomDropdowns() {
         document.querySelectorAll('.input-wrapper select').forEach(select => {
@@ -2284,12 +2469,35 @@
         }
     }
 
+    // Berechnungsfunktionen Dummy / Platzhalter falls von Modulen aufgerufen
+    function calcStandard() {}
+    function updateFromM3Tag() {}
+    function updateFromLsek() {}
+    function calcWasserwerk() {}
+    function calcPoolVolumen() {}
+    function calcPoolAll() {}
+    function updateChlorDefault() {}
+    function berechnePID() {}
+    function calcVerduennung() {}
+    function updateSondenData() {}
+    function updateAnlagenData() {}
+    function updateRadarTankDefaults() {}
+    function updateEnthaerterData() {}
+    function checkScrollArrows() {}
+
     window.onload = function() {
+        let savedDark = localStorage.getItem('innowatech_dark_mode');
+        if (savedDark === 'true') {
+            document.getElementById('darkmode-toggle').checked = true;
+            toggleDarkMode(true);
+        }
+        let savedZoom = localStorage.getItem('innowatech_zoom');
+        if (savedZoom) {
+            document.getElementById('zoom-slider').value = savedZoom;
+            changeZoom(savedZoom);
+        }
+
         loadUsersDatabase();
-        checkChristmasHat();
-        currentModules = JSON.parse(JSON.stringify(defaultModules));
         initCustomDropdowns();
     };
-</script>
-</body>
 </html>
