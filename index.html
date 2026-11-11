@@ -10,7 +10,7 @@
     <meta name="theme-color" content="#0d47a1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
-    <title>INNOWATΞCH Service Tool v2.8</title>
+    <title>INNOWATΞCH Service Tool v2.7</title>
     
     <!-- PWA / App Manifest -->
     <link rel="manifest" href="manifest.json">
@@ -1093,7 +1093,6 @@
         </div>
     </div>
 
-    <!-- Modul 1: Trinkwasser -->
     <div id="tab-standard" class="tab-content">
         <div class="form-group">
             <label>Zielkonzentration</label>
@@ -1138,7 +1137,6 @@
         <button type="button" class="pdf-export-btn" onclick="exportToPDF('Trinkwasser')">📄 Als PDF speichern / drucken</button>
     </div>
 
-    <!-- Modul 2: Wasserwerk -->
     <div id="tab-wasserwerk" class="tab-content">
         <div class="section-title">1. Fördermenge & Durchfluss</div>
         
@@ -1249,7 +1247,6 @@
         <button type="button" class="pdf-export-btn" onclick="exportToPDF('Wasserwerk')">📄 Als PDF speichern / drucken</button>
     </div>
 
-    <!-- Modul 3: Schwimmbad -->
     <div id="tab-schwimmbad" class="tab-content">
         <div class="section-title">1. Pool-Wasservolumen</div>
         
@@ -1374,7 +1371,6 @@
         <button type="button" class="pdf-export-btn" onclick="exportToPDF('Schwimmbad')">📄 Als PDF speichern / drucken</button>
     </div>
 
-    <!-- Modul 4: PID Regler -->
     <div id="tab-pid" class="tab-content">
         <div class="section-title">1. Hydraulik & Betriebsart</div>
         
@@ -1467,7 +1463,6 @@
         <button type="button" class="pdf-export-btn" onclick="exportToPDF('PID Regler')">📄 Als PDF speichern / drucken</button>
     </div>
 
-    <!-- Modul 5: Verdünnungsreihe -->
     <div id="tab-verdünnung" class="tab-content">
         <div class="section-title">1. Proben- & Anlagenauswahl</div>
         
@@ -1533,7 +1528,6 @@
         </div>
     </div>
 
-    <!-- Modul 6: Sondendaten -->
     <div id="tab-sonden" class="tab-content">
         <div class="section-title">Sondentyp Auswählen (mit RV1)</div>
 
@@ -1565,7 +1559,6 @@
         </div>
     </div>
 
-    <!-- Modul 7: Produktionsparameter AQD -->
     <div id="tab-anlagen" class="tab-content">
         <div class="section-title">Aquadron Anlagentyp Auswählen</div>
 
@@ -1653,7 +1646,6 @@
         </div>
     </div>
 
-    <!-- Modul 8: Vega Radarsensor -->
     <div id="tab-radar" class="tab-content">
         <div class="section-title">1. Tank-Stammdaten & Abgleich</div>
         
@@ -1748,7 +1740,6 @@
         <button type="button" class="pdf-export-btn" onclick="exportToPDF('Vega Radarsensor')">📄 Als PDF speichern / drucken</button>
     </div>
 
-    <!-- Modul 9: Enthärtungsanlagen -->
     <div id="tab-enthaerter" class="tab-content">
         <div class="section-title">Enthärtungsanlage Auswählen</div>
 
@@ -1818,14 +1809,13 @@
         <button type="button" class="pdf-export-btn" onclick="exportToPDF('Enthärtungsanlagen')">📄 Als PDF speichern / drucken</button>
     </div>
 
-    <!-- Footer mit Version v2.8 -->
+    <!-- Footer mit Version v2.7 -->
     <div class="footer">
         <span>© 2026 #MAT</span>
-        <span class="footer-version" onclick="handleVersionClick()">v2.8</span>
+        <span class="footer-version" onclick="handleVersionClick()">v2.7</span>
     </div>
 </div>
 
-<!-- Modals -->
 <div class="modal-overlay" id="settings-modal">
     <div class="modal-content">
         <div class="modal-header">
@@ -1879,7 +1869,7 @@
 <div class="admin-modal-overlay" id="adminAuthModal">
     <div class="admin-modal-content">
         <div class="admin-modal-header">
-            <span>Admin Authentifizierung (v2.8)</span>
+            <span>Admin Authentifizierung (v2.7)</span>
             <button type="button" class="modal-close-btn" style="color:var(--primary-color);" onclick="closeAdminModal('adminAuthModal')">✕</button>
         </div>
         <div class="form-group">
@@ -1951,50 +1941,45 @@
 </div>
 
 <script>
-   let dbUsers = {};
+    let dbUsers = {};
     let activeUser = localStorage.getItem('innowatech_active_user') || null;
     let clickCount = 0;
     let clickTimer = null;
 
     const USERS_JSON_URL = './users.json'; 
 
-    const defaultModules = [
-        { id: 'standard', title: 'Trinkwasser', icon: '💧', category: 'Anwendung', visible: true, userAllowed: true },
-        { id: 'wasserwerk', title: 'Wasserwerk', icon: '🏢', category: 'Anwendung', visible: true, userAllowed: true },
-        { id: 'schwimmbad', title: 'Schwimmbad', icon: '🏊', category: 'Anwendung', visible: true, userAllowed: true },
-        { id: 'pid', title: 'PID Regler', icon: '📈', category: 'Anwendung', visible: true, userAllowed: true },
-        { id: 'verdünnung', title: 'Verdünnungsreihe Anolyte', icon: '🧪', category: 'Anwendung', visible: true, userAllowed: true },
-        { id: 'sonden', title: 'Sondendaten', icon: '⚡', category: 'Parameter', visible: true, userAllowed: true },
-        { id: 'anlagen', title: 'Produktionsparameter AQD', icon: '⚙️', category: 'Parameter', visible: true, userAllowed: true },
-        { id: 'radar', title: 'Vega Radarsensor', icon: '📡', category: 'Parameter', visible: true, userAllowed: true },
-        { id: 'enthaerter', title: 'Enthärtungsanlagen', icon: '💧', category: 'Parameter', visible: true, userAllowed: true }
-    ];
+    async function hashPin(pin) {
+        const encoder = new TextEncoder();
+        const data = encoder.encode(pin);
+        const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    }
 
-    let currentModules = JSON.parse(JSON.stringify(defaultModules));
-    let currentActiveTab = 'standard';
-    let isLauncherActive = false;
-    let isInToolFromLauncher = false;
-    let showSliderIcons = true;
-    let showDashboardIcons = true;
-    let activeDropdownSelect = null;
-
-    function loadUsersDatabase() {
-        dbUsers = {
-            "MAT": {
-                pin: "72766",
-                status: 'active',
-                modules: ['standard', 'wasserwerk', 'schwimmbad', 'pid', 'verdünnung', 'sonden', 'anlagen', 'radar', 'enthaerter']
+    async function loadUsersDatabase() {
+        try {
+            let response = await fetch(USERS_JSON_URL + '?t=' + new Date().getTime());
+            if (response.ok) {
+                dbUsers = await response.json();
+            } else {
+                throw new Error("users.json nicht gefunden");
             }
-        };
-
-        let localFallback = localStorage.getItem('innowatech_users_fallback');
-        if (localFallback) {
-            try {
-                let parsed = JSON.parse(localFallback);
-                dbUsers = { ...dbUsers, ...parsed };
-            } catch(e) {}
+        } catch (err) {
+            let localFallback = localStorage.getItem('innowatech_users_fallback');
+            if (localFallback) {
+                dbUsers = JSON.parse(localFallback);
+            } else {
+                // Admin-Passwort fest auf 72766 eingestellt
+                let defaultAdminHash = await hashPin("72766");
+                dbUsers = {
+                    "MAT": {
+                        pinHash: defaultAdminHash,
+                        status: 'active',
+                        modules: ['standard', 'wasserwerk', 'schwimmbad', 'pid', 'verdünnung', 'sonden', 'anlagen', 'radar', 'enthaerter']
+                    }
+                };
+            }
         }
-
         checkAuthGuard();
     }
 
@@ -2010,7 +1995,7 @@
         document.body.appendChild(downloadAnchor);
         downloadAnchor.click();
         downloadAnchor.remove();
-        alert("users.json wurde heruntergeladen!");
+        alert("users.json wurde heruntergeladen! Bitte lade diese Datei nun in dein GitHub-Repository hoch.");
     }
 
     function checkAuthGuard() {
@@ -2024,7 +2009,7 @@
         }
     }
 
-    function performAppLogin() {
+    async function performAppLogin() {
         let u = document.getElementById('appLoginUser').value.trim().toUpperCase();
         let p = document.getElementById('appLoginPin').value.trim();
 
@@ -2033,10 +2018,8 @@
             return;
         }
 
-        let userRecord = dbUsers[u];
-        let isValid = (userRecord.pin === p) || (userRecord.pinHash && userRecord.pinHash === p);
-
-        if (isValid && userRecord.status === 'active') {
+        let enteredHash = await hashPin(p);
+        if (dbUsers[u].pinHash === enteredHash && dbUsers[u].status === 'active') {
             activeUser = u;
             localStorage.setItem('innowatech_active_user', u);
             document.getElementById('appLoginOverlay').classList.remove('active');
@@ -2046,233 +2029,17 @@
         }
     }
 
-    function applyUserPermissions() {
-        if (!activeUser) {
-            currentModules.forEach(m => m.userAllowed = true);
-        } else {
-            let user = dbUsers[activeUser];
-            if (!user || user.status !== 'active') {
-                currentModules.forEach(m => m.userAllowed = false);
-            } else {
-                currentModules.forEach(m => {
-                    m.userAllowed = user.modules.includes(m.id);
-                });
-            }
+    function factoryResetUsers() {
+        if (confirm("Wirklich alle Benutzer auf Werkseinstellungen zurücksetzen?")) {
+            localStorage.removeItem('innowatech_users_fallback');
+            localStorage.removeItem('innowatech_active_user');
+            dbUsers = {};
+            activeUser = null;
+            loadUsersDatabase().then(() => {
+                alert("Zurückgesetzt. Bitte neu anmelden.");
+                window.location.reload();
+            });
         }
-        renderTabs();
-        
-        // Ersten erlaubten Tab als aktiv setzen, falls aktueller Tab gesperrt ist
-        let allowed = currentModules.filter(m => m.visible && m.userAllowed);
-        if (allowed.length > 0 && !allowed.some(m => m.id === currentActiveTab)) {
-            currentActiveTab = allowed[0].id;
-        }
-        switchTab(currentActiveTab);
-    }
-
-    function renderTabs() {
-        let container = document.getElementById('categories-container');
-        if (!container) return;
-        container.innerHTML = '';
-
-        let anwendungMods = currentModules.filter(m => m.category === 'Anwendung' && m.visible && m.userAllowed);
-        let paramMods = currentModules.filter(m => m.category === 'Parameter' && m.visible && m.userAllowed);
-
-        if (anwendungMods.length > 0) {
-            let group = document.createElement('div');
-            group.className = 'category-group';
-            group.innerHTML = `<div class="category-title">Anwendung</div>`;
-            let inner = document.createElement('div');
-            inner.className = 'tab-buttons-inner';
-            anwendungMods.forEach(m => inner.appendChild(createTabButton(m)));
-            group.appendChild(inner);
-            container.appendChild(group);
-        }
-
-        if (paramMods.length > 0) {
-            let group = document.createElement('div');
-            group.className = 'category-group category-parameters';
-            group.innerHTML = `<div class="category-title">Parameter</div>`;
-            let inner = document.createElement('div');
-            inner.className = 'tab-buttons-inner';
-            paramMods.forEach(m => inner.appendChild(createTabButton(m)));
-            group.appendChild(inner);
-            container.appendChild(group);
-        }
-    }
-
-    function createTabButton(m) {
-        let btn = document.createElement('button');
-        btn.type = 'button';
-        btn.className = 'tab-btn' + (currentActiveTab === m.id ? ' active' : '');
-        btn.onclick = () => {
-            isInToolFromLauncher = false;
-            switchTab(m.id);
-        };
-
-        let iconHtml = showSliderIcons && m.icon ? `<span style="font-size:0.9rem; margin-right:2px;">${m.icon}</span>` : '';
-        btn.innerHTML = `
-            <div class="btn-content-inner">
-                <span class="btn-text-line">${iconHtml}${m.title}</span>
-            </div>
-        `;
-        return btn;
-    }
-
-    function switchTab(tabId) {
-        currentActiveTab = tabId;
-        document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-        let target = document.getElementById('tab-' + tabId);
-        if (target) target.classList.add('active');
-
-        document.querySelectorAll('.tab-btn').forEach(btn => {
-            btn.classList.toggle('active', btn.textContent.includes(currentModules.find(m => m.id === tabId)?.title || ''));
-        });
-
-        if (isLauncherActive && !isInToolFromLauncher) {
-            document.getElementById('launcher-view').classList.remove('active');
-            isLauncherActive = false;
-            document.getElementById('toggle-icon').innerText = '田';
-            document.getElementById('toggle-text').innerText = 'Ansicht';
-        }
-    }
-
-    function toggleMainView() {
-        isLauncherActive = !isLauncherActive;
-        let launcherView = document.getElementById('launcher-view');
-        let tabBar = document.getElementById('tab-bar-wrapper');
-        let backBar = document.getElementById('dashboard-back-bar');
-        let toggleIcon = document.getElementById('toggle-icon');
-        let toggleText = document.getElementById('toggle-text');
-
-        if (isLauncherActive) {
-            launcherView.classList.add('active');
-            tabBar.style.display = 'none';
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-            toggleIcon.innerText = '📊';
-            toggleText.innerText = 'Tool';
-            renderLauncherGrid();
-        } else {
-            launcherView.classList.remove('active');
-            tabBar.style.display = 'block';
-            backBar.classList.remove('active');
-            toggleIcon.innerText = '田';
-            toggleText.innerText = 'Ansicht';
-            switchTab(currentActiveTab);
-        }
-    }
-
-    function renderLauncherGrid() {
-        let gridAnw = document.getElementById('launcher-grid-anwendung');
-        let gridParam = document.getElementById('launcher-grid-parameter');
-        if (!gridAnw || !gridParam) return;
-
-        gridAnw.innerHTML = '';
-        gridParam.innerHTML = '';
-
-        currentModules.filter(m => m.category === 'Anwendung' && m.visible && m.userAllowed).forEach(m => {
-            gridAnw.appendChild(createLauncherCard(m));
-        });
-
-        currentModules.filter(m => m.category === 'Parameter' && m.visible && m.userAllowed).forEach(m => {
-            gridParam.appendChild(createLauncherCard(m));
-        });
-    }
-
-    function createLauncherCard(m) {
-        let card = document.createElement('div');
-        card.className = 'launcher-card';
-        card.onclick = () => {
-            isLauncherActive = false;
-            isInToolFromLauncher = true;
-            document.getElementById('launcher-view').classList.remove('active');
-            document.getElementById('tab-bar-wrapper').style.display = 'none';
-            document.getElementById('dashboard-back-bar').classList.add('active');
-            document.getElementById('toggle-icon').innerText = '田';
-            document.getElementById('toggle-text').innerText = 'Ansicht';
-            switchTab(m.id);
-        };
-
-        let iconHtml = showDashboardIcons && m.icon ? `<div class="launcher-icon">${m.icon}</div>` : '';
-        card.innerHTML = `${iconHtml}<div class="launcher-label">${m.title}</div>`;
-        return card;
-    }
-
-    function backToDashboard() {
-        isInToolFromLauncher = false;
-        isLauncherActive = true;
-        document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-        document.getElementById('dashboard-back-bar').classList.remove('active');
-        document.getElementById('tab-bar-wrapper').style.display = 'none';
-        document.getElementById('launcher-view').classList.add('active');
-        document.getElementById('toggle-icon').innerText = '📊';
-        document.getElementById('toggle-text').innerText = 'Tool';
-        renderLauncherGrid();
-    }
-
-    function openSettings() { document.getElementById('settings-modal').classList.add('open'); renderSettingsLists(); }
-    function closeSettings() { document.getElementById('settings-modal').classList.remove('open'); }
-
-    function toggleDarkMode(isDark) {
-        document.body.classList.toggle('dark-mode', isDark);
-        localStorage.setItem('innowatech_dark_mode', isDark ? 'true' : 'false');
-    }
-
-    function toggleSliderIcons(val) {
-        showSliderIcons = val;
-        renderTabs();
-    }
-
-    function toggleDashboardIcons(val) {
-        showDashboardIcons = val;
-        if (isLauncherActive) renderLauncherGrid();
-    }
-
-    function changeZoom(val) {
-        document.documentElement.style.setProperty('--app-zoom', val);
-        document.getElementById('zoom-val-text').innerText = Math.round(val * 100) + '%';
-        localStorage.setItem('innowatech_zoom', val);
-    }
-
-    function renderSettingsLists() {
-        let listAnw = document.getElementById('active-list-anwendung');
-        let listParam = document.getElementById('active-list-parameter');
-        let listInact = document.getElementById('inactive-module-list');
-        if (!listAnw || !listParam || !listInact) return;
-
-        listAnw.innerHTML = '';
-        listParam.innerHTML = '';
-        listInact.innerHTML = '';
-
-        currentModules.forEach((m, idx) => {
-            let item = document.createElement('div');
-            item.className = 'module-list-item';
-            item.innerHTML = `
-                <div class="module-list-item-left">
-                    <span class="drag-handle">☰</span>
-                    <span>${m.icon || '🛠️'}</span>
-                    <span class="module-label-text">${m.title}</span>
-                </div>
-                <div style="display:flex; gap:4px;">
-                    <button type="button" class="admin-btn-sm ${m.visible ? 'admin-btn-danger' : 'admin-btn-success'}" onclick="toggleModuleVisibility(${idx})">
-                        ${m.visible ? 'Ausblenden' : 'Einblenden'}
-                    </button>
-                </div>
-            `;
-            if (!m.visible) {
-                listInact.appendChild(item);
-            } else if (m.category === 'Anwendung') {
-                listAnw.appendChild(item);
-            } else {
-                listParam.appendChild(item);
-            }
-        });
-    }
-
-    function toggleModuleVisibility(idx) {
-        currentModules[idx].visible = !currentModules[idx].visible;
-        renderSettingsLists();
-        renderTabs();
-        if (isLauncherActive) renderLauncherGrid();
     }
 
     function handleVersionClick() {
@@ -2288,7 +2055,7 @@
         }
     }
 
-    function verifyAdminAuth() {
+    async function verifyAdminAuth() {
         let u = document.getElementById('adminUser').value.trim().toUpperCase();
         let p = document.getElementById('adminPin').value.trim();
 
@@ -2297,10 +2064,8 @@
             return;
         }
 
-        let userRecord = dbUsers[u];
-        let isValid = (userRecord.pin === p) || (userRecord.pinHash && userRecord.pinHash === p);
-
-        if (isValid && userRecord.status === 'active') {
+        let enteredHash = await hashPin(p);
+        if (dbUsers[u].pinHash === enteredHash && dbUsers[u].status === 'active') {
             closeAdminModal('adminAuthModal');
             renderUserList();
             renderAdminModuleCheckboxes();
@@ -2316,7 +2081,6 @@
 
     function renderAdminModuleCheckboxes() {
         let container = document.getElementById('adminModuleCheckboxesContainer');
-        if (!container) return;
         container.innerHTML = '';
         currentModules.forEach(m => {
             let div = document.createElement('div');
@@ -2329,7 +2093,7 @@
         });
     }
 
-    function saveUser() {
+    async function saveUser() {
         let kuerzel = document.getElementById('newKuerzel').value.trim().toUpperCase();
         let pin = document.getElementById('newPin').value.trim();
 
@@ -2347,14 +2111,15 @@
             allowedModules.push(cb.value);
         });
 
+        let pHash = await hashPin(pin);
         dbUsers[kuerzel] = {
-            pin: pin,
+            pinHash: pHash,
             status: 'active',
             modules: allowedModules
         };
 
         saveUsersToLocalStorage();
-        alert(`Techniker ${kuerzel} erfolgreich gespeichert!`);
+        alert(`Techniker ${kuerzel} erfolgreich gespeichert! Bitte lade jetzt die users.json herunter und aktualisiere sie auf GitHub.`);
         document.getElementById('newKuerzel').value = '';
         document.getElementById('newPin').value = '';
         document.getElementById('selectAllModules').checked = false;
@@ -2363,16 +2128,16 @@
 
     function renderUserList() {
         let container = document.getElementById('userListContainer');
-        if (!container) return;
         container.innerHTML = '';
-        Object.keys(dbUsers).forEach(k => {
+        let keys = Object.keys(dbUsers);
+        keys.forEach(k => {
             let u = dbUsers[k];
             let div = document.createElement('div');
             div.className = 'user-item';
             div.innerHTML = `
                 <div>
                     <strong>${k}</strong> (${u.status === 'active' ? 'Freigeschaltet' : 'Gesperrt'})<br>
-                    <small style="color:var(--subtext-color);">Module: ${u.modules ? u.modules.length : 0}</small>
+                    <small style="color:var(--subtext-color);">Module: ${u.modules.length}</small>
                 </div>
                 <div style="display:flex; gap:4px;">
                     <button type="button" class="admin-btn-sm ${u.status === 'active' ? 'admin-btn-danger' : 'admin-btn-success'}" onclick="toggleUserStatus('${k}')">
@@ -2406,12 +2171,83 @@
         checkAuthGuard();
     }
 
+    function applyUserPermissions() {
+        if (!activeUser) {
+            currentModules.forEach(m => m.userAllowed = true);
+        } else {
+            let user = dbUsers[activeUser];
+            if (!user || user.status !== 'active') {
+                currentModules.forEach(m => m.userAllowed = false);
+            } else {
+                currentModules.forEach(m => {
+                    m.userAllowed = user.modules.includes(m.id);
+                });
+            }
+        }
+        renderTabs();
+        if (isLauncherActive) renderLauncherGrid();
+    }
+
     function openAdminModal(id) { document.getElementById(id).classList.add('active'); }
     function closeAdminModal(id) { document.getElementById(id).classList.remove('active'); }
+
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('./sw.js')
+                .then(reg => {
+                    reg.onupdatefound = () => {
+                        const installingWorker = reg.installing;
+                        if (installingWorker) {
+                            installingWorker.onstatechange = () => {
+                                if (installingWorker.state === 'installed') {
+                                    if (navigator.serviceWorker.controller) {
+                                        window.location.reload();
+                                    }
+                                }
+                            };
+                        }
+                    };
+                })
+                .catch(err => console.log('Service Worker Registrierung fehlgeschlagen:', err));
+        });
+    }
+
+    function checkChristmasHat() {
+        const today = new Date();
+        const month = today.getMonth();
+        const date = today.getDate();
+        const firstLetterSpan = document.getElementById('first-letter');
+
+        if (month === 11 && date >= 1 && date <= 31) {
+            firstLetterSpan.classList.add('santa-letter');
+        } else {
+            firstLetterSpan.classList.remove('santa-letter');
+        }
+    }
 
     function exportToPDF(modulName) {
         window.print();
     }
+
+    const defaultModules = [
+        { id: 'standard', title: 'Trinkwasser', icon: '💧', category: 'Anwendung', visible: true, userAllowed: true },
+        { id: 'wasserwerk', title: 'Wasserwerk', icon: '🏢', category: 'Anwendung', visible: true, userAllowed: true },
+        { id: 'schwimmbad', title: 'Schwimmbad', icon: '🏊', category: 'Anwendung', visible: true, userAllowed: true },
+        { id: 'pid', title: 'PID Regler', icon: '📈', category: 'Anwendung', visible: true, userAllowed: true },
+        { id: 'verdünnung', title: 'Verdünnungsreihe Anolyte', icon: '🧪', category: 'Anwendung', visible: true, userAllowed: true },
+        { id: 'sonden', title: 'Sondendaten', icon: '⚡', category: 'Parameter', visible: true, userAllowed: true },
+        { id: 'anlagen', title: 'Produktionsparameter AQD', icon: '⚙️', category: 'Parameter', visible: true, userAllowed: true },
+        { id: 'radar', title: 'Vega Radarsensor', icon: '📡', category: 'Parameter', visible: true, userAllowed: true },
+        { id: 'enthaerter', title: 'Enthärtungsanlagen', icon: '💧', category: 'Parameter', visible: true, userAllowed: true }
+    ];
+
+    let currentModules = [];
+    let currentActiveTab = '';
+    let isLauncherActive = false;
+    let isInToolFromLauncher = false;
+    let showSliderIcons = true;
+    let showDashboardIcons = true;
+    let activeDropdownSelect = null;
 
     function initCustomDropdowns() {
         document.querySelectorAll('.input-wrapper select').forEach(select => {
@@ -2441,63 +2277,4 @@
         const modalTitle = document.getElementById('dropdown-modal-title');
         const modalList = document.getElementById('dropdown-modal-list');
         
-        let labelEl = select.closest('.form-group')?.querySelector('label');
-        modalTitle.innerText = labelEl ? labelEl.innerText : "Auswahl treffen";
-        
-        modalList.innerHTML = '';
-        Array.from(select.options).forEach((opt, idx) => {
-            let item = document.createElement('div');
-            item.className = 'dropdown-item' + (idx === select.selectedIndex ? ' selected' : '');
-            item.innerHTML = `<span>${opt.text}</span>`;
-            item.onclick = () => {
-                select.selectedIndex = idx;
-                select.onchange && select.onchange();
-                let trigger = select.parentElement.querySelector('.custom-select-trigger');
-                if (trigger) updateTriggerText(trigger, select);
-                closeCustomDropdown();
-            };
-            modalList.appendChild(item);
-        });
-
-        document.getElementById('dropdown-modal').classList.add('open');
-    }
-
-    function closeCustomDropdown(event) {
-        if (!event || event.target.id === 'dropdown-modal') {
-            document.getElementById('dropdown-modal').classList.remove('open');
-            activeDropdownSelect = null;
-        }
-    }
-
-    // Berechnungsfunktionen Dummy / Platzhalter falls von Modulen aufgerufen
-    function calcStandard() {}
-    function updateFromM3Tag() {}
-    function updateFromLsek() {}
-    function calcWasserwerk() {}
-    function calcPoolVolumen() {}
-    function calcPoolAll() {}
-    function updateChlorDefault() {}
-    function berechnePID() {}
-    function calcVerduennung() {}
-    function updateSondenData() {}
-    function updateAnlagenData() {}
-    function updateRadarTankDefaults() {}
-    function updateEnthaerterData() {}
-    function checkScrollArrows() {}
-
-    window.onload = function() {
-        let savedDark = localStorage.getItem('innowatech_dark_mode');
-        if (savedDark === 'true') {
-            document.getElementById('darkmode-toggle').checked = true;
-            toggleDarkMode(true);
-        }
-        let savedZoom = localStorage.getItem('innowatech_zoom');
-        if (savedZoom) {
-            document.getElementById('zoom-slider').value = savedZoom;
-            changeZoom(savedZoom);
-        }
-
-        loadUsersDatabase();
-        initCustomDropdowns();
-    };
-</html>
+        let labelEl =
