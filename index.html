@@ -10,7 +10,7 @@
     <meta name="theme-color" content="#0d47a1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
-    <title>INNOWATΞCH Service Tool v3.8.5</title>
+    <title>INNOWATΞCH Service Tool v3.8.6</title>
     
     <!-- PWA / App Manifest -->
     <link rel="manifest" href="manifest.json">
@@ -385,7 +385,7 @@
         }
 
         .category-group.category-werkzeuge {
-            background: rgba(234, 179, 8, 0.08);
+            background: rgba(234, 179, 8, 0.05);
         }
 
         .category-title {
@@ -407,7 +407,7 @@
         }
 
         .category-group.category-werkzeuge .category-title {
-            color: #b45309;
+            color: #ca8a04;
         }
 
         body.dark-mode .category-group.category-werkzeuge .category-title {
@@ -477,8 +477,6 @@
             display: none;
             padding: 10px 12px;
             position: relative;
-            max-height: calc(100vh - 95px);
-            overflow-y: auto;
         }
 
         .launcher-view.active {
@@ -491,31 +489,31 @@
             transform: translateX(-50%);
             background: var(--primary-color);
             color: white;
-            width: 30px;
-            height: 30px;
+            width: 28px;
+            height: 28px;
             border-radius: 50%;
-            display: none;
+            display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.85rem;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.35);
+            font-size: 0.8rem;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
             cursor: pointer;
-            z-index: 20;
+            opacity: 0;
+            transition: opacity 0.2s ease, transform 0.15s ease;
+            z-index: 10;
             margin: 0 auto;
         }
         .dashboard-scroll-indicator.visible {
-            display: flex;
+            opacity: 0.9;
         }
         .dashboard-scroll-indicator:active {
-            transform: scale(0.92) translateX(-50%);
+            transform: scale(0.9) translateX(-50%);
         }
         .dashboard-scroll-indicator.top-indicator {
-            top: 2px;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
         }
         .dashboard-scroll-indicator.bottom-indicator {
-            bottom: 2px;
-            margin-top: 6px;
+            margin-top: 8px;
         }
 
         .launcher-category {
@@ -544,13 +542,13 @@
         }
 
         .launcher-category.werkzeuge .launcher-category-title {
-            color: #b45309;
-            border-color: #eab308;
+            color: #ca8a04;
+            border-color: #ca8a04;
         }
 
         body.dark-mode .launcher-category.werkzeuge .launcher-category-title {
             color: #fde047;
-            border-color: #ca8a04;
+            border-color: #fde047;
         }
 
         .launcher-grid {
@@ -804,48 +802,6 @@
             color: #90caf9;
         }
 
-        /* Wasserwaage Visuelle Libelle */
-        .level-bubble-box {
-            width: 140px;
-            height: 140px;
-            border-radius: 50%;
-            border: 3px solid var(--primary-color);
-            background: radial-gradient(circle, rgba(41,182,246,0.15) 0%, rgba(13,71,161,0.05) 100%);
-            margin: 10px auto;
-            position: relative;
-            box-shadow: inset 0 2px 8px rgba(0,0,0,0.2);
-        }
-        .level-crosshair-h {
-            position: absolute;
-            top: 50%; left: 0; right: 0;
-            height: 1px;
-            background: rgba(13,71,161,0.35);
-        }
-        .level-crosshair-v {
-            position: absolute;
-            left: 50%; top: 0; bottom: 0;
-            width: 1px;
-            background: rgba(13,71,161,0.35);
-        }
-        .level-target-ring {
-            position: absolute;
-            top: 50%; left: 50%;
-            width: 34px; height: 34px;
-            transform: translate(-50%, -50%);
-            border: 2px dashed var(--primary-color);
-            border-radius: 50%;
-        }
-        .level-bubble {
-            position: absolute;
-            top: 50%; left: 50%;
-            width: 24px; height: 24px;
-            transform: translate(-50%, -50%);
-            background: radial-gradient(circle at 30% 30%, #a5d6a7, #2e7d32);
-            border-radius: 50%;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.4);
-            transition: transform 0.08s linear, background 0.2s ease;
-        }
-
         .footer {
             display: flex;
             justify-content: space-between;
@@ -956,7 +912,7 @@
         }
 
         .setting-section {
-            margin-bottom: 12px;
+            margin-bottom: 14px;
             border-bottom: 1px solid var(--border-color);
             padding-bottom: 10px;
         }
@@ -967,20 +923,19 @@
 
         .setting-section-title {
             font-weight: bold;
-            font-size: 0.84rem;
-            margin-bottom: 4px;
+            font-size: 0.82rem;
+            margin-bottom: 6px;
             color: var(--primary-color);
             cursor: pointer;
             display: flex;
             justify-content: space-between;
             align-items: center;
             user-select: none;
-            padding: 4px 2px;
         }
 
         .setting-section-title::after {
             content: "▼";
-            font-size: 0.72rem;
+            font-size: 0.7rem;
             transition: transform 0.2s ease;
         }
 
@@ -1216,12 +1171,12 @@
 </div>
 
 <div class="container">
-    <!-- Update Banner (Manuell gesteuert, kein Auto-Reload!) -->
+    <!-- Update Banner (Non-blocking) -->
     <div id="update-banner" style="display: none; background: linear-gradient(135deg, #f59e0b, #d97706); color: white; padding: 10px 14px; font-size: 0.8rem; font-weight: bold; text-align: center; box-shadow: inset 0 1px 0 rgba(255,255,255,0.4); z-index: 1500; align-items: center; justify-content: space-between; gap: 8px;">
         <span id="update-banner-text">🚀 Neue Version verfügbar!</span>
-        <div style="display: flex; gap: 6px; flex-shrink: 0;">
-            <button type="button" onclick="applyAppUpdate()" style="background: white; color: #b45309; border: none; padding: 5px 10px; border-radius: 4px; font-size: 0.75rem; font-weight: bold; cursor: pointer;">Jetzt installieren</button>
-            <button type="button" onclick="dismissAppUpdate()" style="background: rgba(0,0,0,0.25); color: white; border: none; padding: 5px 10px; border-radius: 4px; font-size: 0.75rem; font-weight: bold; cursor: pointer;">Später</button>
+        <div style="display: flex; gap: 6px;">
+            <button type="button" onclick="applyAppUpdate()" style="background: white; color: #b45309; border: none; padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; font-weight: bold; cursor: pointer;">Jetzt installieren</button>
+            <button type="button" onclick="dismissAppUpdate()" style="background: rgba(0,0,0,0.2); color: white; border: none; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; cursor: pointer;">Später</button>
         </div>
     </div>
     
@@ -1989,113 +1944,11 @@
         <button type="button" class="pdf-export-btn" onclick="exportToPDF('Enthärtungsanlagen')">📄 Als PDF speichern / drucken</button>
     </div>
 
-    <!-- WERKZEUGE MODUL 1: Taschenlampe -->
-    <div id="tab-taschenlampe" class="tab-content">
-        <div class="section-title">🔦 Taschenlampe / Notlicht</div>
-        <div class="hint" style="margin-bottom: 12px;">Schaltet das Kamera-Blitzlicht (Android) oder ein helles Bildschirm-Notlicht (iOS/PC) ein.</div>
-        <button type="button" class="pdf-export-btn" onclick="toggleFlashlight()" style="background: linear-gradient(to bottom, #f59e0b, #d97706); border-color: #b45309; font-size: 0.95rem; padding: 14px;" id="flash-toggle-btn">🔦 Licht Einschalten</button>
-    </div>
-
-    <!-- WERKZEUGE MODUL 2: Wasserwaage -->
-    <div id="tab-wasserwaage" class="tab-content">
-        <div class="section-title">📐 Digitale Wasserwaage</div>
-        <div class="level-bubble-box">
-            <div class="level-crosshair-h"></div>
-            <div class="level-crosshair-v"></div>
-            <div class="level-target-ring"></div>
-            <div class="level-bubble" id="level_bubble"></div>
-        </div>
-        <div class="result-box" style="text-align: center;">
-            <div class="result-row">
-                <span class="result-label">Neigung Vor / Zurück (X)</span>
-                <span class="result-value" id="val_tilt_x">0.0°</span>
-            </div>
-            <div class="result-row">
-                <span class="result-label">Neigung Links / Rechts (Y)</span>
-                <span class="result-value" id="val_tilt_y">0.0°</span>
-            </div>
-        </div>
-        <button type="button" class="pdf-export-btn" onclick="initWaterLevel()">Sensoren Freigeben / Starten</button>
-    </div>
-
-    <!-- WERKZEUGE MODUL 3: Schlauchvolumen -->
-    <div id="tab-schlauchvolumen" class="tab-content">
-        <div class="section-title">📏 Schlauchvolumen-Rechner</div>
-        <div class="form-group">
-            <label>Innendurchmesser (dᵢ)</label>
-            <div class="input-wrapper">
-                <input type="number" id="schlauch_d" step="0.5" placeholder="z. B. 4, 6, 8, 12" oninput="calcSchlauch()">
-                <span class="unit">mm</span>
-            </div>
-        </div>
-        <div class="form-group">
-            <label>Schlauchlänge (L)</label>
-            <div class="input-wrapper">
-                <input type="number" id="schlauch_l" step="0.1" placeholder="z. B. 3.5" oninput="calcSchlauch()">
-                <span class="unit">m</span>
-            </div>
-        </div>
-        <div class="result-box">
-            <div class="result-row">
-                <span class="result-label">Volumen pro Meter</span>
-                <span class="result-value" id="res_schlauch_m">0.00 ml/m</span>
-            </div>
-            <div class="result-row">
-                <span class="result-label">Gesamtvolumen</span>
-                <span class="result-value" id="res_schlauch_ges">0.00 ml (0.000 l)</span>
-            </div>
-        </div>
-        <button type="button" class="pdf-export-btn" onclick="resetSchlauch()" style="background: #757575; border-color: #616161; margin-top: 8px;">🔄 Reset</button>
-    </div>
-
-    <!-- WERKZEUGE MODUL 4: Ausliter-Hilfe -->
-    <div id="tab-auslitern" class="tab-content">
-        <div class="section-title">⏱️ Ausliter-Hilfe (60s Timer)</div>
-        <div class="result-box" style="text-align: center; background: var(--input-bg);">
-            <div class="result-label">Countdown</div>
-            <div class="result-value" id="timer_display" style="font-size: 2.2rem; color: var(--primary-color);">01:00</div>
-        </div>
-        <div style="display: flex; gap: 8px; margin-top: 10px;">
-            <button type="button" class="pdf-export-btn" onclick="startAusliterTimer()" style="background: #2e7d32; border-color: #1b5e20; margin-top:0;">▶ Start (60s)</button>
-            <button type="button" class="pdf-export-btn" onclick="stopAusliterTimer()" style="background: #c62828; border-color: #b71c1c; margin-top:0;">⏹ Stopp</button>
-        </div>
-        <div class="form-group" style="margin-top: 12px;">
-            <label>Aufgefangene Menge nach 1 Minute</label>
-            <div class="input-wrapper">
-                <input type="number" id="ausliter_ml" step="1" placeholder="z. B. 250" oninput="calcAusliter()">
-                <span class="unit">ml</span>
-            </div>
-        </div>
-        <div class="result-box">
-            <div class="result-row">
-                <span class="result-label">Resultierender Durchfluss</span>
-                <span class="result-value" id="res_ausliter_lh" style="font-size: 1.2rem;">0.00 l/h</span>
-            </div>
-        </div>
-        <button type="button" class="pdf-export-btn" onclick="resetAusliter()" style="background: #757575; border-color: #616161; margin-top: 8px;">🔄 Reset (Timer & Werte)</button>
-    </div>
-
-    <!-- WERKZEUGE MODUL 5: Service-Notizen -->
-    <div id="tab-notizen" class="tab-content">
-        <div class="section-title">📝 Service-Notizen (Offline Auto-Save)</div>
-        <div class="form-group">
-            <textarea id="service_notes_area" placeholder="Seriennummern, Messwerte, Ersatzteile hier festhalten..." style="width: 100%; height: 180px; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--input-bg); color: var(--text-color); font-size: 0.9rem; box-sizing: border-box; outline: none; font-family: inherit;" oninput="saveServiceNotes()"></textarea>
-        </div>
-        <div style="display: flex; gap: 6px;">
-            <button type="button" class="pdf-export-btn" onclick="addNoteTimestamp()" style="flex: 1; background: #0288d1; border-color: #0277bd; margin-top:0;">⏱️ + Zeitstempel</button>
-            <button type="button" class="pdf-export-btn" onclick="copyServiceNotes()" style="flex: 1; background: #1976d2; border-color: #1565c0; margin-top:0;">📋 Kopieren</button>
-        </div>
-        <div style="display: flex; gap: 6px; margin-top: 6px;">
-            <button type="button" class="pdf-export-btn" onclick="downloadServiceNotesTxt()" style="flex: 1; background: #2e7d32; border-color: #1b5e20; margin-top:0;">💾 Download .txt</button>
-            <button type="button" class="pdf-export-btn" onclick="clearServiceNotes()" style="flex: 1; background: #c62828; border-color: #b71c1c; margin-top:0;">🗑️ Leeren</button>
-        </div>
-    </div>
-
-    <!-- Footer mit Version v3.8.5 & Netzwerk-Status -->
+    <!-- Footer mit Version v3.8.6 & Netzwerk-Status -->
     <div class="footer" style="display: flex; justify-content: space-between; align-items: center;">
         <span style="flex: 1; text-align: left;">© 2026 #MAT</span>
         <span id="net-status-badge" style="flex: 1; text-align: center; font-size: 0.72rem; padding: 2px 6px; border-radius: 10px; background: rgba(0,0,0,0.08); display: inline-block; width: auto; margin: 0 auto;">● Online</span>
-        <span class="footer-version" style="flex: 1; text-align: right;" onclick="handleVersionClick()">v3.8.5</span>
+        <span class="footer-version" style="flex: 1; text-align: right;" onclick="handleVersionClick()">v3.8.6</span>
     </div>
 </div>
 
@@ -2108,7 +1961,7 @@
             <button type="button" class="modal-close-btn" onclick="closeSettings()">✕</button>
         </div>
         <div class="modal-body" id="settings-modal-body" onscroll="checkSettingsScroll(this)">
-            <div class="setting-section collapsed">
+            <div class="setting-section">
                 <div class="setting-section-title" onclick="toggleSettingSection(this)">Erscheinungsbild & Icons</div>
                 <div class="setting-section-content">
                     <div class="toggle-row">
@@ -2126,7 +1979,7 @@
                 </div>
             </div>
 
-            <div class="setting-section collapsed">
+            <div class="setting-section">
                 <div class="setting-section-title" onclick="toggleSettingSection(this)">Darstellungsgröße</div>
                 <div class="setting-section-content">
                     <div class="zoom-slider-container">
@@ -2157,7 +2010,7 @@
             </div>
 
             <div class="setting-section collapsed">
-                <div class="setting-section-title" onclick="toggleSettingSection(this)" style="color: #b45309;">Kategorie: Werkzeuge (Per Griff ☰ verschiebbar)</div>
+                <div class="setting-section-title" onclick="toggleSettingSection(this)" style="color: #ca8a04;">Kategorie: Werkzeuge (Per Griff ☰ verschiebbar)</div>
                 <div class="setting-section-content">
                     <div class="hint" style="margin-bottom: 6px;">Haken setzen = Modul aktiv | Haken entfernen = Modul inaktiv</div>
                     <div id="active-list-werkzeuge"></div>
@@ -2183,7 +2036,7 @@
 <div class="admin-modal-overlay" id="adminAuthModal">
     <div class="admin-modal-content">
         <div class="admin-modal-header">
-            <span>Admin Authentifizierung (v3.8.5)</span>
+            <span>Admin Authentifizierung (v3.8.6)</span>
             <button type="button" class="modal-close-btn" style="color:var(--primary-color);" onclick="closeAdminModal('adminAuthModal')">✕</button>
         </div>
         <p style="font-size: 0.82rem; color: var(--subtext-color); margin-bottom: 12px;">Bitte die Admin-PIN eingeben:</p>
@@ -2259,12 +2112,6 @@
     let clickTimer = null;
 
     const USERS_JSON_URL = './users.json'; 
-
-    const ALL_MODULE_IDS = [
-        'standard', 'wasserwerk', 'schwimmbad', 'pid', 'verdünnung',
-        'sonden', 'anlagen', 'radar', 'enthaerter',
-        'taschenlampe', 'wasserwaage', 'schlauchvolumen', 'auslitern', 'notizen'
-    ];
 
     async function hashPin(pin) {
         if (!pin) return "";
@@ -2363,13 +2210,13 @@
                         pinHash: adminHash,
                         status: 'active',
                         isAdmin: true,
-                        modules: [...ALL_MODULE_IDS]
+                        modules: ['standard', 'wasserwerk', 'schwimmbad', 'pid', 'verdünnung', 'sonden', 'anlagen', 'radar', 'enthaerter']
                     },
                     "MAT": {
                         pinHash: matHash,
                         status: 'active',
                         isAdmin: false,
-                        modules: [...ALL_MODULE_IDS]
+                        modules: ['standard', 'wasserwerk', 'schwimmbad', 'pid', 'verdünnung', 'sonden', 'anlagen', 'radar', 'enthaerter']
                     }
                 };
                 saveUsersToLocalStorage();
@@ -2422,7 +2269,7 @@
                 pinHash: "07062509",
                 status: "active",
                 isAdmin: true,
-                modules: [...ALL_MODULE_IDS]
+                modules: ['standard', 'wasserwerk', 'schwimmbad', 'pid', 'verdünnung', 'sonden', 'anlagen', 'radar', 'enthaerter']
             };
         }
         let dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(dbUsers, null, 2));
@@ -2524,7 +2371,7 @@
             div.className = 'checkbox-item';
             div.innerHTML = `
                 <input type="checkbox" class="admin-mod-check" value="${m.id}" id="am_${m.id}" style="width:18px; height:18px;">
-                <label for="am_${m.id}" style="cursor:pointer; margin:0;">${m.icon || '🛠️'} ${m.title} <small style="opacity:0.7;">(${m.category})</small></label>
+                <label for="am_${m.id}" style="cursor:pointer; margin:0;">${m.icon || '🛠️'} ${m.title}</label>
             `;
             container.appendChild(div);
         });
@@ -2663,15 +2510,8 @@
             } else if (!user || user.status !== 'active') {
                 currentModules.forEach(m => m.userAllowed = false);
             } else {
-                const werkzeugIds = ['taschenlampe', 'wasserwaage', 'schlauchvolumen', 'auslitern', 'notizen'];
                 currentModules.forEach(m => {
-                    // Werkzeuge sind für alle freigeschalteten Techniker standardmäßig nutzbar,
-                    // sofern sie nicht explizit ausgeschlossen wurden, oder über user.modules gesteuert
-                    if (werkzeugIds.includes(m.id) && activeUser === 'MAT') {
-                        m.userAllowed = true;
-                    } else {
-                        m.userAllowed = user.modules && user.modules.includes(m.id);
-                    }
+                    m.userAllowed = user.modules && user.modules.includes(m.id);
                 });
             }
         }
@@ -2682,9 +2522,7 @@
     function openAdminModal(id) { document.getElementById(id).classList.add('active'); }
     function closeAdminModal(id) { document.getElementById(id).classList.remove('active'); }
 
-    // --- Service Worker Update-Handling (Strict Manual Confirmation, kein Auto-Reload!) ---
     let waitingServiceWorker = null;
-    let userClickedUpdate = false;
 
     function showUpdateBanner(worker) {
         waitingServiceWorker = worker;
@@ -2695,12 +2533,10 @@
     }
 
     function applyAppUpdate() {
-        userClickedUpdate = true;
         if (waitingServiceWorker) {
             waitingServiceWorker.postMessage({ action: 'skipWaiting' });
-        } else {
-            window.location.reload();
         }
+        window.location.reload();
     }
 
     function dismissAppUpdate() {
@@ -2733,10 +2569,9 @@
                 })
                 .catch(err => console.log('Service Worker Registrierung fehlgeschlagen:', err));
 
-            // Reload NUR auslösen, wenn der Nutzer aktiv auf "Jetzt installieren" geklickt hat!
             let refreshing = false;
             navigator.serviceWorker.addEventListener('controllerchange', () => {
-                if (userClickedUpdate && !refreshing) {
+                if (!refreshing) {
                     refreshing = true;
                     window.location.reload();
                 }
@@ -2770,12 +2605,7 @@
         { id: 'sonden', title: 'Sondendaten', icon: '⚡', category: 'Parameter', visible: true, userAllowed: true },
         { id: 'anlagen', title: 'Produktionsparameter AQD', icon: '⚙️', category: 'Parameter', visible: true, userAllowed: true },
         { id: 'radar', title: 'Vega Radarsensor', icon: '📡', category: 'Parameter', visible: true, userAllowed: true },
-        { id: 'enthaerter', title: 'Enthärtungsanlagen', icon: '💧', category: 'Parameter', visible: true, userAllowed: true },
-        { id: 'taschenlampe', title: 'Taschenlampe', icon: '🔦', category: 'Werkzeuge', visible: true, userAllowed: true },
-        { id: 'wasserwaage', title: 'Wasserwaage', icon: '📐', category: 'Werkzeuge', visible: true, userAllowed: true },
-        { id: 'schlauchvolumen', title: 'Schlauchvolumen', icon: '📏', category: 'Werkzeuge', visible: true, userAllowed: true },
-        { id: 'auslitern', title: 'Ausliter-Hilfe', icon: '⏱️', category: 'Werkzeuge', visible: true, userAllowed: true },
-        { id: 'notizen', title: 'Service-Notizen', icon: '📝', category: 'Werkzeuge', visible: true, userAllowed: true }
+        { id: 'enthaerter', title: 'Enthärtungsanlagen', icon: '💧', category: 'Parameter', visible: true, userAllowed: true }
     ];
 
     let currentModules = [...defaultModules];
@@ -2840,7 +2670,7 @@
         }
     }
 
-    async function loadSettings() {
+    function loadSettings() {
         checkChristmasHat();
         const savedDarkMode = localStorage.getItem('mat_darkmode');
         const isDark = (savedDarkMode === 'true');
@@ -2894,20 +2724,20 @@
             currentModules = [...defaultModules];
         }
 
-        // Notizen wiederherstellen
-        let savedNotes = localStorage.getItem('mat_service_notes');
-        if (savedNotes && document.getElementById('service_notes_area')) {
-            document.getElementById('service_notes_area').value = savedNotes;
-        }
-
         const savedLauncherState = localStorage.getItem('mat_launcher_view');
         isLauncherActive = (savedLauncherState === 'true');
         isInToolFromLauncher = false;
 
-        await loadUsersDatabase();
-        renderTabs(true);
-        applyViewMode();
-        initCustomDropdowns();
+        loadUsersDatabase().then(() => {
+            renderTabs(true);
+            applyViewMode();
+            initCustomDropdowns();
+        }).catch(err => {
+            console.log("DB Load Fallback:", err);
+            renderTabs(true);
+            applyViewMode();
+            initCustomDropdowns();
+        });
     }
 
     function saveSettings() {
@@ -2937,9 +2767,6 @@
         const section = titleEl.closest('.setting-section');
         if (section) {
             section.classList.toggle('collapsed');
-            setTimeout(() => {
-                checkSettingsScroll(document.getElementById('settings-modal-body'));
-            }, 50);
         }
     }
 
@@ -2979,7 +2806,7 @@
                 if (content) content.classList.remove('active');
             });
             renderLauncherGrid();
-            setTimeout(() => { checkDashboardScroll(launcherView); }, 80);
+            setTimeout(() => { checkDashboardScroll(launcherView); }, 50);
         } else if (isLauncherActive && isInToolFromLauncher) {
             tabBarWrapper.style.display = 'none';
             launcherView.classList.remove('active');
@@ -3075,14 +2902,14 @@
         const bottomIndicator = document.getElementById('dashboard-scroll-indicator-bottom');
         if (!topIndicator || !bottomIndicator) return;
 
-        if (el.scrollTop > 10) {
+        if (el.scrollTop > 15) {
             topIndicator.classList.add('visible');
         } else {
             topIndicator.classList.remove('visible');
         }
 
         const scrollBottom = el.scrollHeight - el.scrollTop - el.clientHeight;
-        if (scrollBottom > 10) {
+        if (scrollBottom > 15) {
             bottomIndicator.classList.add('visible');
         } else {
             bottomIndicator.classList.remove('visible');
@@ -3383,245 +3210,6 @@
         const inactiveModules = currentModules.filter(m => !m.visible);
         currentModules = [...newActiveOrder, ...inactiveModules];
         saveSettings();
-    }
-
-    // --- WERKZEUGE LOGIK ---
-
-    // 1. Taschenlampe & Smart-Fallback
-    let flashStream = null;
-    let isScreenTorchOn = false;
-    async function toggleFlashlight() {
-        let btn = document.getElementById('flash-toggle-btn');
-        try {
-            if (!flashStream && !isScreenTorchOn) {
-                flashStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
-                let track = flashStream.getVideoTracks()[0];
-                let capabilities = track.getCapabilities ? track.getCapabilities() : {};
-                if (capabilities.torch) {
-                    await track.applyConstraints({ advanced: [{ torch: true }] });
-                    btn.innerText = "💡 LED-Blitzlicht Ausschalten";
-                    btn.style.background = "linear-gradient(to bottom, #ef4444, #dc2626)";
-                } else {
-                    flashStream.getTracks().forEach(t => t.stop());
-                    flashStream = null;
-                    enableScreenTorch(btn);
-                }
-            } else if (flashStream) {
-                let track = flashStream.getVideoTracks()[0];
-                await track.applyConstraints({ advanced: [{ torch: false }] });
-                flashStream.getTracks().forEach(t => t.stop());
-                flashStream = null;
-                btn.innerText = "🔦 Licht Einschalten";
-                btn.style.background = "linear-gradient(to bottom, #f59e0b, #d97706)";
-            } else if (isScreenTorchOn) {
-                disableScreenTorch(btn);
-            }
-        } catch(e) {
-            if (!isScreenTorchOn) {
-                enableScreenTorch(btn);
-            } else {
-                disableScreenTorch(btn);
-            }
-        }
-    }
-
-    function enableScreenTorch(btn) {
-        isScreenTorchOn = true;
-        document.body.style.background = "#ffffff";
-        document.querySelector('.container').style.background = "#ffffff";
-        btn.innerText = "💡 Bildschirm-Notlicht Ausschalten";
-        btn.style.background = "linear-gradient(to bottom, #ef4444, #dc2626)";
-    }
-
-    function disableScreenTorch(btn) {
-        isScreenTorchOn = false;
-        document.body.style.background = "";
-        document.querySelector('.container').style.background = "";
-        btn.innerText = "🔦 Licht Einschalten";
-        btn.style.background = "linear-gradient(to bottom, #f59e0b, #d97706)";
-    }
-
-    // 2. Digitale Wasserwaage
-    let waterLevelActive = false;
-    function initWaterLevel() {
-        if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
-            DeviceOrientationEvent.requestPermission()
-                .then(response => {
-                    if (response === 'granted') {
-                        startWaterLevelListener();
-                    } else {
-                        alert("Sensor-Berechtigung wurde verweigert.");
-                    }
-                })
-                .catch(console.error);
-        } else if (window.DeviceOrientationEvent) {
-            startWaterLevelListener();
-        } else {
-            alert("Lagesensoren werden auf diesem Gerät/Browser nicht unterstützt.");
-        }
-    }
-
-    function startWaterLevelListener() {
-        if (waterLevelActive) return;
-        waterLevelActive = true;
-        window.addEventListener('deviceorientation', (event) => {
-            let x = event.beta || 0;  // Neigung Vor/Zurück (-180 bis 180)
-            let y = event.gamma || 0; // Neigung Links/Rechts (-90 bis 90)
-            
-            let xEl = document.getElementById('val_tilt_x');
-            let yEl = document.getElementById('val_tilt_y');
-            let bubble = document.getElementById('level_bubble');
-            
-            if (xEl) xEl.innerText = x.toFixed(1) + "°";
-            if (yEl) yEl.innerText = y.toFixed(1) + "°";
-            
-            if (bubble) {
-                // Begrenzung auf +-45° für visuelle Darstellung in der Libelle (max +-52px)
-                let clampedX = Math.max(-45, Math.min(45, x));
-                let clampedY = Math.max(-45, Math.min(45, y));
-                let offsetX = (clampedY / 45) * 52;
-                let offsetY = (clampedX / 45) * 52;
-                bubble.style.transform = `translate(calc(-50% + ${offsetX}px), calc(-50% + ${offsetY}px))`;
-                if (Math.abs(x) < 1.0 && Math.abs(y) < 1.0) {
-                    bubble.style.background = "radial-gradient(circle at 30% 30%, #69f0ae, #00c853)";
-                } else {
-                    bubble.style.background = "radial-gradient(circle at 30% 30%, #ffcc80, #ef6c00)";
-                }
-            }
-        });
-    }
-
-    // 3. Schlauchvolumen-Rechner (nur Innendurchmesser in mm + Länge in m)
-    function calcSchlauch() {
-        let d = parseFloat(document.getElementById('schlauch_d').value) || 0;
-        let l = parseFloat(document.getElementById('schlauch_l').value) || 0;
-        let mlProMeter = Math.PI * Math.pow(d / 2, 2);
-        let gesamtMl = mlProMeter * l;
-
-        document.getElementById('res_schlauch_m').innerText = mlProMeter.toFixed(2) + " ml/m";
-        document.getElementById('res_schlauch_ges').innerText = gesamtMl.toFixed(2) + " ml (" + (gesamtMl / 1000).toFixed(3) + " l)";
-    }
-
-    function resetSchlauch() {
-        document.getElementById('schlauch_d').value = "";
-        document.getElementById('schlauch_l').value = "";
-        calcSchlauch();
-    }
-
-    // 4. Ausliter-Hilfe (60s Timer + ml -> l/h + Reset)
-    let ausliterInterval = null;
-    let timeLeft = 60;
-
-    function startAusliterTimer() {
-        if (ausliterInterval) clearInterval(ausliterInterval);
-        timeLeft = 60;
-        updateTimerDisplay();
-        ausliterInterval = setInterval(() => {
-            timeLeft--;
-            updateTimerDisplay();
-            if (timeLeft <= 0) {
-                clearInterval(ausliterInterval);
-                ausliterInterval = null;
-                if (navigator.vibrate) navigator.vibrate([300, 100, 300]);
-                alert("⏱️ 60 Sekunden abgelaufen! Bitte aufgefangene Menge in ml eingeben.");
-            }
-        }, 1000);
-    }
-
-    function stopAusliterTimer() {
-        if (ausliterInterval) {
-            clearInterval(ausliterInterval);
-            ausliterInterval = null;
-        }
-    }
-
-    function updateTimerDisplay() {
-        let m = Math.floor(timeLeft / 60).toString().padStart(2, '0');
-        let s = (timeLeft % 60).toString().padStart(2, '0');
-        let el = document.getElementById('timer_display');
-        if (el) el.innerText = `${m}:${s}`;
-    }
-
-    function calcAusliter() {
-        let ml = parseFloat(document.getElementById('ausliter_ml').value) || 0;
-        let lPerH = (ml * 60) / 1000;
-        let el = document.getElementById('res_ausliter_lh');
-        if (el) el.innerText = lPerH.toFixed(2) + " l/h";
-    }
-
-    function resetAusliter() {
-        stopAusliterTimer();
-        timeLeft = 60;
-        updateTimerDisplay();
-        document.getElementById('ausliter_ml').value = "";
-        calcAusliter();
-    }
-
-    // 5. Service-Notizen (Auto-Save, Zeitstempel, Kopieren, .txt-Download, Leeren)
-    function saveServiceNotes() {
-        let area = document.getElementById('service_notes_area');
-        if (area) localStorage.setItem('mat_service_notes', area.value);
-    }
-
-    function addNoteTimestamp() {
-        let area = document.getElementById('service_notes_area');
-        if (!area) return;
-        let now = new Date();
-        let datum = now.toLocaleDateString('de-DE');
-        let zeit = now.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
-        let stamp = `[${datum} - ${zeit}] `;
-        area.value += (area.value && !area.value.endsWith('
-') ? "
-" : "") + stamp;
-        area.focus();
-        saveServiceNotes();
-    }
-
-    function copyServiceNotes() {
-        let area = document.getElementById('service_notes_area');
-        if (!area || !area.value) {
-            alert("Keine Notizen zum Kopieren vorhanden.");
-            return;
-        }
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-            navigator.clipboard.writeText(area.value).then(() => {
-                alert("Notizen in die Zwischenablage kopiert!");
-            }).catch(() => {
-                area.select();
-                document.execCommand('copy');
-                alert("Notizen kopiert!");
-            });
-        } else {
-            area.select();
-            document.execCommand('copy');
-            alert("Notizen kopiert!");
-        }
-    }
-
-    function downloadServiceNotesTxt() {
-        let area = document.getElementById('service_notes_area');
-        let text = area ? area.value : "";
-        if (!text.trim()) {
-            alert("Die Notiz ist leer – es gibt nichts herunterzuladen.");
-            return;
-        }
-        let blob = new Blob([text], { type: "text/plain;charset=utf-8" });
-        let url = URL.createObjectURL(blob);
-        let a = document.createElement('a');
-        a.href = url;
-        a.download = `Service_Notiz_${new Date().toISOString().slice(0,10)}.txt`;
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-        URL.revokeObjectURL(url);
-    }
-
-    function clearServiceNotes() {
-        if (confirm("Alle Service-Notizen wirklich unwiderruflich löschen?")) {
-            let area = document.getElementById('service_notes_area');
-            if (area) area.value = "";
-            localStorage.removeItem('mat_service_notes');
-        }
     }
 
     const radarTankDatabase = {
