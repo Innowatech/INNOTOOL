@@ -10,7 +10,7 @@
     <meta name="theme-color" content="#0d47a1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
-    <title>INNOWATΞCH Service Tool v3.8</title>
+    <title>INNOWATΞCH Service Tool v3.8.1</title>
     
     <!-- PWA / App Manifest -->
     <link rel="manifest" href="manifest.json">
@@ -1093,7 +1093,7 @@
         </div>
         <div class="header-center">
             <h1 id="app-title"><span id="first-letter">I</span>NNOWATΞCH</h1>
-            <div class="header-sub">Service Tool</div>
+            <div class="header-sub">Service Tool <span id="net-status-badge" style="margin-left:4px; font-size:0.65rem; padding:1px 5px; border-radius:8px; background:rgba(255,255,255,0.2);">●</span></div>
         </div>
         <div class="header-right">
             <button type="button" class="header-btn settings-btn" onclick="openSettings()" title="Einstellungen">⚙️</button>
@@ -1843,7 +1843,7 @@
     <!-- Footer mit Version v3.8 -->
     <div class="footer">
         <span>© 2026 #MAT</span>
-        <span class="footer-version" onclick="handleVersionClick()">v3.8</span>
+        <span class="footer-version" onclick="handleVersionClick()">v3.8.1</span>
     </div>
 </div>
 
@@ -1908,7 +1908,7 @@
 <div class="admin-modal-overlay" id="adminAuthModal">
     <div class="admin-modal-content">
         <div class="admin-modal-header">
-            <span>Admin Authentifizierung (v3.8)</span>
+            <span>Admin Authentifizierung (v3.8.1)</span>
             <button type="button" class="modal-close-btn" style="color:var(--primary-color);" onclick="closeAdminModal('adminAuthModal')">✕</button>
         </div>
         <p style="font-size: 0.82rem; color: var(--subtext-color); margin-bottom: 12px;">Bitte die Admin-PIN eingeben:</p>
@@ -2001,25 +2001,63 @@
         }
     }
 
-    async function loadUsersDatabase() {
+    function updateNetBadge() {
+        const badge = document.getElementById('net-status-badge');
+        if (!badge) return;
+        if (navigator.onLine) {
+            badge.innerText = '● Online';
+            badge.style.background = 'rgba(46, 125, 50, 0.75)';
+        } else {
+            badge.innerText = '○ Offline';
+            badge.style.background = 'rgba(230, 81, 0, 0.85)';
+        }
+    }
+
+    async function fetchAndNormalizeUsers() {
+        let controller = new AbortController();
+        let timeoutId = setTimeout(() => controller.abort(), 3500);
         try {
-            let response = await fetch(USERS_JSON_URL + '?t=' + new Date().getTime());
-            if (response.ok) {
-                let rawUsers = await response.json();
-                dbUsers = {};
-                for (let k in rawUsers) {
-                    let u = rawUsers[k];
-                    dbUsers[k] = {
-                        pinHash: await hashPin(u.pinHash),
-                        status: u.status || 'active',
-                        isAdmin: u.isAdmin || false,
-                        modules: u.modules || []
-                    };
-                }
-            } else {
-                throw new Error("users.json nicht gefunden");
+            let response = await fetch(USERS_JSON_URL + '?t=' + new Date().getTime(), {
+                cache: 'no-store',
+                signal: controller.signal
+            });
+            clearTimeout(timeoutId);
+            if (!response.ok) throw new Error("HTTP " + response.status);
+            let rawUsers = await response.json();
+            let normalized = {};
+            for (let k in rawUsers) {
+                let u = rawUsers[k];
+                normalized[k] = {
+                    pinHash: await hashPin(u.pinHash),
+                    status: u.status || 'active',
+                    isAdmin: u.isAdmin || false,
+                    modules: u.modules || []
+                };
             }
+            return normalized;
         } catch (err) {
+            clearTimeout(timeoutId);
+            throw err;
+        }
+    }
+
+    async function loadUsersDatabase() {
+        updateNetBadge();
+        window.addEventListener('online', handleReconnectSync);
+        window.addEventListener('offline', updateNetBadge);
+
+        let loadedFromServer = false;
+        if (navigator.onLine) {
+            try {
+                dbUsers = await fetchAndNormalizeUsers();
+                saveUsersToLocalStorage();
+                loadedFromServer = true;
+            } catch (err) {
+                console.log("Offline-Fallback aktiv (Server nicht erreichbar):", err.message);
+            }
+        }
+
+        if (!loadedFromServer) {
             let localFallback = localStorage.getItem('innowatech_users_fallback');
             if (localFallback) {
                 try {
@@ -2027,6 +2065,13 @@
                 } catch(e) {
                     dbUsers = {};
                 }
+            }
+            // Falls lokal ein gespeicherter Session-Snapshot existiert, aber dbUsers leer ist
+            let savedSession = localStorage.getItem('innowatech_active_session_data');
+            if ((!dbUsers || Object.keys(dbUsers).length === 0) && activeUser && savedSession) {
+                try {
+                    dbUsers[activeUser] = JSON.parse(savedSession);
+                } catch(e) {}
             }
             if (!dbUsers || Object.keys(dbUsers).length === 0) {
                 let adminHash = await hashPin("07062509");
@@ -2045,13 +2090,46 @@
                         modules: ['standard', 'wasserwerk', 'schwimmbad', 'pid', 'verdünnung', 'sonden', 'anlagen', 'radar', 'enthaerter']
                     }
                 };
+                saveUsersToLocalStorage();
             }
         }
+
+        // Aktuellen Session-Snapshot aktualisieren, solange User aktiv ist
+        if (activeUser && dbUsers[activeUser] && dbUsers[activeUser].status === 'active') {
+            localStorage.setItem('innowatech_active_session_data', JSON.stringify(dbUsers[activeUser]));
+        }
+
         // Absicherung: UI darf niemals hängen bleiben
         try {
             checkAuthGuard();
         } catch(e) {
             document.getElementById('appLoginOverlay').classList.remove('active');
+        }
+    }
+
+    async function handleReconnectSync() {
+        updateNetBadge();
+        try {
+            let freshUsers = await fetchAndNormalizeUsers();
+            dbUsers = freshUsers;
+            saveUsersToLocalStorage();
+
+            if (activeUser) {
+                let currentU = dbUsers[activeUser];
+                if (!currentU || currentU.status !== 'active') {
+                    alert("Dein Zugang wurde vom Administrator gesperrt oder entfernt. Du wirst abgemeldet.");
+                    activeUser = null;
+                    localStorage.removeItem('innowatech_active_user');
+        localStorage.removeItem('innowatech_active_session_data');
+                    localStorage.removeItem('innowatech_active_session_data');
+                    checkAuthGuard();
+                } else {
+                    localStorage.setItem('innowatech_active_session_data', JSON.stringify(currentU));
+                    applyUserPermissions();
+                }
+            }
+        } catch (err) {
+            console.log("Hintergrund-Sync bei Reconnect übersprungen:", err.message);
         }
     }
 
@@ -2104,6 +2182,8 @@
         if (dbUsers[u].pinHash === enteredHash && dbUsers[u].status === 'active') {
             activeUser = u;
             localStorage.setItem('innowatech_active_user', u);
+            localStorage.setItem('innowatech_active_session_data', JSON.stringify(dbUsers[u]));
+            saveUsersToLocalStorage();
             document.getElementById('appLoginOverlay').classList.remove('active');
             applyUserPermissions();
         } else {
@@ -2115,6 +2195,7 @@
         if (confirm("Wirklich alle Benutzer auf Werkseinstellungen zurücksetzen?")) {
             localStorage.removeItem('innowatech_users_fallback');
             localStorage.removeItem('innowatech_active_user');
+        localStorage.removeItem('innowatech_active_session_data');
             dbUsers = {};
             activeUser = null;
             loadUsersDatabase().then(() => {
@@ -2280,6 +2361,7 @@
     function performLogout() {
         activeUser = null;
         localStorage.removeItem('innowatech_active_user');
+        localStorage.removeItem('innowatech_active_session_data');
         closeAdminModal('adminConsoleModal');
         checkAuthGuard();
     }
@@ -2287,6 +2369,7 @@
     function performLogoutFromSettings() {
         activeUser = null;
         localStorage.removeItem('innowatech_active_user');
+        localStorage.removeItem('innowatech_active_session_data');
         closeSettings();
         checkAuthGuard();
     }
