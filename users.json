@@ -12,7 +12,12 @@
       "sonden",
       "anlagen",
       "radar",
-      "enthaerter"
+      "enthaerter",
+      "taschenlampe",
+      "wasserwaage",
+      "schlauchvolumen",
+      "auslitern",
+      "notizen"
     ]
   },
   "MAT": {
@@ -28,7 +33,12 @@
       "sonden",
       "anlagen",
       "radar",
-      "enthaerter"
+      "enthaerter",
+      "taschenlampe",
+      "wasserwaage",
+      "schlauchvolumen",
+      "auslitern",
+      "notizen"
     ]
   },
   "MÜR": {
@@ -44,7 +54,12 @@
       "sonden",
       "anlagen",
       "radar",
-      "enthaerter"
+      "enthaerter",
+      "taschenlampe",
+      "wasserwaage",
+      "schlauchvolumen",
+      "auslitern",
+      "notizen"
     ]
   },
   "RIT": {
@@ -60,7 +75,12 @@
       "sonden",
       "anlagen",
       "radar",
-      "enthaerter"
+      "enthaerter",
+      "taschenlampe",
+      "wasserwaage",
+      "schlauchvolumen",
+      "auslitern",
+      "notizen"
     ]
   },
   "GUM": {
@@ -76,7 +96,12 @@
       "sonden",
       "anlagen",
       "radar",
-      "enthaerter"
+      "enthaerter",
+      "taschenlampe",
+      "wasserwaage",
+      "schlauchvolumen",
+      "auslitern",
+      "notizen"
     ]
   },
   "FIV": {
@@ -92,7 +117,12 @@
       "sonden",
       "anlagen",
       "radar",
-      "enthaerter"
+      "enthaerter",
+      "taschenlampe",
+      "wasserwaage",
+      "schlauchvolumen",
+      "auslitern",
+      "notizen"
     ]
   },
   "SAG": {
@@ -108,7 +138,12 @@
       "sonden",
       "anlagen",
       "radar",
-      "enthaerter"
+      "enthaerter",
+      "taschenlampe",
+      "wasserwaage",
+      "schlauchvolumen",
+      "auslitern",
+      "notizen"
     ]
   },
   "KAM": {
@@ -124,7 +159,12 @@
       "sonden",
       "anlagen",
       "radar",
-      "enthaerter"
+      "enthaerter",
+      "taschenlampe",
+      "wasserwaage",
+      "schlauchvolumen",
+      "auslitern",
+      "notizen"
     ]
   },
   "NAM": {
@@ -140,7 +180,12 @@
       "sonden",
       "anlagen",
       "radar",
-      "enthaerter"
+      "enthaerter",
+      "taschenlampe",
+      "wasserwaage",
+      "schlauchvolumen",
+      "auslitern",
+      "notizen"
     ]
   },
   "CRC": {
@@ -156,7 +201,12 @@
       "sonden",
       "anlagen",
       "radar",
-      "enthaerter"
+      "enthaerter",
+      "taschenlampe",
+      "wasserwaage",
+      "schlauchvolumen",
+      "auslitern",
+      "notizen"
     ]
   },
   "KNM": {
@@ -172,7 +222,12 @@
       "sonden",
       "anlagen",
       "radar",
-      "enthaerter"
+      "enthaerter",
+      "taschenlampe",
+      "wasserwaage",
+      "schlauchvolumen",
+      "auslitern",
+      "notizen"
     ]
   },
   "FEC": {
@@ -188,7 +243,12 @@
       "sonden",
       "anlagen",
       "radar",
-      "enthaerter"
+      "enthaerter",
+      "taschenlampe",
+      "wasserwaage",
+      "schlauchvolumen",
+      "auslitern",
+      "notizen"
     ]
   },
   "FUM": {
@@ -204,7 +264,12 @@
       "sonden",
       "anlagen",
       "radar",
-      "enthaerter"
+      "enthaerter",
+      "taschenlampe",
+      "wasserwaage",
+      "schlauchvolumen",
+      "auslitern",
+      "notizen"
     ]
   },
   "HEW": {
@@ -220,7 +285,12 @@
       "sonden",
       "anlagen",
       "radar",
-      "enthaerter"
+      "enthaerter",
+      "taschenlampe",
+      "wasserwaage",
+      "schlauchvolumen",
+      "auslitern",
+      "notizen"
     ]
   },
   "KAG": {
@@ -236,7 +306,12 @@
       "sonden",
       "anlagen",
       "radar",
-      "enthaerter"
+      "enthaerter",
+      "taschenlampe",
+      "wasserwaage",
+      "schlauchvolumen",
+      "auslitern",
+      "notizen"
     ]
   }
 }
