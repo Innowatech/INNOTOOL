@@ -10,7 +10,7 @@
     <meta name="theme-color" content="#0d47a1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
-    <title>INNOWATΞCH Service Tool v3.9.9</title>
+    <title>INNOWATΞCH Service Tool v3.9.10</title>
     
     <!-- PWA / App Manifest -->
     <link rel="manifest" href="manifest.json">
@@ -80,6 +80,7 @@
             --cat-werkzeuge-border: #ca8a04;
         }
 
+        /* Desktop vs Mobile Dropdown Handling */
         .custom-select-trigger {
             width: 100%;
             border: none;
@@ -114,21 +115,62 @@
             background-image: url("data:image/svg+xml;utf8,<svg fill='%23e0e0e0' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
         }
 
+        /* Desktop Dropdown Dropdown-Liste (direkt unter dem Feld) */
+        .desktop-dropdown-list {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            max-height: 220px;
+            overflow-y: auto;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+            z-index: 3000;
+            margin-top: 2px;
+        }
+        .desktop-dropdown-list.open {
+            display: block;
+        }
+        .desktop-dropdown-item {
+            padding: 10px 12px;
+            font-size: 0.9rem;
+            color: var(--text-color);
+            cursor: pointer;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .desktop-dropdown-item:last-child {
+            border-bottom: none;
+        }
+        .desktop-dropdown-item:hover, .desktop-dropdown-item:active {
+            background: var(--result-bg);
+            color: var(--primary-color);
+        }
+        .desktop-dropdown-item.selected {
+            font-weight: bold;
+            color: var(--primary-color);
+            background: var(--result-bg);
+        }
+
+        /* Mobiles Modal-Dropdown (Bottom Sheet für Touch) */
         .dropdown-modal-overlay {
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.6);
-            z-index: 2000;
+            z-index: 4000;
             justify-content: center;
             align-items: flex-end;
             backdrop-filter: blur(2px);
         }
-
         .dropdown-modal-overlay.open {
             display: flex;
         }
-
         .dropdown-modal-content {
             background: var(--card-bg);
             width: 100%;
@@ -141,12 +183,10 @@
             overflow: hidden;
             animation: slideUp 0.2s ease-out;
         }
-
         @keyframes slideUp {
             from { transform: translateY(100%); }
             to { transform: translateY(0); }
         }
-
         .dropdown-modal-header {
             padding: 12px 16px;
             font-weight: bold;
@@ -158,12 +198,10 @@
             align-items: center;
             background: var(--result-bg);
         }
-
         .dropdown-modal-list {
             overflow-y: auto;
             padding: 6px;
         }
-
         .dropdown-item {
             padding: 12px 14px;
             font-size: 0.9rem;
@@ -176,12 +214,10 @@
             border-radius: 6px;
             margin-bottom: 2px;
         }
-
         .dropdown-item:hover, .dropdown-item:active {
             background: var(--result-bg);
             color: var(--primary-color);
         }
-
         .dropdown-item.selected {
             font-weight: bold;
             color: var(--primary-color);
@@ -208,21 +244,29 @@
             background: var(--card-bg);
             border-radius: 12px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            overflow: hidden;
+            overflow: visible; /* Wichtig für Sticky Header & Dropdowns */
             position: relative;
+            display: flex;
+            flex-direction: column;
+            min-height: calc(100vh - 12px);
         }
 
+        /* Fixierter Header (Sticky Header) - wandert bei Zoom nicht mehr weg */
         .header {
             background: linear-gradient(to bottom, #1565c0 0%, #0d47a1 100%);
             color: white;
             padding: 10px 12px;
             text-align: center;
-            position: relative;
+            position: sticky;
+            top: 0;
+            z-index: 2000;
             display: flex;
             justify-content: space-between;
             align-items: center;
             min-height: 44px;
-            box-shadow: inset 0 1px 0 rgba(255,255,255,0.3);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
             overflow: hidden;
         }
 
@@ -320,7 +364,9 @@
         .tab-bar-wrapper {
             background: var(--tab-bar-bg);
             border-bottom: 1px solid var(--border-color);
-            position: relative;
+            position: sticky;
+            top: 44px;
+            z-index: 1500;
             overflow: hidden;
             padding: 5px 8px;
         }
@@ -479,7 +525,7 @@
             display: none;
             padding: 10px 12px;
             position: relative;
-            max-height: calc(100vh - 95px);
+            flex: 1;
             overflow-y: auto;
         }
 
@@ -657,6 +703,7 @@
         .tab-content {
             display: none;
             padding: 12px;
+            flex: 1;
         }
 
         .tab-content.active {
@@ -665,6 +712,7 @@
 
         .form-group {
             margin-bottom: 8px;
+            position: relative; /* Wichtig für absolute Desktop-Dropdowns */
         }
 
         label {
@@ -683,6 +731,7 @@
             background-color: var(--input-bg);
             padding: 0 8px;
             box-shadow: inset 0 1px 2px rgba(0,0,0,0.06);
+            position: relative;
         }
 
         .input-wrapper input {
@@ -806,84 +855,7 @@
             color: #90caf9;
         }
 
-        /* Wasserwaage Visuelle Röhrenlibelle */
-        .level-tube-wrapper {
-            margin: 12px auto;
-            padding: 12px 10px;
-            background: var(--input-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-        }
-        .level-tube {
-            width: 100%;
-            height: 46px;
-            border-radius: 23px;
-            border: 3px solid var(--primary-color);
-            background: linear-gradient(to bottom, rgba(165,214,167,0.22) 0%, rgba(220,237,200,0.45) 50%, rgba(129,199,132,0.25) 100%);
-            position: relative;
-            overflow: hidden;
-            box-shadow: inset 0 3px 8px rgba(0,0,0,0.22);
-        }
-        .level-tube-mark-left {
-            position: absolute;
-            top: 0; bottom: 0;
-            left: calc(50% - 22px);
-            width: 2px;
-            background: var(--primary-color);
-            z-index: 3;
-        }
-        .level-tube-mark-right {
-            position: absolute;
-            top: 0; bottom: 0;
-            left: calc(50% + 20px);
-            width: 2px;
-            background: var(--primary-color);
-            z-index: 3;
-        }
-        .level-tube-center-tick {
-            position: absolute;
-            top: 0; bottom: 0;
-            left: 50%;
-            width: 1px;
-            background: rgba(13,71,161,0.3);
-            z-index: 2;
-        }
-        .level-tube-bubble {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 38px;
-            height: 36px;
-            transform: translate(-50%, -50%);
-            background: radial-gradient(circle at 35% 30%, #ffcc80, #ef6c00);
-            border-radius: 18px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.35), inset 0 2px 3px rgba(255,255,255,0.7);
-            transition: left 0.08s linear, background 0.2s ease;
-            z-index: 1;
-        }
-        .level-degree-big {
-            font-size: 2rem;
-            font-weight: bold;
-            color: var(--primary-color);
-            text-align: center;
-            margin: 6px 0 2px 0;
-            font-variant-numeric: tabular-nums;
-        }
-        .level-status-badge {
-            display: inline-block;
-            padding: 3px 10px;
-            border-radius: 12px;
-            font-size: 0.78rem;
-            font-weight: bold;
-            background: rgba(239, 108, 0, 0.15);
-            color: #e65100;
-            margin-bottom: 4px;
-        }
-        .level-status-badge.in-level {
-            background: rgba(46, 125, 50, 0.18);
-            color: #2e7d32;
-        }
-
+        /* Footer am unteren Bildschirmrand fixiert für perfekte Ausnutzung bei 80-90% Zoom */
         .footer {
             display: flex;
             justify-content: space-between;
@@ -895,6 +867,7 @@
             background-color: var(--footer-bg);
             border-top: 1px solid var(--border-color);
             user-select: none;
+            margin-top: auto;
         }
 
         .footer-version {
@@ -1101,7 +1074,7 @@
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
             background: rgba(0,0,0,0.75);
-            z-index: 4000;
+            z-index: 5000;
             justify-content: center;
             align-items: center;
             backdrop-filter: blur(5px);
@@ -1124,7 +1097,7 @@
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
             background: rgba(0,0,0,0.6);
-            z-index: 3000;
+            z-index: 4500;
             justify-content: center;
             align-items: flex-start;
             overflow-y: auto;
@@ -2034,50 +2007,7 @@
         <button type="button" class="pdf-export-btn" onclick="toggleFlashlight()" style="background: linear-gradient(to bottom, #f59e0b, #d97706); border-color: #b45309; font-size: 0.95rem; padding: 14px;" id="flash-toggle-btn">🔦 Licht Einschalten</button>
     </div>
 
-    <!-- WERKZEUGE MODUL 2: Wasserwaage -->
-    <div id="tab-wasserwaage" class="tab-content">
-        <div class="section-title">📐 Digitale Wasserwaage (Hochformat / Senkrecht)</div>
-        <div class="hint" style="margin-bottom: 8px;">
-            Smartphone <b>im Hochformat aufrecht</b> an das Bauteil (z.B. Schrankkante oder Wand) anlegen, um die Senkrechte (Lot) zu prüfen.
-        </div>
-
-        <div class="level-tube-wrapper">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                <span class="level-status-badge" id="level_status_badge" style="margin-bottom: 0;">Bereit</span>
-                <div class="level-degree-big" id="val_tilt_main" style="font-size: 1.5rem; margin: 0;">0.0°</div>
-            </div>
-            <div class="level-tube">
-                <div class="level-tube-center-tick"></div>
-                <div class="level-tube-mark-left"></div>
-                <div class="level-tube-mark-right"></div>
-                <div class="level-tube-bubble" id="level_bubble"></div>
-            </div>
-            <div style="display: flex; justify-content: space-between; font-size: 0.7rem; color: var(--subtext-color); margin-top: 4px; padding: 0 6px;">
-                <span>◀ Nach links neigen</span>
-                <span>0.0° (Lotrecht)</span>
-                <span>Nach rechts neigen ▶</span>
-            </div>
-        </div>
-
-        <div class="result-box" style="text-align: center;">
-            <div class="result-row">
-                <span class="result-label">Lot-Abweichung Links / Rechts</span>
-                <span class="result-value" id="val_tilt_x">0.0°</span>
-            </div>
-            <div class="result-row">
-                <span class="result-label">Neigung Vorne / Hinten</span>
-                <span class="result-value" id="val_tilt_y">0.0°</span>
-            </div>
-        </div>
-        
-        <div style="margin-top: 10px;">
-            <button type="button" class="pdf-export-btn" id="btn-start-level" onclick="initWaterLevel()" style="width: 100%; margin-top: 0;">📐 Sensoren Starten</button>
-        </div>
-    </div>
-
-
-
-    <!-- WERKZEUGE MODUL 3: Schlauchvolumen -->
+    <!-- WERKZEUGE MODUL 2: Schlauchvolumen -->
     <div id="tab-schlauchvolumen" class="tab-content">
         <div class="section-title">📏 Schlauchvolumen-Rechner</div>
         <div class="form-group">
@@ -2107,7 +2037,7 @@
         <button type="button" class="pdf-export-btn" onclick="resetSchlauch()" style="background: #757575; border-color: #616161; margin-top: 8px;">🔄 Reset</button>
     </div>
 
-    <!-- WERKZEUGE MODUL 4: Ausliter-Hilfe -->
+    <!-- WERKZEUGE MODUL 3: Ausliter-Hilfe -->
     <div id="tab-auslitern" class="tab-content">
         <div class="section-title">⏱️ Ausliter-Hilfe (60s Timer)</div>
         <div class="result-box" style="text-align: center; background: var(--input-bg);">
@@ -2134,7 +2064,7 @@
         <button type="button" class="pdf-export-btn" onclick="resetAusliter()" style="background: #757575; border-color: #616161; margin-top: 8px;">🔄 Reset (Timer & Werte)</button>
     </div>
 
-    <!-- WERKZEUGE MODUL 5: Service-Notizen -->
+    <!-- WERKZEUGE MODUL 4: Service-Notizen -->
     <div id="tab-notizen" class="tab-content">
         <div class="section-title">📝 Service-Notizen (Offline Auto-Save)</div>
         <div class="form-group">
@@ -2150,11 +2080,11 @@
         </div>
     </div>
 
-    <!-- Footer mit Version v3.9.9 & Netzwerk-Status -->
-    <div class="footer" style="display: flex; justify-content: space-between; align-items: center;">
+    <!-- Footer am unteren Ende fixiert -->
+    <div class="footer">
         <span style="flex: 1; text-align: left;">© 2026 #MAT</span>
         <span id="net-status-badge" style="flex: 1; text-align: center; font-size: 0.72rem; padding: 2px 6px; border-radius: 10px; background: rgba(0,0,0,0.08); display: inline-block; width: auto; margin: 0 auto;">● Online</span>
-        <span class="footer-version" style="flex: 1; text-align: right;" onclick="handleVersionClick()">v3.9.9</span>
+        <span class="footer-version" style="flex: 1; text-align: right;" onclick="handleVersionClick()">v3.9.10</span>
     </div>
 </div>
 
@@ -2242,7 +2172,7 @@
 <div class="admin-modal-overlay" id="adminAuthModal">
     <div class="admin-modal-content">
         <div class="admin-modal-header">
-            <span>Admin Authentifizierung (v3.9.9)</span>
+            <span>Admin Authentifizierung (v3.9.10)</span>
             <button type="button" class="modal-close-btn" style="color:var(--primary-color);" onclick="closeAdminModal('adminAuthModal')">✕</button>
         </div>
         <p style="font-size: 0.82rem; color: var(--subtext-color); margin-bottom: 12px;">Bitte die Admin-PIN eingeben:</p>
@@ -2304,6 +2234,7 @@
     </div>
 </div>
 
+<!-- Mobile Dropdown Modal (Bottom Sheet für Touch) -->
 <div class="dropdown-modal-overlay" id="dropdown-modal" onclick="closeCustomDropdown(event)">
     <div class="dropdown-modal-content" onclick="event.stopPropagation()">
         <div class="dropdown-modal-header" id="dropdown-modal-title">Auswahl treffen</div>
@@ -2322,7 +2253,7 @@
     const ALL_MODULE_IDS = [
         'standard', 'wasserwerk', 'schwimmbad', 'pid', 'verdünnung',
         'sonden', 'anlagen', 'radar', 'enthaerter',
-        'taschenlampe', 'wasserwaage', 'schlauchvolumen', 'auslitern', 'notizen'
+        'taschenlampe', 'schlauchvolumen', 'auslitern', 'notizen'
     ];
 
     async function hashPin(pin) {
@@ -2722,7 +2653,7 @@
             } else if (!user || user.status !== 'active') {
                 currentModules.forEach(m => m.userAllowed = false);
             } else {
-                const werkzeugIds = ['taschenlampe', 'wasserwaage', 'schlauchvolumen', 'auslitern', 'notizen'];
+                const werkzeugIds = ['taschenlampe', 'schlauchvolumen', 'auslitern', 'notizen'];
                 currentModules.forEach(m => {
                     if (werkzeugIds.includes(m.id) && activeUser === 'MAT') {
                         m.userAllowed = true;
@@ -2845,7 +2776,6 @@
         { id: 'radar', title: 'Vega Radarsensor', icon: '📡', category: 'Parameter', visible: true, userAllowed: true },
         { id: 'enthaerter', title: 'Enthärtungsanlagen', icon: '💧', category: 'Parameter', visible: true, userAllowed: true },
         { id: 'taschenlampe', title: 'Taschenlampe', icon: '🔦', category: 'Werkzeuge', visible: true, userAllowed: true },
-        { id: 'wasserwaage', title: 'Wasserwaage', icon: '📐', category: 'Werkzeuge', visible: true, userAllowed: true },
         { id: 'schlauchvolumen', title: 'Schlauchvolumen', icon: '📏', category: 'Werkzeuge', visible: true, userAllowed: true },
         { id: 'auslitern', title: 'Ausliter-Hilfe', icon: '⏱️', category: 'Werkzeuge', visible: true, userAllowed: true },
         { id: 'notizen', title: 'Service-Notizen', icon: '📝', category: 'Werkzeuge', visible: true, userAllowed: true }
@@ -2859,6 +2789,11 @@
     let showDashboardIcons = true;
     let activeDropdownSelect = null;
 
+    // Intelligente Unterscheidung: Desktop = klassisches Dropdown unter dem Feld, Mobile = Bottom-Sheet Modal
+    function isMobileDevice() {
+        return window.innerWidth <= 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    }
+
     function initCustomDropdowns() {
         document.querySelectorAll('.input-wrapper select').forEach(select => {
             let parentWrapper = select.parentElement;
@@ -2871,10 +2806,18 @@
             if (!trigger) {
                 trigger = document.createElement('div');
                 trigger.className = 'custom-select-trigger';
-                trigger.onclick = () => openCustomDropdown(select);
+                trigger.onclick = (e) => {
+                    e.stopPropagation();
+                    toggleDropdown(select, parentWrapper);
+                };
                 parentWrapper.appendChild(trigger);
             }
             updateTriggerText(trigger, select);
+        });
+
+        // Globaler Klick schließt offene Desktop-Dropdowns
+        document.addEventListener('click', () => {
+            document.querySelectorAll('.desktop-dropdown-list.open').forEach(list => list.classList.remove('open'));
         });
     }
 
@@ -2883,7 +2826,49 @@
         trigger.innerText = selectedOption ? selectedOption.text : "Bitte wählen...";
     }
 
-    function openCustomDropdown(select) {
+    function toggleDropdown(select, parentWrapper) {
+        if (isMobileDevice()) {
+            openMobileDropdownModal(select);
+        } else {
+            // Desktop: Direkt unter dem Eingabefeld aufklappen
+            let existingList = parentWrapper.querySelector('.desktop-dropdown-list');
+            
+            // Andere offene schließen
+            document.querySelectorAll('.desktop-dropdown-list.open').forEach(l => {
+                if (l !== existingList) l.classList.remove('open');
+            });
+
+            if (!existingList) {
+                existingList = document.createElement('div');
+                existingList.className = 'desktop-dropdown-list';
+                parentWrapper.appendChild(existingList);
+            }
+
+            if (existingList.classList.contains('open')) {
+                existingList.classList.remove('open');
+                return;
+            }
+
+            existingList.innerHTML = '';
+            Array.from(select.options).forEach((opt, idx) => {
+                let item = document.createElement('div');
+                item.className = 'desktop-dropdown-item' + (opt.selected ? ' selected' : '');
+                item.innerHTML = `<span>${opt.text}</span>` + (opt.selected ? '<span style="color:var(--primary-color);">✓</span>' : '');
+                item.onclick = (e) => {
+                    e.stopPropagation();
+                    select.selectedIndex = idx;
+                    select.dispatchEvent(new Event('change'));
+                    updateTriggerText(parentWrapper.querySelector('.custom-select-trigger'), select);
+                    existingList.classList.remove('open');
+                };
+                existingList.appendChild(item);
+            });
+
+            existingList.classList.add('open');
+        }
+    }
+
+    function openMobileDropdownModal(select) {
         activeDropdownSelect = select;
         const modalTitle = document.getElementById('dropdown-modal-title');
         const modalList = document.getElementById('dropdown-modal-list');
@@ -2899,7 +2884,9 @@
             item.onclick = () => {
                 select.selectedIndex = idx;
                 select.dispatchEvent(new Event('change'));
-                initCustomDropdowns();
+                let parentWrapper = select.parentElement;
+                let trigger = parentWrapper.querySelector('.custom-select-trigger');
+                if (trigger) updateTriggerText(trigger, select);
                 closeCustomDropdown();
             };
             modalList.appendChild(item);
@@ -3511,94 +3498,6 @@
         document.querySelector('.container').style.background = "";
         btn.innerText = "🔦 Licht Einschalten";
         btn.style.background = "linear-gradient(to bottom, #f59e0b, #d97706)";
-    }
-
-    let waterLevelActive = false;
-
-    function initWaterLevel() {
-        if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
-            DeviceOrientationEvent.requestPermission()
-                .then(response => {
-                    if (response === 'granted') {
-                        startWaterLevelListener();
-                    } else {
-                        alert("Sensor-Berechtigung wurde verweigert.");
-                    }
-                })
-                .catch(console.error);
-        } else if (window.DeviceOrientationEvent) {
-            startWaterLevelListener();
-        } else {
-            alert("Lagesensoren werden auf diesem Gerät/Browser nicht unterstützt.");
-        }
-    }
-
-    function startWaterLevelListener() {
-        if (waterLevelActive) return;
-        waterLevelActive = true;
-        let startBtn = document.getElementById('btn-start-level');
-        if (startBtn) {
-            startBtn.innerText = "✓ Sensoren Aktiv";
-            startBtn.style.background = "#2e7d32";
-            startBtn.style.borderColor = "#1b5e20";
-        }
-
-        // Für Hochformat (Smartphone aufrecht an die Kante gehalten): gamma misst die Links/Rechts-Neigung in der Hand
-        if (window.DeviceOrientationEvent) {
-            window.addEventListener('deviceorientation', (event) => {
-                let gamma = event.gamma || 0; // Links/Rechts Neigung im Hochformat (-90 bis 90)
-                let beta = event.beta || 0;     // Vor/Zurück Neigung
-                // Im Hochformat anlegen: gamma = 0 bedeutet exakt senkrecht
-                updateLevelUI(gamma, beta);
-            });
-        } else if (window.DeviceMotionEvent) {
-            window.addEventListener('devicemotion', (event) => {
-                let acc = event.accelerationIncludingGravity;
-                if (!acc || (acc.x === null && acc.y === null)) return;
-                let ax = acc.x || 0;
-                let ay = acc.y || 0;
-                let az = acc.z || 0;
-                let xDeg = Math.atan2(ax, Math.hypot(ay, az)) * (180 / Math.PI);
-                let yDeg = Math.atan2(ay, Math.hypot(ax, az)) * (180 / Math.PI);
-                updateLevelUI(xDeg, yDeg);
-            });
-        }
-    }
-
-    function updateLevelUI(edgeDeg, tiltDeg) {
-        let mainEl = document.getElementById('val_tilt_main');
-        let xEl = document.getElementById('val_tilt_x');
-        let yEl = document.getElementById('val_tilt_y');
-        let bubble = document.getElementById('level_bubble');
-        let badge = document.getElementById('level_status_badge');
-
-        let cleanEdge = Math.abs(edgeDeg) < 0.05 ? 0 : edgeDeg;
-        if (mainEl) mainEl.innerText = cleanEdge.toFixed(1) + "°";
-        if (xEl) xEl.innerText = cleanEdge.toFixed(1) + "°";
-        if (yEl) yEl.innerText = tiltDeg.toFixed(1) + "°";
-
-        let isLevel = Math.abs(cleanEdge) <= 0.5;
-        if (badge) {
-            if (isLevel) {
-                badge.innerText = "✓ EXAKT IM LOT";
-                badge.classList.add('in-level');
-            } else {
-                badge.innerText = cleanEdge > 0 ? "Nach links neigen ◀" : "▶ Nach rechts neigen";
-                badge.classList.remove('in-level');
-            }
-        }
-
-        if (bubble) {
-            // Begrenze Ausschlag auf ±15° für hohe Präzision um den Nullpunkt
-            let clamped = Math.max(-15, Math.min(15, cleanEdge));
-            let pct = 50 + (clamped / 15) * 40;
-            bubble.style.left = pct + "%";
-            if (isLevel) {
-                bubble.style.background = "radial-gradient(circle at 35% 30%, #69f0ae, #00c853)";
-            } else {
-                bubble.style.background = "radial-gradient(circle at 35% 30%, #ffcc80, #ef6c00)";
-            }
-        }
     }
 
     function calcSchlauch() {
