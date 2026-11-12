@@ -10,7 +10,7 @@
     <meta name="theme-color" content="#0d47a1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
-    <title>INNOWATΞCH Service Tool v3.8.1</title>
+    <title>INNOWATΞCH Service Tool v3.8.2</title>
     
     <!-- PWA / App Manifest -->
     <link rel="manifest" href="manifest.json">
@@ -1085,6 +1085,14 @@
 </div>
 
 <div class="container">
+    <!-- Update Banner (Non-blocking) -->
+    <div id="update-banner" style="display: none; background: linear-gradient(135deg, #f59e0b, #d97706); color: white; padding: 10px 14px; font-size: 0.8rem; font-weight: bold; text-align: center; box-shadow: inset 0 1px 0 rgba(255,255,255,0.4); z-index: 1500; align-items: center; justify-content: space-between; gap: 8px;">
+        <span id="update-banner-text">🚀 Neue Version verfügbar!</span>
+        <div style="display: flex; gap: 6px;">
+            <button type="button" onclick="applyAppUpdate()" style="background: white; color: #b45309; border: none; padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; font-weight: bold; cursor: pointer;">Jetzt installieren</button>
+            <button type="button" onclick="dismissAppUpdate()" style="background: rgba(0,0,0,0.2); color: white; border: none; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; cursor: pointer;">Später</button>
+        </div>
+    </div>
     <div class="header">
         <div class="header-left">
             <button type="button" class="header-btn view-toggle-btn" id="view-toggle-btn" onclick="toggleMainView()" title="Ansicht umschalten">
@@ -1093,7 +1101,7 @@
         </div>
         <div class="header-center">
             <h1 id="app-title"><span id="first-letter">I</span>NNOWATΞCH</h1>
-            <div class="header-sub">Service Tool <span id="net-status-badge" style="margin-left:4px; font-size:0.65rem; padding:1px 5px; border-radius:8px; background:rgba(255,255,255,0.2);">●</span></div>
+            <div class="header-sub">Service Tool</div>
         </div>
         <div class="header-right">
             <button type="button" class="header-btn settings-btn" onclick="openSettings()" title="Einstellungen">⚙️</button>
@@ -1840,10 +1848,11 @@
         <button type="button" class="pdf-export-btn" onclick="exportToPDF('Enthärtungsanlagen')">📄 Als PDF speichern / drucken</button>
     </div>
 
-    <!-- Footer mit Version v3.8 -->
-    <div class="footer">
-        <span>© 2026 #MAT</span>
-        <span class="footer-version" onclick="handleVersionClick()">v3.8.1</span>
+    <!-- Footer mit Version v3.8.2 & Status-Badge -->
+    <div class="footer" style="display: flex; justify-content: space-between; align-items: center;">
+        <span style="flex: 1; text-align: left;">© 2026 #MAT</span>
+        <span id="net-status-badge" style="flex: 1; text-align: center; font-size: 0.72rem; padding: 2px 6px; border-radius: 10px; background: rgba(0,0,0,0.08); display: inline-block; width: auto; margin: 0 auto;">● Online</span>
+        <span class="footer-version" style="flex: 1; text-align: right;" onclick="handleVersionClick()">v3.8.2</span>
     </div>
 </div>
 
@@ -1908,7 +1917,7 @@
 <div class="admin-modal-overlay" id="adminAuthModal">
     <div class="admin-modal-content">
         <div class="admin-modal-header">
-            <span>Admin Authentifizierung (v3.8.1)</span>
+            <span>Admin Authentifizierung (v3.8.2)</span>
             <button type="button" class="modal-close-btn" style="color:var(--primary-color);" onclick="closeAdminModal('adminAuthModal')">✕</button>
         </div>
         <p style="font-size: 0.82rem; color: var(--subtext-color); margin-bottom: 12px;">Bitte die Admin-PIN eingeben:</p>
@@ -2006,10 +2015,12 @@
         if (!badge) return;
         if (navigator.onLine) {
             badge.innerText = '● Online';
-            badge.style.background = 'rgba(46, 125, 50, 0.75)';
+            badge.style.color = '#2e7d32';
+            badge.style.background = 'rgba(46, 125, 50, 0.12)';
         } else {
             badge.innerText = '○ Offline';
-            badge.style.background = 'rgba(230, 81, 0, 0.85)';
+            badge.style.color = '#e65100';
+            badge.style.background = 'rgba(230, 81, 0, 0.12)';
         }
     }
 
@@ -2120,7 +2131,6 @@
                     alert("Dein Zugang wurde vom Administrator gesperrt oder entfernt. Du wirst abgemeldet.");
                     activeUser = null;
                     localStorage.removeItem('innowatech_active_user');
-        localStorage.removeItem('innowatech_active_session_data');
                     localStorage.removeItem('innowatech_active_session_data');
                     checkAuthGuard();
                 } else {
@@ -2195,7 +2205,7 @@
         if (confirm("Wirklich alle Benutzer auf Werkseinstellungen zurücksetzen?")) {
             localStorage.removeItem('innowatech_users_fallback');
             localStorage.removeItem('innowatech_active_user');
-        localStorage.removeItem('innowatech_active_session_data');
+            localStorage.removeItem('innowatech_active_session_data');
             dbUsers = {};
             activeUser = null;
             loadUsersDatabase().then(() => {
@@ -2396,17 +2406,45 @@
     function openAdminModal(id) { document.getElementById(id).classList.add('active'); }
     function closeAdminModal(id) { document.getElementById(id).classList.remove('active'); }
 
+    let waitingServiceWorker = null;
+
+    function showUpdateBanner(worker) {
+        waitingServiceWorker = worker;
+        const banner = document.getElementById('update-banner');
+        if (banner) {
+            banner.style.display = 'flex';
+        }
+    }
+
+    function applyAppUpdate() {
+        if (waitingServiceWorker) {
+            waitingServiceWorker.postMessage({ action: 'skipWaiting' });
+        }
+        window.location.reload();
+    }
+
+    function dismissAppUpdate() {
+        const banner = document.getElementById('update-banner');
+        if (banner) {
+            banner.style.display = 'none';
+        }
+    }
+
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
             navigator.serviceWorker.register('./sw.js')
                 .then(reg => {
+                    if (reg.waiting) {
+                        showUpdateBanner(reg.waiting);
+                    }
+
                     reg.onupdatefound = () => {
                         const installingWorker = reg.installing;
                         if (installingWorker) {
                             installingWorker.onstatechange = () => {
                                 if (installingWorker.state === 'installed') {
                                     if (navigator.serviceWorker.controller) {
-                                        window.location.reload();
+                                        showUpdateBanner(installingWorker);
                                     }
                                 }
                             };
@@ -2414,6 +2452,14 @@
                     };
                 })
                 .catch(err => console.log('Service Worker Registrierung fehlgeschlagen:', err));
+
+            let refreshing = false;
+            navigator.serviceWorker.addEventListener('controllerchange', () => {
+                if (!refreshing) {
+                    refreshing = true;
+                    window.location.reload();
+                }
+            });
         });
     }
 
