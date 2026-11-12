@@ -10,7 +10,7 @@
     <meta name="theme-color" content="#0d47a1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
-    <title>INNOWATΞCH Service Tool v3.9.3</title>
+    <title>INNOWATΞCH Service Tool v3.9.9</title>
     
     <!-- PWA / App Manifest -->
     <link rel="manifest" href="manifest.json">
@@ -806,7 +806,7 @@
             color: #90caf9;
         }
 
-        /* Wasserwaage Visuelle Röhrenlibelle (Hochkant / Kanten-Messung) */
+        /* Wasserwaage Visuelle Röhrenlibelle */
         .level-tube-wrapper {
             margin: 12px auto;
             padding: 12px 10px;
@@ -1254,11 +1254,11 @@
 </div>
 
 <div class="container">
-    <!-- Update Banner (Manuell gesteuert, kein Auto-Reload!) -->
+    <!-- Update Banner -->
     <div id="update-banner" style="display: none; position: relative; background: linear-gradient(135deg, #f59e0b, #d97706); color: white; padding: 10px 14px; font-size: 0.8rem; font-weight: bold; text-align: center; box-shadow: 0 3px 10px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.4); z-index: 2500; align-items: center; justify-content: space-between; gap: 8px;">
         <span id="update-banner-text">🚀 Neue Version verfügbar!</span>
         <div style="display: flex; gap: 6px; flex-shrink: 0; position: relative; z-index: 2501;">
-            <button type="button" id="btn-install-update" onclick="applyAppUpdate()" style="background: white; color: #b45309; border: none; padding: 6px 11px; border-radius: 4px; font-size: 0.76rem; font-weight: bold; cursor: pointer; touch-action: manipulation;">Jetzt installieren</button>
+            <button type="button" id="btn-install-update" onclick="applyAppUpdate()" style="background: white; color: #b45309; border: none; padding: 6px 11px; border-radius: 4px; font-size: 0.76rem; font-weight: bold; cursor: pointer; touch-action: manipulation;">Jetzt aktualisieren</button>
             <button type="button" id="btn-dismiss-update" onclick="dismissAppUpdate()" style="background: rgba(0,0,0,0.25); color: white; border: none; padding: 6px 11px; border-radius: 4px; font-size: 0.76rem; font-weight: bold; cursor: pointer; touch-action: manipulation;">Später</button>
         </div>
     </div>
@@ -2036,15 +2036,15 @@
 
     <!-- WERKZEUGE MODUL 2: Wasserwaage -->
     <div id="tab-wasserwaage" class="tab-content">
-        <div class="section-title">📐 Digitale Kanten-Wasserwaage</div>
+        <div class="section-title">📐 Digitale Wasserwaage (Hochformat / Senkrecht)</div>
         <div class="hint" style="margin-bottom: 8px;">
-            Smartphone mit dem Display zum Gesicht halten und mit der <b>seitlichen Kante</b> auf das Bauteil aufsetzen.
+            Smartphone <b>im Hochformat aufrecht</b> an das Bauteil (z.B. Schrankkante oder Wand) anlegen, um die Senkrechte (Lot) zu prüfen.
         </div>
 
         <div class="level-tube-wrapper">
-            <div style="text-align: center;">
-                <span class="level-status-badge" id="level_status_badge">Sensoren bereit – bitte starten</span>
-                <div class="level-degree-big" id="val_tilt_main">0.0°</div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                <span class="level-status-badge" id="level_status_badge" style="margin-bottom: 0;">Bereit</span>
+                <div class="level-degree-big" id="val_tilt_main" style="font-size: 1.5rem; margin: 0;">0.0°</div>
             </div>
             <div class="level-tube">
                 <div class="level-tube-center-tick"></div>
@@ -2053,27 +2053,29 @@
                 <div class="level-tube-bubble" id="level_bubble"></div>
             </div>
             <div style="display: flex; justify-content: space-between; font-size: 0.7rem; color: var(--subtext-color); margin-top: 4px; padding: 0 6px;">
-                <span>◀ Links tiefer</span>
-                <span>0.0° (Im Wasser)</span>
-                <span>Rechts tiefer ▶</span>
+                <span>◀ Nach links neigen</span>
+                <span>0.0° (Lotrecht)</span>
+                <span>Nach rechts neigen ▶</span>
             </div>
         </div>
 
         <div class="result-box" style="text-align: center;">
             <div class="result-row">
-                <span class="result-label">Seitenneigung (Kante)</span>
+                <span class="result-label">Lot-Abweichung Links / Rechts</span>
                 <span class="result-value" id="val_tilt_x">0.0°</span>
             </div>
             <div class="result-row">
-                <span class="result-label">Kippwinkel Vor / Zurück</span>
+                <span class="result-label">Neigung Vorne / Hinten</span>
                 <span class="result-value" id="val_tilt_y">0.0°</span>
             </div>
         </div>
-        <div style="display: flex; gap: 8px; margin-top: 10px;">
-            <button type="button" class="pdf-export-btn" id="btn-start-level" onclick="initWaterLevel()" style="flex: 2; margin-top: 0;">📐 Sensoren Starten</button>
-            <button type="button" class="pdf-export-btn" onclick="calibrateWaterLevel()" style="flex: 1; background: #546e7a; border-color: #455a64; margin-top: 0;">🎯 Nullen</button>
+        
+        <div style="margin-top: 10px;">
+            <button type="button" class="pdf-export-btn" id="btn-start-level" onclick="initWaterLevel()" style="width: 100%; margin-top: 0;">📐 Sensoren Starten</button>
         </div>
     </div>
+
+
 
     <!-- WERKZEUGE MODUL 3: Schlauchvolumen -->
     <div id="tab-schlauchvolumen" class="tab-content">
@@ -2148,11 +2150,11 @@
         </div>
     </div>
 
-    <!-- Footer mit Version v3.9.3 & Netzwerk-Status -->
+    <!-- Footer mit Version v3.9.9 & Netzwerk-Status -->
     <div class="footer" style="display: flex; justify-content: space-between; align-items: center;">
         <span style="flex: 1; text-align: left;">© 2026 #MAT</span>
         <span id="net-status-badge" style="flex: 1; text-align: center; font-size: 0.72rem; padding: 2px 6px; border-radius: 10px; background: rgba(0,0,0,0.08); display: inline-block; width: auto; margin: 0 auto;">● Online</span>
-        <span class="footer-version" style="flex: 1; text-align: right;" onclick="handleVersionClick()">v3.9.3</span>
+        <span class="footer-version" style="flex: 1; text-align: right;" onclick="handleVersionClick()">v3.9.9</span>
     </div>
 </div>
 
@@ -2240,7 +2242,7 @@
 <div class="admin-modal-overlay" id="adminAuthModal">
     <div class="admin-modal-content">
         <div class="admin-modal-header">
-            <span>Admin Authentifizierung (v3.9.3)</span>
+            <span>Admin Authentifizierung (v3.9.9)</span>
             <button type="button" class="modal-close-btn" style="color:var(--primary-color);" onclick="closeAdminModal('adminAuthModal')">✕</button>
         </div>
         <p style="font-size: 0.82rem; color: var(--subtext-color); margin-bottom: 12px;">Bitte die Admin-PIN eingeben:</p>
@@ -2754,28 +2756,24 @@
         userClickedUpdate = true;
         const btn = document.getElementById('btn-install-update');
         if (btn) {
-            btn.innerText = "Installiere...";
+            btn.innerText = "Aktualisiere...";
             btn.disabled = true;
         }
         try {
-            if (!waitingServiceWorker && 'serviceWorker' in navigator) {
-                const reg = swRegistration || await navigator.serviceWorker.getRegistration();
-                if (reg && reg.waiting) {
-                    waitingServiceWorker = reg.waiting;
+            if ('caches' in window) {
+                const cacheNames = await caches.keys();
+                await Promise.all(cacheNames.map(name => caches.delete(name)));
+            }
+            if ('serviceWorker' in navigator) {
+                const registrations = await navigator.serviceWorker.getRegistrations();
+                for (let reg of registrations) {
+                    await reg.unregister();
                 }
             }
-            if (waitingServiceWorker) {
-                waitingServiceWorker.postMessage({ action: 'skipWaiting' });
-                waitingServiceWorker.postMessage({ type: 'SKIP_WAITING' });
-            }
         } catch (e) {
-            console.log('Update-Trigger Fehler:', e);
+            console.log('Cache Clear Fehler:', e);
         }
-        // Fallback: Falls controllerchange nicht rechtzeitig feuert (z.B. alter sw.js ohne skipWaiting-Listener),
-        // Caches aktualisieren und Seite sauber neu laden
-        setTimeout(() => {
-            window.location.reload();
-        }, 700);
+        window.location.href = window.location.href.split('?')[0] + '?t=' + new Date().getTime();
     }
 
     function dismissAppUpdate() {
@@ -3516,16 +3514,6 @@
     }
 
     let waterLevelActive = false;
-    let levelOffset = 0;
-    let currentRawAngle = 0;
-
-    function calibrateWaterLevel() {
-        levelOffset = currentRawAngle;
-        let badge = document.getElementById('level_status_badge');
-        if (badge) {
-            badge.innerText = "🎯 Nullpunkt kalibriert";
-        }
-    }
 
     function initWaterLevel() {
         if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
@@ -3555,34 +3543,24 @@
             startBtn.style.borderColor = "#1b5e20";
         }
 
-        // Nutzt den Beschleunigungssensor (Gravitation) für die Messung auf der SEITLICHEN KANTE.
-        if (window.DeviceMotionEvent) {
+        // Für Hochformat (Smartphone aufrecht an die Kante gehalten): gamma misst die Links/Rechts-Neigung in der Hand
+        if (window.DeviceOrientationEvent) {
+            window.addEventListener('deviceorientation', (event) => {
+                let gamma = event.gamma || 0; // Links/Rechts Neigung im Hochformat (-90 bis 90)
+                let beta = event.beta || 0;     // Vor/Zurück Neigung
+                // Im Hochformat anlegen: gamma = 0 bedeutet exakt senkrecht
+                updateLevelUI(gamma, beta);
+            });
+        } else if (window.DeviceMotionEvent) {
             window.addEventListener('devicemotion', (event) => {
                 let acc = event.accelerationIncludingGravity;
                 if (!acc || (acc.x === null && acc.y === null)) return;
-
-                // Wenn das Smartphone mit dem Display zum Gesicht gedreht ist und auf die
-                // SEITLICHE KANTE gestellt wird, wirkt die Erdbeschleunigung auf der Achse 'ay' (oder 'ax', je nach Ausrichtung).
-                // atan2(ay, ax) bzw. atan2(az, ay) misst exakt die Neigung dieser Seitenkante im Wasser.
                 let ax = acc.x || 0;
                 let ay = acc.y || 0;
                 let az = acc.z || 0;
-
-                // Auf der Seitenkante stehend misst die vertikale Abweichung über ay / ax bzw. az
-                let rawDeg = Math.atan2(ay, Math.hypot(ax, az)) * (180 / Math.PI);
-                let frontTiltDeg = Math.atan2(az, Math.hypot(ax, ay)) * (180 / Math.PI);
-
-                currentRawAngle = rawDeg;
-                let displayDeg = rawDeg - levelOffset;
-                updateLevelUI(displayDeg, frontTiltDeg);
-            });
-        } else {
-            window.addEventListener('deviceorientation', (event) => {
-                let beta = event.beta || 0;
-                // Fallback auf Beta (Neigung um die Querachse)
-                let rawDeg = beta - 90;
-                currentRawAngle = rawDeg;
-                updateLevelUI(rawDeg - levelOffset, 0);
+                let xDeg = Math.atan2(ax, Math.hypot(ay, az)) * (180 / Math.PI);
+                let yDeg = Math.atan2(ay, Math.hypot(ax, az)) * (180 / Math.PI);
+                updateLevelUI(xDeg, yDeg);
             });
         }
     }
@@ -3602,10 +3580,10 @@
         let isLevel = Math.abs(cleanEdge) <= 0.5;
         if (badge) {
             if (isLevel) {
-                badge.innerText = "✓ EXAKT IM WASSER";
+                badge.innerText = "✓ EXAKT IM LOT";
                 badge.classList.add('in-level');
             } else {
-                badge.innerText = cleanEdge > 0 ? "Links anheben ◀" : "▶ Rechts anheben";
+                badge.innerText = cleanEdge > 0 ? "Nach links neigen ◀" : "▶ Nach rechts neigen";
                 badge.classList.remove('in-level');
             }
         }
@@ -3613,8 +3591,7 @@
         if (bubble) {
             // Begrenze Ausschlag auf ±15° für hohe Präzision um den Nullpunkt
             let clamped = Math.max(-15, Math.min(15, cleanEdge));
-            // Blase wandert wie bei einer echten Wasserwaage zur höheren Seite
-            let pct = 50 - (clamped / 15) * 40;
+            let pct = 50 + (clamped / 15) * 40;
             bubble.style.left = pct + "%";
             if (isLevel) {
                 bubble.style.background = "radial-gradient(circle at 35% 30%, #69f0ae, #00c853)";
