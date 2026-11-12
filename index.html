@@ -10,7 +10,7 @@
     <meta name="theme-color" content="#0d47a1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
-    <title>INNOWATΞCH Service Tool v3.8.4</title>
+    <title>INNOWATΞCH Service Tool v3.8.5</title>
     
     <!-- PWA / App Manifest -->
     <link rel="manifest" href="manifest.json">
@@ -44,6 +44,8 @@
             --cat-anwendung-border: #3b82f6;
             --cat-parameter-bg: linear-gradient(to bottom, #ffffff 0%, #dcfce7 100%);
             --cat-parameter-border: #22c55e;
+            --cat-werkzeuge-bg: linear-gradient(to bottom, #ffffff 0%, #fef9c3 100%);
+            --cat-werkzeuge-border: #eab308;
         }
 
         /* Dark Mode Farbschema */
@@ -74,6 +76,8 @@
             --cat-anwendung-border: #2563eb;
             --cat-parameter-bg: linear-gradient(to bottom, #262626 0%, #13381a 100%);
             --cat-parameter-border: #16a34a;
+            --cat-werkzeuge-bg: linear-gradient(to bottom, #262626 0%, #3d3300 100%);
+            --cat-werkzeuge-border: #ca8a04;
         }
 
         .custom-select-trigger {
@@ -380,6 +384,10 @@
             background: rgba(46, 125, 50, 0.05);
         }
 
+        .category-group.category-werkzeuge {
+            background: rgba(234, 179, 8, 0.05);
+        }
+
         .category-title {
             font-size: 0.62rem;
             font-weight: bold;
@@ -396,6 +404,14 @@
 
         body.dark-mode .category-group.category-parameters .category-title {
             color: #a5d6a7;
+        }
+
+        .category-group.category-werkzeuge .category-title {
+            color: #ca8a04;
+        }
+
+        body.dark-mode .category-group.category-werkzeuge .category-title {
+            color: #fde047;
         }
 
         .tab-buttons-inner {
@@ -460,10 +476,44 @@
         .launcher-view {
             display: none;
             padding: 10px 12px;
+            position: relative;
         }
 
         .launcher-view.active {
             display: block;
+        }
+
+        .dashboard-scroll-indicator {
+            position: sticky;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--primary-color);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.2s ease, transform 0.15s ease;
+            z-index: 10;
+            margin: 0 auto;
+        }
+        .dashboard-scroll-indicator.visible {
+            opacity: 0.9;
+        }
+        .dashboard-scroll-indicator:active {
+            transform: scale(0.9) translateX(-50%);
+        }
+        .dashboard-scroll-indicator.top-indicator {
+            margin-bottom: 8px;
+        }
+        .dashboard-scroll-indicator.bottom-indicator {
+            margin-top: 8px;
         }
 
         .launcher-category {
@@ -491,6 +541,16 @@
             border-color: #a5d6a7;
         }
 
+        .launcher-category.werkzeuge .launcher-category-title {
+            color: #ca8a04;
+            border-color: #ca8a04;
+        }
+
+        body.dark-mode .launcher-category.werkzeuge .launcher-category-title {
+            color: #fde047;
+            border-color: #fde047;
+        }
+
         .launcher-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -516,6 +576,11 @@
         .launcher-category.param .launcher-card {
             background: var(--cat-parameter-bg);
             border: 1.5px solid var(--cat-parameter-border);
+        }
+
+        .launcher-category.werkzeuge .launcher-card {
+            background: var(--cat-werkzeuge-bg);
+            border: 1.5px solid var(--cat-werkzeuge-border);
         }
 
         .launcher-card:active {
@@ -861,6 +926,25 @@
             font-size: 0.82rem;
             margin-bottom: 6px;
             color: var(--primary-color);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+        }
+
+        .setting-section-title::after {
+            content: "▼";
+            font-size: 0.7rem;
+            transition: transform 0.2s ease;
+        }
+
+        .setting-section.collapsed .setting-section-content {
+            display: none;
+        }
+
+        .setting-section.collapsed .setting-section-title::after {
+            transform: rotate(-90deg);
         }
 
         .toggle-row {
@@ -1123,7 +1207,9 @@
         </button>
     </div>
 
-    <div class="launcher-view" id="launcher-view">
+    <div class="launcher-view" id="launcher-view" onscroll="checkDashboardScroll(this)">
+        <div class="dashboard-scroll-indicator top-indicator" id="dashboard-scroll-indicator-top" onclick="scrollDashboardTo('top')">▲</div>
+        
         <div class="launcher-category">
             <div class="launcher-category-title">Anwendungen</div>
             <div class="launcher-grid" id="launcher-grid-anwendung"></div>
@@ -1133,6 +1219,13 @@
             <div class="launcher-category-title">Parameter</div>
             <div class="launcher-grid" id="launcher-grid-parameter"></div>
         </div>
+
+        <div class="launcher-category werkzeuge">
+            <div class="launcher-category-title">Werkzeuge</div>
+            <div class="launcher-grid" id="launcher-grid-werkzeuge"></div>
+        </div>
+
+        <div class="dashboard-scroll-indicator bottom-indicator" id="dashboard-scroll-indicator-bottom" onclick="scrollDashboardTo('bottom')">▼</div>
     </div>
 
     <div id="tab-standard" class="tab-content">
@@ -1851,11 +1944,11 @@
         <button type="button" class="pdf-export-btn" onclick="exportToPDF('Enthärtungsanlagen')">📄 Als PDF speichern / drucken</button>
     </div>
 
-    <!-- Footer mit Version v3.8.4 & Netzwerk-Status -->
+    <!-- Footer mit Version v3.8.5 & Netzwerk-Status -->
     <div class="footer" style="display: flex; justify-content: space-between; align-items: center;">
         <span style="flex: 1; text-align: left;">© 2026 #MAT</span>
         <span id="net-status-badge" style="flex: 1; text-align: center; font-size: 0.72rem; padding: 2px 6px; border-radius: 10px; background: rgba(0,0,0,0.08); display: inline-block; width: auto; margin: 0 auto;">● Online</span>
-        <span class="footer-version" style="flex: 1; text-align: right;" onclick="handleVersionClick()">v3.8.4</span>
+        <span class="footer-version" style="flex: 1; text-align: right;" onclick="handleVersionClick()">v3.8.5</span>
     </div>
 </div>
 
@@ -1869,44 +1962,66 @@
         </div>
         <div class="modal-body" id="settings-modal-body" onscroll="checkSettingsScroll(this)">
             <div class="setting-section">
-                <div class="setting-section-title">Erscheinungsbild & Icons</div>
-                <div class="toggle-row">
-                    <span>Dunkelmodus</span>
-                    <input type="checkbox" id="darkmode-toggle" onchange="toggleDarkMode(this.checked)">
-                </div>
-                <div class="toggle-row" style="margin-top: 6px;">
-                    <span>Icons in Schiebeleiste anzeigen</span>
-                    <input type="checkbox" id="icons-slider-toggle" onchange="toggleSliderIcons(this.checked)">
-                </div>
-                <div class="toggle-row" style="margin-top: 6px;">
-                    <span>Icons im Dashboard anzeigen</span>
-                    <input type="checkbox" id="icons-dashboard-toggle" onchange="toggleDashboardIcons(this.checked)">
-                </div>
-            </div>
-
-            <div class="setting-section">
-                <div class="setting-section-title">Darstellungsgröße</div>
-                <div class="zoom-slider-container">
-                    <span>🔍 70%</span>
-                    <input type="range" id="zoom-slider" min="0.7" max="1.2" step="0.05" value="1" oninput="changeZoom(this.value)">
-                    <span>120%</span>
-                </div>
-                <div class="hint" style="text-align: center; margin-top: 4px;">
-                    Aktueller Faktor: <b id="zoom-val-text">100%</b>
+                <div class="setting-section-title" onclick="toggleSettingSection(this)">Erscheinungsbild & Icons</div>
+                <div class="setting-section-content">
+                    <div class="toggle-row">
+                        <span>Dunkelmodus</span>
+                        <input type="checkbox" id="darkmode-toggle" onchange="toggleDarkMode(this.checked)">
+                    </div>
+                    <div class="toggle-row" style="margin-top: 6px;">
+                        <span>Icons in Schiebeleiste anzeigen</span>
+                        <input type="checkbox" id="icons-slider-toggle" onchange="toggleSliderIcons(this.checked)">
+                    </div>
+                    <div class="toggle-row" style="margin-top: 6px;">
+                        <span>Icons im Dashboard anzeigen</span>
+                        <input type="checkbox" id="icons-dashboard-toggle" onchange="toggleDashboardIcons(this.checked)">
+                    </div>
                 </div>
             </div>
 
             <div class="setting-section">
-                <div class="setting-section-title" style="color: #0d47a1;">Kategorie: Anwendung (Per Griff ☰ verschiebbar)</div>
-                <div class="hint" style="margin-bottom: 6px;">Haken setzen = Modul aktiv | Haken entfernen = Modul inaktiv</div>
-                <div id="active-list-anwendung"></div>
+                <div class="setting-section-title" onclick="toggleSettingSection(this)">Darstellungsgröße</div>
+                <div class="setting-section-content">
+                    <div class="zoom-slider-container">
+                        <span>🔍 70%</span>
+                        <input type="range" id="zoom-slider" min="0.7" max="1.2" step="0.05" value="1" oninput="changeZoom(this.value)">
+                        <span>120%</span>
+                    </div>
+                    <div class="hint" style="text-align: center; margin-top: 4px;">
+                        Aktueller Faktor: <b id="zoom-val-text">100%</b>
+                    </div>
+                </div>
+            </div>
 
-                <div class="setting-section-title" style="margin-top: 12px; color: #1b5e20;">Kategorie: Parameter (Per Griff ☰ verschiebbar)</div>
-                <div class="hint" style="margin-bottom: 6px;">Haken setzen = Modul aktiv | Haken entfernen = Modul inaktiv</div>
-                <div id="active-list-parameter"></div>
+            <div class="setting-section collapsed">
+                <div class="setting-section-title" onclick="toggleSettingSection(this)" style="color: #0d47a1;">Kategorie: Anwendung (Per Griff ☰ verschiebbar)</div>
+                <div class="setting-section-content">
+                    <div class="hint" style="margin-bottom: 6px;">Haken setzen = Modul aktiv | Haken entfernen = Modul inaktiv</div>
+                    <div id="active-list-anwendung"></div>
+                </div>
+            </div>
 
-                <div class="setting-section-title" style="margin-top: 12px; opacity: 0.8;">Inaktive Module</div>
-                <div id="inactive-module-list"></div>
+            <div class="setting-section collapsed">
+                <div class="setting-section-title" onclick="toggleSettingSection(this)" style="color: #1b5e20;">Kategorie: Parameter (Per Griff ☰ verschiebbar)</div>
+                <div class="setting-section-content">
+                    <div class="hint" style="margin-bottom: 6px;">Haken setzen = Modul aktiv | Haken entfernen = Modul inaktiv</div>
+                    <div id="active-list-parameter"></div>
+                </div>
+            </div>
+
+            <div class="setting-section collapsed">
+                <div class="setting-section-title" onclick="toggleSettingSection(this)" style="color: #ca8a04;">Kategorie: Werkzeuge (Per Griff ☰ verschiebbar)</div>
+                <div class="setting-section-content">
+                    <div class="hint" style="margin-bottom: 6px;">Haken setzen = Modul aktiv | Haken entfernen = Modul inaktiv</div>
+                    <div id="active-list-werkzeuge"></div>
+                </div>
+            </div>
+
+            <div class="setting-section collapsed">
+                <div class="setting-section-title" onclick="toggleSettingSection(this)" style="opacity: 0.8;">Inaktive Module</div>
+                <div class="setting-section-content">
+                    <div id="inactive-module-list"></div>
+                </div>
             </div>
 
             <div class="setting-section" style="border-bottom: none; padding-bottom: 0;">
@@ -1921,7 +2036,7 @@
 <div class="admin-modal-overlay" id="adminAuthModal">
     <div class="admin-modal-content">
         <div class="admin-modal-header">
-            <span>Admin Authentifizierung (v3.8.4)</span>
+            <span>Admin Authentifizierung (v3.8.5)</span>
             <button type="button" class="modal-close-btn" style="color:var(--primary-color);" onclick="closeAdminModal('adminAuthModal')">✕</button>
         </div>
         <p style="font-size: 0.82rem; color: var(--subtext-color); margin-bottom: 12px;">Bitte die Admin-PIN eingeben:</p>
@@ -2642,6 +2757,13 @@
         localStorage.setItem('mat_show_dashboard_icons', enabled);
     }
 
+    function toggleSettingSection(titleEl) {
+        const section = titleEl.closest('.setting-section');
+        if (section) {
+            section.classList.toggle('collapsed');
+        }
+    }
+
     function changeZoom(val, save = true) {
         let numVal = parseFloat(val);
         if (numVal > 1.2) numVal = 1.2;
@@ -2678,6 +2800,7 @@
                 if (content) content.classList.remove('active');
             });
             renderLauncherGrid();
+            setTimeout(() => { checkDashboardScroll(launcherView); }, 50);
         } else if (isLauncherActive && isInToolFromLauncher) {
             tabBarWrapper.style.display = 'none';
             launcherView.classList.remove('active');
@@ -2703,9 +2826,11 @@
     function renderLauncherGrid() {
         const gridAnwendung = document.getElementById('launcher-grid-anwendung');
         const gridParameter = document.getElementById('launcher-grid-parameter');
+        const gridWerkzeuge = document.getElementById('launcher-grid-werkzeuge');
 
         gridAnwendung.innerHTML = '';
         gridParameter.innerHTML = '';
+        gridWerkzeuge.innerHTML = '';
 
         const activeModules = currentModules.filter(m => m.visible && m.userAllowed);
 
@@ -2723,6 +2848,8 @@
 
             if (mod.category === 'Parameter') {
                 gridParameter.appendChild(card);
+            } else if (mod.category === 'Werkzeuge') {
+                gridWerkzeuge.appendChild(card);
             } else {
                 gridAnwendung.appendChild(card);
             }
@@ -2763,6 +2890,36 @@
         }
     }
 
+    function checkDashboardScroll(el) {
+        if (!el) return;
+        const topIndicator = document.getElementById('dashboard-scroll-indicator-top');
+        const bottomIndicator = document.getElementById('dashboard-scroll-indicator-bottom');
+        if (!topIndicator || !bottomIndicator) return;
+
+        if (el.scrollTop > 15) {
+            topIndicator.classList.add('visible');
+        } else {
+            topIndicator.classList.remove('visible');
+        }
+
+        const scrollBottom = el.scrollHeight - el.scrollTop - el.clientHeight;
+        if (scrollBottom > 15) {
+            bottomIndicator.classList.add('visible');
+        } else {
+            bottomIndicator.classList.remove('visible');
+        }
+    }
+
+    function scrollDashboardTo(direction) {
+        const launcherView = document.getElementById('launcher-view');
+        if (!launcherView) return;
+        if (direction === 'top') {
+            launcherView.scrollTo({ top: 0, behavior: 'smooth' });
+        } else {
+            launcherView.scrollTo({ top: launcherView.scrollHeight, behavior: 'smooth' });
+        }
+    }
+
     function renderTabs(autoSelectFirst = false) {
         const container = document.getElementById('categories-container');
         container.innerHTML = '';
@@ -2776,12 +2933,14 @@
             catMap[cat].push(mod);
         });
 
-        const categoryOrder = ['Anwendung', 'Parameter'];
+        const categoryOrder = ['Anwendung', 'Parameter', 'Werkzeuge'];
 
         categoryOrder.forEach(catName => {
             if (catMap[catName] && catMap[catName].length > 0) {
                 let groupDiv = document.createElement('div');
-                groupDiv.className = 'category-group' + (catName === 'Parameter' ? ' category-parameters' : '');
+                groupDiv.className = 'category-group';
+                if (catName === 'Parameter') groupDiv.classList.add('category-parameters');
+                if (catName === 'Werkzeuge') groupDiv.classList.add('category-werkzeuge');
 
                 let titleDiv = document.createElement('div');
                 titleDiv.className = 'category-title';
@@ -2906,18 +3065,23 @@
     function renderModuleManager() {
         const listAnwendung = document.getElementById('active-list-anwendung');
         const listParameter = document.getElementById('active-list-parameter');
+        const listWerkzeuge = document.getElementById('active-list-werkzeuge');
         const inactiveList = document.getElementById('inactive-module-list');
 
         listAnwendung.innerHTML = '';
         listParameter.innerHTML = '';
+        listWerkzeuge.innerHTML = '';
         inactiveList.innerHTML = '';
 
         const activeModules = currentModules.filter(m => m.visible);
         const inactiveModules = currentModules.filter(m => !m.visible);
 
-        ['Anwendung', 'Parameter'].forEach(categoryName => {
-            const targetContainer = (categoryName === 'Anwendung') ? listAnwendung : listParameter;
-            const categoryActiveModules = activeModules.filter(m => m.category === categoryName);
+        ['Anwendung', 'Parameter', 'Werkzeuge'].forEach(categoryName => {
+            let targetContainer = listAnwendung;
+            if (categoryName === 'Parameter') targetContainer = listParameter;
+            if (categoryName === 'Werkzeuge') targetContainer = listWerkzeuge;
+
+            const categoryActiveModules = activeModules.filter(m => (m.category || 'Anwendung') === categoryName);
 
             if (categoryActiveModules.length === 0) {
                 targetContainer.innerHTML = '<div class="hint">Keine aktiven Module in dieser Kategorie.</div>';
@@ -3015,7 +3179,7 @@
 
                 let label = document.createElement('span');
                 label.className = 'module-label-text';
-                label.innerHTML = `[${mod.category}] ` + (mod.icon || '🛠️') + ' ' + mod.title;
+                label.innerHTML = `[${mod.category || 'Anwendung'}] ` + (mod.icon || '🛠️') + ' ' + mod.title;
 
                 left.appendChild(chk);
                 left.appendChild(label);
@@ -3027,8 +3191,9 @@
 
     function updateModulesOrderFromDOM() {
         const newActiveOrder = [];
-        ['active-list-anwendung', 'active-list-parameter'].forEach(containerId => {
+        ['active-list-anwendung', 'active-list-parameter', 'active-list-werkzeuge'].forEach(containerId => {
             const container = document.getElementById(containerId);
+            if (!container) return;
             container.querySelectorAll('.module-list-item').forEach(item => {
                 const id = item.dataset.id;
                 const mod = currentModules.find(m => m.id === id);
