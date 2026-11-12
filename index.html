@@ -10,7 +10,7 @@
     <meta name="theme-color" content="#0d47a1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
-    <title>INNOWATΞCH Service Tool v3.8.6</title>
+    <title>INNOWATΞCH Service Tool v3.8.7</title>
     
     <!-- PWA / App Manifest -->
     <link rel="manifest" href="manifest.json">
@@ -385,7 +385,7 @@
         }
 
         .category-group.category-werkzeuge {
-            background: rgba(234, 179, 8, 0.05);
+            background: rgba(234, 179, 8, 0.08);
         }
 
         .category-title {
@@ -407,7 +407,7 @@
         }
 
         .category-group.category-werkzeuge .category-title {
-            color: #ca8a04;
+            color: #b45309;
         }
 
         body.dark-mode .category-group.category-werkzeuge .category-title {
@@ -477,6 +477,8 @@
             display: none;
             padding: 10px 12px;
             position: relative;
+            max-height: calc(100vh - 95px);
+            overflow-y: auto;
         }
 
         .launcher-view.active {
@@ -489,31 +491,31 @@
             transform: translateX(-50%);
             background: var(--primary-color);
             color: white;
-            width: 28px;
-            height: 28px;
+            width: 30px;
+            height: 30px;
             border-radius: 50%;
-            display: flex;
+            display: none;
             align-items: center;
             justify-content: center;
-            font-size: 0.8rem;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            font-size: 0.85rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.35);
             cursor: pointer;
-            opacity: 0;
-            transition: opacity 0.2s ease, transform 0.15s ease;
-            z-index: 10;
+            z-index: 20;
             margin: 0 auto;
         }
         .dashboard-scroll-indicator.visible {
-            opacity: 0.9;
+            display: flex;
         }
         .dashboard-scroll-indicator:active {
-            transform: scale(0.9) translateX(-50%);
+            transform: scale(0.92) translateX(-50%);
         }
         .dashboard-scroll-indicator.top-indicator {
-            margin-bottom: 8px;
+            top: 2px;
+            margin-bottom: 6px;
         }
         .dashboard-scroll-indicator.bottom-indicator {
-            margin-top: 8px;
+            bottom: 2px;
+            margin-top: 6px;
         }
 
         .launcher-category {
@@ -542,13 +544,13 @@
         }
 
         .launcher-category.werkzeuge .launcher-category-title {
-            color: #ca8a04;
-            border-color: #ca8a04;
+            color: #b45309;
+            border-color: #eab308;
         }
 
         body.dark-mode .launcher-category.werkzeuge .launcher-category-title {
             color: #fde047;
-            border-color: #fde047;
+            border-color: #ca8a04;
         }
 
         .launcher-grid {
@@ -802,6 +804,48 @@
             color: #90caf9;
         }
 
+        /* Wasserwaage Visuelle Libelle */
+        .level-bubble-box {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            border: 3px solid var(--primary-color);
+            background: radial-gradient(circle, rgba(41,182,246,0.15) 0%, rgba(13,71,161,0.05) 100%);
+            margin: 10px auto;
+            position: relative;
+            box-shadow: inset 0 2px 8px rgba(0,0,0,0.2);
+        }
+        .level-crosshair-h {
+            position: absolute;
+            top: 50%; left: 0; right: 0;
+            height: 1px;
+            background: rgba(13,71,161,0.35);
+        }
+        .level-crosshair-v {
+            position: absolute;
+            left: 50%; top: 0; bottom: 0;
+            width: 1px;
+            background: rgba(13,71,161,0.35);
+        }
+        .level-target-ring {
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 34px; height: 34px;
+            transform: translate(-50%, -50%);
+            border: 2px dashed var(--primary-color);
+            border-radius: 50%;
+        }
+        .level-bubble {
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 24px; height: 24px;
+            transform: translate(-50%, -50%);
+            background: radial-gradient(circle at 30% 30%, #a5d6a7, #2e7d32);
+            border-radius: 50%;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.4);
+            transition: transform 0.08s linear, background 0.2s ease;
+        }
+
         .footer {
             display: flex;
             justify-content: space-between;
@@ -912,7 +956,7 @@
         }
 
         .setting-section {
-            margin-bottom: 14px;
+            margin-bottom: 12px;
             border-bottom: 1px solid var(--border-color);
             padding-bottom: 10px;
         }
@@ -923,19 +967,20 @@
 
         .setting-section-title {
             font-weight: bold;
-            font-size: 0.82rem;
-            margin-bottom: 6px;
+            font-size: 0.84rem;
+            margin-bottom: 4px;
             color: var(--primary-color);
             cursor: pointer;
             display: flex;
             justify-content: space-between;
             align-items: center;
             user-select: none;
+            padding: 4px 2px;
         }
 
         .setting-section-title::after {
             content: "▼";
-            font-size: 0.7rem;
+            font-size: 0.72rem;
             transition: transform 0.2s ease;
         }
 
@@ -1944,11 +1989,109 @@
         <button type="button" class="pdf-export-btn" onclick="exportToPDF('Enthärtungsanlagen')">📄 Als PDF speichern / drucken</button>
     </div>
 
-    <!-- Footer mit Version v3.8.6 & Netzwerk-Status -->
+    <!-- WERKZEUGE MODULE -->
+    <div id="tab-taschenlampe" class="tab-content">
+        <div class="section-title">🔦 Taschenlampe / Notlicht</div>
+        <div class="hint" style="margin-bottom: 12px;">Schaltet das Kamera-Blitzlicht (Android) oder ein helles Bildschirm-Notlicht (iOS/PC) ein.</div>
+        <button type="button" class="pdf-export-btn" onclick="toggleFlashlight()" style="background: linear-gradient(to bottom, #f59e0b, #d97706); border-color: #b45309; font-size: 0.95rem; padding: 14px;" id="flash-toggle-btn">🔦 Licht Einschalten</button>
+    </div>
+
+    <div id="tab-wasserwaage" class="tab-content">
+        <div class="section-title">📐 Digitale Wasserwaage</div>
+        <div class="level-bubble-box">
+            <div class="level-crosshair-h"></div>
+            <div class="level-crosshair-v"></div>
+            <div class="level-target-ring"></div>
+            <div class="level-bubble" id="level_bubble"></div>
+        </div>
+        <div class="result-box" style="text-align: center;">
+            <div class="result-row">
+                <span class="result-label">Neigung Vor / Zurück (X)</span>
+                <span class="result-value" id="val_tilt_x">0.0°</span>
+            </div>
+            <div class="result-row">
+                <span class="result-label">Neigung Links / Rechts (Y)</span>
+                <span class="result-value" id="val_tilt_y">0.0°</span>
+            </div>
+        </div>
+        <button type="button" class="pdf-export-btn" onclick="initWaterLevel()">Sensoren Freigeben / Starten</button>
+    </div>
+
+    <div id="tab-schlauchvolumen" class="tab-content">
+        <div class="section-title">📏 Schlauchvolumen-Rechner</div>
+        <div class="form-group">
+            <label>Innendurchmesser (dᵢ)</label>
+            <div class="input-wrapper">
+                <input type="number" id="schlauch_d" step="0.5" placeholder="z. B. 4, 6, 8, 12" oninput="calcSchlauch()">
+                <span class="unit">mm</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Schlauchlänge (L)</label>
+            <div class="input-wrapper">
+                <input type="number" id="schlauch_l" step="0.1" placeholder="z. B. 3.5" oninput="calcSchlauch()">
+                <span class="unit">m</span>
+            </div>
+        </div>
+        <div class="result-box">
+            <div class="result-row">
+                <span class="result-label">Volumen pro Meter</span>
+                <span class="result-value" id="res_schlauch_m">0.00 ml/m</span>
+            </div>
+            <div class="result-row">
+                <span class="result-label">Gesamtvolumen</span>
+                <span class="result-value" id="res_schlauch_ges">0.00 ml (0.000 l)</span>
+            </div>
+        </div>
+        <button type="button" class="pdf-export-btn" onclick="resetSchlauch()" style="background: #757575; border-color: #616161; margin-top: 8px;">🔄 Reset</button>
+    </div>
+
+    <div id="tab-auslitern" class="tab-content">
+        <div class="section-title">⏱️ Ausliter-Hilfe (60s Timer)</div>
+        <div class="result-box" style="text-align: center; background: var(--input-bg);">
+            <div class="result-label">Countdown</div>
+            <div class="result-value" id="timer_display" style="font-size: 2.2rem; color: var(--primary-color);">01:00</div>
+        </div>
+        <div style="display: flex; gap: 8px; margin-top: 10px;">
+            <button type="button" class="pdf-export-btn" onclick="startAusliterTimer()" style="background: #2e7d32; border-color: #1b5e20; margin-top:0;">▶ Start (60s)</button>
+            <button type="button" class="pdf-export-btn" onclick="stopAusliterTimer()" style="background: #c62828; border-color: #b71c1c; margin-top:0;">⏹ Stopp</button>
+        </div>
+        <div class="form-group" style="margin-top: 12px;">
+            <label>Aufgefangene Menge nach 1 Minute</label>
+            <div class="input-wrapper">
+                <input type="number" id="ausliter_ml" step="1" placeholder="z. B. 250" oninput="calcAusliter()">
+                <span class="unit">ml</span>
+            </div>
+        </div>
+        <div class="result-box">
+            <div class="result-row">
+                <span class="result-label">Resultierender Durchfluss</span>
+                <span class="result-value" id="res_ausliter_lh" style="font-size: 1.2rem;">0.00 l/h</span>
+            </div>
+        </div>
+        <button type="button" class="pdf-export-btn" onclick="resetAusliter()" style="background: #757575; border-color: #616161; margin-top: 8px;">🔄 Reset (Timer & Werte)</button>
+    </div>
+
+    <div id="tab-notizen" class="tab-content">
+        <div class="section-title">📝 Service-Notizen (Offline Auto-Save)</div>
+        <div class="form-group">
+            <textarea id="service_notes_area" placeholder="Seriennummern, Messwerte, Ersatzteile hier festhalten..." style="width: 100%; height: 180px; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--input-bg); color: var(--text-color); font-size: 0.9rem; box-sizing: border-box; outline: none; font-family: inherit;" oninput="saveServiceNotes()"></textarea>
+        </div>
+        <div style="display: flex; gap: 6px;">
+            <button type="button" class="pdf-export-btn" onclick="addNoteTimestamp()" style="flex: 1; background: #0288d1; border-color: #0277bd; margin-top:0;">⏱️ + Zeitstempel</button>
+            <button type="button" class="pdf-export-btn" onclick="copyServiceNotes()" style="flex: 1; background: #1976d2; border-color: #1565c0; margin-top:0;">📋 Kopieren</button>
+        </div>
+        <div style="display: flex; gap: 6px; margin-top: 6px;">
+            <button type="button" class="pdf-export-btn" onclick="downloadServiceNotesTxt()" style="flex: 1; background: #2e7d32; border-color: #1b5e20; margin-top:0;">💾 Download .txt</button>
+            <button type="button" class="pdf-export-btn" onclick="clearServiceNotes()" style="flex: 1; background: #c62828; border-color: #b71c1c; margin-top:0;">🗑️ Leeren</button>
+        </div>
+    </div>
+
+    <!-- Footer mit Version v3.8.7 & Netzwerk-Status -->
     <div class="footer" style="display: flex; justify-content: space-between; align-items: center;">
         <span style="flex: 1; text-align: left;">© 2026 #MAT</span>
         <span id="net-status-badge" style="flex: 1; text-align: center; font-size: 0.72rem; padding: 2px 6px; border-radius: 10px; background: rgba(0,0,0,0.08); display: inline-block; width: auto; margin: 0 auto;">● Online</span>
-        <span class="footer-version" style="flex: 1; text-align: right;" onclick="handleVersionClick()">v3.8.6</span>
+        <span class="footer-version" style="flex: 1; text-align: right;" onclick="handleVersionClick()">v3.8.7</span>
     </div>
 </div>
 
@@ -2010,7 +2153,7 @@
             </div>
 
             <div class="setting-section collapsed">
-                <div class="setting-section-title" onclick="toggleSettingSection(this)" style="color: #ca8a04;">Kategorie: Werkzeuge (Per Griff ☰ verschiebbar)</div>
+                <div class="setting-section-title" onclick="toggleSettingSection(this)" style="color: #b45309;">Kategorie: Werkzeuge (Per Griff ☰ verschiebbar)</div>
                 <div class="setting-section-content">
                     <div class="hint" style="margin-bottom: 6px;">Haken setzen = Modul aktiv | Haken entfernen = Modul inaktiv</div>
                     <div id="active-list-werkzeuge"></div>
@@ -2036,7 +2179,7 @@
 <div class="admin-modal-overlay" id="adminAuthModal">
     <div class="admin-modal-content">
         <div class="admin-modal-header">
-            <span>Admin Authentifizierung (v3.8.6)</span>
+            <span>Admin Authentifizierung (v3.8.7)</span>
             <button type="button" class="modal-close-btn" style="color:var(--primary-color);" onclick="closeAdminModal('adminAuthModal')">✕</button>
         </div>
         <p style="font-size: 0.82rem; color: var(--subtext-color); margin-bottom: 12px;">Bitte die Admin-PIN eingeben:</p>
@@ -2205,18 +2348,19 @@
             if (!dbUsers || Object.keys(dbUsers).length === 0) {
                 let adminHash = await hashPin("07062509");
                 let matHash = await hashPin("72186");
+                let allModIds = defaultModules.map(m => m.id);
                 dbUsers = {
                     "ADMIN": {
                         pinHash: adminHash,
                         status: 'active',
                         isAdmin: true,
-                        modules: ['standard', 'wasserwerk', 'schwimmbad', 'pid', 'verdünnung', 'sonden', 'anlagen', 'radar', 'enthaerter']
+                        modules: allModIds
                     },
                     "MAT": {
                         pinHash: matHash,
                         status: 'active',
                         isAdmin: false,
-                        modules: ['standard', 'wasserwerk', 'schwimmbad', 'pid', 'verdünnung', 'sonden', 'anlagen', 'radar', 'enthaerter']
+                        modules: allModIds
                     }
                 };
                 saveUsersToLocalStorage();
@@ -2265,11 +2409,12 @@
 
     function downloadUsersJson() {
         if (!dbUsers["ADMIN"]) {
+            let allModIds = defaultModules.map(m => m.id);
             dbUsers["ADMIN"] = {
                 pinHash: "07062509",
                 status: "active",
                 isAdmin: true,
-                modules: ['standard', 'wasserwerk', 'schwimmbad', 'pid', 'verdünnung', 'sonden', 'anlagen', 'radar', 'enthaerter']
+                modules: allModIds
             };
         }
         let dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(dbUsers, null, 2));
@@ -2605,7 +2750,12 @@
         { id: 'sonden', title: 'Sondendaten', icon: '⚡', category: 'Parameter', visible: true, userAllowed: true },
         { id: 'anlagen', title: 'Produktionsparameter AQD', icon: '⚙️', category: 'Parameter', visible: true, userAllowed: true },
         { id: 'radar', title: 'Vega Radarsensor', icon: '📡', category: 'Parameter', visible: true, userAllowed: true },
-        { id: 'enthaerter', title: 'Enthärtungsanlagen', icon: '💧', category: 'Parameter', visible: true, userAllowed: true }
+        { id: 'enthaerter', title: 'Enthärtungsanlagen', icon: '💧', category: 'Parameter', visible: true, userAllowed: true },
+        { id: 'taschenlampe', title: 'Taschenlampe', icon: '🔦', category: 'Werkzeuge', visible: true, userAllowed: true },
+        { id: 'wasserwaage', title: 'Wasserwaage', icon: '📐', category: 'Werkzeuge', visible: true, userAllowed: true },
+        { id: 'schlauchvolumen', title: 'Schlauchvolumen', icon: '📏', category: 'Werkzeuge', visible: true, userAllowed: true },
+        { id: 'auslitern', title: 'Ausliter-Hilfe', icon: '⏱️', category: 'Werkzeuge', visible: true, userAllowed: true },
+        { id: 'notizen', title: 'Service-Notizen', icon: '📝', category: 'Werkzeuge', visible: true, userAllowed: true }
     ];
 
     let currentModules = [...defaultModules];
@@ -3622,11 +3772,174 @@
         document.getElementById('pool_ph_hinweis').innerText = hinweis;
     }
 
+    // WERKZEUGE LOGIK
+    let flashlightActive = false;
+    function toggleFlashlight() {
+        flashlightActive = !flashlightActive;
+        const btn = document.getElementById('flash-toggle-btn');
+        if (flashlightActive) {
+            document.body.style.backgroundColor = '#ffffff';
+            document.body.style.color = '#000000';
+            btn.innerText = "🔦 Licht Ausschalten";
+            btn.style.background = "linear-gradient(to bottom, #ef4444, #dc2626)";
+        } else {
+            loadSettings(); // reset dark/light mode
+            btn.innerText = "🔦 Licht Einschalten";
+            btn.style.background = "linear-gradient(to bottom, #f59e0b, #d97706)";
+        }
+    }
+
+    let waterLevelActive = false;
+    function initWaterLevel() {
+        if (window.DeviceOrientationEvent) {
+            if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+                DeviceOrientationEvent.requestPermission().then(response => {
+                    if (response === 'granted') {
+                        window.addEventListener('deviceorientation', handleOrientation);
+                        alert("Wasserwaage aktiviert!");
+                    } else {
+                        alert("Berechtigung verweigert.");
+                    }
+                }).catch(console.error);
+            } else {
+                window.addEventListener('deviceorientation', handleOrientation);
+                alert("Wasserwaage aktiv!");
+            }
+        } else {
+            alert("DeviceOrientation wird von diesem Gerät nicht unterstützt.");
+        }
+    }
+
+    function handleOrientation(event) {
+        let tiltX = event.beta || 0;  // Vor/Zurück (-180 bis 180)
+        let tiltY = event.gamma || 0; // Links/Rechts (-90 bis 90)
+
+        document.getElementById('val_tilt_x').innerText = tiltX.toFixed(1) + "°";
+        document.getElementById('val_tilt_y').innerText = tiltY.toFixed(1) + "°";
+
+        let bubble = document.getElementById('level_bubble');
+        if (bubble) {
+            let maxRange = 45;
+            let posX = Math.max(-maxRange, Math.min(maxRange, tiltY));
+            let posY = Math.max(-maxRange, Math.min(maxRange, tiltX));
+            bubble.style.transform = `translate(calc(-50% + ${posX * 1.2}px), calc(-50% + ${posY * 1.2}px))`;
+        }
+    }
+
+    function calcSchlauch() {
+        let d = parseFloat(document.getElementById('schlauch_d').value) || 0;
+        let l = parseFloat(document.getElementById('schlauch_l').value) || 0;
+        let radius = d / 2;
+        let volumePerMeterMl = Math.PI * Math.pow(radius, 2) * 1000 / 1000; // pi * r^2 in mm -> cm3/m = ml/m
+        let totalMl = volumePerMeterMl * l;
+
+        document.getElementById('res_schlauch_m').innerText = volumePerMeterMl.toFixed(2) + " ml/m";
+        document.getElementById('res_schlauch_ges').innerText = totalMl.toFixed(2) + " ml (" + (totalMl / 1000).toFixed(3) + " l)";
+    }
+
+    function resetSchlauch() {
+        document.getElementById('schlauch_d').value = "";
+        document.getElementById('schlauch_l').value = "";
+        calcSchlauch();
+    }
+
+    let ausliterTimerInterval = null;
+    let ausliterSecondsLeft = 60;
+
+    function startAusliterTimer() {
+        stopAusliterTimer();
+        ausliterSecondsLeft = 60;
+        updateTimerDisplay();
+        ausliterTimerInterval = setInterval(() => {
+            ausliterSecondsLeft--;
+            updateTimerDisplay();
+            if (ausliterSecondsLeft <= 0) {
+                stopAusliterTimer();
+                alert("⏰ 60 Sekunden abgelaufen! Bitte gemessene Menge in ml eintragen.");
+            }
+        }, 1000);
+    }
+
+    function stopAusliterTimer() {
+        if (ausliterTimerInterval) {
+            clearInterval(ausliterTimerInterval);
+            ausliterTimerInterval = null;
+        }
+    }
+
+    function updateTimerDisplay() {
+        let m = Math.floor(ausliterSecondsLeft / 60);
+        let s = ausliterSecondsLeft % 60;
+        document.getElementById('timer_display').innerText = (m < 10 ? "0" + m : m) + ":" + (s < 10 ? "0" + s : s);
+    }
+
+    function calcAusliter() {
+        let ml = parseFloat(document.getElementById('ausliter_ml').value) || 0;
+        let l_h = ml * 60 / 1000;
+        document.getElementById('res_ausliter_lh').innerText = l_h.toFixed(2) + " l/h";
+    }
+
+    function resetAusliter() {
+        stopAusliterTimer();
+        ausliterSecondsLeft = 60;
+        updateTimerDisplay();
+        document.getElementById('ausliter_ml').value = "";
+        calcAusliter();
+    }
+
+    function saveServiceNotes() {
+        let text = document.getElementById('service_notes_area').value;
+        localStorage.setItem('mat_service_notes', text);
+    }
+
+    function loadServiceNotes() {
+        let saved = localStorage.getItem('mat_service_notes');
+        if (saved) {
+            document.getElementById('service_notes_area').value = saved;
+        }
+    }
+
+    function addNoteTimestamp() {
+        let area = document.getElementById('service_notes_area');
+        let now = new Date();
+        let ts = `\n[${now.toLocaleDateString()} ${now.toLocaleTimeString()}] `;
+        area.value += ts;
+        saveServiceNotes();
+    }
+
+    function copyServiceNotes() {
+        let area = document.getElementById('service_notes_area');
+        area.select();
+        navigator.clipboard.writeText(area.value).then(() => {
+            alert("Notizen in die Zwischenablage kopiert!");
+        });
+    }
+
+    function downloadServiceNotesTxt() {
+        let text = document.getElementById('service_notes_area').value;
+        let blob = new Blob([text], { type: "text/plain;charset=utf-8" });
+        let url = URL.createObjectURL(blob);
+        let a = document.createElement('a');
+        a.href = url;
+        a.download = "Service-Notizen_" + new Date().toISOString().slice(0,10) + ".txt";
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+    }
+
+    function clearServiceNotes() {
+        if (confirm("Notizen wirklich leeren?")) {
+            document.getElementById('service_notes_area').value = "";
+            saveServiceNotes();
+        }
+    }
+
     loadSettings();
     calcStandard();
     calcWasserwerk();
     calcPoolAll();
     calcVerduennung();
+    loadServiceNotes();
 </script>
 
 </body>
