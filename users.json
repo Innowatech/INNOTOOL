@@ -1,6 +1,6 @@
 {
   "ADMIN": {
-    "pinHash": "16f75b23573c152c0c6a34dd485e807aa58b89d61f1634470898657e7a6d22ee",
+    "pinHash": "8b80f370dc16f2eb08b9ec884e790fc1aee067738b50df49d56678d0e68fff9b",
     "status": "active",
     "isAdmin": true,
     "autoUpdate": true,
@@ -15,10 +15,10 @@
       "radar",
       "enthaerter",
       "taschenlampe",
-      "wasserwaage",
-      "schlauchvolumen",
       "auslitern",
-      "notizen"
+      "schlauchvolumen",
+      "notizen",
+      "wasserwaage"
     ]
   },
   "MAT": {
