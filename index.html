@@ -10,7 +10,7 @@
     <meta name="theme-color" content="#0d47a1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
-    <title>INNOWATΞCH Service Tool v4.0</title>
+    <title>INNOWATΞCH Service Tool v4.1</title>
     
     <!-- PWA / App Manifest -->
     <link rel="manifest" href="manifest.json">
@@ -115,7 +115,6 @@
             background-image: url("data:image/svg+xml;utf8,<svg fill='%23e0e0e0' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
         }
 
-        /* Desktop Dropdown Dropdown-Liste (direkt unter dem Feld) */
         .desktop-dropdown-list {
             display: none;
             position: absolute;
@@ -157,7 +156,6 @@
             background: var(--result-bg);
         }
 
-        /* Mobiles Modal-Dropdown (Bottom Sheet für Touch) */
         .dropdown-modal-overlay {
             display: none;
             position: fixed;
@@ -244,14 +242,13 @@
             background: var(--card-bg);
             border-radius: 12px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            overflow: visible; /* Wichtig für Sticky Header & Dropdowns */
+            overflow: visible;
             position: relative;
             display: flex;
             flex-direction: column;
             min-height: calc(100vh - 12px);
         }
 
-        /* Fixierter Header (Sticky Header) - wandert bei Zoom nicht mehr weg */
         .header {
             background: linear-gradient(to bottom, #1565c0 0%, #0d47a1 100%);
             color: white;
@@ -712,7 +709,7 @@
 
         .form-group {
             margin-bottom: 8px;
-            position: relative; /* Wichtig für absolute Desktop-Dropdowns */
+            position: relative;
         }
 
         label {
@@ -855,7 +852,6 @@
             color: #90caf9;
         }
 
-        /* Footer am unteren Bildschirmrand fixiert für perfekte Ausnutzung bei 80-90% Zoom */
         .footer {
             display: flex;
             justify-content: space-between;
@@ -1068,7 +1064,6 @@
             flex: 1;
         }
 
-        /* App-Start Login Modal (Auth-Guard) */
         .app-login-overlay {
             display: none;
             position: fixed;
@@ -1209,7 +1204,6 @@
 </head>
 <body>
 
-<!-- App-Start Login (Auth-Guard) -->
 <div class="app-login-overlay" id="appLoginOverlay">
     <div class="app-login-box">
         <h2 style="color: var(--primary-color); margin-top: 0; font-size: 1.2rem;">INNOWATΞCH Service</h2>
@@ -1227,7 +1221,6 @@
 </div>
 
 <div class="container">
-    <!-- Update Banner -->
     <div id="update-banner" style="display: none; position: relative; background: linear-gradient(135deg, #f59e0b, #d97706); color: white; padding: 10px 14px; font-size: 0.8rem; font-weight: bold; text-align: center; box-shadow: 0 3px 10px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.4); z-index: 2500; align-items: center; justify-content: space-between; gap: 8px;">
         <span id="update-banner-text">🚀 Neue Version verfügbar!</span>
         <div style="display: flex; gap: 6px; flex-shrink: 0; position: relative; z-index: 2501;">
@@ -1737,7 +1730,7 @@
                     <option value="8">AS3MA5-CL-M12</option>
                     <option value="9">AS3MA10-CL-M12</option>
                     <option value="10">AS3MA20-CL-M12</option>
-			<option value="11">CCF1.0MA2-CL-M12</option>
+                    <option value="11">CCF1.0MA2-CL-M12</option>
                 </select>
             </div>
         </div>
@@ -1876,7 +1869,7 @@
         <div class="section-title">2. Innowatech Inbetriebnahmeanleitung (Vega-Tool)</div>
 
         <div class="instruction-step">
-            <b>1. Service-Login:</b> Oben rechts im Optionen-Menü (Schraubenschlüssel-Icon) den Service-Login aktivieren. Passwort ist <b>sw</b> (Schwarzwald).
+            <b>1. Service-Login:</b> Oben rechts im Optionen-Menü (Schraubenschlüssel-Icon) den Service-Login aktivieren.
         </div>
 
         <div class="instruction-step">
@@ -1916,17 +1909,13 @@
         </div>
 
         <div class="instruction-step">
-            <b>9. Spezialparameter (erfordert Service-Login `sw`):</b> 
+            <b>9. Spezialparameter:</b> 
             <br>• Begrenzung Messbereichsbeginn <span class="param-highlight">aktiv</span> setzen.
             <br>• Begrenzung Messbereichsbeginn auf <b>30 mm</b> setzen.
             <br>• Faktor für Rauschmittelung steigend = <b>2</b>.
             <br>• Faktor für Rauschmittelung fallend = <b>6</b>.
             <br>• Erstes großes Echo <span class="param-highlight">aktiv</span> setzen.
             <br>• Amplitudenschwelle Erstes großes Echo = <b>12 dB</b>.
-        </div>
-
-        <div class="instruction-step">
-            <b>10. Zugriffsschutz:</b> Den werkseitigen Bluetooth-Zugangscode auf <b>072186</b> abändern.
         </div>
 
         <button type="button" class="pdf-export-btn" onclick="exportToPDF('Vega Radarsensor')">📄 Als PDF speichern / drucken</button>
@@ -2081,18 +2070,16 @@
         </div>
     </div>
 
-    <!-- Footer am unteren Ende fixiert -->
     <div class="footer">
         <span style="flex: 1; text-align: left;">© 2026 #MAT</span>
         <div style="flex: 1; text-align: center; display: flex; justify-content: center; align-items: center; gap: 4px;">
             <span id="net-status-badge" style="font-size: 0.72rem; padding: 2px 6px; border-radius: 10px; background: rgba(0,0,0,0.08); display: inline-block;">● Online</span>
             <span id="footer-update-pill" onclick="applyAppUpdate()" title="Update jetzt installieren" style="display: none; font-size: 0.7rem; padding: 2px 7px; border-radius: 10px; background: #f59e0b; color: white; cursor: pointer; font-weight: bold; box-shadow: 0 1px 3px rgba(0,0,0,0.2);">🔄 Update</span>
         </div>
-        <span class="footer-version" style="flex: 1; text-align: right;" onclick="handleVersionClick()">v4.0</span>
+        <span class="footer-version" style="flex: 1; text-align: right;" onclick="handleVersionClick()">v4.1</span>
     </div>
 </div>
 
-<!-- Einstellungen Modal -->
 <div class="modal-overlay" id="settings-modal">
     <div class="modal-content" onscroll="checkSettingsScroll(this)">
         <div class="modal-scroll-indicator top-indicator" id="settings-scroll-indicator-top" onclick="scrollSettingsTo('top')">▲</div>
@@ -2172,11 +2159,10 @@
     </div>
 </div>
 
-<!-- Admin Authentifizierung Modal (8-stellige PIN) -->
 <div class="admin-modal-overlay" id="adminAuthModal">
     <div class="admin-modal-content">
         <div class="admin-modal-header">
-            <span>Admin Authentifizierung (v4.0)</span>
+            <span>Admin Authentifizierung (v4.1)</span>
             <button type="button" class="modal-close-btn" style="color:var(--primary-color);" onclick="closeAdminModal('adminAuthModal')">✕</button>
         </div>
         <p style="font-size: 0.82rem; color: var(--subtext-color); margin-bottom: 12px;">Bitte die Admin-PIN eingeben:</p>
@@ -2188,7 +2174,6 @@
     </div>
 </div>
 
-<!-- Admin Konsole Modal -->
 <div class="admin-modal-overlay" id="adminConsoleModal">
     <div class="admin-modal-content">
         <div class="admin-modal-header">
@@ -2206,7 +2191,7 @@
             <input type="text" id="newKuerzel" maxlength="5" placeholder="z. B. JUT" value="" style="width:100%; padding:8px; border:1px solid var(--border-color); border-radius:4px; background:var(--input-bg); color:var(--text-color); text-transform:uppercase;">
         </div>
         <div class="form-group">
-            <label>PIN für Techniker</label>
+            <label>PIN für Techniker (9+ Zeichen empfohlen)</label>
             <input type="password" id="newPin" placeholder="PIN eingeben" value="" style="width:100%; padding:8px; border:1px solid var(--border-color); border-radius:4px; background:var(--input-bg); color:var(--text-color);">
         </div>
 
@@ -2245,7 +2230,6 @@
     </div>
 </div>
 
-<!-- Mobile Dropdown Modal (Bottom Sheet für Touch) -->
 <div class="dropdown-modal-overlay" id="dropdown-modal" onclick="closeCustomDropdown(event)">
     <div class="dropdown-modal-content" onclick="event.stopPropagation()">
         <div class="dropdown-modal-header" id="dropdown-modal-title">Auswahl treffen</div>
@@ -2357,25 +2341,9 @@
                     dbUsers[activeUser] = JSON.parse(savedSession);
                 } catch(e) {}
             }
+            // Hinweis: Keine Klartext-Fallbacks mehr im Quellcode vorhanden!
             if (!dbUsers || Object.keys(dbUsers).length === 0) {
-                let adminHash = await hashPin("07062509");
-                let matHash = await hashPin("72186");
-                dbUsers = {
-                    "ADMIN": {
-                        pinHash: adminHash,
-                        status: 'active',
-                        isAdmin: true,
-                        autoUpdate: true,
-                        modules: [...ALL_MODULE_IDS]
-                    },
-                    "MAT": {
-                        pinHash: matHash,
-                        status: 'active',
-                        isAdmin: false,
-                        autoUpdate: true,
-                        modules: [...ALL_MODULE_IDS]
-                    }
-                };
+                dbUsers = {};
                 saveUsersToLocalStorage();
             }
         }
@@ -2421,15 +2389,6 @@
     }
 
     function downloadUsersJson() {
-        if (!dbUsers["ADMIN"]) {
-            dbUsers["ADMIN"] = {
-                pinHash: "07062509",
-                status: "active",
-                isAdmin: true,
-                autoUpdate: true,
-                modules: [...ALL_MODULE_IDS]
-            };
-        }
         let dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(dbUsers, null, 2));
         let downloadAnchor = document.createElement('a');
         downloadAnchor.setAttribute("href", dataStr);
@@ -2551,6 +2510,9 @@
 
         let pHash;
         if (pin.length > 0) {
+            if (pin.length < 9) {
+                if (!confirm("Das Passwort hat weniger als 9 Zeichen. Trotzdem fortfahren?")) return;
+            }
             pHash = await hashPin(pin);
         } else if (dbUsers[kuerzel] && dbUsers[kuerzel].pinHash) {
             pHash = dbUsers[kuerzel].pinHash;
@@ -2701,7 +2663,6 @@
     function openAdminModal(id) { document.getElementById(id).classList.add('active'); }
     function closeAdminModal(id) { document.getElementById(id).classList.remove('active'); }
 
-    // --- Service Worker Update-Handling ---
     let waitingServiceWorker = null;
     let swRegistration = null;
     let userClickedUpdate = false;
@@ -2765,7 +2726,6 @@
         const banner = document.getElementById('update-banner');
         const pill = document.getElementById('footer-update-pill');
         if (banner) banner.style.display = 'none';
-        // Bleibt im Footer klickbar und ploppt beim nächsten Neustart wieder auf, da der Worker in 'waiting' bleibt
         if (pill && isUserAllowedToUpdate()) pill.style.display = 'inline-block';
     }
 
@@ -2774,7 +2734,6 @@
             navigator.serviceWorker.register('./sw.js', { updateViaCache: 'none' })
                 .then(reg => {
                     swRegistration = reg;
-                    // Aktiv nach Updates suchen beim Start
                     reg.update().catch(() => {});
 
                     if (reg.waiting) {
@@ -2847,7 +2806,6 @@
     let showDashboardIcons = true;
     let activeDropdownSelect = null;
 
-    // Intelligente Unterscheidung: Desktop = klassisches Dropdown unter dem Feld, Mobile = Bottom-Sheet Modal
     function isMobileDevice() {
         return window.innerWidth <= 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
     }
@@ -2873,7 +2831,6 @@
             updateTriggerText(trigger, select);
         });
 
-        // Globaler Klick schließt offene Desktop-Dropdowns
         document.addEventListener('click', () => {
             document.querySelectorAll('.desktop-dropdown-list.open').forEach(list => list.classList.remove('open'));
         });
@@ -2888,10 +2845,8 @@
         if (isMobileDevice()) {
             openMobileDropdownModal(select);
         } else {
-            // Desktop: Direkt unter dem Eingabefeld aufklappen
             let existingList = parentWrapper.querySelector('.desktop-dropdown-list');
             
-            // Andere offene schließen
             document.querySelectorAll('.desktop-dropdown-list.open').forEach(l => {
                 if (l !== existingList) l.classList.remove('open');
             });
@@ -3503,8 +3458,6 @@
         saveSettings();
     }
 
-    // --- WERKZEUGE LOGIK ---
-
     let flashStream = null;
     let isScreenTorchOn = false;
     async function toggleFlashlight() {
@@ -3761,7 +3714,7 @@
         8: { messRv1: "0,003 ... 1,700 ppm", steilRv1: "9,6 mA/ppm" },
         9: { messRv1: "0,003 ... 4,00 ppm", steilRv1: "4,8 mA/ppm" },
         10: { messRv1: "0,003 ... 7,00 ppm", steilRv1: "2,4 mA/ppm" },
-	11: { messRv1: "0,003 ... 2,00 ppm", steilRv1: "8,0 mA/ppm" }
+        11: { messRv1: "0,003 ... 2,00 ppm", steilRv1: "8,0 mA/ppm" }
     };
 
     function updateSondenData() {
