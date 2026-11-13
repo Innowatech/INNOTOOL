@@ -3,6 +3,7 @@
     "pinHash": "16f75b23573c152c0c6a34dd485e807aa58b89d61f1634470898657e7a6d22ee",
     "status": "active",
     "isAdmin": true,
+    "autoUpdate": true,
     "modules": [
       "standard",
       "wasserwerk",
@@ -24,6 +25,7 @@
     "pinHash": "7b7c6cb27f053e343e64130d8f50496ddeb4000e42ec619d6fcb763715cf55da",
     "status": "active",
     "isAdmin": false,
+    "autoUpdate": true,
     "modules": [
       "standard",
       "wasserwerk",
@@ -45,6 +47,7 @@
     "pinHash": "7b7c6cb27f053e343e64130d8f50496ddeb4000e42ec619d6fcb763715cf55da",
     "status": "active",
     "isAdmin": false,
+    "autoUpdate": false,
     "modules": [
       "standard",
       "wasserwerk",
@@ -66,6 +69,7 @@
     "pinHash": "7b7c6cb27f053e343e64130d8f50496ddeb4000e42ec619d6fcb763715cf55da",
     "status": "active",
     "isAdmin": false,
+    "autoUpdate": false,
     "modules": [
       "standard",
       "wasserwerk",
@@ -87,6 +91,7 @@
     "pinHash": "7b7c6cb27f053e343e64130d8f50496ddeb4000e42ec619d6fcb763715cf55da",
     "status": "active",
     "isAdmin": false,
+    "autoUpdate": false,
     "modules": [
       "standard",
       "wasserwerk",
@@ -108,6 +113,7 @@
     "pinHash": "7b7c6cb27f053e343e64130d8f50496ddeb4000e42ec619d6fcb763715cf55da",
     "status": "active",
     "isAdmin": false,
+    "autoUpdate": false,
     "modules": [
       "standard",
       "wasserwerk",
@@ -129,6 +135,7 @@
     "pinHash": "7b7c6cb27f053e343e64130d8f50496ddeb4000e42ec619d6fcb763715cf55da",
     "status": "active",
     "isAdmin": false,
+    "autoUpdate": false,
     "modules": [
       "standard",
       "wasserwerk",
@@ -150,6 +157,7 @@
     "pinHash": "7b7c6cb27f053e343e64130d8f50496ddeb4000e42ec619d6fcb763715cf55da",
     "status": "active",
     "isAdmin": false,
+    "autoUpdate": false,
     "modules": [
       "standard",
       "wasserwerk",
@@ -171,6 +179,7 @@
     "pinHash": "7b7c6cb27f053e343e64130d8f50496ddeb4000e42ec619d6fcb763715cf55da",
     "status": "active",
     "isAdmin": false,
+    "autoUpdate": false,
     "modules": [
       "standard",
       "wasserwerk",
@@ -192,6 +201,7 @@
     "pinHash": "7b7c6cb27f053e343e64130d8f50496ddeb4000e42ec619d6fcb763715cf55da",
     "status": "active",
     "isAdmin": false,
+    "autoUpdate": false,
     "modules": [
       "standard",
       "wasserwerk",
@@ -213,6 +223,7 @@
     "pinHash": "7b7c6cb27f053e343e64130d8f50496ddeb4000e42ec619d6fcb763715cf55da",
     "status": "active",
     "isAdmin": false,
+    "autoUpdate": false,
     "modules": [
       "standard",
       "wasserwerk",
@@ -234,6 +245,7 @@
     "pinHash": "7b7c6cb27f053e343e64130d8f50496ddeb4000e42ec619d6fcb763715cf55da",
     "status": "active",
     "isAdmin": false,
+    "autoUpdate": false,
     "modules": [
       "standard",
       "wasserwerk",
@@ -255,6 +267,7 @@
     "pinHash": "7b7c6cb27f053e343e64130d8f50496ddeb4000e42ec619d6fcb763715cf55da",
     "status": "active",
     "isAdmin": false,
+    "autoUpdate": false,
     "modules": [
       "standard",
       "wasserwerk",
@@ -276,6 +289,7 @@
     "pinHash": "7b7c6cb27f053e343e64130d8f50496ddeb4000e42ec619d6fcb763715cf55da",
     "status": "active",
     "isAdmin": false,
+    "autoUpdate": false,
     "modules": [
       "standard",
       "wasserwerk",
@@ -297,6 +311,7 @@
     "pinHash": "7b7c6cb27f053e343e64130d8f50496ddeb4000e42ec619d6fcb763715cf55da",
     "status": "active",
     "isAdmin": false,
+    "autoUpdate": false,
     "modules": [
       "standard",
       "wasserwerk",
