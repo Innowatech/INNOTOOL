@@ -10,7 +10,7 @@
     <meta name="theme-color" content="#0d47a1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
-    <title>INNOWATΞCH Service Tool v3.9.10</title>
+    <title>INNOWATΞCH Service Tool v4.0</title>
     
     <!-- PWA / App Manifest -->
     <link rel="manifest" href="manifest.json">
@@ -2084,8 +2084,11 @@
     <!-- Footer am unteren Ende fixiert -->
     <div class="footer">
         <span style="flex: 1; text-align: left;">© 2026 #MAT</span>
-        <span id="net-status-badge" style="flex: 1; text-align: center; font-size: 0.72rem; padding: 2px 6px; border-radius: 10px; background: rgba(0,0,0,0.08); display: inline-block; width: auto; margin: 0 auto;">● Online</span>
-        <span class="footer-version" style="flex: 1; text-align: right;" onclick="handleVersionClick()">v3.9.10</span>
+        <div style="flex: 1; text-align: center; display: flex; justify-content: center; align-items: center; gap: 4px;">
+            <span id="net-status-badge" style="font-size: 0.72rem; padding: 2px 6px; border-radius: 10px; background: rgba(0,0,0,0.08); display: inline-block;">● Online</span>
+            <span id="footer-update-pill" onclick="applyAppUpdate()" title="Update jetzt installieren" style="display: none; font-size: 0.7rem; padding: 2px 7px; border-radius: 10px; background: #f59e0b; color: white; cursor: pointer; font-weight: bold; box-shadow: 0 1px 3px rgba(0,0,0,0.2);">🔄 Update</span>
+        </div>
+        <span class="footer-version" style="flex: 1; text-align: right;" onclick="handleVersionClick()">v4.0</span>
     </div>
 </div>
 
@@ -2173,7 +2176,7 @@
 <div class="admin-modal-overlay" id="adminAuthModal">
     <div class="admin-modal-content">
         <div class="admin-modal-header">
-            <span>Admin Authentifizierung (v3.9.10)</span>
+            <span>Admin Authentifizierung (v4.0)</span>
             <button type="button" class="modal-close-btn" style="color:var(--primary-color);" onclick="closeAdminModal('adminAuthModal')">✕</button>
         </div>
         <p style="font-size: 0.82rem; color: var(--subtext-color); margin-bottom: 12px;">Bitte die Admin-PIN eingeben:</p>
@@ -2205,6 +2208,13 @@
         <div class="form-group">
             <label>PIN für Techniker</label>
             <input type="password" id="newPin" placeholder="PIN eingeben" value="" style="width:100%; padding:8px; border:1px solid var(--border-color); border-radius:4px; background:var(--input-bg); color:var(--text-color);">
+        </div>
+
+        <div class="form-group">
+            <label style="display:flex; align-items:center; gap:8px; cursor:pointer; background:var(--input-bg); padding:8px; border:1px solid var(--border-color); border-radius:6px;">
+                <input type="checkbox" id="newAutoUpdate" checked style="width:18px; height:18px;">
+                <span>🚀 Auto-Updates erhalten (Empfohlen für Tester/Admin)</span>
+            </label>
         </div>
 
         <div class="form-group">
@@ -2305,6 +2315,7 @@
                     pinHash: await hashPin(u.pinHash),
                     status: u.status || 'active',
                     isAdmin: u.isAdmin || false,
+                    autoUpdate: u.autoUpdate !== undefined ? u.autoUpdate : (k === 'ADMIN' || k === 'MAT'),
                     modules: u.modules || []
                 };
             }
@@ -2354,12 +2365,14 @@
                         pinHash: adminHash,
                         status: 'active',
                         isAdmin: true,
+                        autoUpdate: true,
                         modules: [...ALL_MODULE_IDS]
                     },
                     "MAT": {
                         pinHash: matHash,
                         status: 'active',
                         isAdmin: false,
+                        autoUpdate: true,
                         modules: [...ALL_MODULE_IDS]
                     }
                 };
@@ -2413,6 +2426,7 @@
                 pinHash: "07062509",
                 status: "active",
                 isAdmin: true,
+                autoUpdate: true,
                 modules: [...ALL_MODULE_IDS]
             };
         }
@@ -2545,10 +2559,14 @@
             return;
         }
 
+        let allowUpdate = document.getElementById('newAutoUpdate') ? document.getElementById('newAutoUpdate').checked : true;
+        if (kuerzel === 'ADMIN') allowUpdate = true;
+
         dbUsers[kuerzel] = {
             pinHash: pHash,
             status: dbUsers[kuerzel] ? dbUsers[kuerzel].status : 'active',
             isAdmin: (kuerzel === 'ADMIN' || (dbUsers[kuerzel] ? dbUsers[kuerzel].isAdmin : false)),
+            autoUpdate: allowUpdate,
             modules: allowedModules
         };
 
@@ -2565,6 +2583,10 @@
         document.getElementById('newKuerzel').disabled = true;
         document.getElementById('newPin').value = '';
         document.getElementById('newPin').placeholder = "Neu (optional)";
+        if (document.getElementById('newAutoUpdate')) {
+            document.getElementById('newAutoUpdate').checked = u.autoUpdate !== false;
+            document.getElementById('newAutoUpdate').disabled = (k === 'ADMIN');
+        }
         document.getElementById('adminFormTitle').innerText = `Techniker ${k} bearbeiten`;
         document.getElementById('saveUserBtn').innerText = "Änderungen Speichern";
         document.getElementById('cancelEditBtn').style.display = "block";
@@ -2579,6 +2601,10 @@
         document.getElementById('newKuerzel').disabled = false;
         document.getElementById('newPin').value = '';
         document.getElementById('newPin').placeholder = "PIN eingeben";
+        if (document.getElementById('newAutoUpdate')) {
+            document.getElementById('newAutoUpdate').checked = true;
+            document.getElementById('newAutoUpdate').disabled = false;
+        }
         document.getElementById('adminFormTitle').innerText = "Neuen Techniker anlegen / anpassen";
         document.getElementById('saveUserBtn').innerText = "Techniker Speichern";
         document.getElementById('cancelEditBtn').style.display = "none";
@@ -2594,10 +2620,13 @@
             let u = dbUsers[k];
             let div = document.createElement('div');
             div.className = 'user-item';
+            let updBadge = (u.autoUpdate !== false) 
+                ? '<span style="color:#2e7d32; font-weight:bold;">🚀 Update: AN</span>' 
+                : '<span style="color:#d97706;">⏸️ Update: AUS</span>';
             div.innerHTML = `
                 <div>
                     <strong>${k}</strong> ${u.isAdmin ? '(Admin)' : ''} (${u.status === 'active' ? 'Freigeschaltet' : 'Gesperrt'})<br>
-                    <small style="color:var(--subtext-color);">Module: ${u.modules ? u.modules.length : 0}</small>
+                    <small style="color:var(--subtext-color);">Module: ${u.modules ? u.modules.length : 0} | ${updBadge}</small>
                 </div>
                 <div style="display:flex; gap:4px;">
                     <button type="button" class="admin-btn-sm admin-btn-primary" onclick="editUser('${k}')" style="background:#0288d1;">✏️</button>
@@ -2645,6 +2674,7 @@
     }
 
     function applyUserPermissions() {
+        evaluatePendingUpdate();
         if (!activeUser) {
             currentModules.forEach(m => m.userAllowed = true);
         } else {
@@ -2675,13 +2705,33 @@
     let waitingServiceWorker = null;
     let swRegistration = null;
     let userClickedUpdate = false;
+    let pendingUpdateWorker = null;
+
+    function isUserAllowedToUpdate() {
+        if (!activeUser || !dbUsers[activeUser]) return false;
+        if (dbUsers[activeUser].isAdmin) return true;
+        return dbUsers[activeUser].autoUpdate !== false;
+    }
+
+    function evaluatePendingUpdate() {
+        if (!pendingUpdateWorker) return;
+        if (isUserAllowedToUpdate()) {
+            waitingServiceWorker = pendingUpdateWorker;
+            const banner = document.getElementById('update-banner');
+            const pill = document.getElementById('footer-update-pill');
+            if (banner) banner.style.display = 'flex';
+            if (pill) pill.style.display = 'none';
+        } else {
+            const banner = document.getElementById('update-banner');
+            const pill = document.getElementById('footer-update-pill');
+            if (banner) banner.style.display = 'none';
+            if (pill) pill.style.display = 'none';
+        }
+    }
 
     function showUpdateBanner(worker) {
-        waitingServiceWorker = worker;
-        const banner = document.getElementById('update-banner');
-        if (banner) {
-            banner.style.display = 'flex';
-        }
+        pendingUpdateWorker = worker;
+        evaluatePendingUpdate();
     }
 
     async function applyAppUpdate() {
@@ -2692,6 +2742,9 @@
             btn.disabled = true;
         }
         try {
+            if (waitingServiceWorker) {
+                waitingServiceWorker.postMessage({ type: 'SKIP_WAITING' });
+            }
             if ('caches' in window) {
                 const cacheNames = await caches.keys();
                 await Promise.all(cacheNames.map(name => caches.delete(name)));
@@ -2710,16 +2763,20 @@
 
     function dismissAppUpdate() {
         const banner = document.getElementById('update-banner');
-        if (banner) {
-            banner.style.display = 'none';
-        }
+        const pill = document.getElementById('footer-update-pill');
+        if (banner) banner.style.display = 'none';
+        // Bleibt im Footer klickbar und ploppt beim nächsten Neustart wieder auf, da der Worker in 'waiting' bleibt
+        if (pill && isUserAllowedToUpdate()) pill.style.display = 'inline-block';
     }
 
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
-            navigator.serviceWorker.register('./sw.js')
+            navigator.serviceWorker.register('./sw.js', { updateViaCache: 'none' })
                 .then(reg => {
                     swRegistration = reg;
+                    // Aktiv nach Updates suchen beim Start
+                    reg.update().catch(() => {});
+
                     if (reg.waiting) {
                         showUpdateBanner(reg.waiting);
                     }
