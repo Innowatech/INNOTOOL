@@ -10,7 +10,7 @@
     <meta name="theme-color" content="#0d47a1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
-    <title>INNOWATΞCH Service Tool v4.2</title>
+    <title>INNOWATΞCH Service Tool v4.3</title>
     
     <!-- PWA / App Manifest -->
     <link rel="manifest" href="manifest.json">
@@ -2190,18 +2190,23 @@
             <span id="net-status-badge" style="font-size: 0.72rem; padding: 2px 6px; border-radius: 10px; background: rgba(0,0,0,0.08); display: inline-block;">● Online</span>
             <span id="footer-update-pill" onclick="applyAppUpdate()" title="Update jetzt installieren" style="display: none; font-size: 0.7rem; padding: 2px 7px; border-radius: 10px; background: #f59e0b; color: white; cursor: pointer; font-weight: bold; box-shadow: 0 1px 3px rgba(0,0,0,0.2);">🔄 Update</span>
         </div>
-        <span class="footer-version" style="flex: 1; text-align: right;" onclick="handleVersionClick()">v4.2</span>
+        <span class="footer-version" style="flex: 1; text-align: right;" onclick="handleVersionClick()">v4.3</span>
     </div>
 </div>
 
-<!-- Lightbox Vollbild-Vorschau für Screenshots -->
+<!-- Lightbox Vollbild-Vorschau für Screenshots mit Zoom -->
 <div class="image-lightbox-overlay" id="imageLightboxOverlay" onclick="closeImageLightbox(event)">
     <div class="image-lightbox-header" onclick="event.stopPropagation()">
         <span id="lightboxTitle">Vorschau</span>
+        <div class="lightbox-zoom-controls">
+            <button type="button" class="lightbox-zoom-btn" onclick="zoomLightbox(-0.25)">🔍-</button>
+            <button type="button" class="lightbox-zoom-btn" onclick="resetLightboxZoom()">100%</button>
+            <button type="button" class="lightbox-zoom-btn" onclick="zoomLightbox(0.25)">🔍+</button>
+        </div>
         <button type="button" class="image-lightbox-close" onclick="closeImageLightbox()">✕ Schließen</button>
     </div>
     <div class="image-lightbox-img-wrap" onclick="event.stopPropagation()">
-        <img id="lightboxImg" src="" alt="Screenshot Anleitung">
+        <img id="lightboxImg" src="" alt="Screenshot Anleitung" onclick="zoomLightbox(0.5)">
     </div>
     <div class="image-lightbox-caption" id="lightboxCaption" onclick="event.stopPropagation()"></div>
 </div>
@@ -2288,7 +2293,7 @@
 <div class="admin-modal-overlay" id="adminAuthModal">
     <div class="admin-modal-content">
         <div class="admin-modal-header">
-            <span>Admin Authentifizierung (v4.2)</span>
+            <span>Admin Authentifizierung (v4.3)</span>
             <button type="button" class="modal-close-btn" style="color:var(--primary-color);" onclick="closeAdminModal('adminAuthModal')">✕</button>
         </div>
         <p style="font-size: 0.82rem; color: var(--subtext-color); margin-bottom: 12px;">Bitte die Admin-PIN eingeben:</p>
@@ -2436,32 +2441,31 @@
 
         VEGA_STEPS_DATA.forEach((step, idx) => {
             const card = document.createElement('div');
-            card.className = 'vega-step-card';
+            card.className = 'vega-step-card open';
             card.id = 'vega-step-card-' + idx;
 
             const hasImg = step.imgKey && VEGA_GUIDE_IMAGES[step.imgKey];
             const imgBadgeHtml = hasImg 
-                ? `<button type="button" class="vega-img-badge" onclick="event.stopPropagation(); openVegaStepWithImage(${idx})">🖼️ Bild</button>` 
+                ? `<button type="button" class="vega-img-badge" onclick="event.stopPropagation(); openImageLightbox('${step.imgKey}', '${step.num}. ${step.title}', ${idx})">🖼️ Bild</button>` 
                 : '';
 
             const previewHtml = hasImg 
                 ? `<div class="vega-preview-box">
                        <img src="${VEGA_GUIDE_IMAGES[step.imgKey]}" alt="${step.title}" onclick="openImageLightbox('${step.imgKey}', '${step.num}. ${step.title}', ${idx})">
-                       <div class="vega-zoom-hint" onclick="openImageLightbox('${step.imgKey}', '${step.num}. ${step.title}', ${idx})">🔍 Screenshot vergrößern</div>
+                       <div class="vega-zoom-hint" onclick="openImageLightbox('${step.imgKey}', '${step.num}. ${step.title}', ${idx})">🔍 Screenshot vergrößern & zoomen</div>
                    </div>`
                 : '';
 
             card.innerHTML = `
-                <div class="vega-step-header" onclick="toggleVegaStep(${idx})">
+                <div class="vega-step-header" style="cursor: default;">
                     <div class="vega-step-title">
                         <span>${step.num}. ${step.title}</span>
                     </div>
                     <div class="vega-step-actions">
                         ${imgBadgeHtml}
-                        <span class="vega-step-chevron">▼</span>
                     </div>
                 </div>
-                <div class="vega-step-body">
+                <div class="vega-step-body" style="max-height: none !important; padding: 12px 14px !important; display: block !important;">
                     <div>${step.text}</div>
                     ${previewHtml}
                 </div>
@@ -2470,21 +2474,16 @@
         });
     }
 
-    function toggleVegaStep(idx) {
-        const card = document.getElementById('vega-step-card-' + idx);
-        if (!card) return;
-        card.classList.toggle('open');
-    }
-
-    function openVegaStepWithImage(idx) {
-        const card = document.getElementById('vega-step-card-' + idx);
-        if (card && !card.classList.contains('open')) {
-            card.classList.add('open');
-        }
-        const step = VEGA_STEPS_DATA[idx];
-        if (step && step.imgKey) {
-            openImageLightbox(step.imgKey, `${step.num}. ${step.title}`, idx);
-        }
+    function openImageLightbox(imgKey, title, stepIdx) {
+        const src = VEGA_GUIDE_IMAGES[imgKey];
+        if (!src) return;
+        document.getElementById('lightboxTitle').innerText = title;
+        document.getElementById('lightboxImg').src = src;
+        currentLightboxZoom = 1;
+        updateLightboxZoom();
+        const step = VEGA_STEPS_DATA[stepIdx];
+        document.getElementById('lightboxCaption').innerHTML = step ? step.text.replace(/<br>/g, ' • ') : '';
+        document.getElementById('imageLightboxOverlay').classList.add('open');
     }
 
     function openImageLightbox(imgKey, title, stepIdx) {
