@@ -534,24 +534,22 @@
             <button type="button" class="pdf-export-btn" onclick="clearServiceNotes()" style="flex:1; background:#c62828; border-color:#b71c1c; margin-top:0;">🗑️ Leeren</button>
         </div>
         <button type="button" class="pdf-export-btn" onclick="exportToPDF()" style="margin-top:8px;">📄 Service-Bericht als PDF drucken</button>
+        <button type="button" class="pdf-export-btn no-print" id="fault_toggle_btn" onclick="toggleFaultPanel()" style="margin-top:8px; background:linear-gradient(to bottom,#dc2626,#b91c1c); border-color:#991b1b;">✉️ E-Mail an INNOWATΞCH senden</button>
 
-        <div class="setting-section collapsed no-print" style="margin-top:14px; border-bottom:none;">
-            <div class="setting-section-title" onclick="this.closest('.setting-section').classList.toggle('collapsed')" style="color:#c62828;">🚨 Störmeldung an Hotline (service@innowatech.de)</div>
-            <div class="setting-section-content">
-                <div class="hint" style="margin-bottom:8px;">Die oben eingetragenen Service-Notizen werden automatisch komplett als Meldungstext übernommen.</div>
-                <div class="form-group"><label>Art / Dringlichkeit</label><div class="input-wrapper"><select id="fault_type"><option value="Störung (Anlage steht)">Störung (Anlage steht)</option><option value="Techn. Rückfrage">Techn. Rückfrage</option><option value="Ersatzteilbedarf">Ersatzteilbedarf</option></select></div></div>
-                <div class="form-group">
-                    <label>Fotos anhängen (optional)</label>
-                    <input type="file" id="fault_photos" accept="image/*" multiple style="display:none;" onchange="handleFaultPhotos(event)">
-                    <button type="button" class="reset-tab-btn" onclick="$('fault_photos').click()" style="margin-top:2px;">📷 Foto(s) aus Galerie / Kamera wählen</button>
-                    <div id="fault_photo_thumbs" class="photo-thumb-wrap"></div>
-                    <button type="button" class="reset-tab-btn" id="fault_copy_img_btn" onclick="copyActiveFaultPhoto()" style="display:none; margin-top:6px;">🖼️ Foto kopieren (für Strg+V in Mail)</button>
-                    <div class="hint" id="fault_photo_hint">Handy: Teilen-Menü inkl. Foto. PC/Laptop: E-Mail öffnen &amp; Foto über „Foto kopieren“ direkt per Strg+V einfügen.</div>
-                </div>
-                <div class="form-group"><label style="display:flex; align-items:center; gap:8px; cursor:pointer; background:var(--input-bg); padding:7px; border:1px solid var(--border-color); border-radius:6px; margin-bottom:0;"><input type="checkbox" id="fault_clear_after" onchange="localStorage.setItem('mat_fault_clear_after', this.checked)" style="width:17px; height:17px;"><span>Service-Notizen nach Versand automatisch leeren</span></label></div>
-                <button type="button" class="pdf-export-btn" id="fault_send_btn" onclick="sendFaultEmail()" style="background:linear-gradient(to bottom,#dc2626,#b91c1c); border-color:#991b1b;">✉️ E-Mail an service@innowatech.de</button>
-                <button type="button" class="reset-tab-btn" onclick="copyFaultReport()">📋 Störmeldung in Zwischenablage kopieren</button>
+        <div id="fault_panel" class="no-print" style="display:none; margin-top:10px; padding:12px; border:1px solid var(--border-color); border-radius:8px; background:var(--input-bg);">
+            <div class="hint" style="margin-bottom:8px;">Deine Service-Notizen werden automatisch komplett als E-Mail-Text übernommen.</div>
+            <div class="form-group"><label>Art / Dringlichkeit</label><div class="input-wrapper"><select id="fault_type"><option value="Störung (Anlage steht)">Störung (Anlage steht)</option><option value="Techn. Rückfrage">Techn. Rückfrage</option><option value="Ersatzteilbedarf">Ersatzteilbedarf</option></select></div></div>
+            <div class="form-group">
+                <label>Fotos anhängen (optional)</label>
+                <input type="file" id="fault_photos" accept="image/*" multiple style="display:none;" onchange="handleFaultPhotos(event)">
+                <button type="button" class="reset-tab-btn" onclick="$('fault_photos').click()" style="margin-top:2px;">📷 Foto(s) aus Galerie / Kamera wählen</button>
+                <div id="fault_photo_thumbs" class="photo-thumb-wrap"></div>
+                <button type="button" class="reset-tab-btn" id="fault_copy_img_btn" onclick="copyActiveFaultPhoto()" style="display:none; margin-top:6px;">🖼️ Foto kopieren (für Strg+V in Mail)</button>
+                <div class="hint" id="fault_photo_hint">Ohne Foto startet die Mail-App direkt ausgefüllt. Mit Foto öffnet das Teilen-Menü inkl. Bildanhang (Empfänger wird vorab kopiert).</div>
             </div>
+            <div class="form-group"><label style="display:flex; align-items:center; gap:8px; cursor:pointer; background:var(--card-bg); padding:7px; border:1px solid var(--border-color); border-radius:6px; margin-bottom:0;"><input type="checkbox" id="fault_clear_after" checked onchange="localStorage.setItem('mat_fault_clear_after', this.checked)" style="width:17px; height:17px;"><span>Service-Notizen nach Versand automatisch leeren</span></label></div>
+            <button type="button" class="pdf-export-btn" id="fault_send_btn" onclick="sendFaultEmail()" style="background:linear-gradient(to bottom,#dc2626,#b91c1c); border-color:#991b1b;">🚀 Jetzt absenden</button>
+            <button type="button" class="reset-tab-btn" onclick="copyFaultReport()">📋 Meldungstext kopieren</button>
         </div>
     </div>
 
@@ -1282,7 +1280,7 @@
             }
         } catch { currentModules = [...defaultModules]; }
         const notes = localStorage.getItem('mat_service_notes'); if (notes && $('service_notes_area')) $('service_notes_area').value = notes;
-        if ($('fault_clear_after')) $('fault_clear_after').checked = localStorage.getItem('mat_fault_clear_after') === 'true';
+        if ($('fault_clear_after')) $('fault_clear_after').checked = localStorage.getItem('mat_fault_clear_after') !== 'false';
         isLauncherActive = localStorage.getItem('mat_launcher_view') !== 'false'; isInToolFromLauncher = false;
         await loadUsersDatabase(); renderTabs(true); applyViewMode(); initCustomDropdowns();
         restoreTabInputs(); recalcAllModules(); syncWakeLock();
@@ -1598,6 +1596,10 @@
         faultActivePhotoIdx = Math.min(faultActivePhotoIdx, Math.max(0, faultPhotoFiles.length - 1));
         renderFaultPhotoThumbs();
     }
+    function toggleFaultPanel() {
+        const p = $('fault_panel'); if (!p) return;
+        p.style.display = p.style.display === 'none' ? 'block' : 'none';
+    }
     function renderFaultPhotoThumbs() {
         const wrap = $('fault_photo_thumbs'), btn = $('fault_send_btn'), copyBtn = $('fault_copy_img_btn');
         if (!wrap) return;
@@ -1621,8 +1623,8 @@
         }
         if (btn) {
             btn.innerText = faultPhotoFiles.length
-                ? `📤 Meldung + ${faultPhotoFiles.length} Foto(s) teilen (${HOTLINE_EMAIL})`
-                : `✉️ E-Mail an ${HOTLINE_EMAIL}`;
+                ? `📤 Jetzt mit ${faultPhotoFiles.length} Foto(s) teilen`
+                : '🚀 Jetzt absenden';
         }
     }
     function fileToPngBlob(file) {
@@ -1691,7 +1693,7 @@
                 await navigator.share({
                     files: faultPhotoFiles,
                     title: subject,
-                    text: `An: ${HOTLINE_EMAIL}\nBetreff: ${subject}\n\n${body}`
+                    text: `${subject}\n\n${body}`
                 });
                 clearAfterFaultSend();
                 return;
