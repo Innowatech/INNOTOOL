@@ -521,12 +521,13 @@
             <button type="button" class="snippet-chip" onclick="insertNoteSnippet(activeUser ? '👷 Mitarbeiter: ' + activeUser : '👷 Mitarbeiter:')">👷 Mitarbeiter</button>
             <button type="button" class="snippet-chip" onclick="insertNoteSnippet('👤 Kunde:')">👤 Kunde:</button>
             <button type="button" class="snippet-chip" onclick="insertNoteSnippet('🔢 Anlagen-SN:')">🔢 Anlagen-SN</button>
+            <button type="button" class="snippet-chip" onclick="insertNoteSnippet('📋 Einsatzgrund / Auftrag:')">📋 Einsatzgrund / Auftrag</button>
             <button type="button" class="snippet-chip" onclick="insertNoteSnippet('🛠️ Ersatzteil benötigt:')">🛠️ Ersatzteil benötigt</button>
             <button type="button" class="snippet-chip" onclick="insertNoteSnippet('📄 Reparaturangebot erstellen (Art.-Nr.):')">📄 Angebot erstellen</button>
             <button type="button" class="snippet-chip" onclick="insertNoteSnippet('📦 Verbrauchsmaterial bestellen:')">📦 Verbrauchsmaterial</button>
             <button type="button" class="snippet-chip" onclick="insertNoteSnippet('🧰 Nachorder Servicekoffer (Fehlteil):')">🧰 Nachorder Servicekoffer</button>
         </div>
-        <div class="form-group"><textarea id="service_notes_area" class="field-box" placeholder="Kunde, benötigte Ersatzteile, Verbrauchsmaterial, Koffer-Fehlteile festhalten..." style="height:170px; font-size:0.9rem; font-family:inherit;" oninput="saveServiceNotes()"></textarea><div id="pdf_notes_print_view"></div></div>
+        <div class="form-group"><textarea id="service_notes_area" class="field-box" placeholder="Kunde, Anlagen-SN, Einsatzgrund, benötigte Ersatzteile, Verbrauchsmaterial festhalten..." style="height:175px; font-size:0.9rem; font-family:inherit;" oninput="saveServiceNotes()"></textarea><div id="pdf_notes_print_view"></div></div>
         <div class="no-print" style="display:flex; gap:6px;">
             <button type="button" class="pdf-export-btn" onclick="copyServiceNotes()" style="flex:1; background:#1976d2; border-color:#1565c0; margin-top:0;">📋 Kopieren</button>
             <button type="button" class="pdf-export-btn" onclick="downloadServiceNotesTxt()" style="flex:1; background:#2e7d32; border-color:#1b5e20; margin-top:0;">💾 Download .txt</button>
@@ -534,32 +535,21 @@
         </div>
         <button type="button" class="pdf-export-btn" onclick="exportToPDF()" style="margin-top:8px;">📄 Service-Bericht als PDF drucken</button>
 
-        <div class="setting-section collapsed no-print" style="margin-top:14px;">
-            <div class="setting-section-title" onclick="this.closest('.setting-section').classList.toggle('collapsed')">📋 PDF-Berichtskopf (optional)</div>
+        <div class="setting-section collapsed no-print" style="margin-top:14px; border-bottom:none;">
+            <div class="setting-section-title" onclick="this.closest('.setting-section').classList.toggle('collapsed')" style="color:#c62828;">🚨 Störmeldung an Hotline (service@innowatech.de)</div>
             <div class="setting-section-content">
-                <div class="hint" style="margin-bottom:6px;">Alle Felder sind optional – ausgefüllte Angaben erscheinen oben auf jedem PDF-Ausdruck.</div>
-                <div class="form-group"><label>Kunde / Objekt (optional)</label><div class="input-wrapper"><input type="text" id="rep_kunde" placeholder="z. B. Stuttgart-Bosch" oninput="saveReportMeta()"></div></div>
-                <div class="form-group"><label>Anlagentyp / Aquadron (optional)</label><div class="input-wrapper"><input type="text" id="rep_anlage" placeholder="z. B. Aquadron ECO 3.2" oninput="saveReportMeta()"></div></div>
-                <div class="form-group"><label>Seriennummer (optional)</label><div class="input-wrapper"><input type="text" id="rep_sn" placeholder="z. B. 2025-1234" oninput="saveReportMeta()"></div></div>
-                <div class="form-group"><label>Einsatzgrund / Auftrag (optional)</label><div class="input-wrapper"><input type="text" id="rep_auftrag" placeholder="z. B. Wartung / Störung" oninput="saveReportMeta()"></div></div>
-                <button type="button" class="reset-tab-btn" onclick="clearReportMeta()">↺ Berichtskopf leeren</button>
-            </div>
-        </div>
-
-        <div class="setting-section collapsed no-print" style="border-bottom:none;">
-            <div class="setting-section-title" onclick="this.closest('.setting-section').classList.toggle('collapsed')" style="color:#c62828;">🚨 Störmeldung an Hotline (servicehotline@innowatech.de)</div>
-            <div class="setting-section-content">
+                <div class="hint" style="margin-bottom:8px;">Die oben eingetragenen Service-Notizen werden automatisch komplett als Meldungstext übernommen.</div>
                 <div class="form-group"><label>Art / Dringlichkeit</label><div class="input-wrapper"><select id="fault_type"><option value="Störung (Anlage steht)">Störung (Anlage steht)</option><option value="Techn. Rückfrage">Techn. Rückfrage</option><option value="Ersatzteilbedarf">Ersatzteilbedarf</option></select></div></div>
-                <div class="form-group"><label>Fehlercode / Fehlerbeschreibung</label><textarea id="fault_desc" class="field-box" placeholder="Symptom, Fehlercode, bisherige Messwerte..." style="height:85px; font-size:0.85rem; font-family:inherit;"></textarea></div>
                 <div class="form-group">
-                    <label>Fotos anhängen (optional, über Handy-Teilen)</label>
+                    <label>Fotos anhängen (optional)</label>
                     <input type="file" id="fault_photos" accept="image/*" multiple style="display:none;" onchange="handleFaultPhotos(event)">
                     <button type="button" class="reset-tab-btn" onclick="$('fault_photos').click()" style="margin-top:2px;">📷 Foto(s) aus Galerie / Kamera wählen</button>
                     <div id="fault_photo_thumbs" class="photo-thumb-wrap"></div>
-                    <div class="hint" id="fault_photo_hint">Ohne Foto startet die E-Mail-App direkt. Mit Foto nutzt das Handy das System-Teilen-Menü inkl. Bildanhang.</div>
+                    <button type="button" class="reset-tab-btn" id="fault_copy_img_btn" onclick="copyActiveFaultPhoto()" style="display:none; margin-top:6px;">🖼️ Foto kopieren (für Strg+V in Mail)</button>
+                    <div class="hint" id="fault_photo_hint">Handy: Teilen-Menü inkl. Foto. PC/Laptop: E-Mail öffnen &amp; Foto über „Foto kopieren“ direkt per Strg+V einfügen.</div>
                 </div>
-                <div class="form-group"><label style="display:flex; align-items:center; gap:8px; cursor:pointer; background:var(--input-bg); padding:7px; border:1px solid var(--border-color); border-radius:6px; margin-bottom:0;"><input type="checkbox" id="fault_include_notes" checked style="width:17px; height:17px;"><span>Aktuelle Service-Notizen automatisch anhängen</span></label></div>
-                <button type="button" class="pdf-export-btn" id="fault_send_btn" onclick="sendFaultEmail()" style="background:linear-gradient(to bottom,#dc2626,#b91c1c); border-color:#991b1b;">✉️ E-Mail an servicehotline@innowatech.de</button>
+                <div class="form-group"><label style="display:flex; align-items:center; gap:8px; cursor:pointer; background:var(--input-bg); padding:7px; border:1px solid var(--border-color); border-radius:6px; margin-bottom:0;"><input type="checkbox" id="fault_clear_after" onchange="localStorage.setItem('mat_fault_clear_after', this.checked)" style="width:17px; height:17px;"><span>Service-Notizen nach Versand automatisch leeren</span></label></div>
+                <button type="button" class="pdf-export-btn" id="fault_send_btn" onclick="sendFaultEmail()" style="background:linear-gradient(to bottom,#dc2626,#b91c1c); border-color:#991b1b;">✉️ E-Mail an service@innowatech.de</button>
                 <button type="button" class="reset-tab-btn" onclick="copyFaultReport()">📋 Störmeldung in Zwischenablage kopieren</button>
             </div>
         </div>
@@ -1064,15 +1054,15 @@
     function populatePdfHeader() {
         const mod = currentModules.find(m => m.id === currentActiveTab);
         txt('pdf_meta_datum', `${new Date().toLocaleDateString('de-DE')} ${new Date().toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' })}`);
-        const rows = [
-            ['Techniker', activeUser || '-'],
-            ['Modul', mod?.title || '-'],
-            ...[['Kunde / Objekt', $('rep_kunde')?.value.trim()], ['Anlage', $('rep_anlage')?.value.trim()], ['Seriennummer', $('rep_sn')?.value.trim()], ['Auftrag / Grund', $('rep_auftrag')?.value.trim()]].filter(([, v]) => v)
-        ];
+        const rows = [['Techniker', activeUser || '-'], ['Modul', mod?.title || '-']];
         $('pdf_meta_grid').innerHTML = rows.map(([k, v]) => `<div><strong>${k}:</strong> ${v.replace(/[<>&"]/g, c => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;' }[c]))}</div>`).join('');
         if ($('pdf_notes_print_view')) $('pdf_notes_print_view').textContent = $('service_notes_area')?.value.trim() || '(Keine Notizen eingetragen)';
     }
-    const exportToPDF = () => { populatePdfHeader(); window.print(); };
+    const exportToPDF = () => {
+        populatePdfHeader();
+        if (window.self !== window.top) showToast('Hinweis: Falls die Vorschau Drucken blockiert, oben rechts „Vollbild“ öffnen.');
+        window.print();
+    };
     const defaultModules = [
         { id: 'standard', title: 'Trinkwasser', icon: '💧', category: 'Anwendung', visible: true, userAllowed: true },
         { id: 'wasserwerk', title: 'Wasserwerk', icon: '🏢', category: 'Anwendung', visible: true, userAllowed: true },
@@ -1088,7 +1078,7 @@
         { id: 'auslitern', title: 'Ausliter-Hilfe', icon: '⏱️', category: 'Werkzeuge', visible: true, userAllowed: true },
         { id: 'notizen', title: 'Service-Notizen', icon: '📝', category: 'Werkzeuge', visible: true, userAllowed: true }
     ];
-    let currentModules = [...defaultModules], currentActiveTab = '', isLauncherActive = false, isInToolFromLauncher = false, showSliderIcons = true, showDashboardIcons = true;
+    let currentModules = [...defaultModules], currentActiveTab = '', isLauncherActive = true, isInToolFromLauncher = false, showSliderIcons = true, showDashboardIcons = true;
     const isMobileDevice = () => window.innerWidth <= 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
     function initCustomDropdowns() {
@@ -1135,7 +1125,7 @@
     let pinnedTabs = [], keepScreenAwake = false, timerBeepEnabled = true, wakeLockSentinel = null, audioCtx = null;
     const defaultTabInputs = {};
 
-    const isCalcInput = el => (el.tagName === 'INPUT' || el.tagName === 'SELECT') && el.id !== 'service_notes_area' && el.id !== 'fault_photos' && !el.id.startsWith('rep_') && !el.id.startsWith('fault_');
+    const isCalcInput = el => (el.tagName === 'INPUT' || el.tagName === 'SELECT') && el.id !== 'service_notes_area' && el.id !== 'fault_photos' && !el.id.startsWith('fault_');
     function captureTabDefaults() {
         document.querySelectorAll('.tab-content [id]').forEach(el => {
             if (isCalcInput(el)) defaultTabInputs[el.id] = el.type === 'checkbox' ? el.checked : el.value;
@@ -1292,8 +1282,8 @@
             }
         } catch { currentModules = [...defaultModules]; }
         const notes = localStorage.getItem('mat_service_notes'); if (notes && $('service_notes_area')) $('service_notes_area').value = notes;
-        loadReportMeta();
-        isLauncherActive = localStorage.getItem('mat_launcher_view') === 'true'; isInToolFromLauncher = false;
+        if ($('fault_clear_after')) $('fault_clear_after').checked = localStorage.getItem('mat_fault_clear_after') === 'true';
+        isLauncherActive = localStorage.getItem('mat_launcher_view') !== 'false'; isInToolFromLauncher = false;
         await loadUsersDatabase(); renderTabs(true); applyViewMode(); initCustomDropdowns();
         restoreTabInputs(); recalcAllModules(); syncWakeLock();
         const cont = document.querySelector('.container');
@@ -1588,97 +1578,134 @@
     function downloadServiceNotesTxt() {
         const text = $('service_notes_area')?.value || ''; if (!text.trim()) return showToast('Die Notiz ist leer.');
         const url = URL.createObjectURL(new Blob([text], { type: 'text/plain;charset=utf-8' })), a = document.createElement('a');
-        a.href = url; a.download = `Service_Notiz_${new Date().toISOString().slice(0, 10)}.txt`; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+        a.href = url; a.download = `Service_Notiz_${new Date().toISOString().slice(0, 10)}.txt`; document.body.appendChild(a); a.click(); a.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 1500);
+        showToast('Notizen als .txt heruntergeladen.');
     }
     async function clearServiceNotes() { if (await askConfirm('Alle Service-Notizen wirklich unwiderruflich löschen?')) { $('service_notes_area').value = ''; localStorage.removeItem('mat_service_notes'); } }
 
-    const REPORT_META_IDS = ['rep_kunde', 'rep_anlage', 'rep_sn', 'rep_auftrag'];
-    function saveReportMeta() {
-        const d = {}; REPORT_META_IDS.forEach(id => { d[id] = $(id)?.value || ''; });
-        localStorage.setItem('mat_report_meta', JSON.stringify(d));
-    }
-    function loadReportMeta() {
-        try {
-            const d = JSON.parse(localStorage.getItem('mat_report_meta') || '{}');
-            REPORT_META_IDS.forEach(id => { if ($(id) && typeof d[id] === 'string') $(id).value = d[id]; });
-        } catch {}
-    }
-    function clearReportMeta() {
-        REPORT_META_IDS.forEach(id => { if ($(id)) $(id).value = ''; });
-        localStorage.removeItem('mat_report_meta');
-        showToast('Berichtskopf geleert.');
-    }
-
-    let faultPhotoFiles = [];
+    const HOTLINE_EMAIL = 'service@innowatech.de';
+    let faultPhotoFiles = [], faultActivePhotoIdx = 0;
     function handleFaultPhotos(e) {
         const files = [...(e.target.files || [])];
         if (files.length) faultPhotoFiles = [...faultPhotoFiles, ...files].slice(0, 5);
+        faultActivePhotoIdx = Math.min(faultActivePhotoIdx, Math.max(0, faultPhotoFiles.length - 1));
         e.target.value = '';
         renderFaultPhotoThumbs();
     }
     function removeFaultPhoto(idx) {
         faultPhotoFiles.splice(idx, 1);
+        faultActivePhotoIdx = Math.min(faultActivePhotoIdx, Math.max(0, faultPhotoFiles.length - 1));
         renderFaultPhotoThumbs();
     }
     function renderFaultPhotoThumbs() {
-        const wrap = $('fault_photo_thumbs'), btn = $('fault_send_btn');
+        const wrap = $('fault_photo_thumbs'), btn = $('fault_send_btn'), copyBtn = $('fault_copy_img_btn');
         if (!wrap) return;
         wrap.innerHTML = '';
         faultPhotoFiles.forEach((f, idx) => {
             const box = document.createElement('div'); box.className = 'photo-thumb';
+            if (faultPhotoFiles.length > 1 && idx === faultActivePhotoIdx) box.style.outline = '2px solid var(--primary-color)';
+            box.style.cursor = faultPhotoFiles.length > 1 ? 'pointer' : 'default';
+            box.onclick = () => { if (faultPhotoFiles.length > 1) { faultActivePhotoIdx = idx; renderFaultPhotoThumbs(); } };
             const img = document.createElement('img');
             img.src = URL.createObjectURL(f); img.onload = () => URL.revokeObjectURL(img.src);
             const del = document.createElement('button'); del.type = 'button'; del.textContent = '✕';
-            del.onclick = () => removeFaultPhoto(idx);
+            del.onclick = e => { e.stopPropagation(); removeFaultPhoto(idx); };
             box.append(img, del); wrap.appendChild(box);
         });
+        if (copyBtn) {
+            copyBtn.style.display = faultPhotoFiles.length ? 'block' : 'none';
+            copyBtn.innerText = faultPhotoFiles.length > 1
+                ? `🖼️ Foto ${faultActivePhotoIdx + 1}/${faultPhotoFiles.length} kopieren (für Strg+V in Mail)`
+                : '🖼️ Foto kopieren (für Strg+V in Mail)';
+        }
         if (btn) {
             btn.innerText = faultPhotoFiles.length
-                ? `📤 Meldung + ${faultPhotoFiles.length} Foto(s) teilen (an Hotline)`
-                : '✉️ E-Mail an servicehotline@innowatech.de';
+                ? `📤 Meldung + ${faultPhotoFiles.length} Foto(s) teilen (${HOTLINE_EMAIL})`
+                : `✉️ E-Mail an ${HOTLINE_EMAIL}`;
+        }
+    }
+    function fileToPngBlob(file) {
+        return new Promise((resolve, reject) => {
+            const img = new Image(), url = URL.createObjectURL(file);
+            img.onload = () => {
+                const maxSide = 1920, scale = Math.min(1, maxSide / Math.max(img.width, img.height));
+                const c = document.createElement('canvas');
+                c.width = Math.max(1, Math.round(img.width * scale));
+                c.height = Math.max(1, Math.round(img.height * scale));
+                c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+                URL.revokeObjectURL(url);
+                c.toBlob(b => b ? resolve(b) : reject(new Error('PNG error')), 'image/png');
+            };
+            img.onerror = () => { URL.revokeObjectURL(url); reject(new Error('Load error')); };
+            img.src = url;
+        });
+    }
+    async function copyActiveFaultPhoto() {
+        const file = faultPhotoFiles[faultActivePhotoIdx] || faultPhotoFiles[0];
+        if (!file) return showToast('Bitte zuerst ein Foto auswählen.');
+        if (!navigator.clipboard?.write || typeof ClipboardItem === 'undefined') {
+            return showToast('Bild-Zwischenablage wird in diesem Browser nicht unterstützt – bitte per Büroklammer anhängen.');
+        }
+        try {
+            await navigator.clipboard.write([new ClipboardItem({ 'image/png': fileToPngBlob(file) })]);
+            showToast('Foto kopiert! In der Mail einfach Strg+V drücken.');
+        } catch {
+            try {
+                const blob = await fileToPngBlob(file);
+                await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
+                showToast('Foto kopiert! In der Mail einfach Strg+V drücken.');
+            } catch {
+                showToast('Kopieren vom Browser blockiert – bitte Foto direkt in der Mail einfügen.');
+            }
         }
     }
 
     function buildFaultPayload() {
         const type = $('fault_type')?.value || 'Störung';
-        const kunde = $('rep_kunde')?.value.trim() || '-';
-        const anlage = $('rep_anlage')?.value.trim() || '-';
-        const sn = $('rep_sn')?.value.trim() || '-';
-        const desc = $('fault_desc')?.value.trim() || '-';
-        const notes = $('fault_include_notes')?.checked ? ($('service_notes_area')?.value.trim() || '') : '';
+        const notes = $('service_notes_area')?.value.trim() || '';
+        const kMatch = notes.match(/Kunde:\s*([^\n]+)/i), snMatch = notes.match(/Anlagen-SN:\s*([^\n]+)/i);
+        const kTag = kMatch?.[1]?.trim(), snTag = snMatch?.[1]?.trim();
+        const extra = [kTag, snTag].filter(Boolean).join(' / ');
         const stamp = `${new Date().toLocaleDateString('de-DE')} ${new Date().toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' })}`;
-        const subject = `[INNOWATECH ${type}] ${anlage !== '-' ? anlage + ' / ' : ''}${kunde !== '-' ? kunde : 'Service-Meldung'} (${activeUser || 'Techniker'})`;
-        let body = `INNOWATΞCH Service-Meldung (${stamp})\n`
+        const subject = `[INNOWATECH ${type}] ${extra ? extra + ' ' : ''}(${activeUser || 'Techniker'})`;
+        const body = `INNOWATΞCH Service-Meldung (${stamp})\n`
             + `----------------------------------------\n`
             + `Art: ${type}\n`
-            + `Techniker: ${activeUser || '-'}\n`
-            + `Kunde / Objekt: ${kunde}\n`
-            + `Anlage: ${anlage}\n`
-            + `Seriennummer: ${sn}\n\n`
-            + `Fehlerbeschreibung / Symptom:\n${desc}\n`;
-        if (notes) body += `\nAktuelle Service-Notizen:\n${notes}\n`;
+            + `Techniker: ${activeUser || '-'}\n\n`
+            + `Service-Notizen / Meldung:\n${notes || '(Noch keine Notizen eingetragen)'}\n`;
         return { subject, body };
+    }
+    function clearAfterFaultSend() {
+        if (!$('fault_clear_after')?.checked) return;
+        if ($('service_notes_area')) $('service_notes_area').value = '';
+        localStorage.removeItem('mat_service_notes');
+        faultPhotoFiles = []; faultActivePhotoIdx = 0; renderFaultPhotoThumbs();
+        showToast('Meldung übergeben & Service-Notizen geleert.');
     }
     async function sendFaultEmail() {
         const { subject, body } = buildFaultPayload();
         if (faultPhotoFiles.length && navigator.canShare?.({ files: faultPhotoFiles })) {
+            try { await navigator.clipboard?.writeText(HOTLINE_EMAIL); showToast(`${HOTLINE_EMAIL} kopiert – einfach ins "An:"-Feld einfügen.`); } catch {}
             try {
                 await navigator.share({
                     files: faultPhotoFiles,
                     title: subject,
-                    text: `An: servicehotline@innowatech.de\nBetreff: ${subject}\n\n${body}`
+                    text: `An: ${HOTLINE_EMAIL}\nBetreff: ${subject}\n\n${body}`
                 });
+                clearAfterFaultSend();
                 return;
             } catch (err) {
                 if (err?.name === 'AbortError') return;
             }
         }
-        if (faultPhotoFiles.length) showToast('Hinweis: Über mailto können Browser keine Fotos anhängen – bitte Foto in der Mail manuell einfügen.');
-        window.location.href = `mailto:servicehotline@innowatech.de?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        if (faultPhotoFiles.length) showToast('Hinweis: Über mailto können Browser keine Fotos anhängen – bitte Foto über "Foto kopieren" einfügen.');
+        window.location.href = `mailto:${HOTLINE_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        clearAfterFaultSend();
     }
     function copyFaultReport() {
         const { subject, body } = buildFaultPayload();
-        const full = `An: servicehotline@innowatech.de\nBetreff: ${subject}\n\n${body}`;
+        const full = `An: ${HOTLINE_EMAIL}\nBetreff: ${subject}\n\n${body}`;
         navigator.clipboard?.writeText(full).then(() => showToast('Störmeldung kopiert!')).catch(() => showToast('Kopieren fehlgeschlagen.'));
     }
 
