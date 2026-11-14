@@ -8,8 +8,9 @@
     <meta name="apple-mobile-web-app-title" content="Innowatech">
     <meta name="theme-color" content="#0d47a1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>INNOWATΞCH Service Tool v4.6</title>
+    <title>INNOWATΞCH Service Tool v4.7</title>
     <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icon.png">
     <style>
         :root {
             --primary-color: #0d47a1; --secondary-color: #29b6f6; --bg-color: #f4f6f9; --card-bg: #ffffff;
@@ -35,6 +36,12 @@
         }
         body.screen-torch, body.screen-torch .container { background: #ffffff !important; color: #111111 !important; }
         body.screen-torch .section-title, body.screen-torch .hint { color: #111111 !important; }
+        body[data-theme="keller"] { --border-color: #0f172a; --subtext-color: #1e293b; }
+        body[data-theme="keller"].dark-mode { --border-color: #94a3b8; --subtext-color: #e2e8f0; --bg-color: #000000; --card-bg: #0f172a; --input-bg: #1e293b; }
+        body[data-theme="keller"] .input-wrapper, body[data-theme="keller"] .field-box, body[data-theme="keller"] .result-box, body[data-theme="keller"] .launcher-card, body[data-theme="keller"] .category-group { border-width: 2px; }
+        body[data-theme="keller"] .result-value { font-size: 1.15rem; font-weight: 800; }
+        body[data-theme="dezent"] { --cat-anwendung-bg: var(--card-bg); --cat-anwendung-border: #64748b; --cat-parameter-bg: var(--card-bg); --cat-parameter-border: #64748b; --cat-werkzeuge-bg: var(--card-bg); --cat-werkzeuge-border: #64748b; }
+        body[data-theme="dezent"] .category-title, body[data-theme="dezent"] .launcher-category-title { color: var(--primary-color) !important; border-color: var(--border-color) !important; }
         * { box-sizing: border-box; }
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: var(--bg-color); margin: 0; padding: calc(6px * var(--app-zoom)); color: var(--text-color); -webkit-tap-highlight-color: transparent; zoom: var(--app-zoom); }
         .container { max-width: 580px; margin: 0 auto; background: var(--card-bg); border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); position: relative; display: flex; flex-direction: column; min-height: calc(100vh - 12px); }
@@ -48,6 +55,7 @@
         .header-btn:active { transform: translateY(1px); }
         .view-toggle-btn { padding: 0 8px; font-size: 0.68rem; font-weight: bold; gap: 3px; }
         .settings-btn { width: 30px; font-size: 0.9rem; }
+        .header-btn.pinned-active { background: #f59e0b; border-color: #fde68a; }
         .santa-letter { position: relative; display: inline-block; }
         .santa-letter::before { content: "🎅"; position: absolute; top: -11px; left: -5px; font-size: 0.9rem; transform: rotate(-15deg); pointer-events: none; }
         .tab-bar-wrapper { background: var(--tab-bar-bg); border-bottom: 1px solid var(--border-color); position: sticky; top: 44px; z-index: 1500; overflow: hidden; padding: 5px 8px; }
@@ -111,6 +119,15 @@
         .alert-box { background: var(--alert-bg); border: 1px solid var(--alert-border); color: var(--alert-text); border-radius: 6px; padding: 10px; margin-top: 10px; font-size: 0.8rem; line-height: 1.38; }
         .pdf-export-btn { width: 100%; margin-top: 10px; padding: 9px 12px; background: linear-gradient(to bottom, #1976d2, #0d47a1); color: white; border: 1px solid #1565c0; border-radius: 6px; font-weight: bold; font-size: 0.82rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 3px 6px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.4); }
         .pdf-export-btn:active { transform: translateY(2px); }
+        .reset-tab-btn { width: 100%; margin-top: 8px; padding: 7px 10px; background: var(--input-bg); color: var(--subtext-color); border: 1px solid var(--border-color); border-radius: 6px; font-weight: 600; font-size: 0.78rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 5px; }
+        .reset-tab-btn:active { transform: translateY(1px); }
+        .pinned-bar { display: none; background: var(--result-bg); border-bottom: 1px solid var(--result-border); padding: 5px 8px; gap: 6px; overflow-x: auto; scrollbar-width: none; align-items: center; }
+        .pinned-bar.visible { display: flex; }
+        .pinned-bar::-webkit-scrollbar { display: none; }
+        .pin-chip { display: inline-flex; align-items: center; gap: 5px; padding: 4px 8px; border-radius: 999px; border: 1px solid var(--border-color); background: var(--card-bg); color: var(--text-color); font-size: 0.72rem; font-weight: 600; white-space: nowrap; cursor: pointer; flex-shrink: 0; }
+        .pin-chip.active { background: var(--primary-color); color: white; border-color: var(--primary-color); }
+        .pin-chip-close { opacity: 0.7; font-size: 0.75rem; padding-left: 2px; }
+        .pin-chip-close:hover { opacity: 1; }
         .section-title { font-size: 0.85rem; font-weight: bold; color: var(--primary-color); border-bottom: 2px solid var(--primary-color); padding-bottom: 2px; margin: 12px 0 8px; }
         .hint { font-size: 0.7rem; color: var(--subtext-color); margin-top: 2px; }
         .custom-select-trigger { width: 100%; border: none; background: transparent; padding: 7px 4px; font-size: 0.92rem; color: var(--text-color); text-align: left; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: flex; align-items: center; justify-content: space-between; }
@@ -145,7 +162,7 @@
         .image-lightbox-caption { color: #e2e8f0; font-size: 0.78rem; margin-top: 8px; text-align: center; max-width: 680px; }
         .footer { display: flex; justify-content: space-between; align-items: center; padding: 8px 10px; font-size: 0.78rem; font-weight: bold; color: var(--subtext-color); background: var(--footer-bg); border-top: 1px solid var(--border-color); user-select: none; margin-top: auto; border-radius: 0 0 12px 12px; }
         .footer-version { font-size: 0.7rem; color: var(--primary-color); cursor: pointer; padding: 4px 8px; }
-        .modal-overlay, .admin-modal-overlay, .app-login-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.65); z-index: 4500; justify-content: center; align-items: center; backdrop-filter: blur(3px); padding: 12px; overflow-y: auto; }
+        .modal-overlay, .admin-modal-overlay, .app-login-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.65); z-index: 5500; justify-content: center; align-items: center; backdrop-filter: blur(3px); padding: 12px; overflow-y: auto; }
         .modal-overlay { z-index: 2500; }
         .app-login-overlay { z-index: 5000; background: rgba(0,0,0,0.75); }
         .modal-overlay.open, .admin-modal-overlay.active, .app-login-overlay.active { display: flex; }
@@ -209,6 +226,13 @@
         <div class="form-group" style="text-align:left;"><label>Kürzel (z.B. MAT)</label><input type="text" id="appLoginUser" class="field-box" maxlength="5" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="z.B. MAT" style="text-transform:uppercase;"></div>
         <div class="form-group" style="text-align:left; margin-top:10px;"><label>PIN (Passwort)</label><input type="password" id="appLoginPin" class="field-box" autocomplete="new-password" placeholder="••••••••"></div>
         <button type="button" class="admin-btn admin-btn-primary" style="margin-top:15px;" onclick="performAppLogin()">Anmelden</button>
+        <div id="noUsersSetupBox" style="display:none; margin-top:14px; padding-top:12px; border-top:1px solid var(--border-color); text-align:left;">
+            <div class="hint" style="margin-bottom:8px;">Keine <code>users.json</code> gefunden. Für Test/Vorschau:</div>
+            <div style="display:flex; gap:6px;">
+                <button type="button" class="admin-btn admin-btn-success" style="margin-top:0; padding:8px; font-size:0.78rem;" onclick="openAdminSetupFromLogin()">⚙️ Admin-Konsole</button>
+                <label class="admin-btn" style="margin-top:0; padding:8px; font-size:0.78rem; background:#0288d1; text-align:center; cursor:pointer; display:flex; align-items:center; justify-content:center;">📂 users.json laden<input type="file" accept=".json,application/json" style="display:none;" onchange="importUsersJsonFile(event)"></label>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -223,8 +247,8 @@
 
     <div class="header">
         <div class="header-left"><button type="button" class="header-btn view-toggle-btn" id="view-toggle-btn" onclick="toggleMainView()" title="Ansicht umschalten"><span id="toggle-icon">田</span> <span id="toggle-text">Ansicht</span></button></div>
-        <div class="header-center"><h1 id="app-title"><span id="first-letter">I</span>NNOWATΞCH</h1><div class="header-sub">Service Tool</div></div>
-        <div class="header-right"><button type="button" class="header-btn settings-btn" onclick="openSettings()" title="Einstellungen">⚙️</button></div>
+        <div class="header-center"><h1 id="app-title"><span id="first-letter">I</span>NNOWATΞCH</h1><div class="header-sub" id="header-sub">Service Tool</div></div>
+        <div class="header-right"><button type="button" class="header-btn settings-btn" id="pin-tab-btn" onclick="togglePinCurrentTab()" title="Aktuellen Tab anheften (max. 5)" style="display:none;">📌</button><button type="button" class="header-btn settings-btn" onclick="openSettings()" title="Einstellungen">⚙️</button></div>
     </div>
 
     <div class="tab-bar-wrapper" id="tab-bar-wrapper">
@@ -233,6 +257,7 @@
         <div class="scroll-arrow right" id="scroll-arrow-right">►</div>
     </div>
 
+    <div class="pinned-bar" id="pinned-bar"></div>
     <div class="dashboard-back-bar" id="dashboard-back-bar"><button type="button" class="dashboard-back-btn" onclick="backToDashboard()">⬅️ Zurück zur Übersicht</button></div>
 
     <div class="launcher-view" id="launcher-view" onscroll="checkDashboardScroll(this)">
@@ -253,6 +278,7 @@
             <label>Erforderliche Dosiermenge</label><div class="result-value" id="std_res_menge">0.00 ml</div>
         </div>
         <button type="button" class="pdf-export-btn" onclick="exportToPDF()">📄 Als PDF speichern / drucken</button>
+        <button type="button" class="reset-tab-btn" onclick="resetTabInputs('standard')">↺ Eingaben zurücksetzen</button>
     </div>
 
     <div id="tab-wasserwerk" class="tab-content">
@@ -277,6 +303,7 @@
         <div class="form-group"><label>Soll-Dosierleistung der Pumpe bei 20 mA</label><div class="input-wrapper" style="opacity:0.85;"><input type="number" id="ww_res_pumpe_20ma" readonly placeholder="0.00"><span class="unit">l/h</span></div></div>
         <div class="result-box"><label>Proportionale Dosiermenge je m³ Wasser</label><div class="result-value" id="ww_res_l_pro_m3">0.00 l/m³</div></div>
         <button type="button" class="pdf-export-btn" onclick="exportToPDF()">📄 Als PDF speichern / drucken</button>
+        <button type="button" class="reset-tab-btn" onclick="resetTabInputs('wasserwerk')">↺ Eingaben zurücksetzen</button>
     </div>
 
     <div id="tab-schwimmbad" class="tab-content">
@@ -298,6 +325,7 @@
         <div class="form-group"><label>Säure- / Laugenstärke (z.B. Salzsäure)</label><div class="input-wrapper"><input type="number" id="pool_saeure_konz" step="1" placeholder="Standard: 20" oninput="calcPoolAll()"><span class="unit">%</span></div><div class="hint">Standard Salzsäure hat meist 15–25 %.</div></div>
         <div class="result-box"><label>Erforderliche Korrektur-Menge</label><div class="result-value" id="pool_res_ph">0 l / kg</div><div class="hint" id="pool_ph_hinweis" style="margin-top:5px; color:var(--result-label);">Werte eingeben.</div></div>
         <button type="button" class="pdf-export-btn" onclick="exportToPDF()">📄 Als PDF speichern / drucken</button>
+        <button type="button" class="reset-tab-btn" onclick="resetTabInputs('schwimmbad')">↺ Eingaben zurücksetzen</button>
     </div>
 
     <div id="tab-pid" class="tab-content">
@@ -323,6 +351,7 @@
         </div>
         <div class="alert-box" id="hinweis_text">Bitte Werte des Praxistests eingeben, um die Regler-Parameter zu berechnen.</div>
         <button type="button" class="pdf-export-btn" onclick="exportToPDF()">📄 Als PDF speichern / drucken</button>
+        <button type="button" class="reset-tab-btn" onclick="resetTabInputs('pid')">↺ Eingaben zurücksetzen</button>
     </div>
 
     <div id="tab-verdünnung" class="tab-content">
@@ -351,12 +380,14 @@
         <div class="form-group" style="margin-top:10px;"><label>Gemessener Hanna-Wert (abgelesen)</label><div class="input-wrapper" style="background:var(--result-bg); border-color:var(--result-border);"><input type="number" id="verd_messwert" step="0.1" placeholder="z. B. 385.0" oninput="calcVerduennung()"><span class="unit">mg/l</span></div></div>
         <div class="result-box" style="background:rgba(46,125,50,0.1); border-color:#a5d6a7;"><label style="color:#2e7d32;">Errechneter Wirkstoffgehalt im Anolyte:</label><div class="result-value" id="verd_res_final" style="color:#2e7d32; font-size:1.25rem;">0.0 mg/l</div></div>
         <div class="alert-box" id="verd_hinweis_box">Werte werden berechnet...</div>
+        <button type="button" class="reset-tab-btn" onclick="resetTabInputs('verdünnung')">↺ Eingaben zurücksetzen</button>
     </div>
 
     <div id="tab-sonden" class="tab-content">
         <div class="section-title">Sondentyp Auswählen (mit RV1)</div>
         <div class="form-group"><label>Sondentyp</label><div class="input-wrapper"><select id="sonden_select" onchange="updateSondenData()"><option value="">-- Bitte Sondentyp wählen --</option></select></div></div>
         <div class="result-box"><label>Messbereich mit RV1:</label><div class="result-value" id="sond_res_mess_rv1">-</div><label style="margin-top:6px;">Steilheit mit RV1 (bei pH 7,2):</label><div class="result-value" id="sond_res_steilheit_rv1">-</div></div>
+        <button type="button" class="reset-tab-btn" onclick="resetTabInputs('sonden')">↺ Auswahl zurücksetzen</button>
     </div>
 
     <div id="tab-anlagen" class="tab-content">
@@ -370,6 +401,7 @@
             <div class="result-row"><span class="result-label">Sollwert Produktion</span><span class="result-value" id="An_SollProd">-</span></div>
             <div class="result-row"><span class="result-label">Sollwert Pause</span><span class="result-value" id="An_SollPause">-</span></div>
         </div>
+        <button type="button" class="reset-tab-btn" onclick="resetTabInputs('anlagen')">↺ Auswahl zurücksetzen</button>
     </div>
 
     <div id="tab-radar" class="tab-content">
@@ -381,6 +413,7 @@
         <div class="hint" style="margin-bottom:8px;">Tippe auf einen Menüpunkt für Details & Original-Screenshot (für die parallele Eingabe in der VEGA Tools App):</div>
         <div id="vega-steps-container"></div>
         <button type="button" class="pdf-export-btn" onclick="exportToPDF()">📄 Als PDF speichern / drucken</button>
+        <button type="button" class="reset-tab-btn" onclick="resetTabInputs('radar')">↺ Eingaben zurücksetzen</button>
     </div>
 
     <div id="tab-enthaerter" class="tab-content">
@@ -401,6 +434,7 @@
             <div class="result-row"><span class="result-label">Sole nachfüllen</span><span class="result-value" id="enth_sole_nachf">-</span></div>
         </div>
         <button type="button" class="pdf-export-btn" onclick="exportToPDF()">📄 Als PDF speichern / drucken</button>
+        <button type="button" class="reset-tab-btn" onclick="resetTabInputs('enthaerter')">↺ Auswahl zurücksetzen</button>
     </div>
 
     <div id="tab-taschenlampe" class="tab-content">
@@ -451,7 +485,7 @@
             <span id="net-status-badge" style="font-size:0.72rem; padding:2px 6px; border-radius:10px; background:rgba(0,0,0,0.08);">● Online</span>
             <span id="footer-update-pill" onclick="applyAppUpdate()" title="Update jetzt installieren" style="display:none; font-size:0.7rem; padding:2px 7px; border-radius:10px; background:#f59e0b; color:white; cursor:pointer; font-weight:bold;">🔄 Update</span>
         </div>
-        <span class="footer-version" style="flex:1; text-align:right;" onclick="handleVersionClick()">v4.6</span>
+        <span class="footer-version" style="flex:1; text-align:right;" onclick="handleVersionClick()">v4.7</span>
     </div>
 </div>
 
@@ -470,8 +504,16 @@
                 <div class="setting-section-title" onclick="toggleSettingSection(this)">Erscheinungsbild & Icons</div>
                 <div class="setting-section-content">
                     <div class="toggle-row"><span>Dunkelmodus</span><input type="checkbox" id="darkmode-toggle" onchange="toggleDarkMode(this.checked)"></div>
+                    <div class="form-group" style="margin-top:6px;"><label style="font-size:0.78rem;">Optik-Profil</label><select id="theme-profile-select" class="field-box" style="padding:6px 8px; font-size:0.84rem;" onchange="changeThemeProfile(this.value)"><option value="klassik">INNOWATΞCH Klassik (Standard)</option><option value="keller">Keller-Hochkontrast</option><option value="dezent">Dezent / Monochrom</option></select></div>
                     <div class="toggle-row"><span>Icons in Schiebeleiste anzeigen</span><input type="checkbox" id="icons-slider-toggle" onchange="toggleSliderIcons(this.checked)"></div>
                     <div class="toggle-row"><span>Icons im Dashboard anzeigen</span><input type="checkbox" id="icons-dashboard-toggle" onchange="toggleDashboardIcons(this.checked)"></div>
+                </div>
+            </div>
+            <div class="setting-section collapsed">
+                <div class="setting-section-title" onclick="toggleSettingSection(this)">Keller-Komfort & Timer</div>
+                <div class="setting-section-content">
+                    <div class="toggle-row"><span>Display wach halten (Wake Lock)</span><input type="checkbox" id="wakelock-toggle" onchange="toggleKeepAwake(this.checked)"></div>
+                    <div class="toggle-row"><span>Signalton bei Timer-Ende</span><input type="checkbox" id="beep-toggle" onchange="toggleTimerBeep(this.checked)"></div>
                 </div>
             </div>
             <div class="setting-section collapsed">
@@ -505,7 +547,7 @@
 
 <div class="admin-modal-overlay" id="adminAuthModal">
     <div class="admin-modal-content">
-        <div class="admin-modal-header"><span>Admin Authentifizierung (v4.6)</span><button type="button" class="modal-close-btn" style="color:var(--primary-color);" onclick="closeAdminModal('adminAuthModal')">✕</button></div>
+        <div class="admin-modal-header"><span>Admin Authentifizierung (v4.7)</span><button type="button" class="modal-close-btn" style="color:var(--primary-color);" onclick="closeAdminModal('adminAuthModal')">✕</button></div>
         <p style="font-size:0.82rem; color:var(--subtext-color); margin-bottom:12px;">Bitte die Admin-PIN eingeben:</p>
         <div class="form-group"><label>Admin-PIN</label><input type="password" id="adminPin8" class="field-box" value="" autocomplete="new-password" placeholder="••••••••" style="letter-spacing:2px;"></div>
         <button type="button" class="admin-btn admin-btn-primary" style="margin-top:10px;" onclick="verifyAdminAuth8()">Admin Console öffnen</button>
@@ -776,13 +818,30 @@
     }
     function checkAuthGuard() {
         const hasUsers = Object.keys(dbUsers).length > 0;
-        if (hasUsers && (!activeUser || !dbUsers[activeUser] || dbUsers[activeUser].status !== 'active')) {
+        const setupBox = $('noUsersSetupBox'); if (setupBox) setupBox.style.display = hasUsers ? 'none' : 'block';
+        if (!activeUser || !dbUsers[activeUser] || dbUsers[activeUser].status !== 'active') {
             $('appLoginUser').value = ''; $('appLoginPin').value = '';
             $('appLoginOverlay').classList.add('active');
         } else {
             $('appLoginOverlay').classList.remove('active');
             applyUserPermissions();
         }
+    }
+    function openAdminSetupFromLogin() { renderUserList(); renderAdminModuleCheckboxes(); openAdminModal('adminConsoleModal'); }
+    function importUsersJsonFile(e) {
+        const file = e.target.files?.[0]; if (!file) return;
+        const reader = new FileReader();
+        reader.onload = async () => {
+            try {
+                const raw = JSON.parse(String(reader.result || '{}')), out = {};
+                for (const k in raw) {
+                    const u = raw[k];
+                    out[k] = { pinHash: await hashPin(u.pinHash), status: u.status || 'active', isAdmin: !!u.isAdmin, autoUpdate: u.autoUpdate !== undefined ? u.autoUpdate : (k === 'ADMIN' || k === 'MAT'), modules: u.modules || [] };
+                }
+                dbUsers = out; saveUsersToLocalStorage(); checkAuthGuard(); showToast(`users.json geladen (${Object.keys(dbUsers).length} Benutzer).`);
+            } catch { showToast('Ungültige users.json Datei!'); }
+        };
+        reader.readAsText(file); e.target.value = '';
     }
     async function performAppLogin() {
         const u = $('appLoginUser').value.trim().toUpperCase(), p = $('appLoginPin').value.trim();
@@ -853,11 +912,13 @@
     async function deleteUser(k) { if (k !== 'ADMIN' && await askConfirm(`Techniker ${k} wirklich löschen?`)) { delete dbUsers[k]; saveUsersToLocalStorage(); renderUserList(); } }
     function performLogout(keepModals = false) {
         activeUser = null; localStorage.removeItem('innowatech_active_user'); localStorage.removeItem('innowatech_active_session_data');
+        txt('header-sub', 'Service Tool');
         if (!keepModals) closeAdminModal('adminConsoleModal'); checkAuthGuard();
     }
     function performLogoutFromSettings() { closeSettings(); performLogout(true); }
     function applyUserPermissions() {
         evaluatePendingUpdate();
+        txt('header-sub', activeUser ? `Service Tool · ${activeUser}` : 'Service Tool');
         if (!activeUser || !Object.keys(dbUsers).length) currentModules.forEach(m => m.userAllowed = true);
         else {
             const u = dbUsers[activeUser], wk = ['taschenlampe', 'schlauchvolumen', 'auslitern', 'notizen'];
@@ -867,7 +928,7 @@
                 else m.userAllowed = (activeUser === 'MAT' && wk.includes(m.id)) || !!u.modules?.includes(m.id);
             });
         }
-        renderTabs(); if (isLauncherActive) renderLauncherGrid();
+        renderTabs(); if (isLauncherActive) renderLauncherGrid(); renderPinnedBar();
     }
     const openAdminModal = id => $(id).classList.add('active'), closeAdminModal = id => $(id).classList.remove('active');
 
@@ -882,13 +943,15 @@
     }
     function showUpdateBanner(w) { pendingUpdateWorker = w; evaluatePendingUpdate(); }
     async function applyAppUpdate() {
+        if (!isUserAllowedToUpdate()) return;
         userClickedUpdate = true; const b = $('btn-install-update');
         if (b) { b.innerText = 'Aktualisiere...'; b.disabled = true; }
-        try {
-            if (waitingServiceWorker) waitingServiceWorker.postMessage({ type: 'SKIP_WAITING' });
-            if ('caches' in window) { const keys = await caches.keys(); await Promise.all(keys.map(n => caches.delete(n))); }
-        } catch {}
-        window.location.href = window.location.href.split('?')[0] + '?t=' + Date.now();
+        if (waitingServiceWorker) {
+            waitingServiceWorker.postMessage({ type: 'SKIP_WAITING' });
+            setTimeout(() => window.location.reload(), 1500);
+        } else {
+            window.location.href = window.location.href.split('?')[0] + '?t=' + Date.now();
+        }
     }
     function dismissAppUpdate() { $('update-banner').style.display = 'none'; if (isUserAllowedToUpdate()) $('footer-update-pill').style.display = 'inline-block'; }
     if ('serviceWorker' in navigator) {
@@ -966,12 +1029,145 @@
     }
     function closeCustomDropdown(e) { if (!e || e.target.id === 'dropdown-modal') $('dropdown-modal').classList.remove('open'); }
 
+    let pinnedTabs = [], keepScreenAwake = false, timerBeepEnabled = true, wakeLockSentinel = null, audioCtx = null;
+    const defaultTabInputs = {};
+
+    function captureTabDefaults() {
+        document.querySelectorAll('.tab-content [id]').forEach(el => {
+            if ((el.tagName === 'INPUT' || el.tagName === 'SELECT') && el.id !== 'service_notes_area') defaultTabInputs[el.id] = el.value;
+        });
+    }
+    function refreshDropdownTriggers(scope = document) {
+        scope.querySelectorAll('.input-wrapper select').forEach(sel => {
+            const tr = sel.parentElement?.querySelector('.custom-select-trigger');
+            if (tr) tr.innerText = sel.options[sel.selectedIndex]?.text || 'Bitte wählen...';
+        });
+    }
+    function recalcAllModules() {
+        calcStandard(); updateFromM3Tag(); calcWasserwerk(); calcPoolAll(); calcVerduennung();
+        berechnePID(); calcSchlauch(); calcAusliter(); updateSondenData(); updateAnlagenData();
+        updateRadarTankDefaults(); updateEnthaerterData();
+    }
+    function saveTabInputs() {
+        const data = {};
+        document.querySelectorAll('.tab-content [id]').forEach(el => {
+            if ((el.tagName === 'INPUT' || el.tagName === 'SELECT') && el.id !== 'service_notes_area') data[el.id] = el.value;
+        });
+        localStorage.setItem('mat_calc_inputs', JSON.stringify(data));
+    }
+    function restoreTabInputs() {
+        try {
+            const saved = JSON.parse(localStorage.getItem('mat_calc_inputs') || '{}');
+            Object.entries(saved).forEach(([id, v]) => {
+                const el = $(id);
+                if (el && (el.tagName === 'INPUT' || el.tagName === 'SELECT') && id !== 'service_notes_area') el.value = v;
+            });
+            refreshDropdownTriggers();
+        } catch {}
+    }
+    function resetTabInputs(tabId) {
+        const root = $('tab-' + tabId); if (!root) return;
+        root.querySelectorAll('[id]').forEach(el => {
+            if ((el.tagName === 'INPUT' || el.tagName === 'SELECT') && el.id in defaultTabInputs) el.value = defaultTabInputs[el.id];
+        });
+        refreshDropdownTriggers(root);
+        recalcAllModules();
+        saveTabInputs();
+        showToast('Eingaben zurückgesetzt.');
+    }
+
+    async function syncWakeLock() {
+        const need = keepScreenAwake || !!ausliterInterval || !!flashStream || isScreenTorchOn;
+        if (!('wakeLock' in navigator)) return;
+        try {
+            if (need && !wakeLockSentinel && document.visibilityState === 'visible') {
+                wakeLockSentinel = await navigator.wakeLock.request('screen');
+                wakeLockSentinel.addEventListener?.('release', () => { wakeLockSentinel = null; });
+            } else if (!need && wakeLockSentinel) {
+                await wakeLockSentinel.release(); wakeLockSentinel = null;
+            }
+        } catch {}
+    }
+    document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') syncWakeLock(); });
+    function toggleKeepAwake(on) { keepScreenAwake = on; localStorage.setItem('mat_keep_awake', on); syncWakeLock(); }
+    function toggleTimerBeep(on) { timerBeepEnabled = on; localStorage.setItem('mat_timer_beep', on); if (on) { unlockAudio(); playBeep(1); } }
+    function unlockAudio() {
+        try {
+            const Ctx = window.AudioContext || window.webkitAudioContext; if (!Ctx) return;
+            if (!audioCtx) audioCtx = new Ctx();
+            if (audioCtx.state === 'suspended') audioCtx.resume().catch(() => {});
+        } catch {}
+    }
+    function playBeep(count = 3) {
+        try {
+            unlockAudio(); if (!audioCtx) return;
+            const now = audioCtx.currentTime;
+            for (let i = 0; i < count; i++) {
+                const osc = audioCtx.createOscillator(), gain = audioCtx.createGain();
+                osc.type = 'sine'; osc.frequency.value = 880;
+                const t0 = now + i * 0.24;
+                gain.gain.setValueAtTime(0.001, t0);
+                gain.gain.exponentialRampToValueAtTime(0.28, t0 + 0.02);
+                gain.gain.exponentialRampToValueAtTime(0.001, t0 + 0.16);
+                osc.connect(gain); gain.connect(audioCtx.destination);
+                osc.start(t0); osc.stop(t0 + 0.18);
+            }
+        } catch {}
+    }
+    function changeThemeProfile(p, save = true) {
+        const prof = ['klassik', 'keller', 'dezent'].includes(p) ? p : 'klassik';
+        document.body.dataset.theme = prof;
+        if ($('theme-profile-select')) $('theme-profile-select').value = prof;
+        if (save) localStorage.setItem('mat_theme_profile', prof);
+    }
+
+    function updatePinButton() {
+        const btn = $('pin-tab-btn'); if (!btn) return;
+        const show = !!currentActiveTab && (!isLauncherActive || isInToolFromLauncher);
+        btn.style.display = show ? 'flex' : 'none';
+        btn.classList.toggle('pinned-active', show && pinnedTabs.includes(currentActiveTab));
+    }
+    function togglePinCurrentTab() {
+        if (!currentActiveTab) return;
+        const idx = pinnedTabs.indexOf(currentActiveTab);
+        if (idx >= 0) { pinnedTabs.splice(idx, 1); showToast('Tab gelöst.'); }
+        else {
+            if (pinnedTabs.length >= 5) return showToast('Maximal 5 Tabs anpinnbar – bitte erst einen lösen.');
+            pinnedTabs.push(currentActiveTab); showToast('Tab angepinnt (' + pinnedTabs.length + '/5).');
+        }
+        localStorage.setItem('mat_pinned_tabs', JSON.stringify(pinnedTabs));
+        renderPinnedBar(); updatePinButton();
+    }
+    function unpinTab(id, e) {
+        e?.stopPropagation();
+        pinnedTabs = pinnedTabs.filter(x => x !== id);
+        localStorage.setItem('mat_pinned_tabs', JSON.stringify(pinnedTabs));
+        renderPinnedBar(); updatePinButton();
+    }
+    function openPinnedTab(id) {
+        if (isLauncherActive && !isInToolFromLauncher) isInToolFromLauncher = true;
+        applyViewMode(); switchTab(id);
+    }
+    function renderPinnedBar() {
+        const bar = $('pinned-bar'); if (!bar) return;
+        const allowed = pinnedTabs.map(id => currentModules.find(m => m.id === id && m.visible && m.userAllowed)).filter(Boolean);
+        const toolOpen = !isLauncherActive || isInToolFromLauncher;
+        bar.classList.toggle('visible', allowed.length > 0);
+        bar.innerHTML = allowed.map(m =>
+            `<div class="pin-chip${toolOpen && m.id === currentActiveTab ? ' active' : ''}" onclick="openPinnedTab('${m.id}')"><span>${m.icon || '🛠️'} ${m.title}</span><span class="pin-chip-close" onclick="unpinTab('${m.id}',event)" title="Lösen">✕</span></div>`
+        ).join('');
+    }
+
     async function loadSettings() {
         $('first-letter').classList.toggle('santa-letter', new Date().getMonth() === 11);
-        populateDbSelects(); renderVegaSteps();
+        populateDbSelects(); renderVegaSteps(); captureTabDefaults();
         const isDark = localStorage.getItem('mat_darkmode') === 'true';
         document.body.classList.toggle('dark-mode', isDark); $('darkmode-toggle').checked = isDark;
         if (localStorage.getItem('mat_darkmode') === null) localStorage.setItem('mat_darkmode', 'false');
+        changeThemeProfile(localStorage.getItem('mat_theme_profile') || 'klassik', false);
+        keepScreenAwake = localStorage.getItem('mat_keep_awake') === 'true'; if ($('wakelock-toggle')) $('wakelock-toggle').checked = keepScreenAwake;
+        timerBeepEnabled = localStorage.getItem('mat_timer_beep') !== 'false'; if ($('beep-toggle')) $('beep-toggle').checked = timerBeepEnabled;
+        try { const pt = JSON.parse(localStorage.getItem('mat_pinned_tabs') || '[]'); if (Array.isArray(pt)) pinnedTabs = pt.slice(0, 5); } catch {}
         showSliderIcons = localStorage.getItem('mat_show_slider_icons') !== 'false'; $('icons-slider-toggle').checked = showSliderIcons;
         showDashboardIcons = localStorage.getItem('mat_show_dashboard_icons') !== 'false'; $('icons-dashboard-toggle').checked = showDashboardIcons;
         const z = Math.min(1.2, parseFloat(localStorage.getItem('mat_zoom') || '1'));
@@ -987,6 +1183,9 @@
         const notes = localStorage.getItem('mat_service_notes'); if (notes && $('service_notes_area')) $('service_notes_area').value = notes;
         isLauncherActive = localStorage.getItem('mat_launcher_view') === 'true'; isInToolFromLauncher = false;
         await loadUsersDatabase(); renderTabs(true); applyViewMode(); initCustomDropdowns();
+        restoreTabInputs(); recalcAllModules(); syncWakeLock();
+        const cont = document.querySelector('.container');
+        ['input', 'change'].forEach(ev => cont?.addEventListener(ev, e => { if (e.target.closest('.tab-content')) saveTabInputs(); }));
     }
     const saveSettings = () => localStorage.setItem('mat_modules', JSON.stringify(currentModules));
     const toggleDarkMode = on => { document.body.classList.toggle('dark-mode', on); localStorage.setItem('mat_darkmode', on); };
@@ -1008,6 +1207,7 @@
             const vis = currentModules.filter(m => m.visible && m.userAllowed);
             if (currentActiveTab) switchTab(currentActiveTab); else if (vis.length) switchTab(vis[0].id);
         }
+        updatePinButton(); renderPinnedBar();
     }
     function renderLauncherGrid() {
         const grids = { Anwendung: $('launcher-grid-anwendung'), Parameter: $('launcher-grid-parameter'), Werkzeuge: $('launcher-grid-werkzeuge') };
@@ -1065,6 +1265,7 @@
         const b = $('btn-' + name), c = $('tab-' + name);
         if (b) { b.classList.add('active'); b.scrollIntoView({ behavior: 'smooth', inline: 'nearest', block: 'nearest' }); }
         if (c && (!isLauncherActive || isInToolFromLauncher)) c.classList.add('active');
+        updatePinButton(); renderPinnedBar();
     }
 
     function openSettings() { renderModuleManager(); $('settings-modal').classList.add('open'); setTimeout(() => checkSettingsScroll($('settings-modal-body')), 50); }
@@ -1143,29 +1344,33 @@
             document.body.classList.toggle('screen-torch', isScreenTorchOn);
             isScreenTorchOn ? setOn('💡 Bildschirm-Notlicht Ausschalten') : setOff();
         }
+        syncWakeLock();
     }
 
     function calcSchlauch() {
         const mlM = Math.PI * Math.pow(val('schlauch_d') / 2, 2), ges = mlM * val('schlauch_l');
         txt('res_schlauch_m', mlM.toFixed(2) + ' ml/m'); txt('res_schlauch_ges', `${ges.toFixed(2)} ml (${(ges / 1000).toFixed(3)} l)`);
     }
-    const resetSchlauch = () => { $('schlauch_d').value = ''; $('schlauch_l').value = ''; calcSchlauch(); };
+    const resetSchlauch = () => { $('schlauch_d').value = ''; $('schlauch_l').value = ''; calcSchlauch(); saveTabInputs(); showToast('Eingaben zurückgesetzt.'); };
 
     let ausliterInterval = null, timerEndTs = 0, timeLeft = 60;
     function updateTimerDisplay() { txt('timer_display', `${String(Math.floor(timeLeft / 60)).padStart(2, '0')}:${String(timeLeft % 60).padStart(2, '0')}`); }
     function startAusliterTimer() {
         clearInterval(ausliterInterval); timeLeft = 60; timerEndTs = Date.now() + 60000; updateTimerDisplay();
+        unlockAudio();
         ausliterInterval = setInterval(() => {
             timeLeft = Math.max(0, Math.ceil((timerEndTs - Date.now()) / 1000)); updateTimerDisplay();
             if (timeLeft <= 0) {
-                clearInterval(ausliterInterval); ausliterInterval = null;
+                clearInterval(ausliterInterval); ausliterInterval = null; syncWakeLock();
+                if (timerBeepEnabled) playBeep(3);
                 navigator.vibrate?.([300, 100, 300]); showToast('⏱️ 60 Sekunden abgelaufen! Aufgefangene ml eingeben.');
             }
         }, 250);
+        syncWakeLock();
     }
-    const stopAusliterTimer = () => { clearInterval(ausliterInterval); ausliterInterval = null; };
+    const stopAusliterTimer = () => { clearInterval(ausliterInterval); ausliterInterval = null; syncWakeLock(); };
     const calcAusliter = () => txt('res_ausliter_lh', ((val('ausliter_ml') * 60) / 1000).toFixed(2) + ' l/h');
-    const resetAusliter = () => { stopAusliterTimer(); timeLeft = 60; updateTimerDisplay(); $('ausliter_ml').value = ''; calcAusliter(); };
+    const resetAusliter = () => { stopAusliterTimer(); timeLeft = 60; updateTimerDisplay(); $('ausliter_ml').value = ''; calcAusliter(); saveTabInputs(); showToast('Eingaben zurückgesetzt.'); };
 
     const saveServiceNotes = () => { const a = $('service_notes_area'); if (a) localStorage.setItem('mat_service_notes', a.value); };
     function addNoteTimestamp() {
@@ -1321,7 +1526,7 @@
         } else { txt('pool_res_ph', '0 l / kg'); txt('pool_ph_hinweis', 'pH-Wert im Zielbereich oder unvollständig.'); }
     }
 
-    loadSettings(); calcStandard(); calcWasserwerk(); calcPoolAll(); calcVerduennung();
+    loadSettings();
 </script>
 </body>
 </html>
