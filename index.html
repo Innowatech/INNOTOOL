@@ -8,7 +8,7 @@
     <meta name="apple-mobile-web-app-title" content="Innowatech">
     <meta name="theme-color" content="#0d47a1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>INNOWATΞCH Service Tool v4.7</title>
+    <title>INNOWATΞCH Service Tool v4.8</title>
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="icon.png">
     <style>
@@ -121,6 +121,9 @@
         .pdf-export-btn:active { transform: translateY(2px); }
         .reset-tab-btn { width: 100%; margin-top: 8px; padding: 7px 10px; background: var(--input-bg); color: var(--subtext-color); border: 1px solid var(--border-color); border-radius: 6px; font-weight: 600; font-size: 0.78rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 5px; }
         .reset-tab-btn:active { transform: translateY(1px); }
+        .seg-group { display: flex; gap: 6px; margin-bottom: 10px; }
+        .seg-btn { flex: 1; padding: 7px 6px; border: 1.5px solid var(--border-color); border-radius: 6px; background: var(--input-bg); color: var(--text-color); font-size: 0.78rem; font-weight: bold; cursor: pointer; text-align: center; transition: all 0.12s; }
+        .seg-btn.active { background: var(--primary-color); color: white; border-color: var(--primary-color); }
         .pinned-bar { display: none; background: var(--result-bg); border-bottom: 1px solid var(--result-border); padding: 5px 8px; gap: 6px; overflow-x: auto; scrollbar-width: none; align-items: center; }
         .pinned-bar.visible { display: flex; }
         .pinned-bar::-webkit-scrollbar { display: none; }
@@ -188,9 +191,8 @@
         .module-list-item.dragging { opacity: 0.4; background: var(--result-bg); }
         .module-list-item-left { display: flex; align-items: center; gap: 6px; flex: 1; min-width: 0; }
         .module-label-text { line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .move-btns { display: flex; align-items: center; gap: 3px; flex-shrink: 0; }
-        .move-btn { border: 1px solid var(--border-color); background: var(--card-bg); color: var(--text-color); border-radius: 4px; padding: 2px 6px; font-size: 0.72rem; cursor: pointer; }
-        .drag-handle { font-size: 0.95rem; color: var(--subtext-color); cursor: grab; padding: 0 3px; }
+        .drag-handle { font-size: 1.05rem; color: var(--subtext-color); cursor: grab; padding: 3px 8px; touch-action: none; user-select: none; flex-shrink: 0; }
+        .drag-handle:active { cursor: grabbing; }
         .zoom-slider-container { display: flex; align-items: center; gap: 8px; }
         .zoom-slider-container input { flex: 1; }
         .admin-modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 8px; margin-bottom: 12px; color: var(--primary-color); font-weight: bold; }
@@ -337,19 +339,17 @@
         <div class="form-group"><label>Gemessener Chlor-Anstieg (ΔY)</label><div class="input-wrapper"><input type="number" id="chlor_diff" step="0.01" placeholder="z. B. 0.35" oninput="berechnePID()"><span class="unit">mg/l</span></div><div class="hint">Maximaler Chlor-Endwert im Test minus Ausgangswert.</div></div>
         <div class="form-group"><label>Totzeit (Tu) - Zeit bis zum 1. Anstieg</label><div class="input-wrapper"><input type="number" id="zeit_tu" step="1" placeholder="z. B. 30" oninput="berechnePID()"><span class="unit">s</span></div><div class="hint">Sekunden von Pumpenstart bis die Sonde von 0,00 auf 0,01 steigt.</div></div>
         <div class="form-group"><label>Anstiegszeit (Tg) - Bis zum Höchstwert</label><div class="input-wrapper"><input type="number" id="zeit_tg" step="1" placeholder="z. B. 120" oninput="berechnePID()"><span class="unit">s</span></div><div class="hint">Sekunden vom ersten Anstieg bis zum stabilen Endwert.</div></div>
-        <div class="form-group" id="pid_kalt_durchfluss_gruppe"><label>Wasserdurchfluss im Messblock</label><div class="input-wrapper"><input type="number" id="pid_wasser_lsek" step="0.01" min="0" placeholder="z. B. 40" oninput="berechnePID()"><span class="unit">l/s</span></div><div class="hint">Tatsächlicher Durchfluss während des Kaltwasser-Sprungversuchs. Dient zur Plausibilitätsprüfung des gemessenen Chloranstiegs.</div></div>
         <div class="form-group" id="pid_grundwert_gruppe" style="display:none;"><label>Erwarteter Restchlorgehalt vor Nachdosierung</label><div class="input-wrapper"><input type="number" id="chlor_grundwert" step="0.01" min="0" placeholder="z. B. 0.10" oninput="berechnePID()"><span class="unit">mg/l</span></div><div class="hint">Erwarteter freier Chlorrest im Speicher-/Zirkulationsrücklauf vor der zusätzlichen Dosierung. Kein Sollwert.</div></div>
         <div class="form-group" id="pid_sollwert_gruppe" style="display:none;"><label>Gewünschter Chlor-Sollwert</label><div class="input-wrapper"><input type="number" id="chlor_sollwert" step="0.01" min="0" placeholder="z. B. 0.25" oninput="berechnePID()"><span class="unit">mg/l</span></div><div class="hint">Wird nur für Warmwasser kombiniert benötigt. Daraus wird eine vorsichtige Grunddosierung mit zunächst 0,075 mg/l Abstand vorgeschlagen.</div></div>
-        <div class="section-title">3. Empfohlene Regler-Parameter für MMC</div>
+        <div class="section-title">3. Empfohlene Regler-Parameter & Volumenstrom-Rückrechnung</div>
         <div class="result-box">
             <div class="result-row"><span class="result-label">Proportionalverstärkung P (0 - 10%)</span><span class="result-value" id="res_p">-- %</span></div>
             <div class="result-row"><span class="result-label">Nachstellzeit I (Tn)</span><span class="result-value" id="res_i">-- s</span></div>
             <div class="result-row"><span class="result-label">Empfohlene Totzone</span><span class="result-value" id="res_totband">-- mg/l</span></div>
             <div class="result-row" id="pid_grunddosierung_ergebnis" style="display:none;"><span class="result-label">Empfohlene Grunddosierung</span><span class="result-value" id="res_grunddosierung">-- mg/l</span></div>
-            <div class="result-row" id="pid_durchfluss_ergebnis" style="display:none;"><span class="result-label">Effektiver Zirkulationsvolumenstrom (Näherung)</span><span class="result-value" id="res_eff_durchfluss">-- l/s</span></div>
-            <div class="result-row" id="pid_plausi_ergebnis" style="display:none;"><span class="result-label">Theoretischer Chloranstieg bei eingegebenem Durchfluss</span><span class="result-value" id="res_theorie_chlor">-- mg/l</span></div>
+            <div class="result-row" id="pid_durchfluss_ergebnis" style="display:none;"><span class="result-label" id="pid_durchfluss_label">Errechneter Volumenstrom (Hauptleitung)</span><span class="result-value" id="res_eff_durchfluss">-- l/s</span></div>
         </div>
-        <div class="alert-box" id="hinweis_text">Bitte Werte des Praxistests eingeben, um die Regler-Parameter zu berechnen.</div>
+        <div class="alert-box" id="hinweis_text">Bitte Werte des Praxistests eingeben, um Regler-Parameter und Volumenstrom zu berechnen.</div>
         <button type="button" class="pdf-export-btn" onclick="exportToPDF()">📄 Als PDF speichern / drucken</button>
         <button type="button" class="reset-tab-btn" onclick="resetTabInputs('pid')">↺ Eingaben zurücksetzen</button>
     </div>
@@ -433,8 +433,18 @@
             <div class="result-row"><span class="result-label">Schnellspülen</span><span class="result-value" id="enth_schnellspuelen">-</span></div>
             <div class="result-row"><span class="result-label">Sole nachfüllen</span><span class="result-value" id="enth_sole_nachf">-</span></div>
         </div>
+        <div class="section-title">3. Kundenhärte, 80-%-Sensor & Doppelflaschen-Ratio</div>
+        <div class="form-group"><label>Rohwasserhärte beim Kunden</label><div class="input-wrapper"><input type="number" id="enth_haerte" step="0.5" min="0" placeholder="z. B. 18" oninput="updateEnthaerterData()"><span class="unit">°dH</span></div><div class="hint">Der Quellharz-Sensor schaltet bei ca. 20 % Restharz (80 % nutzbare Kapazität).</div></div>
+        <div class="form-group"><label>Angeschlossene Aquadron (Optional für Ratio)</label><div class="input-wrapper"><select id="enth_anlage_select" onchange="applyEnthAquadronFlow()"><option value="">-- Optional: Aquadron-Anlage wählen --</option></select></div></div>
+        <div class="form-group"><label>Durchfluss während F1-Regeneration (Optional)</label><div class="input-wrapper"><input type="number" id="enth_flow_lh" step="1" min="0" placeholder="z. B. 40" oninput="updateEnthaerterData()"><span class="unit">l/h</span></div></div>
+        <div class="result-box">
+            <div class="result-row"><span class="result-label">Nutzkapazität (80 % wg. Sensor)</span><span class="result-value" id="enth_res_kap80">-</span></div>
+            <div class="result-row"><span class="result-label">Enthärtete Menge bis Reg. (F1)</span><span class="result-value" id="enth_res_liter">-</span></div>
+            <div class="result-row"><span class="result-label">Überwachungs-Ratio (F1 : F2)</span><span class="result-value" id="enth_res_ratio">-</span></div>
+        </div>
+        <div class="alert-box" id="enth_ratio_hint">Modell und Rohwasserhärte eingeben, um Liter bis zur Regeneration zu berechnen.</div>
         <button type="button" class="pdf-export-btn" onclick="exportToPDF()">📄 Als PDF speichern / drucken</button>
-        <button type="button" class="reset-tab-btn" onclick="resetTabInputs('enthaerter')">↺ Auswahl zurücksetzen</button>
+        <button type="button" class="reset-tab-btn" onclick="resetTabInputs('enthaerter')">↺ Eingaben zurücksetzen</button>
     </div>
 
     <div id="tab-taschenlampe" class="tab-content">
@@ -444,25 +454,46 @@
     </div>
 
     <div id="tab-schlauchvolumen" class="tab-content">
-        <div class="section-title">📏 Schlauchvolumen-Rechner</div>
+        <div class="section-title">📏 Schlauchvolumen & Verweilzeit</div>
         <div class="form-group"><label>Innendurchmesser (dᵢ)</label><div class="input-wrapper"><input type="number" id="schlauch_d" step="0.5" placeholder="z. B. 4, 6, 8, 12" oninput="calcSchlauch()"><span class="unit">mm</span></div></div>
-        <div class="form-group"><label>Schlauchlänge (L)</label><div class="input-wrapper"><input type="number" id="schlauch_l" step="0.1" placeholder="z. B. 3.5" oninput="calcSchlauch()"><span class="unit">m</span></div></div>
+        <div class="form-group"><label>Schlauchlänge (L)</label><div class="input-wrapper"><input type="number" id="schlauch_l" step="0.1" placeholder="z. B. 50 oder 200" oninput="calcSchlauch()"><span class="unit">m</span></div></div>
+        <div class="form-group"><label style="display:flex; align-items:center; gap:8px; cursor:pointer; background:var(--input-bg); padding:8px; border:1px solid var(--border-color); border-radius:6px; margin-bottom:0;"><input type="checkbox" id="schlauch_pump_enable" onchange="calcSchlauch()" style="width:17px; height:17px;"><span>⏱️ Pumpenleistung / Vorlaufzeit berechnen</span></label></div>
+        <div class="form-group" id="schlauch_pump_group" style="display:none;"><label>Förderleistung Dosierpumpe</label><div class="input-wrapper"><input type="number" id="schlauch_pump_lh" step="0.5" min="0" placeholder="z. B. 40" oninput="calcSchlauch()"><span class="unit">l/h</span></div></div>
         <div class="result-box">
-            <div class="result-row"><span class="result-label">Volumen pro Meter</span><span class="result-value" id="res_schlauch_m">0.00 ml/m</span></div>
-            <div class="result-row"><span class="result-label">Gesamtvolumen</span><span class="result-value" id="res_schlauch_ges">0.00 ml (0.000 l)</span></div>
+            <div class="result-row"><span class="result-label">Volumen pro Meter</span><span class="result-value" id="res_schlauch_m">0.00 l/m</span></div>
+            <div class="result-row"><span class="result-label">Gesamtvolumen im Schlauch</span><span class="result-value" id="res_schlauch_ges">0.00 l</span></div>
+            <div class="result-row" id="schlauch_time_row" style="display:none;"><span class="result-label">Vorpump- / Ankunftszeit</span><span class="result-value" id="res_schlauch_zeit">--</span></div>
         </div>
+        <div class="alert-box" id="schlauch_pump_hint" style="display:none;"></div>
         <button type="button" class="pdf-export-btn" onclick="resetSchlauch()" style="background:#757575; border-color:#616161; margin-top:8px;">🔄 Reset</button>
     </div>
 
     <div id="tab-auslitern" class="tab-content">
-        <div class="section-title">⏱️ Ausliter-Hilfe (60s Timer)</div>
+        <div class="section-title">⏱️ Ausliter-Hilfe (Elektrolyse)</div>
+        <input type="hidden" id="ausliter_medium" value="katholyte">
+        <input type="hidden" id="ausliter_sec" value="60">
+        <div class="seg-group" id="ausliter_medium_btns">
+            <button type="button" class="seg-btn active" data-val="katholyte" onclick="setAusliterMedium('katholyte')">Katholyte</button>
+            <button type="button" class="seg-btn" data-val="anolyte" onclick="setAusliterMedium('anolyte')">Anolyte</button>
+            <button type="button" class="seg-btn" data-val="beides" onclick="setAusliterMedium('beides')">Beides</button>
+        </div>
+        <div class="seg-group" id="ausliter_sec_btns">
+            <button type="button" class="seg-btn" data-val="15" onclick="setAusliterSec(15)">15 s</button>
+            <button type="button" class="seg-btn" data-val="30" onclick="setAusliterSec(30)">30 s</button>
+            <button type="button" class="seg-btn active" data-val="60" onclick="setAusliterSec(60)">60 s</button>
+        </div>
         <div class="result-box" style="text-align:center; background:var(--input-bg);"><div class="result-label">Countdown</div><div class="result-value" id="timer_display" style="font-size:2.2rem; color:var(--primary-color);">01:00</div></div>
         <div style="display:flex; gap:8px; margin-top:10px;">
-            <button type="button" class="pdf-export-btn" onclick="startAusliterTimer()" style="background:#2e7d32; border-color:#1b5e20; margin-top:0;">▶ Start (60s)</button>
+            <button type="button" id="ausliter_start_btn" class="pdf-export-btn" onclick="startAusliterTimer()" style="background:#2e7d32; border-color:#1b5e20; margin-top:0;">▶ Start (60s)</button>
             <button type="button" class="pdf-export-btn" onclick="stopAusliterTimer()" style="background:#c62828; border-color:#b71c1c; margin-top:0;">⏹ Stopp</button>
         </div>
-        <div class="form-group" style="margin-top:12px;"><label>Aufgefangene Menge nach 1 Minute</label><div class="input-wrapper"><input type="number" id="ausliter_ml" step="1" placeholder="z. B. 250" oninput="calcAusliter()"><span class="unit">ml</span></div></div>
-        <div class="result-box"><div class="result-row"><span class="result-label">Resultierender Durchfluss</span><span class="result-value" id="res_ausliter_lh" style="font-size:1.2rem;">0.00 l/h</span></div></div>
+        <div class="form-group" id="ausliter_kath_group" style="margin-top:12px;"><label id="ausliter_kath_label">Aufgefangenes Katholyte (nach 60s)</label><div class="input-wrapper"><input type="number" id="ausliter_kath_ml" step="1" placeholder="z. B. 700" oninput="calcAusliter()"><span class="unit">ml</span></div></div>
+        <div class="form-group" id="ausliter_anol_group" style="display:none; margin-top:8px;"><label id="ausliter_anol_label">Aufgefangenes Anolyte (nach 60s)</label><div class="input-wrapper"><input type="number" id="ausliter_anol_ml" step="1" placeholder="z. B. 650" oninput="calcAusliter()"><span class="unit">ml</span></div></div>
+        <div class="result-box">
+            <div class="result-row" id="ausliter_res_kath_row"><span class="result-label">Katholyte-Leistung</span><span class="result-value" id="res_ausliter_kath_lh" style="font-size:1.2rem;">0.0 l/h</span></div>
+            <div class="result-row" id="ausliter_res_anol_row" style="display:none;"><span class="result-label">Anolyte-Leistung</span><span class="result-value" id="res_ausliter_anol_lh" style="font-size:1.2rem;">0.0 l/h</span></div>
+            <div class="result-row" id="ausliter_res_ges_row" style="display:none;"><span class="result-label">Gesamt-Elektrolyse</span><span class="result-value" id="res_ausliter_ges_lh" style="font-size:1.2rem;">0.0 l/h</span></div>
+        </div>
         <button type="button" class="pdf-export-btn" onclick="resetAusliter()" style="background:#757575; border-color:#616161; margin-top:8px;">🔄 Reset (Timer & Werte)</button>
     </div>
 
@@ -485,7 +516,7 @@
             <span id="net-status-badge" style="font-size:0.72rem; padding:2px 6px; border-radius:10px; background:rgba(0,0,0,0.08);">● Online</span>
             <span id="footer-update-pill" onclick="applyAppUpdate()" title="Update jetzt installieren" style="display:none; font-size:0.7rem; padding:2px 7px; border-radius:10px; background:#f59e0b; color:white; cursor:pointer; font-weight:bold;">🔄 Update</span>
         </div>
-        <span class="footer-version" style="flex:1; text-align:right;" onclick="handleVersionClick()">v4.7</span>
+        <span class="footer-version" style="flex:1; text-align:right;" onclick="handleVersionClick()">v4.8</span>
     </div>
 </div>
 
@@ -510,7 +541,7 @@
                 </div>
             </div>
             <div class="setting-section collapsed">
-                <div class="setting-section-title" onclick="toggleSettingSection(this)">Keller-Komfort & Timer</div>
+                <div class="setting-section-title" onclick="toggleSettingSection(this)">Komfort & Timer</div>
                 <div class="setting-section-content">
                     <div class="toggle-row"><span>Display wach halten (Wake Lock)</span><input type="checkbox" id="wakelock-toggle" onchange="toggleKeepAwake(this.checked)"></div>
                     <div class="toggle-row"><span>Signalton bei Timer-Ende</span><input type="checkbox" id="beep-toggle" onchange="toggleTimerBeep(this.checked)"></div>
@@ -525,15 +556,15 @@
             </div>
             <div class="setting-section collapsed">
                 <div class="setting-section-title" onclick="toggleSettingSection(this)" style="color:#0d47a1;">Kategorie: Anwendung (Sortieren / Aktivieren)</div>
-                <div class="setting-section-content"><div class="hint" style="margin-bottom:6px;">Haken = aktiv | ↑/↓ oder ☰ = Reihenfolge ändern</div><div id="active-list-anwendung"></div></div>
+                <div class="setting-section-content"><div class="hint" style="margin-bottom:6px;">Haken = aktiv | ☰ halten & ziehen = Reihenfolge ändern</div><div id="active-list-anwendung"></div></div>
             </div>
             <div class="setting-section collapsed">
                 <div class="setting-section-title" onclick="toggleSettingSection(this)" style="color:#1b5e20;">Kategorie: Parameter (Sortieren / Aktivieren)</div>
-                <div class="setting-section-content"><div class="hint" style="margin-bottom:6px;">Haken = aktiv | ↑/↓ oder ☰ = Reihenfolge ändern</div><div id="active-list-parameter"></div></div>
+                <div class="setting-section-content"><div class="hint" style="margin-bottom:6px;">Haken = aktiv | ☰ halten & ziehen = Reihenfolge ändern</div><div id="active-list-parameter"></div></div>
             </div>
             <div class="setting-section collapsed">
                 <div class="setting-section-title" onclick="toggleSettingSection(this)" style="color:#ca8a04;">Kategorie: Werkzeuge (Sortieren / Aktivieren)</div>
-                <div class="setting-section-content"><div class="hint" style="margin-bottom:6px;">Haken = aktiv | ↑/↓ oder ☰ = Reihenfolge ändern</div><div id="active-list-werkzeuge"></div></div>
+                <div class="setting-section-content"><div class="hint" style="margin-bottom:6px;">Haken = aktiv | ☰ halten & ziehen = Reihenfolge ändern</div><div id="active-list-werkzeuge"></div></div>
             </div>
             <div class="setting-section collapsed">
                 <div class="setting-section-title" onclick="toggleSettingSection(this)" style="opacity:0.8;">Inaktive Module</div>
@@ -547,7 +578,7 @@
 
 <div class="admin-modal-overlay" id="adminAuthModal">
     <div class="admin-modal-content">
-        <div class="admin-modal-header"><span>Admin Authentifizierung (v4.7)</span><button type="button" class="modal-close-btn" style="color:var(--primary-color);" onclick="closeAdminModal('adminAuthModal')">✕</button></div>
+        <div class="admin-modal-header"><span>Admin Authentifizierung (v4.8)</span><button type="button" class="modal-close-btn" style="color:var(--primary-color);" onclick="closeAdminModal('adminAuthModal')">✕</button></div>
         <p style="font-size:0.82rem; color:var(--subtext-color); margin-bottom:12px;">Bitte die Admin-PIN eingeben:</p>
         <div class="form-group"><label>Admin-PIN</label><input type="password" id="adminPin8" class="field-box" value="" autocomplete="new-password" placeholder="••••••••" style="letter-spacing:2px;"></div>
         <button type="button" class="admin-btn admin-btn-primary" style="margin-top:10px;" onclick="verifyAdminAuth8()">Admin Console öffnen</button>
@@ -705,6 +736,7 @@
         const fill = (id, db) => { const s = $(id); if (!s) return; Object.entries(db).forEach(([k, v]) => s.add(new Option(v.label, k))); };
         fill('sonden_select', sondenDatabase); fill('anlagen_select', anlagenDatabase);
         fill('radar_tankvol', radarTankDatabase); fill('enthaerter_select', enthaerterDatabase);
+        fill('enth_anlage_select', anlagenDatabase);
     }
 
     function renderVegaSteps() {
@@ -1034,7 +1066,9 @@
 
     function captureTabDefaults() {
         document.querySelectorAll('.tab-content [id]').forEach(el => {
-            if ((el.tagName === 'INPUT' || el.tagName === 'SELECT') && el.id !== 'service_notes_area') defaultTabInputs[el.id] = el.value;
+            if ((el.tagName === 'INPUT' || el.tagName === 'SELECT') && el.id !== 'service_notes_area') {
+                defaultTabInputs[el.id] = el.type === 'checkbox' ? el.checked : el.value;
+            }
         });
     }
     function refreshDropdownTriggers(scope = document) {
@@ -1044,6 +1078,7 @@
         });
     }
     function recalcAllModules() {
+        syncAusliterButtons();
         calcStandard(); updateFromM3Tag(); calcWasserwerk(); calcPoolAll(); calcVerduennung();
         berechnePID(); calcSchlauch(); calcAusliter(); updateSondenData(); updateAnlagenData();
         updateRadarTankDefaults(); updateEnthaerterData();
@@ -1051,7 +1086,9 @@
     function saveTabInputs() {
         const data = {};
         document.querySelectorAll('.tab-content [id]').forEach(el => {
-            if ((el.tagName === 'INPUT' || el.tagName === 'SELECT') && el.id !== 'service_notes_area') data[el.id] = el.value;
+            if ((el.tagName === 'INPUT' || el.tagName === 'SELECT') && el.id !== 'service_notes_area') {
+                data[el.id] = el.type === 'checkbox' ? el.checked : el.value;
+            }
         });
         localStorage.setItem('mat_calc_inputs', JSON.stringify(data));
     }
@@ -1060,7 +1097,10 @@
             const saved = JSON.parse(localStorage.getItem('mat_calc_inputs') || '{}');
             Object.entries(saved).forEach(([id, v]) => {
                 const el = $(id);
-                if (el && (el.tagName === 'INPUT' || el.tagName === 'SELECT') && id !== 'service_notes_area') el.value = v;
+                if (el && (el.tagName === 'INPUT' || el.tagName === 'SELECT') && id !== 'service_notes_area') {
+                    if (el.type === 'checkbox') el.checked = !!v;
+                    else el.value = v;
+                }
             });
             refreshDropdownTriggers();
         } catch {}
@@ -1068,7 +1108,10 @@
     function resetTabInputs(tabId) {
         const root = $('tab-' + tabId); if (!root) return;
         root.querySelectorAll('[id]').forEach(el => {
-            if ((el.tagName === 'INPUT' || el.tagName === 'SELECT') && el.id in defaultTabInputs) el.value = defaultTabInputs[el.id];
+            if ((el.tagName === 'INPUT' || el.tagName === 'SELECT') && el.id in defaultTabInputs) {
+                if (el.type === 'checkbox') el.checked = !!defaultTabInputs[el.id];
+                else el.value = defaultTabInputs[el.id];
+            }
         });
         refreshDropdownTriggers(root);
         recalcAllModules();
@@ -1269,15 +1312,40 @@
     }
 
     function openSettings() { renderModuleManager(); $('settings-modal').classList.add('open'); setTimeout(() => checkSettingsScroll($('settings-modal-body')), 50); }
-    function closeSettings() { $('settings-modal').classList.remove('open'); saveSettings(); renderTabs(); if (isLauncherActive && !isInToolFromLauncher) renderLauncherGrid(); }
-    function moveModule(id, dir) {
-        const cat = currentModules.find(m => m.id === id)?.category || 'Anwendung';
-        const idxs = currentModules.map((m, i) => (m.visible && (m.category || 'Anwendung') === cat ? i : -1)).filter(i => i >= 0);
-        const pos = idxs.findIndex(i => currentModules[i].id === id), target = pos + dir;
-        if (pos < 0 || target < 0 || target >= idxs.length) return;
-        const a = idxs[pos], b = idxs[target];
-        [currentModules[a], currentModules[b]] = [currentModules[b], currentModules[a]];
-        saveSettings(); renderModuleManager();
+    function closeSettings() { $('settings-modal').classList.remove('open'); saveSettings(); renderTabs(); if (isLauncherActive && !isInToolFromLauncher) renderLauncherGrid(); renderPinnedBar(); }
+    function attachPointerDrag(handle, item, container) {
+        let activeId = null;
+        const onMove = e => {
+            if (e.pointerId !== activeId) return;
+            e.preventDefault();
+            const items = [...container.querySelectorAll('.module-list-item')].filter(el => el !== item);
+            for (const sib of items) {
+                const r = sib.getBoundingClientRect();
+                if (e.clientY >= r.top && e.clientY <= r.bottom) {
+                    container.insertBefore(item, e.clientY < r.top + r.height / 2 ? sib : sib.nextSibling);
+                    break;
+                }
+            }
+        };
+        const onEnd = e => {
+            if (e.pointerId !== activeId) return;
+            activeId = null;
+            item.classList.remove('dragging');
+            handle.removeEventListener('pointermove', onMove);
+            handle.removeEventListener('pointerup', onEnd);
+            handle.removeEventListener('pointercancel', onEnd);
+            updateModulesOrderFromDOM();
+        };
+        handle.addEventListener('pointerdown', e => {
+            if (e.pointerType === 'mouse' && e.button !== 0) return;
+            e.preventDefault();
+            activeId = e.pointerId;
+            handle.setPointerCapture?.(activeId);
+            item.classList.add('dragging');
+            handle.addEventListener('pointermove', onMove);
+            handle.addEventListener('pointerup', onEnd);
+            handle.addEventListener('pointercancel', onEnd);
+        });
     }
     function renderModuleManager() {
         const map = { Anwendung: $('active-list-anwendung'), Parameter: $('active-list-parameter'), Werkzeuge: $('active-list-werkzeuge') };
@@ -1286,25 +1354,15 @@
             el.innerHTML = '';
             const list = actMods.filter(m => (m.category || 'Anwendung') === cat);
             if (!list.length) return void (el.innerHTML = '<div class="hint">Keine aktiven Module in dieser Kategorie.</div>');
-            list.forEach((mod, idx) => {
-                const item = document.createElement('div'); item.className = 'module-list-item'; item.draggable = true; item.dataset.id = mod.id;
-                item.innerHTML = `<div class="module-list-item-left"><input type="checkbox" checked><span class="module-label-text">${mod.icon || '🛠️'} ${mod.title}</span></div><div class="move-btns">${idx > 0 ? `<button type="button" class="move-btn" title="Hoch">↑</button>` : ''}${idx < list.length - 1 ? `<button type="button" class="move-btn" title="Runter">↓</button>` : ''}<span class="drag-handle">☰</span></div>`;
+            list.forEach(mod => {
+                const item = document.createElement('div'); item.className = 'module-list-item'; item.dataset.id = mod.id;
+                item.innerHTML = `<div class="module-list-item-left"><input type="checkbox" checked><span class="module-label-text">${mod.icon || '🛠️'} ${mod.title}</span></div><span class="drag-handle" title="Halten & ziehen">☰</span>`;
                 const chk = item.querySelector('input');
                 chk.onchange = () => {
                     if (actMods.length <= 1) { chk.checked = true; return showToast('Es muss mindestens ein Modul aktiv bleiben!'); }
                     mod.visible = false; saveSettings(); renderModuleManager();
                 };
-                const btns = item.querySelectorAll('.move-btn');
-                if (idx > 0) btns[0].onclick = () => moveModule(mod.id, -1);
-                if (idx < list.length - 1) btns[idx > 0 ? 1 : 0].onclick = () => moveModule(mod.id, 1);
-                item.addEventListener('dragstart', e => { e.dataTransfer.setData('text/plain', mod.id); item.classList.add('dragging'); });
-                item.addEventListener('dragend', () => item.classList.remove('dragging'));
-                item.addEventListener('dragover', e => {
-                    e.preventDefault(); const dr = el.querySelector('.dragging'); if (!dr || dr === item) return;
-                    const off = e.clientY - item.getBoundingClientRect().top - item.offsetHeight / 2;
-                    el.insertBefore(dr, off < 0 ? item : item.nextSibling);
-                });
-                item.addEventListener('drop', e => { e.preventDefault(); updateModulesOrderFromDOM(); });
+                attachPointerDrag(item.querySelector('.drag-handle'), item, el);
                 el.appendChild(item);
             });
         });
@@ -1348,29 +1406,80 @@
     }
 
     function calcSchlauch() {
-        const mlM = Math.PI * Math.pow(val('schlauch_d') / 2, 2), ges = mlM * val('schlauch_l');
-        txt('res_schlauch_m', mlM.toFixed(2) + ' ml/m'); txt('res_schlauch_ges', `${ges.toFixed(2)} ml (${(ges / 1000).toFixed(3)} l)`);
+        const mlM = Math.PI * Math.pow(val('schlauch_d') / 2, 2), lM = mlM / 1000, gesL = (mlM * val('schlauch_l')) / 1000;
+        txt('res_schlauch_m', lM.toFixed(2) + ' l/m'); txt('res_schlauch_ges', gesL.toFixed(2) + ' l');
+        const on = !!$('schlauch_pump_enable')?.checked;
+        $('schlauch_pump_group').style.display = on ? 'block' : 'none';
+        $('schlauch_time_row').style.display = on ? 'flex' : 'none';
+        const hint = $('schlauch_pump_hint'), pLh = val('schlauch_pump_lh');
+        if (!on) { hint.style.display = 'none'; return; }
+        if (gesL > 0 && pLh > 0) {
+            const totMin = (gesL / pLh) * 60, h = Math.floor(totMin / 60), m = Math.floor(totMin % 60), s = Math.round((totMin * 60) % 60);
+            const tStr = h > 0 ? `${h} Std ${m} Min` : `${m} Min ${String(s).padStart(2, '0')} Sek`;
+            txt('res_schlauch_zeit', tStr);
+            hint.style.display = 'block';
+            hint.innerHTML = `Bei <b>${pLh.toFixed(1)} l/h</b> benötigt das Produkt ca. <b>${tStr}</b> bis zum Impfpunkt (mind. <b>${gesL.toFixed(2)} l</b> vorpumpen).`;
+        } else {
+            txt('res_schlauch_zeit', '--');
+            hint.style.display = 'block';
+            hint.innerText = 'Bitte Schlauchmaße und Förderleistung (l/h) der Pumpe eingeben.';
+        }
     }
-    const resetSchlauch = () => { $('schlauch_d').value = ''; $('schlauch_l').value = ''; calcSchlauch(); saveTabInputs(); showToast('Eingaben zurückgesetzt.'); };
+    const resetSchlauch = () => {
+        $('schlauch_d').value = ''; $('schlauch_l').value = '';
+        $('schlauch_pump_enable').checked = false; $('schlauch_pump_lh').value = '';
+        calcSchlauch(); saveTabInputs(); showToast('Eingaben zurückgesetzt.');
+    };
 
     let ausliterInterval = null, timerEndTs = 0, timeLeft = 60;
+    const getAusliterSec = () => parseInt($('ausliter_sec')?.value, 10) || 60;
+    const getAusliterMed = () => $('ausliter_medium')?.value || 'katholyte';
+    function syncAusliterButtons() {
+        const med = getAusliterMed(), sec = getAusliterSec();
+        document.querySelectorAll('#ausliter_medium_btns .seg-btn').forEach(b => b.classList.toggle('active', b.dataset.val === med));
+        document.querySelectorAll('#ausliter_sec_btns .seg-btn').forEach(b => b.classList.toggle('active', Number(b.dataset.val) === sec));
+        $('ausliter_kath_group').style.display = med === 'anolyte' ? 'none' : 'block';
+        $('ausliter_anol_group').style.display = med === 'katholyte' ? 'none' : 'block';
+        $('ausliter_res_kath_row').style.display = med === 'anolyte' ? 'none' : 'flex';
+        $('ausliter_res_anol_row').style.display = med === 'katholyte' ? 'none' : 'flex';
+        $('ausliter_res_ges_row').style.display = med === 'beides' ? 'flex' : 'none';
+        txt('ausliter_start_btn', `▶ Start (${sec}s)`);
+        txt('ausliter_kath_label', `Aufgefangenes Katholyte (nach ${sec}s)`);
+        txt('ausliter_anol_label', `Aufgefangenes Anolyte (nach ${sec}s)`);
+        if (!ausliterInterval) { timeLeft = sec; updateTimerDisplay(); }
+    }
+    function setAusliterMedium(m) { $('ausliter_medium').value = m; syncAusliterButtons(); calcAusliter(); saveTabInputs(); }
+    function setAusliterSec(s) {
+        stopAusliterTimer(); $('ausliter_sec').value = String(s); timeLeft = s; syncAusliterButtons(); calcAusliter(); saveTabInputs();
+    }
     function updateTimerDisplay() { txt('timer_display', `${String(Math.floor(timeLeft / 60)).padStart(2, '0')}:${String(timeLeft % 60).padStart(2, '0')}`); }
     function startAusliterTimer() {
-        clearInterval(ausliterInterval); timeLeft = 60; timerEndTs = Date.now() + 60000; updateTimerDisplay();
+        const sec = getAusliterSec();
+        clearInterval(ausliterInterval); timeLeft = sec; timerEndTs = Date.now() + sec * 1000; updateTimerDisplay();
         unlockAudio();
         ausliterInterval = setInterval(() => {
             timeLeft = Math.max(0, Math.ceil((timerEndTs - Date.now()) / 1000)); updateTimerDisplay();
             if (timeLeft <= 0) {
                 clearInterval(ausliterInterval); ausliterInterval = null; syncWakeLock();
                 if (timerBeepEnabled) playBeep(3);
-                navigator.vibrate?.([300, 100, 300]); showToast('⏱️ 60 Sekunden abgelaufen! Aufgefangene ml eingeben.');
+                navigator.vibrate?.([300, 100, 300]); showToast(`⏱️ ${sec} Sekunden abgelaufen! Aufgefangene ml eingeben.`);
             }
         }, 250);
         syncWakeLock();
     }
     const stopAusliterTimer = () => { clearInterval(ausliterInterval); ausliterInterval = null; syncWakeLock(); };
-    const calcAusliter = () => txt('res_ausliter_lh', ((val('ausliter_ml') * 60) / 1000).toFixed(2) + ' l/h');
-    const resetAusliter = () => { stopAusliterTimer(); timeLeft = 60; updateTimerDisplay(); $('ausliter_ml').value = ''; calcAusliter(); saveTabInputs(); showToast('Eingaben zurückgesetzt.'); };
+    function calcAusliter() {
+        const sec = getAusliterSec(), med = getAusliterMed(), f = 3.6 / sec;
+        const kLh = val('ausliter_kath_ml') * f, aLh = val('ausliter_anol_ml') * f;
+        txt('res_ausliter_kath_lh', kLh.toFixed(1) + ' l/h');
+        txt('res_ausliter_anol_lh', aLh.toFixed(1) + ' l/h');
+        txt('res_ausliter_ges_lh', (kLh + aLh).toFixed(1) + ' l/h');
+    }
+    function resetAusliter() {
+        stopAusliterTimer(); $('ausliter_medium').value = 'katholyte'; $('ausliter_sec').value = '60';
+        $('ausliter_kath_ml').value = ''; $('ausliter_anol_ml').value = '';
+        syncAusliterButtons(); calcAusliter(); saveTabInputs(); showToast('Eingaben zurückgesetzt.');
+    }
 
     const saveServiceNotes = () => { const a = $('service_notes_area'); if (a) localStorage.setItem('mat_service_notes', a.value); };
     function addNoteTimestamp() {
@@ -1394,9 +1503,38 @@
         $('radar_abgleich_max').value = d ? d.max : '';
         $('radar_tank_hint').innerHTML = d ? `<span style="color:#2e7d32;"><b>Werte automatisch eingetragen:</b> Min = 0 mm, Max = ${d.max} mm für ${v}l Tank.</span>` : 'Wähle oben ein Tankvolumen, um die Abgleichwerte automatisch zu setzen.';
     }
+    function applyEnthAquadronFlow() {
+        const aqd = anlagenDatabase[$('enth_anlage_select')?.value];
+        if (aqd) $('enth_flow_lh').value = parseFloat(aqd.durchfluss) || '';
+        updateEnthaerterData();
+    }
     function updateEnthaerterData() {
         const d = enthaerterDatabase[$('enthaerter_select').value];
         [['enth_kapazitaet', 'kapazitaet'], ['enth_harz', 'harz'], ['enth_sole', 'sole'], ['enth_salz', 'salz'], ['enth_rueckfuelle', 'rueckfuelle'], ['enth_rueckspuelen', 'rueckspuelen'], ['enth_besalzen', 'besalzen'], ['enth_schnellspuelen', 'schnellspuelen'], ['enth_sole_nachf', 'sole_nachf']].forEach(([id, k]) => txt(id, d ? d[k] : '-'));
+        const haerte = val('enth_haerte'), flow = val('enth_flow_lh'), hint = $('enth_ratio_hint');
+        if (!d) {
+            txt('enth_res_kap80', '-'); txt('enth_res_liter', '-'); txt('enth_res_ratio', '-');
+            if (hint) hint.innerText = 'Modell und Rohwasserhärte eingeben, um Liter bis zur Regeneration zu berechnen.';
+            return;
+        }
+        const kap = parseFloat(d.kapazitaet) || 0, kap80 = kap * 0.8;
+        txt('enth_res_kap80', `${kap80.toFixed(1)} °dH·m³`);
+        if (haerte <= 0) {
+            txt('enth_res_liter', '-'); txt('enth_res_ratio', '-');
+            if (hint) hint.innerText = 'Bitte Rohwasserhärte (°dH) eingeben, um nutzbare Liter und Ratio zu ermitteln.';
+            return;
+        }
+        const liter = (kap80 / haerte) * 1000;
+        txt('enth_res_liter', `${Math.round(liter)} l (${(liter / 1000).toFixed(2)} m³)`);
+        const regMin = ['rueckspuelen', 'besalzen', 'schnellspuelen', 'sole_nachf'].reduce((sum, k) => sum + (parseFloat(d[k]) || 0), 0);
+        if (flow > 0) {
+            const vReg = flow * (regMin / 60), vLastF2 = vReg + liter * 0.08, ratio = Math.max(1, Math.round(liter / vLastF2));
+            txt('enth_res_ratio', `ca. ${ratio} : 1`);
+            if (hint) hint.innerHTML = `<b>Grober Richtwert für SPS-Überwachung:</b> Während ca. ${regMin} Min Regeneration von Flasche 1 fließen bei ${flow} l/h rund ${vReg.toFixed(0)} l durch Flasche 2 (inkl. ~8 % Sicherheitsanteil → Ratio <b>${ratio}:1</b>). Die exakte Auslösung steuern die beiden Härtesensoren.`;
+        } else {
+            txt('enth_res_ratio', '-');
+            if (hint) hint.innerText = 'Für das grobe Überwachungs-Ratio (F1 : F2) optional oben eine Aquadron oder den Durchfluss (l/h) eingeben.';
+        }
     }
     function updateSondenData() {
         const d = sondenDatabase[$('sonden_select').value];
@@ -1434,31 +1572,33 @@
     }
 
     function berechnePID() {
-        const art = $('regler_betriebsart').value, isW = art.includes('warm'), isWK = art === 'warm_kombiniert', isKK = art === 'kalt_kombiniert';
+        const art = $('regler_betriebsart').value, isW = art.includes('warm'), isWK = art === 'warm_kombiniert';
         const readN = id => { const r = $(id).value.trim(); return r === '' ? null : Number(r); };
         const vis = (id, v) => { $(id).style.display = v ? '' : 'none'; };
-        vis('pid_kalt_durchfluss_gruppe', isKK); vis('pid_grundwert_gruppe', isW); vis('pid_sollwert_gruppe', isWK);
-        vis('pid_grunddosierung_ergebnis', isWK); vis('pid_durchfluss_ergebnis', isW); vis('pid_plausi_ergebnis', isKK);
-        const clear = msg => { [['res_p','-- %'],['res_i','-- s'],['res_totband','-- mg/l'],['res_grunddosierung','-- mg/l'],['res_eff_durchfluss','-- l/s'],['res_theorie_chlor','-- mg/l']].forEach(([i,t])=>txt(i,t)); txt('hinweis_text', msg); };
-        const testL = readN('pumpe_test_l'), anol = readN('pumpe_wirkstoff'), dC = readN('chlor_diff'), tu = readN('zeit_tu'), tg = readN('zeit_tg'), gwR = readN('chlor_grundwert'), wLs = readN('pid_wasser_lsek'), soll = readN('chlor_sollwert');
-        const miss = [['Test-Dosiermenge', testL], ['Tank-Wirkstoffgehalt', anol], ['Chloranstieg ΔY', dC], ['Totzeit Tu', tu], ['Anstiegszeit Tg', tg], ...(isKK ? [['Wasserdurchfluss', wLs]] : []), ...(isWK ? [['Chlor-Sollwert', soll]] : [])].filter(([, v]) => v === null).map(([k]) => k);
+        vis('pid_grundwert_gruppe', isW); vis('pid_sollwert_gruppe', isWK); vis('pid_grunddosierung_ergebnis', isWK);
+        const clear = msg => {
+            vis('pid_durchfluss_ergebnis', false);
+            [['res_p','-- %'],['res_i','-- s'],['res_totband','-- mg/l'],['res_grunddosierung','-- mg/l'],['res_eff_durchfluss','-- l/s']].forEach(([i,t])=>txt(i,t));
+            txt('hinweis_text', msg);
+        };
+        const testL = readN('pumpe_test_l'), anol = readN('pumpe_wirkstoff'), dC = readN('chlor_diff'), tu = readN('zeit_tu'), tg = readN('zeit_tg'), gwR = readN('chlor_grundwert'), soll = readN('chlor_sollwert');
+        const miss = [['Test-Dosiermenge', testL], ['Tank-Wirkstoffgehalt', anol], ['Chloranstieg ΔY', dC], ['Totzeit Tu', tu], ['Anstiegszeit Tg', tg], ...(isWK ? [['Chlor-Sollwert', soll]] : [])].filter(([, v]) => v === null).map(([k]) => k);
         if (miss.length) return clear('Bitte folgende Werte vollständig eingeben: ' + miss.join(', ') + '.');
-        const nums = [testL, anol, dC, tu, tg, ...(isKK ? [wLs] : []), ...(isWK ? [soll] : [])];
+        const nums = [testL, anol, dC, tu, tg, ...(isWK ? [soll] : [])];
         if (nums.some(v => !Number.isFinite(v) || v <= 0)) return clear('Fehler: Alle Pflichtwerte müssen gültige Zahlen größer als 0 sein.');
         if (isW && gwR !== null && (!Number.isFinite(gwR) || gwR < 0)) return clear('Fehler: Der erwartete Restchlorgehalt darf nicht negativ sein.');
         const gw = gwR ?? 0; let p = Math.min(10, Math.max(1, 0.25 / (dC / testL)));
         if (isW) { p *= 0.8; if (gw > 0) p *= Math.max(0.6, 1 - gw * 0.5); }
+        const qLh = (testL * anol) / dC, qLs = qLh / 3600, qM3h = qLh / 1000;
+        vis('pid_durchfluss_ergebnis', true);
+        txt('pid_durchfluss_label', isW ? 'Errechneter Umwälz-/Zirkulationsstrom' : 'Errechneter Hauptleitungs-Durchfluss');
+        txt('res_eff_durchfluss', `${qLs.toFixed(2)} l/s (${qM3h.toFixed(2)} m³/h)`);
         txt('res_p', p.toFixed(1) + ' %'); txt('res_i', (2 * tg + tu).toFixed(0) + ' s'); txt('res_totband', '0.02 mg/l');
         let h = `<b>Praxistest ausgewertet:</b> Totzeit Tu = ${tu.toFixed(1)} s, Anstiegszeit Tg = ${tg.toFixed(1)} s. Nachstellzeit Tn = 2 × Tg + Tu.`;
-        if (isKK) {
-            const th = (testL * anol) / (wLs * 3600), abw = ((dC - th) / th) * 100;
-            txt('res_theorie_chlor', th.toFixed(3) + ' mg/l');
-            h += `<br><br><b>Kaltwasser-Plausibilitätsprüfung:</b> Rechnerisch ${th.toFixed(3)} mg/l bei ${wLs.toFixed(2)} l/s; gemessen ${dC.toFixed(3)} mg/l (${abw >= 0 ? '+' : ''}${abw.toFixed(1)} %).`;
-        }
         if (isW) {
-            const qLh = (testL * anol) / dC, qLs = qLh / 3600;
-            txt('res_eff_durchfluss', qLs.toFixed(2) + ' l/s');
-            h += `<br><br><b>Speicher-/Zirkulationsrücklauf:</b> Restchlor ${gw.toFixed(2)} mg/l, P-Anteil ${p.toFixed(1)} %. Näherungsweiser Zirkulationsstrom: ${qLh.toFixed(0)} l/h (${qLs.toFixed(2)} l/s).`;
+            h += `<br><br><b>Rückrechnung Warmwasser / Zirkulation:</b> Restchlor ${gw.toFixed(2)} mg/l, P-Anteil ${p.toFixed(1)} %. Errechneter Umwälz-/Entnahmestrom: <b>${qLs.toFixed(2)} l/s</b> (${qM3h.toFixed(2)} m³/h bzw. ${qLh.toFixed(0)} l/h).`;
+        } else {
+            h += `<br><br><b>Rückrechnung Hauptleitung (Kaltwasser):</b> Bei ${testL.toFixed(1)} l/h (${anol.toFixed(0)} mg/l) und +${dC.toFixed(2)} mg/l Anstieg fließen aktuell ca. <b>${qLs.toFixed(2)} l/s</b> (${qM3h.toFixed(2)} m³/h bzw. ${qLh.toFixed(0)} l/h Verbrauch).`;
         }
         if (isWK) {
             const gd = Math.max(0, soll - 0.075); txt('res_grunddosierung', gd.toFixed(3) + ' mg/l');
