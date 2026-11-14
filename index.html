@@ -8,7 +8,7 @@
     <meta name="apple-mobile-web-app-title" content="Innowatech">
     <meta name="theme-color" content="#0d47a1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>INNOWATΞCH Service Tool v4.9</title>
+    <title>INNOWATΞCH Service Tool v5.0</title>
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="icon.png">
     <style>
@@ -196,11 +196,10 @@
         .chip-wrap { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 8px; }
         .snippet-chip { font-size: 0.72rem; font-weight: 600; padding: 5px 8px; border-radius: 6px; border: 1px solid var(--border-color); background: var(--input-bg); color: var(--text-color); cursor: pointer; }
         .snippet-chip:active { background: var(--result-bg); border-color: var(--primary-color); }
-        .koffer-item { display: flex; align-items: center; justify-content: space-between; gap: 6px; padding: 6px 8px; background: var(--input-bg); border: 1px solid var(--border-color); border-radius: 6px; margin-bottom: 5px; font-size: 0.8rem; }
-        .koffer-item.checked { opacity: 0.62; }
-        .koffer-item.checked span { text-decoration: line-through; }
-        .koffer-item label { display: flex; align-items: center; gap: 8px; margin: 0; flex: 1; cursor: pointer; font-weight: 500; }
-        .koffer-del { background: transparent; border: none; color: #c62828; font-weight: bold; cursor: pointer; padding: 2px 6px; font-size: 0.85rem; }
+        .photo-thumb-wrap { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+        .photo-thumb { position: relative; width: 64px; height: 64px; border-radius: 6px; overflow: hidden; border: 1px solid var(--border-color); }
+        .photo-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .photo-thumb button { position: absolute; top: 2px; right: 2px; background: rgba(198,40,40,0.9); color: white; border: none; border-radius: 50%; width: 18px; height: 18px; font-size: 0.65rem; line-height: 1; cursor: pointer; padding: 0; }
         #pdf-print-header, #pdf_notes_print_view { display: none; }
         #pdf_notes_print_view { white-space: pre-wrap; font-size: 0.85rem; line-height: 1.45; border: 1px solid #cbd5e1; border-radius: 6px; padding: 10px; background: #fff; color: #111; }
         .pdf-meta-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 4px 12px; margin-top: 6px; font-size: 0.8rem; }
@@ -454,18 +453,13 @@
             <div class="result-row"><span class="result-label">Schnellspülen</span><span class="result-value" id="enth_schnellspuelen">-</span></div>
             <div class="result-row"><span class="result-label">Sole nachfüllen</span><span class="result-value" id="enth_sole_nachf">-</span></div>
         </div>
-        <div class="section-title">3. Kundenhärte, 80-%-Sensor &amp; Überwachung</div>
+        <div class="section-title">3. Kundenhärte &amp; Nutzkapazität (80-%-Sensor)</div>
         <div class="form-group"><label>Rohwasserhärte beim Kunden</label><div class="input-wrapper"><input type="number" id="enth_haerte" step="0.5" min="0" placeholder="z. B. 18" oninput="updateEnthaerterData()"><span class="unit">°dH</span></div><div class="hint">Der Quellharz-Sensor schaltet bei ca. 20 % Restharz (80 % nutzbare Kapazität).</div></div>
-        <div id="enth_ratio_inputs">
-            <div class="form-group"><label>Angeschlossene Aquadron (Optional für Ratio)</label><div class="input-wrapper"><select id="enth_anlage_select" onchange="applyEnthAquadronFlow()"><option value="">-- Optional: Aquadron-Anlage wählen --</option></select></div></div>
-            <div class="form-group"><label>Durchfluss während F1-Regeneration (Optional)</label><div class="input-wrapper"><input type="number" id="enth_flow_lh" step="1" min="0" placeholder="z. B. 40" oninput="updateEnthaerterData()"><span class="unit">l/h</span></div></div>
-        </div>
         <div class="result-box">
             <div class="result-row"><span class="result-label">Nutzkapazität (80 % wg. Sensor)</span><span class="result-value" id="enth_res_kap80">-</span></div>
-            <div class="result-row"><span class="result-label" id="enth_liter_label">Enthärtete Menge bis Reg. (F1)</span><span class="result-value" id="enth_res_liter">-</span></div>
-            <div class="result-row" id="enth_ratio_row"><span class="result-label">Überwachungs-Ratio (F1 : F2)</span><span class="result-value" id="enth_res_ratio">-</span></div>
+            <div class="result-row"><span class="result-label">Enthärtete Menge bis Regeneration</span><span class="result-value" id="enth_res_liter">-</span></div>
         </div>
-        <div class="alert-box" id="enth_ratio_hint">Modell und Rohwasserhärte eingeben, um Liter bis zur Regeneration zu berechnen.</div>
+        <div class="alert-box" id="enth_ratio_hint">Modell und Rohwasserhärte eingeben, um die enthärtete Wassermenge bis zur Regeneration zu berechnen.</div>
         <button type="button" class="pdf-export-btn" onclick="exportToPDF()">📄 Als PDF speichern / drucken</button>
         <button type="button" class="reset-tab-btn" onclick="resetTabInputs('enthaerter')">↺ Eingaben zurücksetzen</button>
     </div>
@@ -521,50 +515,34 @@
     </div>
 
     <div id="tab-notizen" class="tab-content">
-        <div class="section-title">📝 Service-Notizen &amp; Bausteine (Offline Auto-Save)</div>
+        <div class="section-title">📝 Service-Notizen &amp; Bausteine (Offene Punkte)</div>
         <div class="chip-wrap no-print">
-            <button type="button" class="snippet-chip" onclick="insertNoteSnippet('⚡ Zellenspannung / Strom OK')">⚡ Spannung/Strom OK</button>
-            <button type="button" class="snippet-chip" onclick="insertNoteSnippet('💧 Enthärter geprüft (°dH / Salz)')">💧 Enthärter geprüft</button>
-            <button type="button" class="snippet-chip" onclick="insertNoteSnippet('🧪 Anolyte gemessen (mg/l)')">🧪 Anolyte gemessen</button>
-            <button type="button" class="snippet-chip" onclick="insertNoteSnippet('🔌 Impfstelle gereinigt / entkalkt')">🔌 Impfstelle gereinigt</button>
-            <button type="button" class="snippet-chip" onclick="insertNoteSnippet('📏 Schlauchleitung / Pumpe entlüftet')">📏 Schlauch entlüftet</button>
-            <button type="button" class="snippet-chip" onclick="insertNoteSnippet('⚠️ Ersatzteil benötigt:')">⚠️ Ersatzteil nötig</button>
+            <button type="button" class="snippet-chip" onclick="addNoteTimestamp()">⏱️ Zeitstempel</button>
+            <button type="button" class="snippet-chip" onclick="insertNoteSnippet(activeUser ? '👷 Mitarbeiter: ' + activeUser : '👷 Mitarbeiter:')">👷 Mitarbeiter</button>
+            <button type="button" class="snippet-chip" onclick="insertNoteSnippet('👤 Kunde:')">👤 Kunde:</button>
+            <button type="button" class="snippet-chip" onclick="insertNoteSnippet('🔢 Anlagen-SN:')">🔢 Anlagen-SN</button>
+            <button type="button" class="snippet-chip" onclick="insertNoteSnippet('🛠️ Ersatzteil benötigt:')">🛠️ Ersatzteil benötigt</button>
+            <button type="button" class="snippet-chip" onclick="insertNoteSnippet('📄 Reparaturangebot erstellen (Art.-Nr.):')">📄 Angebot erstellen</button>
+            <button type="button" class="snippet-chip" onclick="insertNoteSnippet('📦 Verbrauchsmaterial bestellen:')">📦 Verbrauchsmaterial</button>
+            <button type="button" class="snippet-chip" onclick="insertNoteSnippet('🧰 Nachorder Servicekoffer (Fehlteil):')">🧰 Nachorder Servicekoffer</button>
         </div>
-        <div class="form-group"><textarea id="service_notes_area" class="field-box" placeholder="Seriennummern, Messwerte, Ersatzteile hier festhalten..." style="height:170px; font-size:0.9rem; font-family:inherit;" oninput="saveServiceNotes()"></textarea><div id="pdf_notes_print_view"></div></div>
+        <div class="form-group"><textarea id="service_notes_area" class="field-box" placeholder="Kunde, benötigte Ersatzteile, Verbrauchsmaterial, Koffer-Fehlteile festhalten..." style="height:170px; font-size:0.9rem; font-family:inherit;" oninput="saveServiceNotes()"></textarea><div id="pdf_notes_print_view"></div></div>
         <div class="no-print" style="display:flex; gap:6px;">
-            <button type="button" class="pdf-export-btn" onclick="addNoteTimestamp()" style="flex:1; background:#0288d1; border-color:#0277bd; margin-top:0;">⏱️ + Zeitstempel</button>
             <button type="button" class="pdf-export-btn" onclick="copyServiceNotes()" style="flex:1; background:#1976d2; border-color:#1565c0; margin-top:0;">📋 Kopieren</button>
-        </div>
-        <div class="no-print" style="display:flex; gap:6px; margin-top:6px;">
             <button type="button" class="pdf-export-btn" onclick="downloadServiceNotesTxt()" style="flex:1; background:#2e7d32; border-color:#1b5e20; margin-top:0;">💾 Download .txt</button>
             <button type="button" class="pdf-export-btn" onclick="clearServiceNotes()" style="flex:1; background:#c62828; border-color:#b71c1c; margin-top:0;">🗑️ Leeren</button>
         </div>
         <button type="button" class="pdf-export-btn" onclick="exportToPDF()" style="margin-top:8px;">📄 Service-Bericht als PDF drucken</button>
 
         <div class="setting-section collapsed no-print" style="margin-top:14px;">
-            <div class="setting-section-title" onclick="this.closest('.setting-section').classList.toggle('collapsed')">📋 PDF-Berichtskopf (Kunde / Anlage / SN)</div>
+            <div class="setting-section-title" onclick="this.closest('.setting-section').classList.toggle('collapsed')">📋 PDF-Berichtskopf (optional)</div>
             <div class="setting-section-content">
-                <div class="hint" style="margin-bottom:6px;">Erscheint automatisch oben auf jedem PDF-Ausdruck (gilt für alle Rechner-Tabs).</div>
-                <div class="form-group"><label>Kunde / Objekt</label><div class="input-wrapper"><input type="text" id="rep_kunde" placeholder="z. B. Klinikum / Stadtwerke" oninput="saveReportMeta()"></div></div>
-                <div class="form-group"><label>Anlagentyp / Aquadron</label><div class="input-wrapper"><input type="text" id="rep_anlage" placeholder="z. B. Aquadron ECO 3.2" oninput="saveReportMeta()"></div></div>
-                <div class="form-group"><label>Seriennummer (SN)</label><div class="input-wrapper"><input type="text" id="rep_sn" placeholder="z. B. 2025-1234" oninput="saveReportMeta()"></div></div>
-                <div class="form-group"><label>Einsatzgrund / Auftrag</label><div class="input-wrapper"><input type="text" id="rep_auftrag" placeholder="z. B. Wartung / Inbetriebnahme" oninput="saveReportMeta()"></div></div>
+                <div class="hint" style="margin-bottom:6px;">Alle Felder sind optional – ausgefüllte Angaben erscheinen oben auf jedem PDF-Ausdruck.</div>
+                <div class="form-group"><label>Kunde / Objekt (optional)</label><div class="input-wrapper"><input type="text" id="rep_kunde" placeholder="z. B. Stuttgart-Bosch" oninput="saveReportMeta()"></div></div>
+                <div class="form-group"><label>Anlagentyp / Aquadron (optional)</label><div class="input-wrapper"><input type="text" id="rep_anlage" placeholder="z. B. Aquadron ECO 3.2" oninput="saveReportMeta()"></div></div>
+                <div class="form-group"><label>Seriennummer (optional)</label><div class="input-wrapper"><input type="text" id="rep_sn" placeholder="z. B. 2025-1234" oninput="saveReportMeta()"></div></div>
+                <div class="form-group"><label>Einsatzgrund / Auftrag (optional)</label><div class="input-wrapper"><input type="text" id="rep_auftrag" placeholder="z. B. Wartung / Störung" oninput="saveReportMeta()"></div></div>
                 <button type="button" class="reset-tab-btn" onclick="clearReportMeta()">↺ Berichtskopf leeren</button>
-            </div>
-        </div>
-
-        <div class="setting-section collapsed no-print">
-            <div class="setting-section-title" onclick="this.closest('.setting-section').classList.toggle('collapsed')"><span>🧰 Wartungskoffer-Checkliste (<span id="koffer_count_badge">0/8</span>)</span></div>
-            <div class="setting-section-content">
-                <div id="koffer_list_container"></div>
-                <div style="display:flex; gap:6px; margin-top:8px;">
-                    <input type="text" id="koffer_new_item" class="field-box" placeholder="Eigenen Punkt hinzufügen..." style="padding:6px 8px; font-size:0.82rem;">
-                    <button type="button" class="admin-btn-sm admin-btn-primary" onclick="addKofferItem()" style="padding:6px 12px; font-size:0.85rem;">+</button>
-                </div>
-                <div style="display:flex; gap:6px; margin-top:8px;">
-                    <button type="button" class="reset-tab-btn" onclick="uncheckAllKoffer()" style="margin-top:0;">☐ Alle abwählen</button>
-                    <button type="button" class="reset-tab-btn" onclick="resetKofferDefaults()" style="margin-top:0;">↺ Standard-Koffer</button>
-                </div>
             </div>
         </div>
 
@@ -573,8 +551,15 @@
             <div class="setting-section-content">
                 <div class="form-group"><label>Art / Dringlichkeit</label><div class="input-wrapper"><select id="fault_type"><option value="Störung (Anlage steht)">Störung (Anlage steht)</option><option value="Techn. Rückfrage">Techn. Rückfrage</option><option value="Ersatzteilbedarf">Ersatzteilbedarf</option></select></div></div>
                 <div class="form-group"><label>Fehlercode / Fehlerbeschreibung</label><textarea id="fault_desc" class="field-box" placeholder="Symptom, Fehlercode, bisherige Messwerte..." style="height:85px; font-size:0.85rem; font-family:inherit;"></textarea></div>
+                <div class="form-group">
+                    <label>Fotos anhängen (optional, über Handy-Teilen)</label>
+                    <input type="file" id="fault_photos" accept="image/*" multiple style="display:none;" onchange="handleFaultPhotos(event)">
+                    <button type="button" class="reset-tab-btn" onclick="$('fault_photos').click()" style="margin-top:2px;">📷 Foto(s) aus Galerie / Kamera wählen</button>
+                    <div id="fault_photo_thumbs" class="photo-thumb-wrap"></div>
+                    <div class="hint" id="fault_photo_hint">Ohne Foto startet die E-Mail-App direkt. Mit Foto nutzt das Handy das System-Teilen-Menü inkl. Bildanhang.</div>
+                </div>
                 <div class="form-group"><label style="display:flex; align-items:center; gap:8px; cursor:pointer; background:var(--input-bg); padding:7px; border:1px solid var(--border-color); border-radius:6px; margin-bottom:0;"><input type="checkbox" id="fault_include_notes" checked style="width:17px; height:17px;"><span>Aktuelle Service-Notizen automatisch anhängen</span></label></div>
-                <button type="button" class="pdf-export-btn" onclick="sendFaultEmail()" style="background:linear-gradient(to bottom,#dc2626,#b91c1c); border-color:#991b1b;">✉️ E-Mail an servicehotline@innowatech.de</button>
+                <button type="button" class="pdf-export-btn" id="fault_send_btn" onclick="sendFaultEmail()" style="background:linear-gradient(to bottom,#dc2626,#b91c1c); border-color:#991b1b;">✉️ E-Mail an servicehotline@innowatech.de</button>
                 <button type="button" class="reset-tab-btn" onclick="copyFaultReport()">📋 Störmeldung in Zwischenablage kopieren</button>
             </div>
         </div>
@@ -586,7 +571,7 @@
             <span id="net-status-badge" style="font-size:0.72rem; padding:2px 6px; border-radius:10px; background:rgba(0,0,0,0.08);">● Online</span>
             <span id="footer-update-pill" onclick="applyAppUpdate()" title="Update jetzt installieren" style="display:none; font-size:0.7rem; padding:2px 7px; border-radius:10px; background:#f59e0b; color:white; cursor:pointer; font-weight:bold;">🔄 Update</span>
         </div>
-        <span class="footer-version" style="flex:1; text-align:right;" onclick="handleVersionClick()">v4.9</span>
+        <span class="footer-version" style="flex:1; text-align:right;" onclick="handleVersionClick()">v5.0</span>
     </div>
 </div>
 
@@ -648,7 +633,7 @@
 
 <div class="admin-modal-overlay" id="adminAuthModal">
     <div class="admin-modal-content">
-        <div class="admin-modal-header"><span>Admin Authentifizierung (v4.9)</span><button type="button" class="modal-close-btn" style="color:var(--primary-color);" onclick="closeAdminModal('adminAuthModal')">✕</button></div>
+        <div class="admin-modal-header"><span>Admin Authentifizierung (v5.0)</span><button type="button" class="modal-close-btn" style="color:var(--primary-color);" onclick="closeAdminModal('adminAuthModal')">✕</button></div>
         <p style="font-size:0.82rem; color:var(--subtext-color); margin-bottom:12px;">Bitte die Admin-PIN eingeben:</p>
         <div class="form-group"><label>Admin-PIN</label><input type="password" id="adminPin8" class="field-box" value="" autocomplete="new-password" placeholder="••••••••" style="letter-spacing:2px;"></div>
         <button type="button" class="admin-btn admin-btn-primary" style="margin-top:10px;" onclick="verifyAdminAuth8()">Admin Console öffnen</button>
@@ -746,13 +731,11 @@
     const enthStd = { harz: "4 Liter", kapazitaet: "15 °dH x m³", sole: "3 l", salz: "0,96 kg", rueckfuelle: "2,7 l", rueckspuelen: "3 Min", besalzen: "30 Min", schnellspuelen: "15 Min", sole_nachf: "3 Min" };
     const enthL = { harz: "11 Liter", kapazitaet: "35 °dH x m³", sole: "8,5 l", salz: "2,65 kg", rueckfuelle: "7,4 l", rueckspuelen: "3 Min", besalzen: "30 Min", schnellspuelen: "15 Min", sole_nachf: "3 Min" };
     const enthaerterDatabase = {
-        fk: { label: "FK (Einzelflasche)", single: true, ...enthStd }, fkl: { label: "FKL (Einzelflasche)", single: true, ...enthStd },
-        fx: { label: "FX", ...enthStd }, gx: { label: "GX", ...enthStd },
-        gxl: { label: "GXL", ...enthL }, fxl: { label: "FXL", ...enthL },
-        fxm: { label: "FXM (Einzelflasche)", single: true, ...enthStd }, kl: { label: "KL", ...enthStd },
+        fk: { label: "FK", ...enthStd }, fkl: { label: "FKL", ...enthStd }, fx: { label: "FX", ...enthStd }, gx: { label: "GX", ...enthStd },
+        gxl: { label: "GXL", ...enthL }, fxl: { label: "FXL", ...enthL }, fxm: { label: "FXM", ...enthStd }, kl: { label: "KL", ...enthStd },
         kl30_pg: { label: "KL30 + PG", harz: "8 Liter", kapazitaet: "30 °dH x m³", sole: "6 l", salz: "1,02 kg", rueckfuelle: "5,4 l", rueckspuelen: "3 Min", besalzen: "30 Min", schnellspuelen: "15 Min", sole_nachf: "5 Min" },
-        wat100: { label: "WAT 100-368 (Einzelflasche)", single: true, harz: "25 Liter", kapazitaet: "100 °dH x m³", sole: "19,2 l", salz: "6 kg", rueckfuelle: "16,8 l", rueckspuelen: "5 Min", besalzen: "55 Min", schnellspuelen: "10 Min", sole_nachf: "9 Min" },
-        wat200: { label: "WAT 200-368 (Einzelflasche)", single: true, harz: "56 Liter", kapazitaet: "200 °dH x m³", sole: "43 l", salz: "13,4 kg", rueckfuelle: "37,6 l", rueckspuelen: "5 Min", besalzen: "85 Min", schnellspuelen: "12 Min", sole_nachf: "14 Min" }
+        wat100: { label: "WAT 100-368", harz: "25 Liter", kapazitaet: "100 °dH x m³", sole: "19,2 l", salz: "6 kg", rueckfuelle: "16,8 l", rueckspuelen: "5 Min", besalzen: "55 Min", schnellspuelen: "10 Min", sole_nachf: "9 Min" },
+        wat200: { label: "WAT 200-368", harz: "56 Liter", kapazitaet: "200 °dH x m³", sole: "43 l", salz: "13,4 kg", rueckfuelle: "37,6 l", rueckspuelen: "5 Min", besalzen: "85 Min", schnellspuelen: "12 Min", sole_nachf: "14 Min" }
     };
     const anlagenDatabase = {
         fk: { label: "Aquadron FK", durchfluss: "40 l/h", strom: "6,8 A", spannung: "24 V", zeit: "4 h", prod: "60 min", pause: "30 min" },
@@ -808,7 +791,6 @@
         const fill = (id, db) => { const s = $(id); if (!s) return; Object.entries(db).forEach(([k, v]) => s.add(new Option(v.label, k))); };
         fill('sonden_select', sondenDatabase); fill('anlagen_select', anlagenDatabase);
         fill('radar_tankvol', radarTankDatabase); fill('enthaerter_select', enthaerterDatabase);
-        fill('enth_anlage_select', anlagenDatabase);
     }
 
     function renderVegaSteps() {
@@ -1059,7 +1041,13 @@
     }
     function dismissAppUpdate() { $('update-banner').style.display = 'none'; if (isUserAllowedToUpdate()) $('footer-update-pill').style.display = 'inline-block'; }
     if ('serviceWorker' in navigator) {
+        const isPreviewHost = window.self !== window.top || /(^|\.)run\.app$|localhost|127\.0\.0\.1|webcontainer/i.test(location.hostname);
         window.addEventListener('load', () => {
+            if (isPreviewHost) {
+                navigator.serviceWorker.getRegistrations().then(regs => regs.forEach(r => r.unregister())).catch(() => {});
+                if (window.caches) caches.keys().then(ks => ks.filter(k => k.startsWith('mat-service-tool')).forEach(k => caches.delete(k))).catch(() => {});
+                return;
+            }
             navigator.serviceWorker.register('./sw.js', { updateViaCache: 'none' }).then(reg => {
                 reg.update().catch(() => {});
                 if (reg.waiting) showUpdateBanner(reg.waiting);
@@ -1079,10 +1067,7 @@
         const rows = [
             ['Techniker', activeUser || '-'],
             ['Modul', mod?.title || '-'],
-            ['Kunde / Objekt', $('rep_kunde')?.value.trim() || '-'],
-            ['Anlage', $('rep_anlage')?.value.trim() || '-'],
-            ['Seriennummer', $('rep_sn')?.value.trim() || '-'],
-            ['Auftrag / Grund', $('rep_auftrag')?.value.trim() || '-']
+            ...[['Kunde / Objekt', $('rep_kunde')?.value.trim()], ['Anlage', $('rep_anlage')?.value.trim()], ['Seriennummer', $('rep_sn')?.value.trim()], ['Auftrag / Grund', $('rep_auftrag')?.value.trim()]].filter(([, v]) => v)
         ];
         $('pdf_meta_grid').innerHTML = rows.map(([k, v]) => `<div><strong>${k}:</strong> ${v.replace(/[<>&"]/g, c => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;' }[c]))}</div>`).join('');
         if ($('pdf_notes_print_view')) $('pdf_notes_print_view').textContent = $('service_notes_area')?.value.trim() || '(Keine Notizen eingetragen)';
@@ -1150,7 +1135,7 @@
     let pinnedTabs = [], keepScreenAwake = false, timerBeepEnabled = true, wakeLockSentinel = null, audioCtx = null;
     const defaultTabInputs = {};
 
-    const isCalcInput = el => (el.tagName === 'INPUT' || el.tagName === 'SELECT') && el.id !== 'service_notes_area' && el.id !== 'koffer_new_item' && !el.id.startsWith('rep_') && !el.id.startsWith('fault_');
+    const isCalcInput = el => (el.tagName === 'INPUT' || el.tagName === 'SELECT') && el.id !== 'service_notes_area' && el.id !== 'fault_photos' && !el.id.startsWith('rep_') && !el.id.startsWith('fault_');
     function captureTabDefaults() {
         document.querySelectorAll('.tab-content [id]').forEach(el => {
             if (isCalcInput(el)) defaultTabInputs[el.id] = el.type === 'checkbox' ? el.checked : el.value;
@@ -1307,7 +1292,7 @@
             }
         } catch { currentModules = [...defaultModules]; }
         const notes = localStorage.getItem('mat_service_notes'); if (notes && $('service_notes_area')) $('service_notes_area').value = notes;
-        loadReportMeta(); loadKofferChecklist();
+        loadReportMeta();
         isLauncherActive = localStorage.getItem('mat_launcher_view') === 'true'; isInToolFromLauncher = false;
         await loadUsersDatabase(); renderTabs(true); applyViewMode(); initCustomDropdowns();
         restoreTabInputs(); recalcAllModules(); syncWakeLock();
@@ -1588,12 +1573,14 @@
 
     const saveServiceNotes = () => { const a = $('service_notes_area'); if (a) localStorage.setItem('mat_service_notes', a.value); };
     function insertNoteSnippet(text) {
-        const a = $('service_notes_area'), n = new Date(); if (!a) return;
-        const stamp = `[${n.toLocaleDateString('de-DE')} - ${n.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' })}]`;
-        a.value += (a.value && !a.value.endsWith('\n') ? '\n' : '') + `${stamp} ${text} `;
+        const a = $('service_notes_area'); if (!a) return;
+        a.value += (a.value && !a.value.endsWith('\n') ? '\n' : '') + `${text} `;
         a.focus(); saveServiceNotes();
     }
-    function addNoteTimestamp() { insertNoteSnippet(''); }
+    function addNoteTimestamp() {
+        const n = new Date();
+        insertNoteSnippet(`[${n.toLocaleDateString('de-DE')} - ${n.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' })}]`);
+    }
     function copyServiceNotes() {
         const a = $('service_notes_area'); if (!a?.value) return showToast('Keine Notizen zum Kopieren vorhanden.');
         navigator.clipboard?.writeText(a.value).then(() => showToast('Notizen kopiert!')).catch(() => { a.select(); document.execCommand('copy'); showToast('Notizen kopiert!'); });
@@ -1622,60 +1609,34 @@
         showToast('Berichtskopf geleert.');
     }
 
-    const DEFAULT_KOFFER_ITEMS = [
-        'Hanna-Photometer + Küvetten + Dest./Osmosewasser',
-        'Feinwaage / Pipette / Messbecher (Auslitern)',
-        'Gesamthärte-Testbesteck (°dH Titration)',
-        'Multimeter / Stromzange / Werkzeugsatz',
-        'Membransatz / Rückschlagventile / Impfstück',
-        'Dosierschlauch (PE/PTFE) + Verschraubungen',
-        'Regeneriersalz / Pufferlösungen (pH 4 & 7)',
-        'Sondenelektrolyt / Membrankappe / Reinigung'
-    ];
-    let kofferItems = [];
-    function saveKofferChecklist() { localStorage.setItem('mat_wartungskoffer', JSON.stringify(kofferItems)); }
-    function loadKofferChecklist() {
-        try {
-            const raw = JSON.parse(localStorage.getItem('mat_wartungskoffer') || 'null');
-            if (Array.isArray(raw) && raw.length) kofferItems = raw;
-            else kofferItems = DEFAULT_KOFFER_ITEMS.map(t => ({ text: t, done: false, custom: false }));
-        } catch {
-            kofferItems = DEFAULT_KOFFER_ITEMS.map(t => ({ text: t, done: false, custom: false }));
-        }
-        renderKofferChecklist();
+    let faultPhotoFiles = [];
+    function handleFaultPhotos(e) {
+        const files = [...(e.target.files || [])];
+        if (files.length) faultPhotoFiles = [...faultPhotoFiles, ...files].slice(0, 5);
+        e.target.value = '';
+        renderFaultPhotoThumbs();
     }
-    function renderKofferChecklist() {
-        const c = $('koffer_list_container'); if (!c) return;
-        const doneCount = kofferItems.filter(x => x.done).length;
-        txt('koffer_count_badge', `${doneCount}/${kofferItems.length}`);
-        c.innerHTML = '';
-        kofferItems.forEach((it, idx) => {
-            const row = document.createElement('div');
-            row.className = 'koffer-item' + (it.done ? ' checked' : '');
-            const lbl = document.createElement('label');
-            const cb = document.createElement('input');
-            cb.type = 'checkbox'; cb.checked = !!it.done; cb.style.width = '16px'; cb.style.height = '16px';
-            cb.onchange = () => { kofferItems[idx].done = cb.checked; saveKofferChecklist(); renderKofferChecklist(); };
-            const sp = document.createElement('span'); sp.textContent = it.text;
-            lbl.append(cb, sp); row.appendChild(lbl);
-            if (it.custom) {
-                const del = document.createElement('button'); del.type = 'button'; del.className = 'koffer-del'; del.textContent = '✕';
-                del.onclick = () => { kofferItems.splice(idx, 1); saveKofferChecklist(); renderKofferChecklist(); };
-                row.appendChild(del);
-            }
-            c.appendChild(row);
+    function removeFaultPhoto(idx) {
+        faultPhotoFiles.splice(idx, 1);
+        renderFaultPhotoThumbs();
+    }
+    function renderFaultPhotoThumbs() {
+        const wrap = $('fault_photo_thumbs'), btn = $('fault_send_btn');
+        if (!wrap) return;
+        wrap.innerHTML = '';
+        faultPhotoFiles.forEach((f, idx) => {
+            const box = document.createElement('div'); box.className = 'photo-thumb';
+            const img = document.createElement('img');
+            img.src = URL.createObjectURL(f); img.onload = () => URL.revokeObjectURL(img.src);
+            const del = document.createElement('button'); del.type = 'button'; del.textContent = '✕';
+            del.onclick = () => removeFaultPhoto(idx);
+            box.append(img, del); wrap.appendChild(box);
         });
-    }
-    function addKofferItem() {
-        const inp = $('koffer_new_item'), t = inp?.value.trim(); if (!t) return;
-        kofferItems.push({ text: t, done: false, custom: true });
-        inp.value = ''; saveKofferChecklist(); renderKofferChecklist();
-    }
-    function uncheckAllKoffer() { kofferItems.forEach(x => x.done = false); saveKofferChecklist(); renderKofferChecklist(); }
-    async function resetKofferDefaults() {
-        if (!await askConfirm('Checkliste auf Standard-Wartungskoffer zurücksetzen?')) return;
-        kofferItems = DEFAULT_KOFFER_ITEMS.map(t => ({ text: t, done: false, custom: false }));
-        saveKofferChecklist(); renderKofferChecklist();
+        if (btn) {
+            btn.innerText = faultPhotoFiles.length
+                ? `📤 Meldung + ${faultPhotoFiles.length} Foto(s) teilen (an Hotline)`
+                : '✉️ E-Mail an servicehotline@innowatech.de';
+        }
     }
 
     function buildFaultPayload() {
@@ -1698,8 +1659,21 @@
         if (notes) body += `\nAktuelle Service-Notizen:\n${notes}\n`;
         return { subject, body };
     }
-    function sendFaultEmail() {
+    async function sendFaultEmail() {
         const { subject, body } = buildFaultPayload();
+        if (faultPhotoFiles.length && navigator.canShare?.({ files: faultPhotoFiles })) {
+            try {
+                await navigator.share({
+                    files: faultPhotoFiles,
+                    title: subject,
+                    text: `An: servicehotline@innowatech.de\nBetreff: ${subject}\n\n${body}`
+                });
+                return;
+            } catch (err) {
+                if (err?.name === 'AbortError') return;
+            }
+        }
+        if (faultPhotoFiles.length) showToast('Hinweis: Über mailto können Browser keine Fotos anhängen – bitte Foto in der Mail manuell einfügen.');
         window.location.href = `mailto:servicehotline@innowatech.de?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     }
     function copyFaultReport() {
@@ -1713,47 +1687,25 @@
         $('radar_abgleich_max').value = d ? d.max : '';
         $('radar_tank_hint').innerHTML = d ? `<span style="color:#2e7d32;"><b>Werte automatisch eingetragen:</b> Min = 0 mm, Max = ${d.max} mm für ${v}l Tank.</span>` : 'Wähle oben ein Tankvolumen, um die Abgleichwerte automatisch zu setzen.';
     }
-    function applyEnthAquadronFlow() {
-        const aqd = anlagenDatabase[$('enth_anlage_select')?.value];
-        if (aqd) $('enth_flow_lh').value = parseFloat(aqd.durchfluss) || '';
-        updateEnthaerterData();
-    }
     function updateEnthaerterData() {
         const d = enthaerterDatabase[$('enthaerter_select').value];
         [['enth_kapazitaet', 'kapazitaet'], ['enth_harz', 'harz'], ['enth_sole', 'sole'], ['enth_salz', 'salz'], ['enth_rueckfuelle', 'rueckfuelle'], ['enth_rueckspuelen', 'rueckspuelen'], ['enth_besalzen', 'besalzen'], ['enth_schnellspuelen', 'schnellspuelen'], ['enth_sole_nachf', 'sole_nachf']].forEach(([id, k]) => txt(id, d ? d[k] : '-'));
-        const haerte = val('enth_haerte'), flow = val('enth_flow_lh'), hint = $('enth_ratio_hint');
-        const isSingle = !!d?.single;
-        if ($('enth_ratio_inputs')) $('enth_ratio_inputs').style.display = isSingle ? 'none' : 'block';
-        txt('enth_liter_label', isSingle ? 'Enthärtete Menge bis Reg.' : 'Enthärtete Menge bis Reg. (F1)');
+        const haerte = val('enth_haerte'), hint = $('enth_ratio_hint');
         if (!d) {
-            txt('enth_res_kap80', '-'); txt('enth_res_liter', '-'); txt('enth_res_ratio', '-');
-            if (hint) hint.innerText = 'Modell und Rohwasserhärte eingeben, um Liter bis zur Regeneration zu berechnen.';
+            txt('enth_res_kap80', '-'); txt('enth_res_liter', '-');
+            if (hint) hint.innerText = 'Modell und Rohwasserhärte eingeben, um die enthärtete Wassermenge bis zur Regeneration zu berechnen.';
             return;
         }
         const kap = parseFloat(d.kapazitaet) || 0, kap80 = kap * 0.8;
         txt('enth_res_kap80', `${kap80.toFixed(1)} °dH·m³`);
-        const regMin = ['rueckspuelen', 'besalzen', 'schnellspuelen', 'sole_nachf'].reduce((sum, k) => sum + (parseFloat(d[k]) || 0), 0);
         if (haerte <= 0) {
             txt('enth_res_liter', '-');
-            txt('enth_res_ratio', isSingle ? 'Kein Ratio (Einzelflasche)' : '-');
-            if (hint) hint.innerHTML = isSingle
-                ? `<b>Einzelflaschen-Enthärter (${d.label.replace(' (Einzelflasche)', '')}):</b> Keine zweite Flasche und kein F1:F2-Ratio. Während der Regeneration (~${regMin} Min) wird die Produktion gesperrt. Für die enthärtete Litermenge oben die Rohwasserhärte (°dH) eingeben.`
-                : 'Bitte Rohwasserhärte (°dH) eingeben, um nutzbare Liter und Ratio zu ermitteln.';
+            if (hint) hint.innerText = 'Bitte Rohwasserhärte (°dH) eingeben, um die enthärtete Wassermenge bis zur Regeneration zu ermitteln.';
             return;
         }
         const liter = (kap80 / haerte) * 1000;
         txt('enth_res_liter', `${Math.round(liter)} l (${(liter / 1000).toFixed(2)} m³)`);
-        if (isSingle) {
-            txt('enth_res_ratio', 'Kein Ratio (Einzelflasche)');
-            if (hint) hint.innerHTML = `<b>Einzelflaschen-Enthärter:</b> Bei diesem Modell gibt es keine zweite Flasche und kein Überwachungs-Ratio (F1:F2). Während der Regeneration (~${regMin} Min) wird die Produktion automatisch gesperrt.`;
-        } else if (flow > 0) {
-            const vReg = flow * (regMin / 60), vLastF2 = vReg + liter * 0.08, ratio = Math.max(1, Math.round(liter / vLastF2));
-            txt('enth_res_ratio', `ca. ${ratio} : 1`);
-            if (hint) hint.innerHTML = `<b>Grober Richtwert für SPS-Überwachung:</b> Während ca. ${regMin} Min Regeneration von Flasche 1 fließen bei ${flow} l/h rund ${vReg.toFixed(0)} l durch Flasche 2 (inkl. ~8 % Sicherheitsanteil → Ratio <b>${ratio}:1</b>). Die exakte Auslösung steuern die beiden Härtesensoren.`;
-        } else {
-            txt('enth_res_ratio', '-');
-            if (hint) hint.innerText = 'Für das grobe Überwachungs-Ratio (F1 : F2) optional oben eine Aquadron oder den Durchfluss (l/h) eingeben.';
-        }
+        if (hint) hint.innerHTML = `Bei <b>${haerte.toFixed(1)} °dH</b> und 80 % Nutzkapazität (Quellharz-Sensor) stehen bis zur Regeneration ca. <b>${Math.round(liter)} l (${(liter / 1000).toFixed(2)} m³)</b> Weichwasser zur Verfügung.`;
     }
     function updateSondenData() {
         const d = sondenDatabase[$('sonden_select').value];
