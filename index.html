@@ -8,7 +8,7 @@
     <meta name="apple-mobile-web-app-title" content="Innowatech">
     <meta name="theme-color" content="#0d47a1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>INNOWATΞCH Service Tool v5.0</title>
+    <title>INNOWATΞCH Service Tool v5.1</title>
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="icon.png">
     <style>
@@ -196,6 +196,21 @@
         .chip-wrap { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 8px; }
         .snippet-chip { font-size: 0.72rem; font-weight: 600; padding: 5px 8px; border-radius: 6px; border: 1px solid var(--border-color); background: var(--input-bg); color: var(--text-color); cursor: pointer; }
         .snippet-chip:active { background: var(--result-bg); border-color: var(--primary-color); }
+        .snippet-chip.recording { background: #fee2e2; border-color: #dc2626; color: #991b1b; animation: pulseRec 1.2s infinite; }
+        @keyframes pulseRec { 0%, 100% { opacity: 1; } 50% { opacity: 0.65; } }
+        .koffer-filter-bar { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 6px; margin-bottom: 8px; scrollbar-width: none; }
+        .koffer-filter-bar::-webkit-scrollbar { display: none; }
+        .koffer-chip { flex-shrink: 0; font-size: 0.72rem; font-weight: 600; padding: 5px 10px; border-radius: 999px; border: 1px solid var(--border-color); background: var(--input-bg); color: var(--text-color); cursor: pointer; white-space: nowrap; }
+        .koffer-chip.active { background: var(--primary-color); color: white; border-color: var(--primary-color); }
+        .koffer-card { background: var(--input-bg); border: 1px solid var(--border-color); border-radius: 8px; padding: 9px 10px; margin-bottom: 7px; }
+        .koffer-card-top { display: flex; justify-content: space-between; align-items: center; gap: 6px; font-size: 0.7rem; color: var(--subtext-color); margin-bottom: 3px; }
+        .koffer-badge { background: var(--result-bg); color: var(--primary-color); border: 1px solid var(--result-border); border-radius: 4px; padding: 1px 6px; font-weight: 700; font-size: 0.68rem; white-space: nowrap; }
+        .koffer-title { font-size: 0.88rem; font-weight: 700; color: var(--text-color); line-height: 1.25; }
+        .koffer-meta { font-size: 0.76rem; color: var(--subtext-color); margin-top: 3px; display: flex; flex-wrap: wrap; gap: 8px; }
+        .koffer-btn-row { display: flex; gap: 5px; margin-top: 7px; flex-wrap: wrap; }
+        .koffer-action-btn { flex: 1; min-width: 90px; padding: 5px 7px; font-size: 0.72rem; font-weight: 600; border-radius: 6px; border: 1px solid var(--border-color); background: var(--card-bg); color: var(--text-color); cursor: pointer; text-align: center; }
+        .koffer-action-btn:active { background: var(--result-bg); border-color: var(--primary-color); }
+        .koffer-action-btn.primary { background: var(--result-bg); border-color: var(--result-border); color: var(--result-label); }
         .photo-thumb-wrap { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
         .photo-thumb { position: relative; width: 64px; height: 64px; border-radius: 6px; overflow: hidden; border: 1px solid var(--border-color); }
         .photo-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
@@ -464,6 +479,19 @@
         <button type="button" class="reset-tab-btn" onclick="resetTabInputs('enthaerter')">↺ Eingaben zurücksetzen</button>
     </div>
 
+    <div id="tab-koffer" class="tab-content">
+        <div class="section-title">🧰 Servicekoffer-Katalog (L-Boxen)</div>
+        <div class="form-group" style="margin-bottom:6px;">
+            <div class="input-wrapper">
+                <input type="search" id="koffer_search" placeholder="Artikel, IN-Nr., Hst.-Nr., Fach oder Hersteller suchen..." oninput="renderKofferList('main')">
+                <button type="button" onclick="$('koffer_search').value='';renderKofferList('main');" title="Suche leeren" style="border:none;background:transparent;color:var(--subtext-color);cursor:pointer;font-size:0.9rem;padding:4px;">✕</button>
+            </div>
+        </div>
+        <div class="koffer-filter-bar" id="koffer_filter_main"></div>
+        <div class="hint" id="koffer_count_main" style="margin-bottom:8px;"></div>
+        <div id="koffer_list_main"></div>
+    </div>
+
     <div id="tab-taschenlampe" class="tab-content">
         <div class="section-title">🔦 Taschenlampe / Notlicht</div>
         <div class="hint" style="margin-bottom:12px;">Schaltet das Kamera-Blitzlicht (Android) oder ein helles Bildschirm-Notlicht (iOS/PC) ein.</div>
@@ -518,6 +546,8 @@
         <div class="section-title">📝 Service-Notizen &amp; Bausteine (Offene Punkte)</div>
         <div class="chip-wrap no-print">
             <button type="button" class="snippet-chip" onclick="addNoteTimestamp()">⏱️ Zeitstempel</button>
+            <button type="button" class="snippet-chip" id="dictate_btn" onclick="toggleNoteDictation()">🎙️ Diktieren</button>
+            <button type="button" class="snippet-chip" id="notizen_koffer_btn" onclick="openKofferPicker()" style="border-color:var(--primary-color); color:var(--primary-color);">🧰 Koffer-Teil wählen</button>
             <button type="button" class="snippet-chip" onclick="insertNoteSnippet(activeUser ? '👷 Mitarbeiter: ' + activeUser : '👷 Mitarbeiter:')">👷 Mitarbeiter</button>
             <button type="button" class="snippet-chip" onclick="insertNoteSnippet('👤 Kunde:')">👤 Kunde:</button>
             <button type="button" class="snippet-chip" onclick="insertNoteSnippet('🔢 Anlagen-SN:')">🔢 Anlagen-SN</button>
@@ -527,6 +557,7 @@
             <button type="button" class="snippet-chip" onclick="insertNoteSnippet('📦 Verbrauchsmaterial bestellen:')">📦 Verbrauchsmaterial</button>
             <button type="button" class="snippet-chip" onclick="insertNoteSnippet('🧰 Nachorder Servicekoffer (Fehlteil):')">🧰 Nachorder Servicekoffer</button>
         </div>
+        <div id="dictate_status" class="no-print" style="display:none; font-size:0.75rem; color:#dc2626; font-weight:600; margin-bottom:4px;"></div>
         <div class="form-group"><textarea id="service_notes_area" class="field-box" placeholder="Kunde, Anlagen-SN, Einsatzgrund, benötigte Ersatzteile, Verbrauchsmaterial festhalten..." style="height:175px; font-size:0.9rem; font-family:inherit;" oninput="saveServiceNotes()"></textarea><div id="pdf_notes_print_view"></div></div>
         <div class="no-print" style="display:flex; gap:6px;">
             <button type="button" class="pdf-export-btn" onclick="copyServiceNotes()" style="flex:1; background:#1976d2; border-color:#1565c0; margin-top:0;">📋 Kopieren</button>
@@ -559,7 +590,7 @@
             <span id="net-status-badge" style="font-size:0.72rem; padding:2px 6px; border-radius:10px; background:rgba(0,0,0,0.08);">● Online</span>
             <span id="footer-update-pill" onclick="applyAppUpdate()" title="Update jetzt installieren" style="display:none; font-size:0.7rem; padding:2px 7px; border-radius:10px; background:#f59e0b; color:white; cursor:pointer; font-weight:bold;">🔄 Update</span>
         </div>
-        <span class="footer-version" style="flex:1; text-align:right;" onclick="handleVersionClick()">v5.0</span>
+        <span class="footer-version" style="flex:1; text-align:right;" onclick="handleVersionClick()">v5.1</span>
     </div>
 </div>
 
@@ -588,6 +619,8 @@
                 <div class="setting-section-content">
                     <div class="toggle-row"><span>Display wach halten (Wake Lock)</span><input type="checkbox" id="wakelock-toggle" onchange="toggleKeepAwake(this.checked)"></div>
                     <div class="toggle-row"><span>Signalton bei Timer-Ende</span><input type="checkbox" id="beep-toggle" onchange="toggleTimerBeep(this.checked)"></div>
+                    <div class="toggle-row"><span>Rechner-Eingaben nach Neustart merken</span><input type="checkbox" id="calc-persist-toggle" onchange="toggleCalcPersist(this.checked)"></div>
+                    <div class="hint">Service-Notizen bleiben unabhängig davon immer gespeichert.</div>
                 </div>
             </div>
             <div class="setting-section collapsed">
@@ -621,7 +654,7 @@
 
 <div class="admin-modal-overlay" id="adminAuthModal">
     <div class="admin-modal-content">
-        <div class="admin-modal-header"><span>Admin Authentifizierung (v5.0)</span><button type="button" class="modal-close-btn" style="color:var(--primary-color);" onclick="closeAdminModal('adminAuthModal')">✕</button></div>
+        <div class="admin-modal-header"><span>Admin Authentifizierung (v5.1)</span><button type="button" class="modal-close-btn" style="color:var(--primary-color);" onclick="closeAdminModal('adminAuthModal')">✕</button></div>
         <p style="font-size:0.82rem; color:var(--subtext-color); margin-bottom:12px;">Bitte die Admin-PIN eingeben:</p>
         <div class="form-group"><label>Admin-PIN</label><input type="password" id="adminPin8" class="field-box" value="" autocomplete="new-password" placeholder="••••••••" style="letter-spacing:2px;"></div>
         <button type="button" class="admin-btn admin-btn-primary" style="margin-top:10px;" onclick="verifyAdminAuth8()">Admin Console öffnen</button>
@@ -661,6 +694,23 @@
 
 <div class="dropdown-modal-overlay" id="dropdown-modal" onclick="closeCustomDropdown(event)">
     <div class="dropdown-modal-content" onclick="event.stopPropagation()"><div class="dropdown-modal-header" id="dropdown-modal-title">Auswahl treffen</div><div class="dropdown-modal-list" id="dropdown-modal-list"></div></div>
+</div>
+
+<div class="modal-overlay" id="kofferPickerModal" style="z-index:4500;" onclick="if(event.target===this)closeKofferPicker()">
+    <div class="modal-content" style="max-width:520px; max-height:86vh;" onclick="event.stopPropagation()">
+        <div class="modal-header"><h2>🧰 Teil aus Servicekoffer wählen</h2><button type="button" class="modal-close-btn" onclick="closeKofferPicker()">✕</button></div>
+        <div class="modal-body" style="padding:10px 12px;">
+            <div class="form-group" style="margin-bottom:6px;">
+                <div class="input-wrapper">
+                    <input type="search" id="koffer_picker_search" placeholder="Artikel, IN-Nr., Hst.-Nr. oder Fach suchen..." oninput="renderKofferList('picker')">
+                    <button type="button" onclick="$('koffer_picker_search').value='';renderKofferList('picker');" title="Suche leeren" style="border:none;background:transparent;color:var(--subtext-color);cursor:pointer;font-size:0.9rem;padding:4px;">✕</button>
+                </div>
+            </div>
+            <div class="koffer-filter-bar" id="koffer_filter_picker"></div>
+            <div class="hint" id="koffer_count_picker" style="margin-bottom:8px;"></div>
+            <div id="koffer_list_picker"></div>
+        </div>
+    </div>
 </div>
 
 <div class="admin-modal-overlay" id="confirmDialogModal" style="z-index:6500; align-items:center;">
@@ -775,6 +825,267 @@
         eco_6_3_chlorid: { label: "Aquadron ECO 6.3 (chlorid-optimiert)", durchfluss: "200 l/h", strom: "2 x 38 A", spannung: "2 x 96 V", zeit: "21 h", prod: "120 min", pause: "15 min" }
     };
 
+    const KOFFER_DATA = [
+        { id: 'dosierung', name: 'Dosierung / Pumpe', short: 'Dosierung', icon: '💉', items: [
+            ['1', 'Injektionsstelle PVC 3/4"', 'Innowatech', '-', '102297', '1'],
+            ['2', 'O-Ringe FPM80 11,91 x 2,62 mm', 'Reiff', '4698030', '105269', '4'],
+            ['3', 'O-Ring FPM70 13,1 x 2,62 mm', 'Reiff', '711350', '105487', '4'],
+            ['4', 'Injektionsstelle PVDF 3/4"', 'Asprion', '-', '101030', '1'],
+            ['5', 'Injektionsstelle PVC-C 1/2"', 'Innowatech', '-', '103651', '1'],
+            ['6', 'Schlauchverschraubung', 'Grundfos', '98345103', '100906', '4'],
+            ['7', 'Anschlussstück DDA60', 'Polytron', '12590374', '103868', '2'],
+            ['8', 'Schlauchübergang PVC 1/2" auf 6/3-Schlauch', 'Innowatech', '-', '100868', '2'],
+            ['9', 'Kugelhahn C200', 'Stübbe', '145780', '110414', '1'],
+            ['10', 'Kabelverschraubung M20', 'Helukabel', '97529', '103722', '2'],
+            ['11', 'Schlauchverbinder 6/3-Schlauch', 'Innowatech', '-', '105268', '2'],
+            ['12', 'Kabelverschraubung M25', 'Helukabel', '97530', '103723', '2'],
+            ['13', 'Einlegeteil Schlauchverschraubung', 'Grundfos', '98345121', '100015', '2'],
+            ['14a', 'Steuerkabel Dosierpumpe 4-polig A', 'Escha', '8043405', '100055', '2'],
+            ['14b', 'Steuerkabel Dosierpumpe 4-polig B', 'Escha', '8051055', '100056', '1']
+        ]},
+        { id: 'elektrik', name: 'Elektrik', short: 'Elektrik', icon: '⚡', items: [
+            ['1', 'Potenzialklemme 2,5 PV', 'Wago', '2002-2208', '110500', '6x'],
+            ['1', 'Abschlussplatte 2,5', 'Wago', '2002-1291', '110505', '4x'],
+            ['2', 'Schütz DIL EEM-10-G', 'Sonepar', '0710036', '100189', '1x'],
+            ['3', 'Klemme blau ST 2,5', 'Wago', '2002-1204', '110496', '3x'],
+            ['3', 'Klemme PE ST 2,5', 'Wago', '2002-1207', '110497', '3x'],
+            ['3', 'Endklammer', 'Wago', '249-116', '110503', '2x'],
+            ['3', 'Durchgangsklemme 2,5', 'Wago', '2002-1201', '110494', '6x'],
+            ['3', 'Schildträger', 'Wago', '-', '110504', '2x'],
+            ['4', 'Schirmklemmbügel', 'Wago', '-', '110517', '4x'],
+            ['5', 'Abschlussplatte 2,5 (Doppelklemme)', 'Wago', '2002-2291', '110498', '4x'],
+            ['5', 'Doppelklemme 2,5', 'Wago', '2002-1291', '110506', '20x'],
+            ['6', 'Verdrahtungskabel 0,5 dunkelblau/weiß', 'Sonepar', '7300525', '103393', '15m'],
+            ['6', 'Verdrahtungskabel 0,5 weiß', 'Granzow', '1123028', '100131', '15m'],
+            ['6', 'Verdrahtungskabel 0,5 dunkelblau', 'Granzow', '1153840', '103139', '15m'],
+            ['6', 'Verdrahtungskabel 1,5 hellblau', 'Granzow', '1123023', '100129', '15m'],
+            ['6', 'Verdrahtungskabel 1,5 grün/gelb', 'Granzow', '1123061', '100135', '15m'],
+            ['6', 'Verdrahtungskabel 1 orange', 'Granzow', '1123550', '100133', '15m'],
+            ['6', 'Verdrahtungskabel 1,5 schwarz', 'Granzow', '1123062', '100134', '15m'],
+            ['7', 'Doppelklemme STTB 2,5', 'Phoenix Contact', '3031270', '100239', '20x'],
+            ['7', 'Potenzialklemme STTB 2,5 PV', 'Phoenix Contact', '3031539', '100243', '6x'],
+            ['7', 'Abschlussplatte D-STTB 2,5', 'Phoenix Contact', '3030459', '100240', '4x'],
+            ['7', 'Abschlussplatte D-ST 2,5', 'Phoenix Contact', '3030417', '100232', '4x'],
+            ['7', 'Schildträger KLM3', 'Phoenix Contact', '0811969', '100220', '2x'],
+            ['8', 'Klemme ST 2,5', 'Phoenix Contact', '3031212', '100229', '6x'],
+            ['8', 'Endblock Clipfix 35-5', 'Phoenix Contact', '3022276', '100218', '2x'],
+            ['9', 'Klemme blau ST 2,5', 'Phoenix Contact', '3031225', '100230', '3x'],
+            ['9', 'Klemme PE ST 2,5', 'Phoenix Contact', '3031238', '100231', '3x'],
+            ['10', 'Überbrückungsklemme 10-polig', 'Phoenix', '3030213', '100233', '5x'],
+            ['10', 'Compact-Verbindungsklemme 2-polig', 'WAGO', '221-412', '103372', '10x'],
+            ['10', 'Compact-Verbindungsklemme 3-polig', 'WAGO', '221-413', '103373', '5x'],
+            ['10', 'Compact-Verbindungsklemme 5-polig', 'WAGO', '221-415', '105549', '2x'],
+            ['11', 'Ventilstecker mit LED', 'Phoenix Contact', '1544714', '100705', '2x'],
+            ['12', 'Leuchtmeldevorsatz rot', 'Sonepar', '0723521', '100196', '1x'],
+            ['12', 'Leuchtmeldevorsatz grün', 'Sonepar', '0723522', '100197', '1x'],
+            ['12', 'Leuchtdrucktaster blau', 'Sonepar', '0724451', '100203', '1x'],
+            ['12', 'Leuchtdrucktaster rot', 'Sonepar', '0724448', '100201', '1x'],
+            ['12', 'Leuchtdrucktaster grün', 'Sonepar', '0724449', '100202', '1x'],
+            ['12', 'Drehknebelschalter', 'Sonepar', '0723568', '105364', '1x'],
+            ['12', 'Blindstopfen', 'Sonepar', '0723365', '105365', '2x'],
+            ['12', 'Schildträger', 'Sonepar', '0723500', '100192', '4x'],
+            ['12', 'Befestigungsadapter', 'Sonepar', '0723503', '100193', '6x'],
+            ['13', 'Schaltelement Schließer', 'Sonepar', '0723505', '100194', '2x'],
+            ['13', 'Schaltelement Öffner', 'Sonepar', '0723507', '100195', '2x'],
+            ['13', 'Leuchtelement', 'Sonepar', '0724330', '100199', '2x'],
+            ['14', 'Relais 24V 2-polig', 'Wago', '788-312', '100298', '2x'],
+            ['15', 'Relais 230V 2-polig', 'Wago', '788-516', '103805', '1x'],
+            ['15', 'Halbleiter-Relais 24V 1-polig (788-700)', 'Wago', '788-700', '100872', '1x'],
+            ['16', 'Relais 24V 1-polig', 'Wago', '859-304', '103690', '2x'],
+            ['16', 'Halbleiter-Relais 24V 1-polig (859-797)', 'Wago', '859-797', '104144', '2x'],
+            ['17', 'Stecksockel mit Relais 24V 2-polig Handverriegelung', 'Wago', '788-346', '104146', '2x'],
+            ['18', 'Stromwandler DMI51-12-V02 0-12V', '3K', '9993130', '100937', '1x'],
+            ['19', 'Netzteil 24V 2,5A', 'Wago', '787-1012', '103290', '1x'],
+            ['20', 'Strommessumformer Jumpflex', 'Wago', '2857-0550', '103525', '1x']
+        ]},
+        { id: 'elektrolyse', name: 'Elektrolyse', short: 'Elektrolyse', icon: '⚗️', items: [
+            ['1', 'Elektrolyse-Teilzelle', 'Innowatech', '-', '110103', '2'],
+            ['2', 'Gerade Schottverschraubung 8mm', 'Serto', 'SO 21521-8', '100571', '2'],
+            ['3', 'Winkelverschraubung 8mm', 'Serto', 'SO 22021-8', '100582', '2'],
+            ['4', 'Schlauchverbinder Y-Stück', 'Bürkle', '8712-0006', '102024', '2'],
+            ['5', 'Gerade Einschraubverschraubung 1/4"-8mm', 'Serto', 'SO 21124-1/4 OR', '100577', '2'],
+            ['6', 'T-Verschraubung 8mm', 'Serto', 'SO 23021-8', '100579', '1'],
+            ['7', 'Einstellnippel PVDF 1/4"-8mm', 'Serto', 'SO 21624-A8-1/4 OR', '100586', '2'],
+            ['8', 'Gerade Einschraubverschraubung 1/8"-8mm', 'Serto', 'SO 21124-8-1/8 OR', '100578', '2'],
+            ['9', 'Banderdungsschelle', 'OBO', '430103', '100116', '1'],
+            ['10', 'Einschraubverschraubung 8mm', 'Riegler', '110266', '100561', '1'],
+            ['11', 'Schottverschraubung 1/2" für 8mm', 'Fluid Conc.', '100107333', '100420', '1'],
+            ['12', 'T-Verbinder 8mm', 'Fluid Conc.', '100064188', '103475', '1'],
+            ['13', 'Verbinder 8mm', 'Fluid Conc.', '100042772', '103477', '1'],
+            ['14', 'Einschraub-Verbinder 1/2"-12mm', 'Fluid Conc.', '100041890', '100432', '1'],
+            ['14', 'Reduzierstück 12-10mm', 'Fluid Conc.', '200014541', '105397', '1'],
+            ['15', 'Einschraubverschraubung 1/4"-10mm', 'Fluid Conc.', '100041888', '103474', '1'],
+            ['16', 'Batterie SPS', 'Tadiran', '650112', '103694', '1'],
+            ['17', 'Einsteck-Winkelverbinder 8mm', 'Fluid Conc.', '100066277', '100566', '1'],
+            ['17', 'Winkelverbinder 8mm', 'Fluid Conc.', '100066321', '100565', '1'],
+            ['18', 'Reduzierstück 10-8mm', 'Fluid Conc.', '100042728', '105396', '1'],
+            ['19', 'Einsteckdorn 8mm', 'Fluid Conc.', '200095516', '100426', '2'],
+            ['20', 'Winkel-Steckanschluss 12mm 90°', 'Fluid Conc.', '100066314', '105626', '1'],
+            ['21', 'Einschraub-Steckstutzen 12mm', 'Fluid Conc.', '200010646', '106131', '1'],
+            ['22', 'Regulierventil PVDF', 'Serto', 'SO NV 22A00-1/8', '100593', '1'],
+            ['23', 'O-Ring FPM80 14x1,5', 'Reiff', '4421130', '105484', '4'],
+            ['23', 'O-Ring FPM80 10x1,5', 'Reiff', '1093840', '105518', '4'],
+            ['23', 'O-Ring FPM80 4,8x1,8', 'Reiff', '10023537', '105519', '4'],
+            ['24', 'Schlauchschelle Schraublos', 'Würth', '0541001080', '105011', '10']
+        ]},
+        { id: 'enthaerter', name: 'Enthärter', short: 'Enthärter', icon: '💧', items: [
+            ['1', 'Turbine Messing Reedkontakt', 'B.I.O-Tech', '150175', '100041', '1x'],
+            ['2', 'Nockenwelle für 368', 'Spiegl', '-', '111097', '1x'],
+            ['3', 'Lichtschrankenhalterung für 368', 'Spiegl', '-', '110963', '1x'],
+            ['3', 'Motor für 368', 'Spiegl', '-', '110637', '1x'],
+            ['4', 'Winkelverschraubung 3/8" IGxAG', 'Spiegl', 'AV154', '110978', '2x'],
+            ['5', '9100 Unterer Kolbensatz', 'Fleck', '24235', '103557', '1x'],
+            ['5', '9100 Oberer Kolbensatz', 'Fleck', '24234', '103457', '1x'],
+            ['6', '9100 Dichtungs- und Scheibensatz', 'Fleck', '25642', '102052', '1x'],
+            ['7', '9100 Injektorbaugruppe komplett', 'Fleck', '28244', '103564', '1x'],
+            ['8', '5600 Kolbensatz', 'Fleck', '27077', '103902', '1x'],
+            ['9', '5600 Dichtungs- und Scheibensatz', 'Fleck', '24115', '100899', '1x'],
+            ['10', '5600 Soleventil komplett', 'Fleck', '24118', '100917', '1x'],
+            ['11', 'Mikroschalter für Enthärter', 'Conrad', '702831', '105366', '1x'],
+            ['12', 'Turbine Fleck 9100', 'Fleck', '60626-01', '103547', '1x'],
+            ['13', 'Steuerungsplatine SXT', 'Fleck', 'BR42766-02', '105302', '1x'],
+            ['14', 'Spiegl Härtesensor', 'Spiegl', '2828', '105208', '2x'],
+            ['15', 'Spiegl Klappensatz', 'Spiegl', '3007947', '105234', '1x'],
+            ['15', 'Federblech (Spiegl Klappensatz)', 'Spiegl', '3022017', '105233', '1x'],
+            ['16', 'Spiegl Lichtschranke', 'Spiegl', 'PM-L25-P', '105368', '1x'],
+            ['17', 'Zylinderschraube M3x10mm für 368', 'Online Schraub.', '91200301004', '105015', '10'],
+            ['18', 'Spiegl Mikroschalter Grundstellung', 'Spiegl', '1414442-62', '105369', '1x'],
+            ['19', 'Kabel Turbine/Steuerungsplatine', 'Fleck', 'BU27808', '105367', '1x']
+        ]},
+        { id: 'netzteile', name: 'Netzteile / Pumpen-Kits / Schläuche', short: 'Netzteile/Kits', icon: '🔌', items: [
+            ['1', 'Netzteil 24V – 20A', 'Phoenix Contact', '2903151', '105524', '1'],
+            ['2', 'Netzteil 24V – 10A', 'Phoenix Contact', '2903149', '103929', '1'],
+            ['3', 'Netzteil 24V – 5A', 'Phoenix Contact', '2903148', '103928', '1'],
+            ['4', 'Schaltverstärker', 'Schuhmann Messtechnik', 'SI5.20GW', '100105', '1'],
+            ['5', 'Netzteil 24V', 'JK Automation', '491476', '103491', '1'],
+            ['6a', 'Servicekit DDA 17,7 komplett', 'Grundfos', '97751497', '101010', '1'],
+            ['6b', 'Servicekit DDA 7,5 komplett', 'Grundfos', '97751479', '102098', '1'],
+            ['7', 'PE-Schlauch 7x1,5mm', 'Fluid Concept', '200096682', '100428', '10m'],
+            ['8', 'Panzerschlauch 1/2" IGxIG', 'W&S', '9206359', '100102', '1x'],
+            ['9', 'Steckverbinder DN10 ES', 'Schwer Fittings', 'PI-Um10-4LV', '103484', '2'],
+            ['9', 'Dichtung TPE 10x18x3mm', 'Köro / Lotter', 'KD152907999', '110465', '4x'],
+            ['9', 'A-Box 025', 'Ernst Grazow', '24042332', '105363', '1'],
+            ['10', 'Servicekit DDA 60 komplett', 'Grundfos', '99151276', '104027', '1'],
+            ['11', 'H07V-K 4 dbl/ws', 'Sonepar', '7306795', '103396', '5m'],
+            ['11', 'H07V-K 4 dbl', 'Sonepar', '0102150', '110438', '5m'],
+            ['12', 'Sensor-/Aktor-Kabel, 3-polig', 'Phoenix Contact', '1439502', '103433', '2x 5m'],
+            ['13', 'Schlauch Soledosierung', 'Reiff', '191790', '103825', '10m'],
+            ['14', 'Schlauch PVC', 'Reiff', '190710', '102027', '5'],
+            ['15', 'Kunststoffrohr LDPE', 'John Guest', 'PE-12-EI-0500F-N', '100430', '10m'],
+            ['16', 'Dichtung Filtergehäuse', 'Reiff', '525740', '105988', '4']
+        ]},
+        { id: 'ventile', name: 'Ventile / MMC', short: 'Ventile/MMC', icon: '🔧', items: [
+            ['1', '2/2-Wegeventil 0330 PP / EPDM', 'Bürkert', '00021660', '100043', '2x'],
+            ['2', '2/2-Wegeventil 0330 PVDF / FKM', 'Bürkert', '00023472', '100044', '2x'],
+            ['3', '3/2-Wegeventil 0330 PVDF / FKM', 'Bürkert', '00025858', '102206', '2x'],
+            ['4', '2/2-Wegeventil 0330 PVDF / FFKM', 'Bürkert', '00310592', '103693', '1x'],
+            ['5', '3/2-Wegeventil 0330 PVDF / FFKM', 'Bürkert', '00312789', '103835', '1x'],
+            ['6', 'Proportionalventil 2873', 'Bürkert', '00239080', '100877', '1x'],
+            ['7', 'Ansteuerung Proportionalventil', 'Bürkert', '00316530', '100045', '1x'],
+            ['8', '2/2-Wegeventil 6213EV VA 1/2"', 'Bürkert', '00222156', '100875', '1x'],
+            ['9', 'Probenahmehahn 1/4"', 'Dosatronic', '9268000', '103905', '1x'],
+            ['10', 'Injektionsstelle Sole 1/2"', 'Prominent', '924680', '100023', '1x'],
+            ['10', 'Injektionsstelle PVC 1/2"', 'Grundfos', '95730912', '100017', '1x'],
+            ['11', 'Dichtungsset Acrylmessblock', 'Dosatronic', '9088663', '103873', '1x'],
+            ['12', '2/2-Wegeventil 6213EV VA 3/4"', 'Bürkert', '00222122', '102063', '1x'],
+            ['13', 'Rittal Filtermatten 120x120x12mm', 'Granzow', '2965996', '103243', '2x'],
+            ['14', 'Fußventil PVDF', 'Grundfos', '98070953', '100414', '1x'],
+            ['15', 'Kunststoff-Winkel 3/8" für Sauglanze', 'Enfido', '46.004.01', '103968', '1x'],
+            ['16', 'Messinghülsen und Filter für Sauglanze', 'Enfido', '99.001.24', '105188', '1x'],
+            ['17', 'Rotor 47-13 blau', 'Saier', '18-43061', '100907', '1x'],
+            ['17', 'Rotor 88-11 gelb', 'Saier', '18-43044', '111208', '1x'],
+            ['18', 'Schlauchkit PS 138-3,2x1,6 Ph', 'Saier', '18-43301', '103837', '1x'],
+            ['18', 'Schlauchkit PS 140-4,8x1,6 Ph', 'Saier', '18-43300', '111207', '1x'],
+            ['19', 'Reinigungsvorrichtung RV1', 'Reiss', '12112', '103574', '1x'],
+            ['20', 'Drosselrückschlagventil Zuluft', 'Riegler', '187.014-8', '100563', '1x'],
+            ['21', 'Drosselrückschlagventil Abluft', 'Riegler', '188.014-8', '100564', '1x']
+        ]}
+    ];
+    const kofferFilter = { main: 'alle', picker: 'alle' };
+    const escHtml = s => String(s || '').replace(/[<>&"]/g, c => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;' }[c]));
+    const findKofferItem = (boxId, idx) => { const b = KOFFER_DATA.find(x => x.id === boxId); return b ? { box: b, item: b.items[idx] } : null; };
+    function renderKofferFilterChips(mode) {
+        const el = $('koffer_filter_' + mode); if (!el) return;
+        const total = KOFFER_DATA.reduce((a, b) => a + b.items.length, 0);
+        const cur = kofferFilter[mode];
+        el.innerHTML = `<button type="button" class="koffer-chip${cur === 'alle' ? ' active' : ''}" onclick="setKofferBox('${mode}','alle')">Alle (${total})</button>`
+            + KOFFER_DATA.map(b => `<button type="button" class="koffer-chip${cur === b.id ? ' active' : ''}" onclick="setKofferBox('${mode}','${b.id}')">${b.icon} ${b.short} (${b.items.length})</button>`).join('');
+    }
+    function setKofferBox(mode, boxId) { kofferFilter[mode] = boxId; renderKofferFilterChips(mode); renderKofferList(mode); }
+    function renderKofferList(mode) {
+        const listEl = $('koffer_list_' + mode), cntEl = $('koffer_count_' + mode); if (!listEl) return;
+        const q = ($(mode === 'main' ? 'koffer_search' : 'koffer_picker_search')?.value || '').trim().toLowerCase();
+        const terms = q ? q.split(/\s+/).filter(Boolean) : [];
+        const boxId = kofferFilter[mode];
+        const rows = [];
+        KOFFER_DATA.forEach(b => {
+            if (boxId !== 'alle' && b.id !== boxId) return;
+            b.items.forEach((it, idx) => {
+                const [nr, d, h, hn, inNr, anz] = it;
+                const hay = `${b.name} ${b.short} fach ${nr} ${d} ${h} ${hn} ${inNr}`.toLowerCase();
+                if (!terms.length || terms.every(t => hay.includes(t))) rows.push({ box: b, idx, it });
+            });
+        });
+        if (cntEl) cntEl.innerText = `${rows.length} ${rows.length === 1 ? 'Artikel' : 'Artikel'}${q ? ' gefunden' : ''}`;
+        if (!rows.length) {
+            listEl.innerHTML = '<div class="hint" style="padding:14px;text-align:center;">Keine passenden Ersatzteile gefunden.</div>';
+            return;
+        }
+        listEl.innerHTML = rows.map(({ box, idx, it }) => {
+            const [nr, d, h, hn, inNr, anz] = it;
+            const actions = mode === 'main'
+                ? `<button type="button" class="koffer-action-btn" onclick="copyKofferInNr('${inNr}')">📋 IN-${escHtml(inNr)}</button><button type="button" class="koffer-action-btn primary" onclick="insertKofferToNotes('${box.id}',${idx},'verbaut')">🛠️ Verbaut / Notiz</button><button type="button" class="koffer-action-btn" onclick="insertKofferToNotes('${box.id}',${idx},'nachorder')">🧰 Nachorder</button>`
+                : `<button type="button" class="koffer-action-btn primary" onclick="pickKofferToNote('${box.id}',${idx},'verbaut')">➕ Teil / Art.-Nr.</button><button type="button" class="koffer-action-btn" onclick="pickKofferToNote('${box.id}',${idx},'nachorder')">🧰 Nachorder Koffer</button>`;
+            return `<div class="koffer-card"><div class="koffer-card-top"><span>${box.icon} ${escHtml(box.short)} · <strong>Fach ${escHtml(nr)}</strong></span><span class="koffer-badge">Soll: ${escHtml(anz)}</span></div><div class="koffer-title">${escHtml(d)}</div><div class="koffer-meta"><span>IN-Nr.: <strong>${escHtml(inNr)}</strong></span><span>${escHtml(h)}${hn && hn !== '-' ? ' (' + escHtml(hn) + ')' : ''}</span></div><div class="koffer-btn-row">${actions}</div></div>`;
+        }).join('');
+    }
+    function initKofferViews() {
+        renderKofferFilterChips('main'); renderKofferList('main');
+        renderKofferFilterChips('picker'); renderKofferList('picker');
+    }
+    function copyKofferInNr(inNr) {
+        navigator.clipboard?.writeText(inNr).then(() => showToast(`Innowatech-Nr. ${inNr} kopiert!`)).catch(() => showToast(`Innowatech-Nr.: ${inNr}`));
+    }
+    function appendKofferTextToNote(box, item, kind) {
+        const [nr, d, , , inNr] = item, a = $('service_notes_area'); if (!a) return;
+        const valStr = a.value || '';
+        let entry = '';
+        if (kind === 'nachorder') {
+            entry = `🧰 Nachorder Servicekoffer (Fehlteil): [IN-${inNr}] ${d} (${box.short}, Fach ${nr})`;
+            a.value = valStr + (valStr && !valStr.endsWith('\n') ? '\n' : '') + entry + '\n';
+        } else if (/:[ \t]*$/.test(valStr)) {
+            a.value = valStr + (valStr.endsWith(' ') ? '' : ' ') + `[IN-${inNr}] ${d} (${box.short})`;
+        } else {
+            entry = `🛠️ Ersatzteil / Verbaut: [IN-${inNr}] ${d} (${box.short}, Fach ${nr})`;
+            a.value = valStr + (valStr && !valStr.endsWith('\n') ? '\n' : '') + entry + '\n';
+        }
+        saveServiceNotes();
+    }
+    function insertKofferToNotes(boxId, idx, kind) {
+        const res = findKofferItem(boxId, idx); if (!res) return;
+        appendKofferTextToNote(res.box, res.item, kind);
+        showToast(kind === 'nachorder' ? `Nachorder [IN-${res.item[4]}] in Notiz eingetragen.` : `[IN-${res.item[4]}] in Service-Notizen übernommen.`);
+    }
+    function openKofferPicker() {
+        if (!currentModules.find(m => m.id === 'koffer')?.userAllowed) return showToast('Servicekoffer ist für dieses Kürzel nicht freigeschaltet.');
+        renderKofferFilterChips('picker'); renderKofferList('picker');
+        $('kofferPickerModal').classList.add('open');
+        pushAppNav('kofferPicker');
+        setTimeout(() => $('koffer_picker_search')?.focus(), 80);
+    }
+    function closeKofferPicker(fromPop = false) {
+        const m = $('kofferPickerModal');
+        if (!m?.classList.contains('open')) return;
+        m.classList.remove('open');
+        if (!fromPop) popAppNavIf('kofferPicker');
+    }
+    function pickKofferToNote(boxId, idx, kind) {
+        const res = findKofferItem(boxId, idx); if (!res) return;
+        appendKofferTextToNote(res.box, res.item, kind);
+        closeKofferPicker();
+        showToast(kind === 'nachorder' ? `Nachorder [IN-${res.item[4]}] übernommen.` : `[IN-${res.item[4]}] ${res.item[1]} eingefügt.`);
+    }
+
     function populateDbSelects() {
         const fill = (id, db) => { const s = $(id); if (!s) return; Object.entries(db).forEach(([k, v]) => s.add(new Option(v.label, k))); };
         fill('sonden_select', sondenDatabase); fill('anlagen_select', anlagenDatabase);
@@ -819,14 +1130,49 @@
         };
         ['pointerup', 'pointercancel', 'lostpointercapture'].forEach(ev => w.addEventListener(ev, end));
     }
+    let skipPopCount = 0;
+    function pushAppNav(tag) {
+        try {
+            if (history.state?.matNav === tag) return;
+            history.pushState({ matNav: tag }, '');
+        } catch {}
+    }
+    function popAppNavIf(tag) {
+        try {
+            if (history.state?.matNav === tag) {
+                skipPopCount++;
+                history.back();
+            }
+        } catch {}
+    }
+    window.addEventListener('popstate', () => {
+        if (skipPopCount > 0) { skipPopCount--; return; }
+        if ($('confirmDialogModal')?.classList.contains('active')) { $('confirmCancelBtn')?.click(); return; }
+        if ($('imageLightboxOverlay')?.classList.contains('open')) { closeImageLightbox(null, true); return; }
+        if ($('kofferPickerModal')?.classList.contains('open')) { closeKofferPicker(true); return; }
+        if ($('dropdown-modal')?.classList.contains('open')) { closeCustomDropdown(null, true); return; }
+        if ($('adminConsoleModal')?.classList.contains('active')) { closeAdminModal('adminConsoleModal', true); return; }
+        if ($('adminAuthModal')?.classList.contains('active')) { closeAdminModal('adminAuthModal', true); return; }
+        if ($('settings-modal')?.classList.contains('open')) { closeSettings(true); return; }
+        if (isLauncherActive && isInToolFromLauncher) { backToDashboard(true); }
+    });
+
     function openImageLightbox(key, title, idx) {
         const src = VEGA_GUIDE_IMAGES[key]; if (!src) return;
         txt('lightboxTitle', title); $('lightboxImg').src = src; resetLb();
         const s = VEGA_STEPS_DATA[idx]; $('lightboxCaption').innerHTML = s ? s.text.replace(/<br>/g, ' • ') : '';
         $('imageLightboxOverlay').classList.add('open'); initLightboxGestures();
+        pushAppNav('lightbox');
     }
-    function closeImageLightbox(e) { if (!e || e.target.id === 'imageLightboxOverlay') { $('imageLightboxOverlay').classList.remove('open'); resetLb(); lbPts.clear(); } }
-    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeImageLightbox(); });
+    function closeImageLightbox(e, fromPop = false) {
+        if (!e || e.target.id === 'imageLightboxOverlay') {
+            const ov = $('imageLightboxOverlay');
+            if (!ov?.classList.contains('open')) return;
+            ov.classList.remove('open'); resetLb(); lbPts.clear();
+            if (!fromPop) popAppNavIf('lightbox');
+        }
+    }
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeImageLightbox(); closeKofferPicker(); } });
 
     let dbUsers = {}, activeUser = localStorage.getItem('innowatech_active_user') || null, clickCount = 0, clickTimer = null;
     const USERS_JSON_URL = './users.json';
@@ -837,51 +1183,75 @@
             return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, '0')).join('');
         } catch { return pin; }
     }
-    function updateNetBadge() {
+    function updateNetBadge(weakOffline = false) {
         const b = $('net-status-badge'); if (!b) return;
-        b.innerText = navigator.onLine ? '● Online' : '○ Offline';
-        b.style.color = navigator.onLine ? '#2e7d32' : '#e65100';
-        b.style.background = navigator.onLine ? 'rgba(46,125,50,0.12)' : 'rgba(230,81,0,0.12)';
+        const on = navigator.onLine && !weakOffline;
+        b.innerText = !navigator.onLine ? '○ Offline' : (weakOffline ? '○ Schwachnetz' : '● Online');
+        b.style.color = on ? '#2e7d32' : '#e65100';
+        b.style.background = on ? 'rgba(46,125,50,0.12)' : 'rgba(230,81,0,0.12)';
     }
-    async function fetchAndNormalizeUsers() {
-        const ctrl = new AbortController(), tid = setTimeout(() => ctrl.abort(), 3500);
+    async function fetchAndNormalizeUsers(timeoutMs = 1500) {
+        const ctrl = new AbortController(), tid = setTimeout(() => ctrl.abort(), timeoutMs);
         try {
             const res = await fetch(USERS_JSON_URL + '?t=' + Date.now(), { cache: 'no-store', signal: ctrl.signal });
-            clearTimeout(tid); if (!res.ok) throw new Error('HTTP ' + res.status);
+            if (!res.ok) throw new Error('HTTP ' + res.status);
             const raw = await res.json(), out = {};
             for (const k in raw) {
                 const u = raw[k];
                 out[k] = { pinHash: await hashPin(u.pinHash), status: u.status || 'active', isAdmin: !!u.isAdmin, autoUpdate: u.autoUpdate !== undefined ? u.autoUpdate : (k === 'ADMIN' || k === 'MAT'), modules: u.modules || [] };
             }
             return out;
-        } catch (err) { clearTimeout(tid); throw err; }
+        } finally {
+            clearTimeout(tid);
+        }
     }
-    async function loadUsersDatabase() {
-        updateNetBadge();
-        window.addEventListener('online', handleReconnectSync);
-        window.addEventListener('offline', updateNetBadge);
-        let loaded = false;
-        if (navigator.onLine) {
-            try { dbUsers = await fetchAndNormalizeUsers(); saveUsersToLocalStorage(); loaded = true; } catch {}
-        }
-        if (!loaded) {
-            try { dbUsers = JSON.parse(localStorage.getItem('innowatech_users_fallback') || '{}'); } catch { dbUsers = {}; }
-            const sess = localStorage.getItem('innowatech_active_session_data');
-            if (!Object.keys(dbUsers).length && activeUser && sess) { try { dbUsers[activeUser] = JSON.parse(sess); } catch {} }
-        }
+    function loadLocalUsersSync() {
+        try { dbUsers = JSON.parse(localStorage.getItem('innowatech_users_fallback') || '{}'); } catch { dbUsers = {}; }
+        const sess = localStorage.getItem('innowatech_active_session_data');
+        if (!Object.keys(dbUsers).length && activeUser && sess) { try { dbUsers[activeUser] = JSON.parse(sess); } catch {} }
         if (activeUser && dbUsers[activeUser]?.status === 'active') localStorage.setItem('innowatech_active_session_data', JSON.stringify(dbUsers[activeUser]));
-        try { checkAuthGuard(); } catch { $('appLoginOverlay').classList.remove('active'); }
     }
-    async function handleReconnectSync() {
-        updateNetBadge();
+    let bgSyncRunning = false;
+    async function syncUsersInBackground(timeoutMs = 1500) {
+        if (!navigator.onLine || bgSyncRunning) return;
+        bgSyncRunning = true;
         try {
-            dbUsers = await fetchAndNormalizeUsers(); saveUsersToLocalStorage();
+            const fresh = await fetchAndNormalizeUsers(timeoutMs);
+            dbUsers = fresh; saveUsersToLocalStorage(); updateNetBadge(false);
             if (activeUser) {
                 const u = dbUsers[activeUser];
                 if (!u || u.status !== 'active') { showToast('Zugang gesperrt oder entfernt.'); performLogout(true); }
                 else { localStorage.setItem('innowatech_active_session_data', JSON.stringify(u)); applyUserPermissions(); }
             }
-        } catch {}
+        } catch {
+            if (navigator.onLine) updateNetBadge(true);
+        } finally { bgSyncRunning = false; }
+    }
+    async function loadUsersDatabase() {
+        updateNetBadge(false);
+        window.addEventListener('online', handleReconnectSync);
+        window.addEventListener('offline', () => updateNetBadge(false));
+        loadLocalUsersSync();
+        if (Object.keys(dbUsers).length > 0) {
+            // Prio 1 Keller/Schwachnetz: App startet sofort lokal (<50 ms), Sync läuft leise mit 1,5s Timeout im Hintergrund
+            try { checkAuthGuard(); } catch { $('appLoginOverlay').classList.remove('active'); }
+            syncUsersInBackground(1500);
+            return;
+        }
+        if (navigator.onLine) {
+            try {
+                dbUsers = await fetchAndNormalizeUsers(2000);
+                saveUsersToLocalStorage();
+                updateNetBadge(false);
+            } catch {
+                updateNetBadge(true);
+            }
+        }
+        try { checkAuthGuard(); } catch { $('appLoginOverlay').classList.remove('active'); }
+    }
+    async function handleReconnectSync() {
+        updateNetBadge(false);
+        await syncUsersInBackground(1500);
     }
     const saveUsersToLocalStorage = () => localStorage.setItem('innowatech_users_fallback', JSON.stringify(dbUsers));
     function downloadUsersJson() {
@@ -961,6 +1331,7 @@
         } else if (dbUsers[k]?.pinHash) pHash = dbUsers[k].pinHash;
         else return showToast('Bitte eine PIN eingeben!');
         dbUsers[k] = { pinHash: pHash, status: dbUsers[k]?.status || 'active', isAdmin: k === 'ADMIN' || !!dbUsers[k]?.isAdmin, autoUpdate: k === 'ADMIN' ? true : $('newAutoUpdate').checked, modules: mods };
+        if (k === activeUser) { localStorage.setItem('innowatech_active_session_data', JSON.stringify(dbUsers[k])); applyUserPermissions(); }
         saveUsersToLocalStorage(); showToast(`Techniker ${k} gespeichert – users.json bei Bedarf exportieren.`); cancelEditUser(); renderUserList();
     }
     function editUser(k) {
@@ -1002,9 +1373,12 @@
                 else m.userAllowed = (activeUser === 'MAT' && wk.includes(m.id)) || !!u.modules?.includes(m.id);
             });
         }
-        renderTabs(); if (isLauncherActive) renderLauncherGrid(); renderPinnedBar();
+        const kofferAllowed = !!currentModules.find(m => m.id === 'koffer')?.userAllowed;
+        if ($('notizen_koffer_btn')) $('notizen_koffer_btn').style.display = kofferAllowed ? '' : 'none';
+        renderTabs(); if (isLauncherActive && !isInToolFromLauncher) renderLauncherGrid(); renderPinnedBar();
     }
-    const openAdminModal = id => $(id).classList.add('active'), closeAdminModal = id => $(id).classList.remove('active');
+    const openAdminModal = id => { $(id).classList.add('active'); pushAppNav(id); };
+    const closeAdminModal = (id, fromPop = false) => { const m = $(id); if (!m?.classList.contains('active')) return; m.classList.remove('active'); if (!fromPop) popAppNavIf(id); };
 
     let waitingServiceWorker = null, userClickedUpdate = false, pendingUpdateWorker = null;
     const isUserAllowedToUpdate = () => !!activeUser && !!dbUsers[activeUser] && (dbUsers[activeUser].isAdmin || dbUsers[activeUser].autoUpdate !== false);
@@ -1071,6 +1445,7 @@
         { id: 'anlagen', title: 'Produktionsparameter AQD', icon: '⚙️', category: 'Parameter', visible: true, userAllowed: true },
         { id: 'radar', title: 'Vega Radarsensor', icon: '📡', category: 'Parameter', visible: true, userAllowed: true },
         { id: 'enthaerter', title: 'Enthärtungsanlagen', icon: '💧', category: 'Parameter', visible: true, userAllowed: true },
+        { id: 'koffer', title: 'Servicekoffer', icon: '🧰', category: 'Parameter', visible: true, userAllowed: true },
         { id: 'taschenlampe', title: 'Taschenlampe', icon: '🔦', category: 'Werkzeuge', visible: true, userAllowed: true },
         { id: 'schlauchvolumen', title: 'Schlauchvolumen', icon: '📏', category: 'Werkzeuge', visible: true, userAllowed: true },
         { id: 'auslitern', title: 'Ausliter-Hilfe', icon: '⏱️', category: 'Werkzeuge', visible: true, userAllowed: true },
@@ -1103,6 +1478,7 @@
                 list.appendChild(it);
             });
             $('dropdown-modal').classList.add('open');
+            pushAppNav('dropdown');
         } else {
             let list = wrap.querySelector('.desktop-dropdown-list');
             document.querySelectorAll('.desktop-dropdown-list.open').forEach(l => { if (l !== list) l.classList.remove('open'); });
@@ -1118,12 +1494,18 @@
             list.classList.add('open');
         }
     }
-    function closeCustomDropdown(e) { if (!e || e.target.id === 'dropdown-modal') $('dropdown-modal').classList.remove('open'); }
+    function closeCustomDropdown(e, fromPop = false) {
+        if (!e || e.target.id === 'dropdown-modal') {
+            const m = $('dropdown-modal'); if (!m?.classList.contains('open')) return;
+            m.classList.remove('open');
+            if (!fromPop) popAppNavIf('dropdown');
+        }
+    }
 
-    let pinnedTabs = [], keepScreenAwake = false, timerBeepEnabled = true, wakeLockSentinel = null, audioCtx = null;
+    let pinnedTabs = [], keepScreenAwake = false, timerBeepEnabled = true, persistCalcInputs = false, wakeLockSentinel = null, audioCtx = null;
     const defaultTabInputs = {};
 
-    const isCalcInput = el => (el.tagName === 'INPUT' || el.tagName === 'SELECT') && el.id !== 'service_notes_area' && el.id !== 'fault_photos' && !el.id.startsWith('fault_');
+    const isCalcInput = el => (el.tagName === 'INPUT' || el.tagName === 'SELECT') && !['service_notes_area', 'fault_photos', 'koffer_search', 'koffer_picker_search'].includes(el.id) && !el.id.startsWith('fault_');
     function captureTabDefaults() {
         document.querySelectorAll('.tab-content [id]').forEach(el => {
             if (isCalcInput(el)) defaultTabInputs[el.id] = el.type === 'checkbox' ? el.checked : el.value;
@@ -1142,11 +1524,18 @@
         updateRadarTankDefaults(); updateEnthaerterData();
     }
     function saveTabInputs() {
+        if (!persistCalcInputs) return;
         const data = {};
         document.querySelectorAll('.tab-content [id]').forEach(el => {
             if (isCalcInput(el)) data[el.id] = el.type === 'checkbox' ? el.checked : el.value;
         });
         localStorage.setItem('mat_calc_inputs', JSON.stringify(data));
+    }
+    function toggleCalcPersist(on) {
+        persistCalcInputs = !!on;
+        localStorage.setItem('mat_save_calc_inputs', String(persistCalcInputs));
+        if (persistCalcInputs) saveTabInputs();
+        else localStorage.removeItem('mat_calc_inputs');
     }
     function restoreTabInputs() {
         try {
@@ -1244,7 +1633,9 @@
         renderPinnedBar(); updatePinButton();
     }
     function openPinnedTab(id) {
+        const wasIn = isInToolFromLauncher;
         if (isLauncherActive && !isInToolFromLauncher) isInToolFromLauncher = true;
+        if (isLauncherActive && !wasIn) pushAppNav('tool');
         applyViewMode(); switchTab(id);
     }
     function renderPinnedBar() {
@@ -1266,6 +1657,7 @@
         changeThemeProfile(localStorage.getItem('mat_theme_profile') || 'klassik', false);
         keepScreenAwake = localStorage.getItem('mat_keep_awake') === 'true'; if ($('wakelock-toggle')) $('wakelock-toggle').checked = keepScreenAwake;
         timerBeepEnabled = localStorage.getItem('mat_timer_beep') !== 'false'; if ($('beep-toggle')) $('beep-toggle').checked = timerBeepEnabled;
+        persistCalcInputs = localStorage.getItem('mat_save_calc_inputs') === 'true'; if ($('calc-persist-toggle')) $('calc-persist-toggle').checked = persistCalcInputs;
         try { const pt = JSON.parse(localStorage.getItem('mat_pinned_tabs') || '[]'); if (Array.isArray(pt)) pinnedTabs = pt.slice(0, 5); } catch {}
         showSliderIcons = localStorage.getItem('mat_show_slider_icons') !== 'false'; $('icons-slider-toggle').checked = showSliderIcons;
         showDashboardIcons = localStorage.getItem('mat_show_dashboard_icons') !== 'false'; $('icons-dashboard-toggle').checked = showDashboardIcons;
@@ -1282,8 +1674,10 @@
         const notes = localStorage.getItem('mat_service_notes'); if (notes && $('service_notes_area')) $('service_notes_area').value = notes;
         if ($('fault_clear_after')) $('fault_clear_after').checked = localStorage.getItem('mat_fault_clear_after') !== 'false';
         isLauncherActive = localStorage.getItem('mat_launcher_view') !== 'false'; isInToolFromLauncher = false;
+        initKofferViews();
         await loadUsersDatabase(); renderTabs(true); applyViewMode(); initCustomDropdowns();
-        restoreTabInputs(); recalcAllModules(); syncWakeLock();
+        if (persistCalcInputs) restoreTabInputs();
+        recalcAllModules(); syncWakeLock();
         const cont = document.querySelector('.container');
         ['input', 'change'].forEach(ev => cont?.addEventListener(ev, e => { if (e.target.closest('.tab-content') && isCalcInput(e.target)) saveTabInputs(); }));
     }
@@ -1314,12 +1708,16 @@
         Object.values(grids).forEach(g => g.innerHTML = '');
         currentModules.filter(m => m.visible && m.userAllowed).forEach(mod => {
             const c = document.createElement('div'); c.className = 'launcher-card';
-            c.onclick = () => { isInToolFromLauncher = true; applyViewMode(); switchTab(mod.id); };
+            c.onclick = () => { isInToolFromLauncher = true; pushAppNav('tool'); applyViewMode(); switchTab(mod.id); };
             c.innerHTML = (showDashboardIcons ? `<div class="launcher-icon">${mod.icon || '🛠️'}</div>` : '') + `<div class="launcher-label">${mod.title}</div>`;
             (grids[mod.category] || grids.Anwendung).appendChild(c);
         });
     }
-    const backToDashboard = () => { isInToolFromLauncher = false; applyViewMode(); };
+    const backToDashboard = (fromPop = false) => {
+        stopNoteDictation();
+        isInToolFromLauncher = false; applyViewMode();
+        if (!fromPop) popAppNavIf('tool');
+    };
     function checkScrollArrows() {
         const c = $('categories-container'); if (!c) return;
         $('scroll-arrow-left').classList.toggle('visible', c.scrollLeft > 5);
@@ -1360,6 +1758,7 @@
         setTimeout(checkScrollArrows, 100);
     }
     function switchTab(name) {
+        if (name !== 'notizen') stopNoteDictation();
         currentActiveTab = name;
         currentModules.forEach(t => { $('btn-' + t.id)?.classList.remove('active'); $('tab-' + t.id)?.classList.remove('active'); });
         const b = $('btn-' + name), c = $('tab-' + name);
@@ -1368,8 +1767,12 @@
         updatePinButton(); renderPinnedBar();
     }
 
-    function openSettings() { renderModuleManager(); $('settings-modal').classList.add('open'); setTimeout(() => checkSettingsScroll($('settings-modal-body')), 50); }
-    function closeSettings() { $('settings-modal').classList.remove('open'); saveSettings(); renderTabs(); if (isLauncherActive && !isInToolFromLauncher) renderLauncherGrid(); renderPinnedBar(); }
+    function openSettings() { renderModuleManager(); $('settings-modal').classList.add('open'); pushAppNav('settings'); setTimeout(() => checkSettingsScroll($('settings-modal-body')), 50); }
+    function closeSettings(fromPop = false) {
+        const m = $('settings-modal'); if (!m?.classList.contains('open')) return;
+        m.classList.remove('open'); saveSettings(); renderTabs(); if (isLauncherActive && !isInToolFromLauncher) renderLauncherGrid(); renderPinnedBar();
+        if (!fromPop) popAppNavIf('settings');
+    }
     function attachDragSort(handle, item, container) {
         let dragging = false, mode = null;
         const moveToY = y => {
@@ -1582,7 +1985,70 @@
     }
     async function clearServiceNotes() { if (await askConfirm('Alle Service-Notizen wirklich unwiderruflich löschen?')) { $('service_notes_area').value = ''; localStorage.removeItem('mat_service_notes'); } }
 
-    const HOTLINE_EMAIL = 'service@innowatech.de';
+    let noteRecognition = null, isDictatingNote = false;
+    function setDictateUi(on, interimText = '') {
+        isDictatingNote = on;
+        const btn = $('dictate_btn'), st = $('dictate_status');
+        if (btn) {
+            btn.classList.toggle('recording', on);
+            btn.innerText = on ? '🔴 Stoppen' : '🎙️ Diktieren';
+        }
+        if (st) {
+            st.style.display = on ? 'block' : 'none';
+            st.innerText = on ? (interimText ? `🎙️ Hört zu: "${interimText}"` : '🎙️ Hört zu... Jetzt sprechen (erneut tippen zum Beenden).') : '';
+        }
+    }
+    function stopNoteDictation() {
+        if (noteRecognition) { try { noteRecognition.stop(); } catch {} }
+        setDictateUi(false);
+    }
+    function toggleNoteDictation() {
+        if (isDictatingNote) { stopNoteDictation(); return; }
+        const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (!SR) return showToast('Spracheingabe wird von diesem Browser nicht unterstützt (nutze ggf. das Tastatur-Mikrofon).');
+        if (!navigator.onLine) return showToast('Diktierfunktion benötigt Internetverbindung (im Keller ggf. Tastatur-Mikrofon nutzen).');
+        try {
+            noteRecognition = new SR();
+            noteRecognition.lang = 'de-DE';
+            noteRecognition.continuous = true;
+            noteRecognition.interimResults = true;
+            let processedIdx = 0;
+            noteRecognition.onstart = () => setDictateUi(true);
+            noteRecognition.onresult = event => {
+                let interim = '';
+                const a = $('service_notes_area');
+                for (let i = processedIdx; i < event.results.length; i++) {
+                    const res = event.results[i];
+                    const t = (res[0]?.transcript || '').trim();
+                    if (res.isFinal) {
+                        processedIdx = i + 1;
+                        if (t && a) {
+                            const needSpace = a.value && !/[\s\n]$/.test(a.value);
+                            a.value += (needSpace ? ' ' : '') + t;
+                            saveServiceNotes();
+                        }
+                    } else if (t) {
+                        interim += (interim ? ' ' : '') + t;
+                    }
+                }
+                if (isDictatingNote) setDictateUi(true, interim);
+            };
+            noteRecognition.onerror = err => {
+                const code = err?.error || '';
+                if (code === 'not-allowed' || code === 'service-not-allowed') showToast('Mikrofon-Berechtigung wurde verweigert.');
+                else if (code === 'network') showToast('Keine Verbindung zur Spracherkennung (Schwachnetz/Offline).');
+                else if (code !== 'aborted' && code !== 'no-speech') showToast('Diktat beendet (' + code + ').');
+                setDictateUi(false);
+            };
+            noteRecognition.onend = () => { if (isDictatingNote) setDictateUi(false); };
+            noteRecognition.start();
+        } catch {
+            setDictateUi(false);
+            showToast('Spracherkennung konnte nicht gestartet werden.');
+        }
+    }
+
+    const HOTLINE_EMAIL = 'service-hotline@innowatech.de';
     let faultPhotoFiles = [], faultActivePhotoIdx = 0;
     function handleFaultPhotos(e) {
         const files = [...(e.target.files || [])];
