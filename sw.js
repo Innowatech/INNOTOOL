@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mat-service-tool-v5.02';
+const CACHE_NAME = 'mat-service-tool-v5.1';
 const URLS_TO_CACHE = [
   './',
   './index.html',
@@ -43,6 +43,25 @@ self.addEventListener('activate', event => {
   );
 });
 
+async function fetchUsersWithTimeout(request, ms = 1500) {
+  const ctrl = new AbortController();
+  const tid = setTimeout(() => ctrl.abort(), ms);
+  try {
+    const res = await fetch(request, { cache: 'no-store', signal: ctrl.signal });
+    if (!res || !res.ok) throw new Error('HTTP ' + (res ? res.status : 0));
+    const bodyText = await res.text();
+    const freshRes = new Response(bodyText, {
+      status: 200,
+      headers: { 'Content-Type': 'application/json; charset=utf-8' }
+    });
+    const cacheCopy = freshRes.clone();
+    caches.open(CACHE_NAME).then(c => c.put('./users.json', cacheCopy)).catch(() => {});
+    return freshRes;
+  } finally {
+    clearTimeout(tid);
+  }
+}
+
 self.addEventListener('fetch', event => {
   if (IS_PREVIEW) return;
   if (event.request.method !== 'GET') return;
@@ -50,17 +69,10 @@ self.addEventListener('fetch', event => {
   if (url.origin !== self.location.origin) return;
   if (url.searchParams.has('cb')) return;
 
-  // users.json: Online immer aktuell laden (für Sperrungen/Rechte), im Keller offline aus dem Cache liefern
+  // users.json: Max. 1,5s Netzwerk-Timeout (inkl. Body-Read), bei Schwachnetz/Keller sofort Fallback aus Cache
   if (url.pathname.endsWith('/users.json')) {
     event.respondWith(
-      fetch(event.request, { cache: 'no-store' })
-        .then(res => {
-          if (res && res.ok) {
-            const copy = res.clone();
-            caches.open(CACHE_NAME).then(c => c.put('./users.json', copy));
-          }
-          return res;
-        })
+      fetchUsersWithTimeout(event.request, 1500)
         .catch(() => caches.match('./users.json'))
     );
     return;
