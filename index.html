@@ -8,7 +8,7 @@
     <meta name="apple-mobile-web-app-title" content="Innowatech">
     <meta name="theme-color" content="#0d47a1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>INNOWATΞCH Service Tool v5.2</title>
+    <title>INNOWATΞCH Service Tool v5.3</title>
     <link rel="icon" href="data:,">
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="icon.png">
@@ -23,6 +23,7 @@
             --cat-anwendung-bg: linear-gradient(to bottom, #ffffff 0%, #e0f2fe 100%); --cat-anwendung-border: #3b82f6;
             --cat-parameter-bg: linear-gradient(to bottom, #ffffff 0%, #dcfce7 100%); --cat-parameter-border: #22c55e;
             --cat-werkzeuge-bg: linear-gradient(to bottom, #ffffff 0%, #fef9c3 100%); --cat-werkzeuge-border: #eab308;
+            --cat-checklisten-bg: linear-gradient(to bottom, #ffffff 0%, #fee2e2 100%); --cat-checklisten-border: #ef4444;
         }
         body.dark-mode {
             --primary-color: #1565c0; --secondary-color: #0288d1; --bg-color: #121212; --card-bg: #1e1e1e;
@@ -34,6 +35,7 @@
             --cat-anwendung-bg: linear-gradient(to bottom, #262626 0%, #162a40 100%); --cat-anwendung-border: #2563eb;
             --cat-parameter-bg: linear-gradient(to bottom, #262626 0%, #13381a 100%); --cat-parameter-border: #16a34a;
             --cat-werkzeuge-bg: linear-gradient(to bottom, #262626 0%, #3d3300 100%); --cat-werkzeuge-border: #ca8a04;
+            --cat-checklisten-bg: linear-gradient(to bottom, #262626 0%, #3f1515 100%); --cat-checklisten-border: #dc2626;
         }
         body.screen-torch, body.screen-torch .container { background: #ffffff !important; color: #111111 !important; }
         body.screen-torch .section-title, body.screen-torch .hint { color: #111111 !important; }
@@ -41,7 +43,7 @@
         body[data-theme="keller"].dark-mode { --border-color: #94a3b8; --subtext-color: #e2e8f0; --bg-color: #000000; --card-bg: #0f172a; --input-bg: #1e293b; }
         body[data-theme="keller"] .input-wrapper, body[data-theme="keller"] .field-box, body[data-theme="keller"] .result-box, body[data-theme="keller"] .launcher-card, body[data-theme="keller"] .category-group { border-width: 2px; }
         body[data-theme="keller"] .result-value { font-size: 1.15rem; font-weight: 800; }
-        body[data-theme="dezent"] { --cat-anwendung-bg: var(--card-bg); --cat-anwendung-border: #64748b; --cat-parameter-bg: var(--card-bg); --cat-parameter-border: #64748b; --cat-werkzeuge-bg: var(--card-bg); --cat-werkzeuge-border: #64748b; }
+        body[data-theme="dezent"] { --cat-anwendung-bg: var(--card-bg); --cat-anwendung-border: #64748b; --cat-parameter-bg: var(--card-bg); --cat-parameter-border: #64748b; --cat-werkzeuge-bg: var(--card-bg); --cat-werkzeuge-border: #64748b; --cat-checklisten-bg: var(--card-bg); --cat-checklisten-border: #64748b; }
         body[data-theme="dezent"] .category-title, body[data-theme="dezent"] .launcher-category-title { color: var(--primary-color) !important; border-color: var(--border-color) !important; }
         * { box-sizing: border-box; }
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: var(--bg-color); margin: 0; padding: calc(6px * var(--app-zoom)); color: var(--text-color); -webkit-tap-highlight-color: transparent; zoom: var(--app-zoom); }
@@ -69,11 +71,14 @@
         .category-group { display: flex; flex-direction: column; background: var(--cat-anwendung-bg); border: 1.5px solid var(--cat-anwendung-border); border-radius: 8px; padding: 4px; flex-shrink: 0; box-shadow: 0 2px 4px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.7); }
         .category-group.category-parameters { background: var(--cat-parameter-bg); border-color: var(--cat-parameter-border); }
         .category-group.category-werkzeuge { background: var(--cat-werkzeuge-bg); border-color: var(--cat-werkzeuge-border); }
+        .category-group.category-checklisten { background: var(--cat-checklisten-bg); border-color: var(--cat-checklisten-border); }
         .category-title { font-size: 0.62rem; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px; color: var(--primary-color); margin-bottom: 2px; text-align: center; }
         .category-group.category-parameters .category-title { color: #1b5e20; }
         body.dark-mode .category-group.category-parameters .category-title { color: #a5d6a7; }
         .category-group.category-werkzeuge .category-title { color: #ca8a04; }
         body.dark-mode .category-group.category-werkzeuge .category-title { color: #fde047; }
+        .category-group.category-checklisten .category-title { color: #b91c1c; }
+        body.dark-mode .category-group.category-checklisten .category-title { color: #fca5a5; }
         .tab-buttons-inner { display: flex; gap: 4px; flex: 1; }
         .tab-btn { flex: 0 0 auto; min-width: 80px; padding: 4px 6px; border: 1px solid var(--tab-btn-border); border-radius: 6px; background: var(--tab-btn-bg); font-weight: bold; font-size: 0.66rem; color: var(--tab-btn-text); cursor: pointer; transition: all 0.12s; white-space: nowrap; text-align: left; box-shadow: 0 3px 5px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,0.8); display: flex; align-items: center; min-height: 36px; line-height: 1.12; }
         .tab-btn:hover { border-color: var(--primary-color); color: var(--primary-color); }
@@ -93,10 +98,13 @@
         body.dark-mode .launcher-category.param .launcher-category-title { color: #a5d6a7; border-color: #a5d6a7; }
         .launcher-category.werkzeuge .launcher-category-title { color: #ca8a04; border-color: #eab308; }
         body.dark-mode .launcher-category.werkzeuge .launcher-category-title { color: #fde047; border-color: #ca8a04; }
+        .launcher-category.checklisten .launcher-category-title { color: #b91c1c; border-color: #ef4444; }
+        body.dark-mode .launcher-category.checklisten .launcher-category-title { color: #fca5a5; border-color: #dc2626; }
         .launcher-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
         .launcher-card { background: var(--cat-anwendung-bg); border: 1.5px solid var(--cat-anwendung-border); border-radius: 8px; padding: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; cursor: pointer; box-shadow: 0 4px 8px rgba(0,0,0,0.14), inset 0 1px 0 rgba(255,255,255,0.9); transition: all 0.12s; min-height: 54px; }
         .launcher-category.param .launcher-card { background: var(--cat-parameter-bg); border-color: var(--cat-parameter-border); }
         .launcher-category.werkzeuge .launcher-card { background: var(--cat-werkzeuge-bg); border-color: var(--cat-werkzeuge-border); }
+        .launcher-category.checklisten .launcher-card { background: var(--cat-checklisten-bg); border-color: var(--cat-checklisten-border); }
         .launcher-card:active { transform: translateY(3px); background: var(--card-bg); }
         .launcher-card:hover { border-color: var(--primary-color); }
         .launcher-icon { font-size: 1.25rem; margin-bottom: 2px; }
@@ -227,10 +235,23 @@
         .koffer-action-btn { flex: 1; min-width: 90px; padding: 5px 7px; font-size: 0.72rem; font-weight: 600; border-radius: 6px; border: 1px solid var(--border-color); background: var(--card-bg); color: var(--text-color); cursor: pointer; text-align: center; }
         .koffer-action-btn:active { background: var(--result-bg); border-color: var(--primary-color); }
         .koffer-action-btn.primary { background: var(--result-bg); border-color: var(--result-border); color: var(--result-label); }
-        .photo-thumb-wrap { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
-        .photo-thumb { position: relative; width: 64px; height: 64px; border-radius: 6px; overflow: hidden; border: 1px solid var(--border-color); }
-        .photo-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
-        .photo-thumb button { position: absolute; top: 2px; right: 2px; background: rgba(198,40,40,0.9); color: white; border: none; border-radius: 50%; width: 18px; height: 18px; font-size: 0.65rem; line-height: 1; cursor: pointer; padding: 0; }
+        .et-card { background: var(--input-bg); border: 1px solid var(--border-color); border-radius: 8px; padding: 10px; margin-bottom: 10px; }
+        .et-row-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+        .et-seg { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+        .et-seg .seg-btn { min-width: 72px; }
+        .et-turbine-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 8px; }
+        .et-turbine-card { position: relative; border: 1.5px solid var(--border-color); border-radius: 8px; padding: 6px; background: var(--card-bg); cursor: pointer; text-align: center; transition: all 0.14s; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+        .et-turbine-card.active { border: 2px solid var(--primary-color); background: var(--result-bg); box-shadow: 0 0 0 2px rgba(13,71,161,0.18); }
+        .et-turbine-card img { width: 100%; height: 64px; object-fit: contain; background: #ffffff; border-radius: 4px; padding: 2px; }
+        .et-turbine-nr { font-size: 0.72rem; font-weight: 800; color: var(--text-color); }
+        .et-turbine-zoom { position: absolute; top: 4px; right: 4px; background: rgba(13,71,161,0.88); color: #ffffff; border: none; border-radius: 4px; font-size: 0.66rem; padding: 2px 5px; cursor: pointer; }
+        .et-time-box { background: var(--result-bg); border: 1px solid var(--result-border); border-radius: 6px; padding: 8px 10px; margin-bottom: 8px; font-size: 0.78rem; color: var(--text-color); line-height: 1.4; }
+        .qty-stepper { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 10px 0; }
+        .qty-step-btn { width: 44px; height: 44px; border-radius: 8px; border: 1.5px solid var(--primary-color); background: var(--result-bg); color: var(--primary-color); font-size: 1.35rem; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .qty-step-input { width: 92px; text-align: center; font-size: 1.35rem; font-weight: 800; padding: 7px; border: 1.5px solid var(--border-color); border-radius: 8px; background: var(--input-bg); color: var(--text-color); }
+        .qty-presets { display: grid; grid-template-columns: repeat(6, 1fr); gap: 5px; margin: 8px 0 14px; }
+        .qty-preset-btn { padding: 7px 0; border: 1px solid var(--border-color); border-radius: 6px; background: var(--input-bg); color: var(--text-color); font-weight: 700; font-size: 0.84rem; cursor: pointer; }
+        .qty-preset-btn.active { background: var(--primary-color); color: #ffffff; border-color: var(--primary-color); }
         #pdf-print-header, #pdf_notes_print_view { display: none; }
         #pdf_notes_print_view { white-space: pre-wrap; font-size: 0.85rem; line-height: 1.45; border: 1px solid #cbd5e1; border-radius: 6px; padding: 10px; background: #fff; color: #111; }
         .pdf-meta-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 4px 12px; margin-top: 6px; font-size: 0.8rem; }
@@ -315,9 +336,10 @@
 
     <div class="launcher-view" id="launcher-view" onscroll="checkDashboardScroll(this)">
         <div class="dashboard-scroll-indicator top-indicator" id="dashboard-scroll-indicator-top" onclick="scrollDashboardTo('top')">▲</div>
-        <div class="launcher-category"><div class="launcher-category-title">Anwendungen</div><div class="launcher-grid" id="launcher-grid-anwendung"></div></div>
-        <div class="launcher-category param"><div class="launcher-category-title">Parameter</div><div class="launcher-grid" id="launcher-grid-parameter"></div></div>
-        <div class="launcher-category werkzeuge"><div class="launcher-category-title">Werkzeuge</div><div class="launcher-grid" id="launcher-grid-werkzeuge"></div></div>
+        <div class="launcher-category" data-cat="Anwendung"><div class="launcher-category-title">Anwendungen</div><div class="launcher-grid" id="launcher-grid-anwendung"></div></div>
+        <div class="launcher-category param" data-cat="Parameter"><div class="launcher-category-title">Parameter</div><div class="launcher-grid" id="launcher-grid-parameter"></div></div>
+        <div class="launcher-category werkzeuge" data-cat="Hilfsmittel"><div class="launcher-category-title">Hilfsmittel</div><div class="launcher-grid" id="launcher-grid-werkzeuge"></div></div>
+        <div class="launcher-category checklisten" data-cat="Katalog & Checklisten"><div class="launcher-category-title">Katalog &amp; Checklisten</div><div class="launcher-grid" id="launcher-grid-checklisten"></div></div>
         <div class="dashboard-scroll-indicator bottom-indicator" id="dashboard-scroll-indicator-bottom" onclick="scrollDashboardTo('bottom')">▼</div>
     </div>
 
@@ -514,6 +536,183 @@
         <div id="koffer_list_main"></div>
     </div>
 
+    <div id="tab-enthaertertausch" class="tab-content">
+        <div class="section-title">📋 Checkliste Enthärtertausch</div>
+        <div class="et-card">
+            <div class="et-row-2">
+                <div class="form-group"><label>Kürzel Mitarbeiter</label><div class="input-wrapper"><input type="text" id="et_kuerzel" maxlength="6" placeholder="z. B. MAT" style="text-transform:uppercase;"></div></div>
+                <div class="form-group"><label>Fabrikationsnummer</label><div class="input-wrapper"><input type="text" id="et_fabnr" placeholder="z. B. 123456"></div></div>
+            </div>
+            <div class="form-group"><label>Kundenname</label><div class="input-wrapper"><input type="text" id="et_kunde" placeholder="Kunde / Objekt"></div></div>
+            <div class="form-group" style="margin-bottom:8px;"><label>PLZ &amp; Ort</label><div class="input-wrapper"><input type="text" id="et_ort" placeholder="z. B. 72172 Sulz"></div></div>
+            <div class="form-group" style="margin-bottom:0;">
+                <label>Anlagentyp</label>
+                <input type="hidden" id="et_anlage" value="">
+                <div class="et-seg" id="et_anlage_btns" style="margin-bottom:0;">
+                    <button type="button" class="seg-btn" data-val="Decontron" onclick="setEtSeg('et_anlage',this)">Decontron</button>
+                    <button type="button" class="seg-btn" data-val="Aquadron" onclick="setEtSeg('et_anlage',this)">Aquadron</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-title">1. Enthärtertyp &amp; Zeitaufwand</div>
+        <div class="form-group">
+            <label>Enthärtertyp auswählen</label>
+            <div class="input-wrapper">
+                <select id="et_typ" onchange="updateEtTypInfo()">
+                    <option value="">-- Bitte Enthärtertyp wählen --</option>
+                    <option value="5600 FK | Art.Nr. 100406">5600 FK (Art.Nr.: 100406)</option>
+                    <option value="5600 FXM | Art.Nr. 100404">5600 FXM (Art.Nr.: 100404)</option>
+                    <option value="9100 FX/GX | Art.Nr. 100408">9100 FX/GX (Art.Nr.: 100408)</option>
+                    <option value="9100 FXL/GXL | Art.Nr. 100410">9100 FXL/GXL (Art.Nr.: 100410)</option>
+                    <option value="9100 KL&SGX | Art.Nr. 100412">9100 KL&amp;SGX (Art.Nr.: 100412)</option>
+                    <option value="FK/CGK/FKL | Art.Nr. 103961">FK/CGK/FKL (Art.Nr.: 103961)</option>
+                    <option value="FXM | Art.Nr. 103965">FXM (Art.Nr.: 103965)</option>
+                    <option value="FX/GX/CGX | Art.Nr. 103962">FX/GX/CGX (Art.Nr.: 103962)</option>
+                    <option value="FXL/GXL | Art.Nr. 103963">FXL/GXL (Art.Nr.: 103963)</option>
+                    <option value="KL15 | Art.Nr. 103964">KL15 (Art.Nr.: 103964)</option>
+                    <option value="KL30 | Art.Nr. 105880">KL30 (Art.Nr.: 105880)</option>
+                    <option value="KL50 | Art.Nr. 106009">KL50 (Art.Nr.: 106009)</option>
+                    <option value="WAT-100 | Art.Nr. 110566">WAT-100 (Art.Nr.: 110566)</option>
+                    <option value="WAT-200 | Art.Nr. 110757">WAT-200 (Art.Nr.: 110757)</option>
+                </select>
+            </div>
+        </div>
+        <div class="et-time-box" id="et_typ_time_box">
+            <strong>Zeitaufwand Enthärtertausch mit Regeneration:</strong><br>
+            <span id="et_typ_time_val">Bitte Typ auswählen · FK/FKL/CGK: 2,5 Std | FXM: 2,5 Std | FX/GX/PG1/PG2/CGX/FXL/GXL/SGX1/2/ECO1–4: 3,0 Std</span>
+        </div>
+
+        <div class="section-title">2. Kabinett &amp; Schläuche</div>
+        <div class="et-card">
+            <div class="form-group">
+                <label>Wird das Kabinett auch erneuert?</label>
+                <input type="hidden" id="et_kabinett_neu" value="">
+                <div class="et-seg" id="et_kabinett_neu_btns">
+                    <button type="button" class="seg-btn" data-val="Ja" onclick="setEtSeg('et_kabinett_neu',this)">Ja</button>
+                    <button type="button" class="seg-btn" data-val="Nein" onclick="setEtSeg('et_kabinett_neu',this)">Nein</button>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Um welches Kabinett handelt es sich?</label>
+                <input type="hidden" id="et_kabinett_art" value="">
+                <div class="et-seg" id="et_kabinett_art_btns">
+                    <button type="button" class="seg-btn" data-val="Doppelflasche" onclick="setEtSeg('et_kabinett_art',this)">Doppelflasche</button>
+                    <button type="button" class="seg-btn" data-val="Einzelflasche" onclick="setEtSeg('et_kabinett_art',this)">Einzelflasche</button>
+                    <button type="button" class="seg-btn" data-val="Kabinett KL" onclick="setEtSeg('et_kabinett_art',this)">Kabinett KL</button>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Schlauchgröße Enthärter → Hauptventil (Außendurchmesser)</label>
+                <input type="hidden" id="et_schlauch_hv" value="">
+                <div class="et-seg" id="et_schlauch_hv_btns">
+                    <button type="button" class="seg-btn" data-val="8mm (Art.Nr.: 102083)" onclick="setEtSeg('et_schlauch_hv',this)">8 mm · Art. 102083</button>
+                    <button type="button" class="seg-btn" data-val="12mm (Art.Nr.: 102084)" onclick="setEtSeg('et_schlauch_hv',this)">12 mm · Art. 102084</button>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Wird der Schlauch zum Hauptventil auch erneuert?</label>
+                <input type="hidden" id="et_schlauch_hv_neu" value="">
+                <div class="et-seg" id="et_schlauch_hv_neu_btns">
+                    <button type="button" class="seg-btn" data-val="Ja" onclick="setEtSeg('et_schlauch_hv_neu',this)">Ja</button>
+                    <button type="button" class="seg-btn" data-val="Nein" onclick="setEtSeg('et_schlauch_hv_neu',this)">Nein</button>
+                </div>
+            </div>
+            <div class="form-group" style="margin-bottom:0;">
+                <label>Schlauchgröße Enthärter → Abfluss (Innendurchmesser)</label>
+                <input type="hidden" id="et_schlauch_abfluss" value="">
+                <div class="et-seg" id="et_schlauch_abfluss_btns" style="margin-bottom:0;">
+                    <button type="button" class="seg-btn" data-val="DN13 (Art.Nr.: 100997)" onclick="setEtSeg('et_schlauch_abfluss',this)">DN13 · Art. 100997</button>
+                    <button type="button" class="seg-btn" data-val="DN16 (Art.Nr.: 102093)" onclick="setEtSeg('et_schlauch_abfluss',this)">DN16 · Art. 102093</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-title">3. Panzerschlauch &amp; Solebehälter</div>
+        <div class="et-card">
+            <div class="form-group">
+                <label>Größe Panzerschlauch (Filtergruppe → Enthärter)</label>
+                <input type="hidden" id="et_panzer_groesse" value="">
+                <div class="et-seg" id="et_panzer_groesse_btns">
+                    <button type="button" class="seg-btn" data-val='1/2"' onclick="setEtSeg('et_panzer_groesse',this)">1/2&quot;</button>
+                    <button type="button" class="seg-btn" data-val='3/4"' onclick="setEtSeg('et_panzer_groesse',this)">3/4&quot;</button>
+                    <button type="button" class="seg-btn" data-val='1"' onclick="setEtSeg('et_panzer_groesse',this)">1&quot;</button>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Länge Panzerschlauch (Filtergruppe → Enthärter)</label>
+                <input type="hidden" id="et_panzer_laenge" value="">
+                <div class="et-seg" id="et_panzer_laenge_btns">
+                    <button type="button" class="seg-btn" data-val="1,0m" onclick="setEtSeg('et_panzer_laenge',this)">1,0 m</button>
+                    <button type="button" class="seg-btn" data-val="1,5m" onclick="setEtSeg('et_panzer_laenge',this)">1,5 m</button>
+                    <button type="button" class="seg-btn" data-val="2,0m" onclick="setEtSeg('et_panzer_laenge',this)">2,0 m</button>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Anschlussart des Panzerschlauchs</label>
+                <input type="hidden" id="et_panzer_anschluss" value="">
+                <div class="et-seg" id="et_panzer_anschluss_btns">
+                    <button type="button" class="seg-btn" data-val="IGxIG" onclick="setEtSeg('et_panzer_anschluss',this)">IG×IG</button>
+                    <button type="button" class="seg-btn" data-val="IGxAG" onclick="setEtSeg('et_panzer_anschluss',this)">IG×AG</button>
+                </div>
+            </div>
+            <div class="form-group" style="margin-bottom:0;">
+                <label>Extra Schwimmerlanze zur Überwachung der Solesättigung im Solebehälter?</label>
+                <input type="hidden" id="et_schwimmerlanze" value="">
+                <div class="et-seg" id="et_schwimmerlanze_btns" style="margin-bottom:0;">
+                    <button type="button" class="seg-btn" data-val="Ja" onclick="setEtSeg('et_schwimmerlanze',this)">Ja</button>
+                    <button type="button" class="seg-btn" data-val="Nein" onclick="setEtSeg('et_schwimmerlanze',this)">Nein</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-title">4. Durchflussmesser / Durchflussturbine</div>
+        <input type="hidden" id="et_turbine" value="">
+        <div class="et-turbine-grid" id="et_turbine_grid">
+            <div class="et-turbine-card" data-val="100041" onclick="selectEtTurbine('100041')">
+                <button type="button" class="et-turbine-zoom no-print" onclick="openEtTurbineLightbox('100041',event)" title="Vergrößern">🔍</button>
+                <img id="et_img_100041" alt="Durchflussmesser Nr. 100041">
+                <span class="et-turbine-nr">Nr. 100041</span>
+            </div>
+            <div class="et-turbine-card" data-val="109012" onclick="selectEtTurbine('109012')">
+                <button type="button" class="et-turbine-zoom no-print" onclick="openEtTurbineLightbox('109012',event)" title="Vergrößern">🔍</button>
+                <img id="et_img_109012" alt="Durchflussmesser Nr. 109012">
+                <span class="et-turbine-nr">Nr. 109012</span>
+            </div>
+            <div class="et-turbine-card" data-val="103547" onclick="selectEtTurbine('103547')">
+                <button type="button" class="et-turbine-zoom no-print" onclick="openEtTurbineLightbox('103547',event)" title="Vergrößern">🔍</button>
+                <img id="et_img_103547" alt="Durchflussturbine Nr. 103547">
+                <span class="et-turbine-nr">Nr. 103547</span>
+            </div>
+        </div>
+
+        <div class="section-title">5. Fotos &amp; Bemerkungen</div>
+        <div class="et-card">
+            <div class="form-group">
+                <label>Wurden Fotos von allen Seiten &amp; relevanten Bauteilen gemacht? (Ggf. Aufbau Rotgussfittings)</label>
+                <input type="hidden" id="et_fotos" value="">
+                <div class="et-seg" id="et_fotos_btns">
+                    <button type="button" class="seg-btn" data-val="Ja" onclick="setEtSeg('et_fotos',this)">Ja</button>
+                    <button type="button" class="seg-btn" data-val="Nein" onclick="setEtSeg('et_fotos',this)">Nein</button>
+                </div>
+            </div>
+            <div class="form-group" style="margin-bottom:0;">
+                <label>Bemerkungen</label>
+                <textarea id="et_bemerkung" class="field-box" style="height:82px; font-size:0.86rem; font-family:inherit;" placeholder="Besonderheiten, Einbauort, Rotgussfittings, Hinweise für Innendienst..."></textarea>
+            </div>
+        </div>
+
+        <div class="no-print" style="display:flex; gap:6px; margin-top:8px;">
+            <button type="button" class="pdf-export-btn" onclick="copyEtToNotes()" style="flex:1; margin-top:0; background:linear-gradient(to bottom,#2e7d32,#1b5e20); border-color:#1b5e20;">📝 In Notizen übernehmen</button>
+            <button type="button" class="pdf-export-btn" onclick="sendEtEmail()" style="flex:1; margin-top:0; background:linear-gradient(to bottom,#dc2626,#b91c1c); border-color:#991b1b;">✉️ Als E-Mail senden</button>
+        </div>
+        <div class="no-print" style="display:flex; gap:6px; margin-top:6px;">
+            <button type="button" class="reset-tab-btn" onclick="copyEtClipboard()" style="flex:1; margin-top:0;">📋 Kopieren</button>
+            <button type="button" class="reset-tab-btn" onclick="exportToPDF()" style="flex:1; margin-top:0;">📄 PDF drucken</button>
+        </div>
+        <button type="button" class="reset-tab-btn no-print" onclick="resetEnthaertertausch()">↺ Checkliste zurücksetzen</button>
+    </div>
+
     <div id="tab-taschenlampe" class="tab-content">
         <div class="section-title">🔦 Taschenlampe / Notlicht</div>
         <div class="hint" style="margin-bottom:12px;">Schaltet das Kamera-Blitzlicht (Android) oder ein helles Bildschirm-Notlicht (iOS/PC) ein.</div>
@@ -577,7 +776,7 @@
             <button type="button" class="snippet-chip" onclick="insertNoteSnippet('🛠️ Ersatzteil benötigt:')">🛠️ Ersatzteil benötigt</button>
             <button type="button" class="snippet-chip" onclick="insertNoteSnippet('📄 Reparaturangebot erstellen (Art.-Nr.):')">📄 Angebot erstellen</button>
             <button type="button" class="snippet-chip" onclick="insertNoteSnippet('📦 Verbrauchsmaterial bestellen:')">📦 Verbrauchsmaterial</button>
-            <button type="button" class="snippet-chip" onclick="insertNoteSnippet('🧰 Nachorder Servicekoffer (Fehlteil):')">🧰 Nachorder Servicekoffer</button>
+            <button type="button" class="snippet-chip" onclick="insertNoteSnippet('🧰 Nachorder Servicekoffer:')">🧰 Nachorder Servicekoffer</button>
         </div>
         <div id="dictate_status" class="no-print" style="display:none; font-size:0.75rem; color:#dc2626; font-weight:600; margin-bottom:4px;"></div>
         <div class="form-group"><textarea id="service_notes_area" class="field-box" placeholder="Kunde, Anlagen-SN, Einsatzgrund, benötigte Ersatzteile, Verbrauchsmaterial festhalten..." style="height:175px; font-size:0.9rem; font-family:inherit;" oninput="saveServiceNotes()"></textarea><div id="pdf_notes_print_view"></div></div>
@@ -590,18 +789,10 @@
         <button type="button" class="pdf-export-btn no-print" id="fault_toggle_btn" onclick="toggleFaultPanel()" style="margin-top:8px; background:linear-gradient(to bottom,#dc2626,#b91c1c); border-color:#991b1b;">✉️ E-Mail an INNOWATΞCH senden</button>
 
         <div id="fault_panel" class="no-print" style="display:none; margin-top:10px; padding:12px; border:1px solid var(--border-color); border-radius:8px; background:var(--input-bg);">
-            <div class="hint" style="margin-bottom:8px;">Deine Service-Notizen werden automatisch komplett als E-Mail-Text übernommen.</div>
-            <div class="form-group"><label>Art / Dringlichkeit</label><div class="input-wrapper"><select id="fault_type"><option value="Störung (Anlage steht)">Störung (Anlage steht)</option><option value="Techn. Rückfrage">Techn. Rückfrage</option><option value="Ersatzteilbedarf">Ersatzteilbedarf</option></select></div></div>
-            <div class="form-group">
-                <label>Fotos anhängen (optional)</label>
-                <input type="file" id="fault_photos" accept="image/*" multiple style="display:none;" onchange="handleFaultPhotos(event)">
-                <button type="button" class="reset-tab-btn" onclick="$('fault_photos').click()" style="margin-top:2px;">📷 Foto(s) aus Galerie / Kamera wählen</button>
-                <div id="fault_photo_thumbs" class="photo-thumb-wrap"></div>
-                <button type="button" class="reset-tab-btn" id="fault_copy_img_btn" onclick="copyActiveFaultPhoto()" style="display:none; margin-top:6px;">🖼️ Foto kopieren (für Strg+V in Mail)</button>
-                <div class="hint" id="fault_photo_hint">Ohne Foto startet die Mail-App direkt ausgefüllt. Mit Foto öffnet das Teilen-Menü inkl. Bildanhang (Empfänger wird vorab kopiert).</div>
-            </div>
+            <div class="hint" style="margin-bottom:8px;">Deine Service-Notizen werden automatisch komplett als E-Mail-Text übernommen. Eventuelle Fotos kannst du direkt in der Mail-App über die Büroklammer anhängen.</div>
+            <div class="form-group"><label>Art / Dringlichkeit</label><div class="input-wrapper"><select id="fault_type"><option value="Störung (Anlage steht)">Störung (Anlage steht)</option><option value="Techn. Rückfrage">Techn. Rückfrage</option><option value="Ersatzteilbedarf">Ersatzteilbedarf</option><option value="Checkliste Enthärtertausch">Checkliste Enthärtertausch</option></select></div></div>
             <div class="form-group"><label style="display:flex; align-items:center; gap:8px; cursor:pointer; background:var(--card-bg); padding:7px; border:1px solid var(--border-color); border-radius:6px; margin-bottom:0;"><input type="checkbox" id="fault_clear_after" checked onchange="localStorage.setItem('mat_fault_clear_after', this.checked)" style="width:17px; height:17px;"><span>Service-Notizen nach Versand automatisch leeren</span></label></div>
-            <button type="button" class="pdf-export-btn" id="fault_send_btn" onclick="sendFaultEmail()" style="background:linear-gradient(to bottom,#dc2626,#b91c1c); border-color:#991b1b;">🚀 Jetzt absenden</button>
+            <button type="button" class="pdf-export-btn" id="fault_send_btn" onclick="sendFaultEmail()" style="background:linear-gradient(to bottom,#dc2626,#b91c1c); border-color:#991b1b;">🚀 Jetzt in Mail-App öffnen</button>
             <button type="button" class="reset-tab-btn" onclick="copyFaultReport()">📋 Meldungstext kopieren</button>
         </div>
     </div>
@@ -612,7 +803,7 @@
             <span id="net-status-badge" style="font-size:0.72rem; padding:2px 6px; border-radius:10px; background:rgba(0,0,0,0.08);">● Online</span>
             <span id="footer-update-pill" onclick="applyAppUpdate()" title="Update jetzt installieren" style="display:none; font-size:0.7rem; padding:2px 7px; border-radius:10px; background:#f59e0b; color:white; cursor:pointer; font-weight:bold;">🔄 Update</span>
         </div>
-        <span class="footer-version" style="flex:1; text-align:right;" onclick="handleVersionClick()">v5.2</span>
+        <span class="footer-version" style="flex:1; text-align:right;" onclick="handleVersionClick()">v5.3</span>
     </div>
 </div>
 
@@ -653,6 +844,10 @@
                 </div>
             </div>
             <div class="setting-section collapsed">
+                <div class="setting-section-title" onclick="toggleSettingSection(this)">Reihenfolge der Kategorien (Sortieren)</div>
+                <div class="setting-section-content"><div class="hint" style="margin-bottom:6px;">☰ halten &amp; ziehen = Reihenfolge in Dashboard &amp; Schiebeleiste ändern</div><div id="category-order-list"></div></div>
+            </div>
+            <div class="setting-section collapsed">
                 <div class="setting-section-title" onclick="toggleSettingSection(this)" style="color:#0d47a1;">Kategorie: Anwendung (Sortieren / Aktivieren)</div>
                 <div class="setting-section-content"><div class="hint" style="margin-bottom:6px;">Haken = aktiv | ☰ halten & ziehen = Reihenfolge ändern</div><div id="active-list-anwendung"></div></div>
             </div>
@@ -661,8 +856,12 @@
                 <div class="setting-section-content"><div class="hint" style="margin-bottom:6px;">Haken = aktiv | ☰ halten & ziehen = Reihenfolge ändern</div><div id="active-list-parameter"></div></div>
             </div>
             <div class="setting-section collapsed">
-                <div class="setting-section-title" onclick="toggleSettingSection(this)" style="color:#ca8a04;">Kategorie: Werkzeuge (Sortieren / Aktivieren)</div>
+                <div class="setting-section-title" onclick="toggleSettingSection(this)" style="color:#ca8a04;">Kategorie: Hilfsmittel (Sortieren / Aktivieren)</div>
                 <div class="setting-section-content"><div class="hint" style="margin-bottom:6px;">Haken = aktiv | ☰ halten & ziehen = Reihenfolge ändern</div><div id="active-list-werkzeuge"></div></div>
+            </div>
+            <div class="setting-section collapsed">
+                <div class="setting-section-title" onclick="toggleSettingSection(this)" style="color:#b91c1c;">Kategorie: Katalog &amp; Checklisten (Sortieren / Aktivieren)</div>
+                <div class="setting-section-content"><div class="hint" style="margin-bottom:6px;">Haken = aktiv | ☰ halten & ziehen = Reihenfolge ändern</div><div id="active-list-checklisten"></div></div>
             </div>
             <div class="setting-section collapsed">
                 <div class="setting-section-title" onclick="toggleSettingSection(this)" style="opacity:0.8;">Inaktive Module</div>
@@ -676,7 +875,7 @@
 
 <div class="admin-modal-overlay" id="adminAuthModal">
     <div class="admin-modal-content">
-        <div class="admin-modal-header"><span>Admin Authentifizierung (v5.2)</span><button type="button" class="modal-close-btn" style="color:var(--primary-color);" onclick="closeAdminModal('adminAuthModal')">✕</button></div>
+        <div class="admin-modal-header"><span>Admin Authentifizierung (v5.3)</span><button type="button" class="modal-close-btn" style="color:var(--primary-color);" onclick="closeAdminModal('adminAuthModal')">✕</button></div>
         <p style="font-size:0.82rem; color:var(--subtext-color); margin-bottom:12px;">Bitte die Admin-PIN eingeben:</p>
         <div class="form-group"><label>Admin-PIN</label><input type="password" id="adminPin8" class="field-box" value="" autocomplete="new-password" placeholder="••••••••" style="letter-spacing:2px;"></div>
         <button type="button" class="admin-btn admin-btn-primary" style="margin-top:10px;" onclick="verifyAdminAuth8()">Admin Console öffnen</button>
@@ -737,6 +936,31 @@
             <div id="koffer_photo_area_picker"></div>
             <div class="hint" id="koffer_count_picker" style="margin-bottom:8px;"></div>
             <div id="koffer_list_picker"></div>
+        </div>
+    </div>
+</div>
+
+<div class="admin-modal-overlay" id="kofferQtyModal" style="z-index:6400; align-items:center;" onclick="if(event.target===this)closeKofferQtyModal()">
+    <div class="admin-modal-content" style="max-width:360px;" onclick="event.stopPropagation()">
+        <div class="admin-modal-header"><span>🧰 Menge für Nachorder</span><button type="button" class="modal-close-btn" style="color:var(--primary-color);" onclick="closeKofferQtyModal()">✕</button></div>
+        <div id="kofferQtyItemLabel" style="font-size:0.86rem; font-weight:700; color:var(--text-color); line-height:1.3;"></div>
+        <div id="kofferQtySollHint" class="hint" style="margin-top:3px;"></div>
+        <div class="qty-stepper">
+            <button type="button" class="qty-step-btn" onclick="stepKofferQty(-1)">−</button>
+            <input type="number" id="kofferQtyInput" class="qty-step-input" min="1" max="999" step="1" value="1" oninput="syncKofferQtyPresets()">
+            <button type="button" class="qty-step-btn" onclick="stepKofferQty(1)">+</button>
+        </div>
+        <div class="qty-presets" id="kofferQtyPresets">
+            <button type="button" class="qty-preset-btn active" onclick="setKofferQty(1)">1</button>
+            <button type="button" class="qty-preset-btn" onclick="setKofferQty(2)">2</button>
+            <button type="button" class="qty-preset-btn" onclick="setKofferQty(3)">3</button>
+            <button type="button" class="qty-preset-btn" onclick="setKofferQty(4)">4</button>
+            <button type="button" class="qty-preset-btn" onclick="setKofferQty(5)">5</button>
+            <button type="button" class="qty-preset-btn" onclick="setKofferQty(10)">10</button>
+        </div>
+        <div style="display:flex; gap:8px;">
+            <button type="button" class="admin-btn" style="background:#757575; margin-top:0;" onclick="closeKofferQtyModal()">Abbrechen</button>
+            <button type="button" class="admin-btn admin-btn-primary" style="margin-top:0;" onclick="confirmKofferQty()">In Notiz eintragen</button>
         </div>
     </div>
 </div>
@@ -1170,25 +1394,71 @@
     function copyKofferInNr(inNr) {
         navigator.clipboard?.writeText(inNr).then(() => showToast(`Innowatech-Nr. ${inNr} kopiert!`)).catch(() => showToast(`Innowatech-Nr.: ${inNr}`));
     }
-    function appendKofferTextToNote(box, item, kind) {
-        const [nr, d, , , inNr] = item, a = $('service_notes_area'); if (!a) return;
+    let pendingKofferQty = null;
+    function appendKofferTextToNote(box, item, kind, qty = 1) {
+        const [, d, , , inNr] = item, a = $('service_notes_area'); if (!a) return;
         const valStr = a.value || '';
+        const qNum = Math.max(1, parseInt(qty, 10) || 1);
         let entry = '';
         if (kind === 'nachorder') {
-            entry = `🧰 Nachorder Servicekoffer (Fehlteil): [IN-${inNr}] ${d} (${box.short}, Fach ${nr})`;
+            entry = `🧰 Nachorder Servicekoffer: ${qNum}x [IN-${inNr}] ${d}`;
             a.value = valStr + (valStr && !valStr.endsWith('\n') ? '\n' : '') + entry + '\n';
         } else if (/:[ \t]*$/.test(valStr)) {
-            a.value = valStr + (valStr.endsWith(' ') ? '' : ' ') + `[IN-${inNr}] ${d} (${box.short})`;
+            a.value = valStr + (valStr.endsWith(' ') ? '' : ' ') + `[IN-${inNr}] ${d}`;
         } else {
-            entry = `🛠️ Ersatzteil / Verbaut: [IN-${inNr}] ${d} (${box.short}, Fach ${nr})`;
+            entry = `🛠️ Ersatzteil / Verbaut: [IN-${inNr}] ${d}`;
             a.value = valStr + (valStr && !valStr.endsWith('\n') ? '\n' : '') + entry + '\n';
         }
         saveServiceNotes();
     }
+    function openKofferQtyModal(boxId, idx, closePickerOnConfirm = false) {
+        const res = findKofferItem(boxId, idx); if (!res) return;
+        const [, d, , , inNr, anz] = res.item;
+        pendingKofferQty = { boxId, idx, closePickerOnConfirm };
+        txt('kofferQtyItemLabel', `[IN-${inNr}] ${d}`);
+        txt('kofferQtySollHint', `Soll-Bestand im Koffer: ${anz || '-'}`);
+        setKofferQty(1);
+        $('kofferQtyModal').classList.add('active');
+        pushAppNav('kofferQty');
+        setTimeout(() => { const inp = $('kofferQtyInput'); inp?.focus(); inp?.select?.(); }, 60);
+    }
+    function closeKofferQtyModal(fromPop = false) {
+        const m = $('kofferQtyModal');
+        if (!m?.classList.contains('active')) return;
+        m.classList.remove('active');
+        pendingKofferQty = null;
+        if (!fromPop) popAppNavIf('kofferQty');
+    }
+    function syncKofferQtyPresets() {
+        const q = parseInt($('kofferQtyInput')?.value, 10) || 0;
+        document.querySelectorAll('#kofferQtyPresets .qty-preset-btn').forEach(b => b.classList.toggle('active', parseInt(b.textContent, 10) === q));
+    }
+    function setKofferQty(n) {
+        const inp = $('kofferQtyInput');
+        if (inp) inp.value = String(Math.max(1, parseInt(n, 10) || 1));
+        syncKofferQtyPresets();
+    }
+    function stepKofferQty(delta) {
+        const inp = $('kofferQtyInput');
+        const cur = parseInt(inp?.value, 10) || 1;
+        setKofferQty(Math.min(999, Math.max(1, cur + delta)));
+    }
+    function confirmKofferQty() {
+        if (!pendingKofferQty) return closeKofferQtyModal();
+        const { boxId, idx, closePickerOnConfirm } = pendingKofferQty;
+        const q = Math.max(1, parseInt($('kofferQtyInput')?.value, 10) || 1);
+        const res = findKofferItem(boxId, idx);
+        closeKofferQtyModal();
+        if (!res) return;
+        appendKofferTextToNote(res.box, res.item, 'nachorder', q);
+        if (closePickerOnConfirm) closeKofferPicker();
+        showToast(`Nachorder ${q}x [IN-${res.item[4]}] in Notiz eingetragen.`);
+    }
     function insertKofferToNotes(boxId, idx, kind) {
+        if (kind === 'nachorder') return openKofferQtyModal(boxId, idx, false);
         const res = findKofferItem(boxId, idx); if (!res) return;
         appendKofferTextToNote(res.box, res.item, kind);
-        showToast(kind === 'nachorder' ? `Nachorder [IN-${res.item[4]}] in Notiz eingetragen.` : `[IN-${res.item[4]}] in Service-Notizen übernommen.`);
+        showToast(`[IN-${res.item[4]}] in Service-Notizen übernommen.`);
     }
     function openKofferPicker() {
         if (!currentModules.find(m => m.id === 'koffer')?.userAllowed) return showToast('Servicekoffer ist für dieses Kürzel nicht freigeschaltet.');
@@ -1204,10 +1474,11 @@
         if (!fromPop) popAppNavIf('kofferPicker');
     }
     function pickKofferToNote(boxId, idx, kind) {
+        if (kind === 'nachorder') return openKofferQtyModal(boxId, idx, true);
         const res = findKofferItem(boxId, idx); if (!res) return;
         appendKofferTextToNote(res.box, res.item, kind);
         closeKofferPicker();
-        showToast(kind === 'nachorder' ? `Nachorder [IN-${res.item[4]}] übernommen.` : `[IN-${res.item[4]}] ${res.item[1]} eingefügt.`);
+        showToast(`[IN-${res.item[4]}] ${res.item[1]} eingefügt.`);
     }
 
     function populateDbSelects() {
@@ -1285,6 +1556,7 @@
     window.addEventListener('popstate', () => {
         if (skipPopCount > 0) { skipPopCount--; return; }
         if ($('confirmDialogModal')?.classList.contains('active')) { $('confirmCancelBtn')?.click(); return; }
+        if ($('kofferQtyModal')?.classList.contains('active')) { closeKofferQtyModal(true); return; }
         if ($('imageLightboxOverlay')?.classList.contains('open')) { closeImageLightbox(null, true); return; }
         if ($('kofferPickerModal')?.classList.contains('open')) { closeKofferPicker(true); return; }
         if ($('dropdown-modal')?.classList.contains('open')) { closeCustomDropdown(null, true); return; }
@@ -1360,7 +1632,124 @@
             if (!fromPop) popAppNavIf('lightbox');
         }
     }
-    document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeImageLightbox(); closeKofferPicker(); } });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeImageLightbox(); closeKofferQtyModal(); closeKofferPicker(); } });
+
+    const ET_TURBINE_IMAGES = {"100041": "data:image/jpeg;base64,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", "109012": "data:image/jpeg;base64,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", "103547": "data:image/png;base64,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"};
+    const ET_TYP_TIME_MAP = {
+        '5600 FK | Art.Nr. 100406': '2,5 Std. (FK/FKL/CGK)',
+        '5600 FXM | Art.Nr. 100404': '2,5 Std. (FXM)',
+        '9100 FX/GX | Art.Nr. 100408': '3,0 Std. (FX/GX)',
+        '9100 FXL/GXL | Art.Nr. 100410': '3,0 Std. (FXL/GXL)',
+        '9100 KL&SGX | Art.Nr. 100412': '3,0 Std. (KL / SGX)',
+        'FK/CGK/FKL | Art.Nr. 103961': '2,5 Std. (FK/FKL/CGK)',
+        'FXM | Art.Nr. 103965': '2,5 Std. (FXM)',
+        'FX/GX/CGX | Art.Nr. 103962': '3,0 Std. (FX/GX/CGX)',
+        'FXL/GXL | Art.Nr. 103963': '3,0 Std. (FXL/GXL)',
+        'KL15 | Art.Nr. 103964': '3,0 Std. (ECO / KL)',
+        'KL30 | Art.Nr. 105880': '3,0 Std. (ECO / KL)',
+        'KL50 | Art.Nr. 106009': '3,0 Std. (ECO / KL)',
+        'WAT-100 | Art.Nr. 110566': '3,0 Std. (WAT / SGX)',
+        'WAT-200 | Art.Nr. 110757': '3,0 Std. (WAT / SGX)'
+    };
+    function initEtChecklistImages() {
+        Object.entries(ET_TURBINE_IMAGES).forEach(([nr, src]) => {
+            const img = $('et_img_' + nr);
+            if (img && src) img.src = src;
+        });
+    }
+    function setEtSeg(inputId, btn) {
+        const inp = $(inputId), grp = btn?.parentElement;
+        if (!inp || !grp) return;
+        const v = btn.dataset.val || '';
+        const next = inp.value === v ? '' : v;
+        inp.value = next;
+        grp.querySelectorAll('.seg-btn').forEach(b => b.classList.toggle('active', b.dataset.val === next));
+    }
+    function updateEtTypInfo() {
+        const v = $('et_typ')?.value || '', el = $('et_typ_time_val');
+        if (!el) return;
+        const spec = ET_TYP_TIME_MAP[v];
+        el.innerHTML = spec
+            ? `<b>${escHtml(spec)}</b> · alle Werte: FK/FKL/CGK 2,5 Std | FXM 2,5 Std | FX/GX/PG1/PG2/CGX/FXL/GXL/SGX1–2/ECO1–4: 3,0 Std`
+            : 'Bitte Typ auswählen · FK/FKL/CGK: 2,5 Std | FXM: 2,5 Std | FX/GX/PG1/PG2/CGX/FXL/GXL/SGX1/2/ECO1–4: 3,0 Std';
+    }
+    function selectEtTurbine(nr) {
+        const inp = $('et_turbine'); if (!inp) return;
+        const next = inp.value === nr ? '' : nr;
+        inp.value = next;
+        document.querySelectorAll('#et_turbine_grid .et-turbine-card').forEach(c => c.classList.toggle('active', c.dataset.val === next));
+    }
+    function openEtTurbineLightbox(nr, e) {
+        e?.stopPropagation();
+        const src = ET_TURBINE_IMAGES[nr]; if (!src) return;
+        lightboxCtx = null;
+        if ($('lightboxPins')) $('lightboxPins').innerHTML = '';
+        txt('lightboxTitle', `Durchflussmesser / Turbine · Nr. ${nr}`);
+        $('lightboxImg').src = src; resetLb();
+        $('lightboxCaption').innerHTML = `<span>Original-Foto aus Checkliste Enthärtertausch (Art.-Nr. ${escHtml(nr)}) · Mit 2 Fingern zoomen</span>`;
+        $('imageLightboxOverlay').classList.add('open'); initLightboxGestures();
+        pushAppNav('lightbox');
+    }
+    function buildEnthaertertauschText() {
+        const g = id => ($(id)?.value || '').trim() || '-';
+        const typ = g('et_typ');
+        const zeit = ET_TYP_TIME_MAP[typ] || '-';
+        return [
+            '📋 CHECKLISTE ENTHÄRTERTAUSCH',
+            '----------------------------------------',
+            `Kürzel Mitarbeiter: ${g('et_kuerzel')}`,
+            `Kundenname: ${g('et_kunde')}`,
+            `PLZ & Ort: ${g('et_ort')}`,
+            `Fabrikationsnummer: ${g('et_fabnr')}`,
+            `Anlagentyp: ${g('et_anlage')}`,
+            `Enthärtertyp: ${typ}`,
+            `Zeitaufwand (mit Reg.): ${zeit}`,
+            `Kabinett auch erneuern: ${g('et_kabinett_neu')}`,
+            `Kabinett-Art: ${g('et_kabinett_art')}`,
+            `Schlauch Enthärter → Hauptventil (AD): ${g('et_schlauch_hv')}`,
+            `Schlauch zum Hauptventil erneuern: ${g('et_schlauch_hv_neu')}`,
+            `Schlauch Enthärter → Abfluss (ID): ${g('et_schlauch_abfluss')}`,
+            `Panzerschlauch Größe: ${g('et_panzer_groesse')}`,
+            `Panzerschlauch Länge: ${g('et_panzer_laenge')}`,
+            `Panzerschlauch Anschlussart: ${g('et_panzer_anschluss')}`,
+            `Extra Schwimmerlanze (Solesättigung): ${g('et_schwimmerlanze')}`,
+            `Durchflussmesser / Turbine: ${g('et_turbine') === '-' ? '-' : 'Nr. ' + g('et_turbine')}`,
+            `Fotos (alle Seiten/Bauteile/Rotgussfittings): ${g('et_fotos')}`,
+            `Bemerkungen: ${g('et_bemerkung')}`
+        ].join('\n');
+    }
+    function copyEtToNotes() {
+        const a = $('service_notes_area'); if (!a) return;
+        const txtBlock = buildEnthaertertauschText();
+        const cur = a.value || '';
+        a.value = cur + (cur && !cur.endsWith('\n') ? '\n\n' : '') + txtBlock + '\n';
+        saveServiceNotes();
+        showToast('Checkliste Enthärtertausch in Service-Notizen übernommen!');
+    }
+    function sendEtEmail() {
+        const k = ($('et_kunde')?.value || '').trim();
+        const fn = ($('et_fabnr')?.value || '').trim();
+        const ku = ($('et_kuerzel')?.value || '').trim() || activeUser || 'Techniker';
+        const extra = [k, fn].filter(Boolean).join(' / ');
+        const subject = `[INNOWATECH Checkliste Enthärtertausch] ${extra ? extra + ' ' : ''}(${ku})`;
+        const body = buildEnthaertertauschText() + '\n\nHinweis: Eventuelle Fotos in der Mail-App über die Büroklammer anhängen.';
+        window.location.href = `mailto:${HOTLINE_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    }
+    function copyEtClipboard() {
+        const txtBlock = buildEnthaertertauschText();
+        navigator.clipboard?.writeText(txtBlock).then(() => showToast('Checkliste kopiert!')).catch(() => showToast('Kopieren fehlgeschlagen.'));
+    }
+    function resetEnthaertertausch() {
+        ['et_kunde', 'et_ort', 'et_fabnr', 'et_bemerkung', 'et_anlage', 'et_kabinett_neu', 'et_kabinett_art', 'et_schlauch_hv', 'et_schlauch_hv_neu', 'et_schlauch_abfluss', 'et_panzer_groesse', 'et_panzer_laenge', 'et_panzer_anschluss', 'et_turbine', 'et_fotos'].forEach(id => {
+            if ($(id)) $(id).value = '';
+        });
+        if ($('et_kuerzel')) $('et_kuerzel').value = activeUser || '';
+        if ($('et_typ')) $('et_typ').selectedIndex = 0;
+        document.querySelectorAll('#tab-enthaertertausch .seg-btn.active, #et_turbine_grid .et-turbine-card.active').forEach(el => el.classList.remove('active'));
+        refreshDropdownTriggers($('tab-enthaertertausch'));
+        updateEtTypInfo();
+        showToast('Checkliste zurückgesetzt.');
+    }
 
     let dbUsers = {}, activeUser = localStorage.getItem('innowatech_active_user') || null, clickCount = 0, clickTimer = null;
     const USERS_JSON_URL = './users.json';
@@ -1374,7 +1763,7 @@
     function updateNetBadge(weakOffline = false) {
         const b = $('net-status-badge'); if (!b) return;
         const on = navigator.onLine && !weakOffline;
-        b.innerText = !navigator.onLine ? '○ Offline' : (weakOffline ? '○ Schwachnetz' : '● Online');
+        b.innerText = !navigator.onLine ? '○ Offline' : (weakOffline ? '○ Schwaches Netz' : '● Online');
         b.style.color = on ? '#2e7d32' : '#e65100';
         b.style.background = on ? 'rgba(46,125,50,0.12)' : 'rgba(230,81,0,0.12)';
     }
@@ -1581,6 +1970,7 @@
     function applyUserPermissions() {
         evaluatePendingUpdate();
         txt('header-sub', activeUser ? `Service Tool · ${activeUser}` : 'Service Tool');
+        if ($('et_kuerzel') && !$('et_kuerzel').value.trim() && activeUser) $('et_kuerzel').value = activeUser;
         if (!activeUser || !Object.keys(dbUsers).length) currentModules.forEach(m => m.userAllowed = true);
         else {
             const u = dbUsers[activeUser], wk = ['taschenlampe', 'schlauchvolumen', 'auslitern', 'notizen'];
@@ -1653,6 +2043,21 @@
         if (window.self !== window.top) showToast('Hinweis: Falls die Vorschau Drucken blockiert, oben rechts „Vollbild“ öffnen.');
         window.print();
     };
+    const CATEGORY_DEFS = {
+        'Anwendung': { listId: 'active-list-anwendung', gridId: 'launcher-grid-anwendung', tabCls: '', color: '#0d47a1' },
+        'Parameter': { listId: 'active-list-parameter', gridId: 'launcher-grid-parameter', tabCls: 'category-parameters', color: '#1b5e20' },
+        'Hilfsmittel': { listId: 'active-list-werkzeuge', gridId: 'launcher-grid-werkzeuge', tabCls: 'category-werkzeuge', color: '#ca8a04' },
+        'Katalog & Checklisten': { listId: 'active-list-checklisten', gridId: 'launcher-grid-checklisten', tabCls: 'category-checklisten', color: '#b91c1c' }
+    };
+    const DEFAULT_CATEGORY_ORDER = ['Anwendung', 'Parameter', 'Hilfsmittel', 'Katalog & Checklisten'];
+    let categoryOrder = [...DEFAULT_CATEGORY_ORDER];
+    function normalizeCategoryOrder(raw) {
+        const list = Array.isArray(raw) ? raw.map(c => c === 'Werkzeuge' ? 'Hilfsmittel' : c) : [];
+        const out = [];
+        list.forEach(c => { if (DEFAULT_CATEGORY_ORDER.includes(c) && !out.includes(c)) out.push(c); });
+        DEFAULT_CATEGORY_ORDER.forEach(c => { if (!out.includes(c)) out.push(c); });
+        return out;
+    }
     const defaultModules = [
         { id: 'standard', title: 'Trinkwasser', icon: '💧', category: 'Anwendung', visible: true, userAllowed: true },
         { id: 'wasserwerk', title: 'Wasserwerk', icon: '🏢', category: 'Anwendung', visible: true, userAllowed: true },
@@ -1663,11 +2068,12 @@
         { id: 'anlagen', title: 'Produktionsparameter AQD', icon: '⚙️', category: 'Parameter', visible: true, userAllowed: true },
         { id: 'radar', title: 'Vega Radarsensor', icon: '📡', category: 'Parameter', visible: true, userAllowed: true },
         { id: 'enthaerter', title: 'Enthärtungsanlagen', icon: '💧', category: 'Parameter', visible: true, userAllowed: true },
-        { id: 'koffer', title: 'Servicekoffer', icon: '🧰', category: 'Parameter', visible: true, userAllowed: true },
-        { id: 'taschenlampe', title: 'Taschenlampe', icon: '🔦', category: 'Werkzeuge', visible: true, userAllowed: true },
-        { id: 'schlauchvolumen', title: 'Schlauchvolumen', icon: '📏', category: 'Werkzeuge', visible: true, userAllowed: true },
-        { id: 'auslitern', title: 'Ausliter-Hilfe', icon: '⏱️', category: 'Werkzeuge', visible: true, userAllowed: true },
-        { id: 'notizen', title: 'Service-Notizen', icon: '📝', category: 'Werkzeuge', visible: true, userAllowed: true }
+        { id: 'taschenlampe', title: 'Taschenlampe', icon: '🔦', category: 'Hilfsmittel', visible: true, userAllowed: true },
+        { id: 'schlauchvolumen', title: 'Schlauchvolumen', icon: '📏', category: 'Hilfsmittel', visible: true, userAllowed: true },
+        { id: 'auslitern', title: 'Ausliter-Hilfe', icon: '⏱️', category: 'Hilfsmittel', visible: true, userAllowed: true },
+        { id: 'notizen', title: 'Service-Notizen', icon: '📝', category: 'Hilfsmittel', visible: true, userAllowed: true },
+        { id: 'koffer', title: 'Servicekoffer', icon: '🧰', category: 'Katalog & Checklisten', visible: true, userAllowed: true },
+        { id: 'enthaertertausch', title: 'Checkliste Enthärtertausch', icon: '📋', category: 'Katalog & Checklisten', visible: true, userAllowed: true }
     ];
     let currentModules = [...defaultModules], currentActiveTab = '', isLauncherActive = true, isInToolFromLauncher = false, showSliderIcons = true, showDashboardIcons = true;
     const isMobileDevice = () => window.innerWidth <= 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
@@ -1723,7 +2129,7 @@
     let pinnedTabs = [], keepScreenAwake = false, timerBeepEnabled = true, persistCalcInputs = false, wakeLockSentinel = null, audioCtx = null;
     const defaultTabInputs = {};
 
-    const isCalcInput = el => (el.tagName === 'INPUT' || el.tagName === 'SELECT') && !['service_notes_area', 'fault_photos', 'koffer_search', 'koffer_picker_search', 'koffer_box_select', 'koffer_picker_box_select'].includes(el.id) && !el.id.startsWith('fault_');
+    const isCalcInput = el => (el.tagName === 'INPUT' || el.tagName === 'SELECT') && !['service_notes_area', 'koffer_search', 'koffer_picker_search', 'koffer_box_select', 'koffer_picker_box_select'].includes(el.id) && !el.id.startsWith('fault_') && !el.id.startsWith('et_');
     function captureTabDefaults() {
         document.querySelectorAll('.tab-content [id]').forEach(el => {
             if (isCalcInput(el)) defaultTabInputs[el.id] = el.type === 'checkbox' ? el.checked : el.value;
@@ -1868,7 +2274,7 @@
 
     function loadSettings() {
         $('first-letter').classList.toggle('santa-letter', new Date().getMonth() === 11);
-        populateDbSelects(); renderVegaSteps(); captureTabDefaults();
+        populateDbSelects(); renderVegaSteps(); initEtChecklistImages(); captureTabDefaults();
         const isDark = localStorage.getItem('mat_darkmode') === 'true';
         document.body.classList.toggle('dark-mode', isDark); $('darkmode-toggle').checked = isDark;
         if (localStorage.getItem('mat_darkmode') === null) localStorage.setItem('mat_darkmode', 'false');
@@ -1881,11 +2287,12 @@
         showDashboardIcons = localStorage.getItem('mat_show_dashboard_icons') !== 'false'; $('icons-dashboard-toggle').checked = showDashboardIcons;
         const z = Math.min(1.2, parseFloat(localStorage.getItem('mat_zoom') || '1'));
         changeZoom(z, false); $('zoom-slider').value = z;
+        try { categoryOrder = normalizeCategoryOrder(JSON.parse(localStorage.getItem('mat_category_order') || 'null')); } catch { categoryOrder = [...DEFAULT_CATEGORY_ORDER]; }
         try {
             const parsed = JSON.parse(localStorage.getItem('mat_modules') || 'null');
             if (Array.isArray(parsed)) {
                 currentModules = parsed;
-                currentModules.forEach(m => { const d = defaultModules.find(x => x.id === m.id); if (d) Object.assign(m, { title: d.title, category: d.category, icon: d.icon || '🛠️' }); });
+                currentModules.forEach(m => { const d = defaultModules.find(x => x.id === m.id); if (d) Object.assign(m, { title: d.title, category: d.category, icon: d.icon || '🛠️' }); else if (m.category === 'Werkzeuge') m.category = 'Hilfsmittel'; });
                 defaultModules.forEach(d => { if (!currentModules.some(m => m.id === d.id)) currentModules.push({ ...d }); });
             }
         } catch { currentModules = [...defaultModules]; }
@@ -1897,7 +2304,7 @@
         loadUsersDatabaseSync();
         renderTabs(true); applyViewMode(); initCustomDropdowns();
         if (persistCalcInputs) restoreTabInputs();
-        recalcAllModules(); syncWakeLock();
+        recalcAllModules(); updateEtTypInfo(); syncWakeLock();
         const cont = document.querySelector('.container');
         ['input', 'change'].forEach(ev => cont?.addEventListener(ev, e => { if (e.target.closest('.tab-content') && isCalcInput(e.target)) saveTabInputs(); }));
         // Nutzer-Sync strikt nachgelagert & mit hartem 1,2s Timeout:
@@ -1906,7 +2313,10 @@
             if (navigator.onLine) await syncUsersInBackground(1200);
         })();
     }
-    const saveSettings = () => localStorage.setItem('mat_modules', JSON.stringify(currentModules));
+    const saveSettings = () => {
+        localStorage.setItem('mat_modules', JSON.stringify(currentModules));
+        localStorage.setItem('mat_category_order', JSON.stringify(categoryOrder));
+    };
     const toggleDarkMode = on => { document.body.classList.toggle('dark-mode', on); localStorage.setItem('mat_darkmode', on); };
     const toggleSliderIcons = on => { showSliderIcons = on; localStorage.setItem('mat_show_slider_icons', on); };
     const toggleDashboardIcons = on => { showDashboardIcons = on; localStorage.setItem('mat_show_dashboard_icons', on); };
@@ -1929,14 +2339,34 @@
         updatePinButton(); renderPinnedBar();
     }
     function renderLauncherGrid() {
-        const grids = { Anwendung: $('launcher-grid-anwendung'), Parameter: $('launcher-grid-parameter'), Werkzeuge: $('launcher-grid-werkzeuge') };
-        Object.values(grids).forEach(g => g.innerHTML = '');
+        const lv = $('launcher-view'), bottomInd = $('dashboard-scroll-indicator-bottom');
+        const grids = {
+            'Anwendung': $('launcher-grid-anwendung'),
+            'Parameter': $('launcher-grid-parameter'),
+            'Hilfsmittel': $('launcher-grid-werkzeuge'),
+            'Katalog & Checklisten': $('launcher-grid-checklisten')
+        };
+        Object.values(grids).forEach(g => { if (g) g.innerHTML = ''; });
         currentModules.filter(m => m.visible && m.userAllowed).forEach(mod => {
+            const cat = mod.category === 'Werkzeuge' ? 'Hilfsmittel' : (mod.category || 'Anwendung');
+            const g = grids[cat] || grids['Anwendung'];
+            if (!g) return;
             const c = document.createElement('div'); c.className = 'launcher-card';
             c.onclick = () => { isInToolFromLauncher = true; pushAppNav('tool'); applyViewMode(); switchTab(mod.id); };
             c.innerHTML = (showDashboardIcons ? `<div class="launcher-icon">${mod.icon || '🛠️'}</div>` : '') + `<div class="launcher-label">${mod.title}</div>`;
-            (grids[mod.category] || grids.Anwendung).appendChild(c);
+            g.appendChild(c);
         });
+        if (lv) {
+            categoryOrder.forEach(cat => {
+                const sec = lv.querySelector(`.launcher-category[data-cat="${cat}"]`);
+                const g = grids[cat];
+                if (sec) {
+                    sec.style.display = g && g.children.length ? '' : 'none';
+                    if (bottomInd) lv.insertBefore(sec, bottomInd);
+                    else lv.appendChild(sec);
+                }
+            });
+        }
     }
     const backToDashboard = (fromPop = false) => {
         stopNoteDictation();
@@ -1964,8 +2394,9 @@
     function renderTabs(autoFirst = false) {
         const cont = $('categories-container'); cont.innerHTML = '';
         const active = currentModules.filter(m => m.visible && m.userAllowed);
-        [['Anwendung', ''], ['Parameter', 'category-parameters'], ['Werkzeuge', 'category-werkzeuge']].forEach(([cat, cls]) => {
-            const mods = active.filter(m => (m.category || 'Anwendung') === cat);
+        categoryOrder.forEach(cat => {
+            const cls = CATEGORY_DEFS[cat]?.tabCls || '';
+            const mods = active.filter(m => (m.category === 'Werkzeuge' ? 'Hilfsmittel' : (m.category || 'Anwendung')) === cat);
             if (!mods.length) return;
             const grp = document.createElement('div'); grp.className = 'category-group ' + cls;
             grp.innerHTML = `<div class="category-title">${cat}</div><div class="tab-buttons-inner"></div>`;
@@ -1992,13 +2423,13 @@
         updatePinButton(); renderPinnedBar();
     }
 
-    function openSettings() { renderModuleManager(); $('settings-modal').classList.add('open'); pushAppNav('settings'); setTimeout(() => checkSettingsScroll($('settings-modal-body')), 50); }
+    function openSettings() { renderCategoryManager(); renderModuleManager(); $('settings-modal').classList.add('open'); pushAppNav('settings'); setTimeout(() => checkSettingsScroll($('settings-modal-body')), 50); }
     function closeSettings(fromPop = false) {
         const m = $('settings-modal'); if (!m?.classList.contains('open')) return;
         m.classList.remove('open'); saveSettings(); renderTabs(); if (isLauncherActive && !isInToolFromLauncher) renderLauncherGrid(); renderPinnedBar();
         if (!fromPop) popAppNavIf('settings');
     }
-    function attachDragSort(handle, item, container) {
+    function attachDragSort(handle, item, container, onFinish = updateModulesOrderFromDOM) {
         let dragging = false, mode = null;
         const moveToY = y => {
             const others = [...container.querySelectorAll('.module-list-item')].filter(el => el !== item);
@@ -2028,7 +2459,7 @@
             window.removeEventListener('touchend', onEnd);
             window.removeEventListener('touchcancel', onEnd);
             window.removeEventListener('blur', onEnd);
-            updateModulesOrderFromDOM();
+            onFinish();
             renderTabs();
             if (isLauncherActive && !isInToolFromLauncher) renderLauncherGrid();
             renderPinnedBar();
@@ -2053,12 +2484,40 @@
             window.addEventListener('touchcancel', onEnd);
         }, { passive: false });
     }
+    function renderCategoryManager() {
+        const el = $('category-order-list'); if (!el) return;
+        el.innerHTML = '';
+        categoryOrder.forEach(cat => {
+            const def = CATEGORY_DEFS[cat] || {};
+            const item = document.createElement('div');
+            item.className = 'module-list-item';
+            item.dataset.cat = cat;
+            item.style.borderLeft = `4px solid ${def.color || 'var(--primary-color)'}`;
+            item.innerHTML = `<div class="module-list-item-left"><span class="module-label-text" style="font-weight:700; color:${def.color || 'var(--text-color)'};">${escHtml(cat)}</span></div><span class="drag-handle" title="Halten & ziehen">☰</span>`;
+            attachDragSort(item.querySelector('.drag-handle'), item, el, updateCategoryOrderFromDOM);
+            el.appendChild(item);
+        });
+    }
+    function updateCategoryOrderFromDOM() {
+        const next = [];
+        $('category-order-list')?.querySelectorAll('.module-list-item').forEach(it => {
+            if (it.dataset.cat) next.push(it.dataset.cat);
+        });
+        categoryOrder = normalizeCategoryOrder(next);
+        saveSettings();
+    }
     function renderModuleManager() {
-        const map = { Anwendung: $('active-list-anwendung'), Parameter: $('active-list-parameter'), Werkzeuge: $('active-list-werkzeuge') };
+        const map = {
+            'Anwendung': $('active-list-anwendung'),
+            'Parameter': $('active-list-parameter'),
+            'Hilfsmittel': $('active-list-werkzeuge'),
+            'Katalog & Checklisten': $('active-list-checklisten')
+        };
         const inactEl = $('inactive-module-list'), actMods = currentModules.filter(m => m.visible), inactMods = currentModules.filter(m => !m.visible);
         Object.entries(map).forEach(([cat, el]) => {
+            if (!el) return;
             el.innerHTML = '';
-            const list = actMods.filter(m => (m.category || 'Anwendung') === cat);
+            const list = actMods.filter(m => (m.category === 'Werkzeuge' ? 'Hilfsmittel' : (m.category || 'Anwendung')) === cat);
             if (!list.length) return void (el.innerHTML = '<div class="hint">Keine aktiven Module in dieser Kategorie.</div>');
             list.forEach(mod => {
                 const item = document.createElement('div'); item.className = 'module-list-item'; item.dataset.id = mod.id;
@@ -2068,7 +2527,7 @@
                     if (actMods.length <= 1) { chk.checked = true; return showToast('Es muss mindestens ein Modul aktiv bleiben!'); }
                     mod.visible = false; saveSettings(); renderModuleManager();
                 };
-                attachDragSort(item.querySelector('.drag-handle'), item, el);
+                attachDragSort(item.querySelector('.drag-handle'), item, el, updateModulesOrderFromDOM);
                 el.appendChild(item);
             });
         });
@@ -2082,7 +2541,7 @@
     }
     function updateModulesOrderFromDOM() {
         const order = [];
-        ['active-list-anwendung', 'active-list-parameter', 'active-list-werkzeuge'].forEach(cid => {
+        ['active-list-anwendung', 'active-list-parameter', 'active-list-werkzeuge', 'active-list-checklisten'].forEach(cid => {
             $(cid)?.querySelectorAll('.module-list-item').forEach(it => { const m = currentModules.find(x => x.id === it.dataset.id); if (m) order.push(m); });
         });
         currentModules = [...order, ...currentModules.filter(m => !m.visible)]; saveSettings();
@@ -2261,7 +2720,7 @@
             noteRecognition.onerror = err => {
                 const code = err?.error || '';
                 if (code === 'not-allowed' || code === 'service-not-allowed') showToast('Mikrofon-Berechtigung wurde verweigert.');
-                else if (code === 'network') showToast('Keine Verbindung zur Spracherkennung (Schwachnetz/Offline).');
+                else if (code === 'network') showToast('Keine Verbindung zur Spracherkennung (Schwaches Netz/Offline).');
                 else if (code !== 'aborted' && code !== 'no-speech') showToast('Diktat beendet (' + code + ').');
                 setDictateUi(false);
             };
@@ -2274,86 +2733,10 @@
     }
 
     const HOTLINE_EMAIL = 'service-hotline@innowatech.de';
-    let faultPhotoFiles = [], faultActivePhotoIdx = 0;
-    function handleFaultPhotos(e) {
-        const files = [...(e.target.files || [])];
-        if (files.length) faultPhotoFiles = [...faultPhotoFiles, ...files].slice(0, 5);
-        faultActivePhotoIdx = Math.min(faultActivePhotoIdx, Math.max(0, faultPhotoFiles.length - 1));
-        e.target.value = '';
-        renderFaultPhotoThumbs();
-    }
-    function removeFaultPhoto(idx) {
-        faultPhotoFiles.splice(idx, 1);
-        faultActivePhotoIdx = Math.min(faultActivePhotoIdx, Math.max(0, faultPhotoFiles.length - 1));
-        renderFaultPhotoThumbs();
-    }
     function toggleFaultPanel() {
         const p = $('fault_panel'); if (!p) return;
         p.style.display = p.style.display === 'none' ? 'block' : 'none';
     }
-    function renderFaultPhotoThumbs() {
-        const wrap = $('fault_photo_thumbs'), btn = $('fault_send_btn'), copyBtn = $('fault_copy_img_btn');
-        if (!wrap) return;
-        wrap.innerHTML = '';
-        faultPhotoFiles.forEach((f, idx) => {
-            const box = document.createElement('div'); box.className = 'photo-thumb';
-            if (faultPhotoFiles.length > 1 && idx === faultActivePhotoIdx) box.style.outline = '2px solid var(--primary-color)';
-            box.style.cursor = faultPhotoFiles.length > 1 ? 'pointer' : 'default';
-            box.onclick = () => { if (faultPhotoFiles.length > 1) { faultActivePhotoIdx = idx; renderFaultPhotoThumbs(); } };
-            const img = document.createElement('img');
-            img.src = URL.createObjectURL(f); img.onload = () => URL.revokeObjectURL(img.src);
-            const del = document.createElement('button'); del.type = 'button'; del.textContent = '✕';
-            del.onclick = e => { e.stopPropagation(); removeFaultPhoto(idx); };
-            box.append(img, del); wrap.appendChild(box);
-        });
-        if (copyBtn) {
-            copyBtn.style.display = faultPhotoFiles.length ? 'block' : 'none';
-            copyBtn.innerText = faultPhotoFiles.length > 1
-                ? `🖼️ Foto ${faultActivePhotoIdx + 1}/${faultPhotoFiles.length} kopieren (für Strg+V in Mail)`
-                : '🖼️ Foto kopieren (für Strg+V in Mail)';
-        }
-        if (btn) {
-            btn.innerText = faultPhotoFiles.length
-                ? `📤 Jetzt mit ${faultPhotoFiles.length} Foto(s) teilen`
-                : '🚀 Jetzt absenden';
-        }
-    }
-    function fileToPngBlob(file) {
-        return new Promise((resolve, reject) => {
-            const img = new Image(), url = URL.createObjectURL(file);
-            img.onload = () => {
-                const maxSide = 1920, scale = Math.min(1, maxSide / Math.max(img.width, img.height));
-                const c = document.createElement('canvas');
-                c.width = Math.max(1, Math.round(img.width * scale));
-                c.height = Math.max(1, Math.round(img.height * scale));
-                c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
-                URL.revokeObjectURL(url);
-                c.toBlob(b => b ? resolve(b) : reject(new Error('PNG error')), 'image/png');
-            };
-            img.onerror = () => { URL.revokeObjectURL(url); reject(new Error('Load error')); };
-            img.src = url;
-        });
-    }
-    async function copyActiveFaultPhoto() {
-        const file = faultPhotoFiles[faultActivePhotoIdx] || faultPhotoFiles[0];
-        if (!file) return showToast('Bitte zuerst ein Foto auswählen.');
-        if (!navigator.clipboard?.write || typeof ClipboardItem === 'undefined') {
-            return showToast('Bild-Zwischenablage wird in diesem Browser nicht unterstützt – bitte per Büroklammer anhängen.');
-        }
-        try {
-            await navigator.clipboard.write([new ClipboardItem({ 'image/png': fileToPngBlob(file) })]);
-            showToast('Foto kopiert! In der Mail einfach Strg+V drücken.');
-        } catch {
-            try {
-                const blob = await fileToPngBlob(file);
-                await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
-                showToast('Foto kopiert! In der Mail einfach Strg+V drücken.');
-            } catch {
-                showToast('Kopieren vom Browser blockiert – bitte Foto direkt in der Mail einfügen.');
-            }
-        }
-    }
-
     function buildFaultPayload() {
         const type = $('fault_type')?.value || 'Störung';
         const notes = $('service_notes_area')?.value.trim() || '';
@@ -2373,26 +2756,10 @@
         if (!$('fault_clear_after')?.checked) return;
         if ($('service_notes_area')) $('service_notes_area').value = '';
         localStorage.removeItem('mat_service_notes');
-        faultPhotoFiles = []; faultActivePhotoIdx = 0; renderFaultPhotoThumbs();
         showToast('Meldung übergeben & Service-Notizen geleert.');
     }
-    async function sendFaultEmail() {
+    function sendFaultEmail() {
         const { subject, body } = buildFaultPayload();
-        if (faultPhotoFiles.length && navigator.canShare?.({ files: faultPhotoFiles })) {
-            try { await navigator.clipboard?.writeText(HOTLINE_EMAIL); showToast(`${HOTLINE_EMAIL} kopiert – einfach ins "An:"-Feld einfügen.`); } catch {}
-            try {
-                await navigator.share({
-                    files: faultPhotoFiles,
-                    title: subject,
-                    text: `${subject}\n\n${body}`
-                });
-                clearAfterFaultSend();
-                return;
-            } catch (err) {
-                if (err?.name === 'AbortError') return;
-            }
-        }
-        if (faultPhotoFiles.length) showToast('Hinweis: Über mailto können Browser keine Fotos anhängen – bitte Foto über "Foto kopieren" einfügen.');
         window.location.href = `mailto:${HOTLINE_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
         clearAfterFaultSend();
     }
