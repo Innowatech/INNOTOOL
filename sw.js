@@ -1,19 +1,45 @@
-const CACHE_NAME = 'mat-service-tool-v5.12';
-const URLS_TO_CACHE = [
+const CACHE_NAME = 'mat-service-tool-v5.2';
+const CORE_URLS = [
   './',
   './index.html',
   './manifest.json'
 ];
+const OPTIONAL_URLS = [
+  './users.json',
+  './icon.png'
+];
 const IS_PREVIEW = /(^|\.)run\.app$|localhost|127\.0\.0\.1|webcontainer/i.test(self.location.hostname);
+
+function fetchWithHardTimeout(request, ms = 1500, fetchOpts = {}) {
+  const ctrl = new AbortController();
+  let tid;
+  const timeoutPromise = new Promise((_, reject) => {
+    tid = setTimeout(() => {
+      try { ctrl.abort(); } catch {}
+      reject(new Error('SW network timeout after ' + ms + 'ms'));
+    }, ms);
+  });
+  const fetchPromise = fetch(request, { ...fetchOpts, signal: ctrl.signal });
+  return Promise.race([fetchPromise, timeoutPromise]).finally(() => clearTimeout(tid));
+}
 
 self.addEventListener('install', event => {
   if (IS_PREVIEW) {
     self.skipWaiting();
     return;
   }
-  event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(URLS_TO_CACHE))
-  );
+  event.waitUntil((async () => {
+    const cache = await caches.open(CACHE_NAME);
+    await cache.addAll(CORE_URLS);
+    await Promise.all(OPTIONAL_URLS.map(async u => {
+      try {
+        const res = await fetchWithHardTimeout(u, 3000, { cache: 'no-cache' });
+        if (res && res.ok && !res.redirected) {
+          await cache.put(u, res);
+        }
+      } catch {}
+    }));
+  })());
   // Kein automatisches skipWaiting(): Der neue SW wartet, bis autoUpdate-Nutzer auf "Jetzt aktualisieren" klicken.
 });
 
@@ -43,23 +69,30 @@ self.addEventListener('activate', event => {
   );
 });
 
-async function fetchUsersWithTimeout(request, ms = 1500) {
-  const ctrl = new AbortController();
-  const tid = setTimeout(() => ctrl.abort(), ms);
-  try {
-    const res = await fetch(request, { cache: 'no-store', signal: ctrl.signal });
-    if (!res || !res.ok) throw new Error('HTTP ' + (res ? res.status : 0));
-    const bodyText = await res.text();
-    const freshRes = new Response(bodyText, {
-      status: 200,
-      headers: { 'Content-Type': 'application/json; charset=utf-8' }
-    });
-    const cacheCopy = freshRes.clone();
-    caches.open(CACHE_NAME).then(c => c.put('./users.json', cacheCopy)).catch(() => {});
-    return freshRes;
-  } finally {
-    clearTimeout(tid);
-  }
+async function fetchUsersWithTimeout(request, ms = 1200) {
+  const res = await fetchWithHardTimeout(request, ms, { cache: 'no-store' });
+  if (!res || !res.ok) throw new Error('HTTP ' + (res ? res.status : 0));
+  const bodyText = await Promise.race([
+    res.text(),
+    new Promise((_, reject) => setTimeout(() => reject(new Error('Body timeout')), ms))
+  ]);
+  const freshRes = new Response(bodyText, {
+    status: 200,
+    headers: { 'Content-Type': 'application/json; charset=utf-8' }
+  });
+  const cacheCopy = freshRes.clone();
+  caches.open(CACHE_NAME).then(c => c.put('./users.json', cacheCopy)).catch(() => {});
+  return freshRes;
+}
+
+async function toNonRedirectedResponse(res) {
+  if (!res || !res.redirected) return res;
+  const buf = await res.arrayBuffer();
+  return new Response(buf, {
+    status: res.status || 200,
+    statusText: res.statusText || 'OK',
+    headers: res.headers
+  });
 }
 
 self.addEventListener('fetch', event => {
@@ -69,26 +102,55 @@ self.addEventListener('fetch', event => {
   if (url.origin !== self.location.origin) return;
   if (url.searchParams.has('cb')) return;
 
-  // users.json: Max. 1,5s Netzwerk-Timeout (inkl. Body-Read), bei Schwachnetz/Keller sofort Fallback aus Cache
+  // Navigation (App-Start): Sofort & ohne jede Netzwerk-Wartezeit aus dem Cache bedienen
+  if (event.request.mode === 'navigate') {
+    event.respondWith((async () => {
+      const cache = await caches.open(CACHE_NAME);
+      const hit = (await cache.match(event.request, { ignoreSearch: true }))
+        || (await cache.match('./index.html'))
+        || (await cache.match('./'))
+        || (await caches.match('./index.html'));
+      if (hit) return toNonRedirectedResponse(hit);
+      return fetchWithHardTimeout(event.request, 4000);
+    })());
+    return;
+  }
+
+  // users.json: Harter 1,2s Timeout (inkl. Body-Read), bei Schwachnetz sofort Cache-Fallback
   if (url.pathname.endsWith('/users.json')) {
     event.respondWith(
-      fetchUsersWithTimeout(event.request, 1500)
-        .catch(() => caches.match('./users.json'))
+      fetchUsersWithTimeout(event.request, 1200)
+        .catch(async () => {
+          const cache = await caches.open(CACHE_NAME);
+          const cached = (await cache.match('./users.json')) || (await caches.match('./users.json'));
+          return cached || new Response('{}', {
+            status: 503,
+            headers: { 'Content-Type': 'application/json; charset=utf-8' }
+          });
+        })
     );
     return;
   }
 
-  // App-Dateien: Cache-First für garantierte Offline-Verfügbarkeit + Schutz vor stillem Überschreiben
-  event.respondWith(
-    caches.match(event.request, { ignoreSearch: true }).then(cached => {
-      if (cached) return cached;
-      return fetch(event.request).then(res => {
-        if (res && res.ok && res.type === 'basic') {
-          const copy = res.clone();
-          caches.open(CACHE_NAME).then(c => c.put(event.request, copy));
-        }
-        return res;
-      });
-    })
-  );
+  // Alle übrigen App-Dateien (manifest.json, icon.png, favicon.ico etc.):
+  // Cache-First + harter 1,5s Netzwerk-Timeout, damit uncached Icons im Funkloch niemals das Laden blockieren
+  event.respondWith((async () => {
+    const cache = await caches.open(CACHE_NAME);
+    const cached = (await cache.match(event.request, { ignoreSearch: true }))
+      || (await caches.match(event.request, { ignoreSearch: true }));
+    if (cached) return toNonRedirectedResponse(cached);
+    try {
+      const res = await fetchWithHardTimeout(event.request, 1500);
+      if (res && res.ok && res.type === 'basic' && !res.redirected) {
+        const copy = res.clone();
+        cache.put(event.request, copy).catch(() => {});
+      }
+      return res;
+    } catch {
+      if (url.pathname.endsWith('/favicon.ico') || url.pathname.endsWith('/icon.png')) {
+        return new Response('', { status: 204 });
+      }
+      return new Response('', { status: 504 });
+    }
+  })());
 });
