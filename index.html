@@ -8,7 +8,8 @@
     <meta name="apple-mobile-web-app-title" content="Innowatech">
     <meta name="theme-color" content="#0d47a1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>INNOWATΞCH Service Tool v5.1</title>
+    <title>INNOWATΞCH Service Tool v5.2</title>
+    <link rel="icon" href="data:,">
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="icon.png">
     <style>
@@ -611,13 +612,13 @@
             <span id="net-status-badge" style="font-size:0.72rem; padding:2px 6px; border-radius:10px; background:rgba(0,0,0,0.08);">● Online</span>
             <span id="footer-update-pill" onclick="applyAppUpdate()" title="Update jetzt installieren" style="display:none; font-size:0.7rem; padding:2px 7px; border-radius:10px; background:#f59e0b; color:white; cursor:pointer; font-weight:bold;">🔄 Update</span>
         </div>
-        <span class="footer-version" style="flex:1; text-align:right;" onclick="handleVersionClick()">v5.1</span>
+        <span class="footer-version" style="flex:1; text-align:right;" onclick="handleVersionClick()">v5.2</span>
     </div>
 </div>
 
 <div class="image-lightbox-overlay" id="imageLightboxOverlay" onclick="closeImageLightbox(event)">
     <div class="image-lightbox-header" onclick="event.stopPropagation()"><span id="lightboxTitle">Vorschau</span><button type="button" class="image-lightbox-close" onclick="closeImageLightbox()">✕ Schließen</button></div>
-    <div class="image-lightbox-img-wrap" id="lightboxImageWrap" onclick="event.stopPropagation()"><div class="lightbox-stage" id="lightboxStage"><img id="lightboxImg" src="" alt="Screenshot Anleitung" draggable="false"><div class="lightbox-pins" id="lightboxPins"></div></div></div>
+    <div class="image-lightbox-img-wrap" id="lightboxImageWrap" onclick="event.stopPropagation()"><div class="lightbox-stage" id="lightboxStage"><img id="lightboxImg" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Screenshot Anleitung" draggable="false"><div class="lightbox-pins" id="lightboxPins"></div></div></div>
     <div class="image-lightbox-caption" id="lightboxCaption" onclick="event.stopPropagation()"></div>
 </div>
 
@@ -675,7 +676,7 @@
 
 <div class="admin-modal-overlay" id="adminAuthModal">
     <div class="admin-modal-content">
-        <div class="admin-modal-header"><span>Admin Authentifizierung (v5.1)</span><button type="button" class="modal-close-btn" style="color:var(--primary-color);" onclick="closeAdminModal('adminAuthModal')">✕</button></div>
+        <div class="admin-modal-header"><span>Admin Authentifizierung (v5.2)</span><button type="button" class="modal-close-btn" style="color:var(--primary-color);" onclick="closeAdminModal('adminAuthModal')">✕</button></div>
         <p style="font-size:0.82rem; color:var(--subtext-color); margin-bottom:12px;">Bitte die Admin-PIN eingeben:</p>
         <div class="form-group"><label>Admin-PIN</label><input type="password" id="adminPin8" class="field-box" value="" autocomplete="new-password" placeholder="••••••••" style="letter-spacing:2px;"></div>
         <button type="button" class="admin-btn admin-btn-primary" style="margin-top:10px;" onclick="verifyAdminAuth8()">Admin Console öffnen</button>
@@ -1377,17 +1378,32 @@
         b.style.color = on ? '#2e7d32' : '#e65100';
         b.style.background = on ? 'rgba(46,125,50,0.12)' : 'rgba(230,81,0,0.12)';
     }
-    async function fetchAndNormalizeUsers(timeoutMs = 1500) {
-        const ctrl = new AbortController(), tid = setTimeout(() => ctrl.abort(), timeoutMs);
+    function withHardTimeout(promise, ms = 1200) {
+        return new Promise((resolve, reject) => {
+            const tid = setTimeout(() => reject(new Error('Hard timeout after ' + ms + 'ms')), ms);
+            promise.then(
+                v => { clearTimeout(tid); resolve(v); },
+                e => { clearTimeout(tid); reject(e); }
+            );
+        });
+    }
+    async function normalizeUsersMap(raw) {
+        const out = {};
+        if (!raw || typeof raw !== 'object') return out;
+        for (const k in raw) {
+            const u = raw[k];
+            if (!u || typeof u !== 'object') continue;
+            out[k] = { pinHash: await hashPin(u.pinHash), status: u.status || 'active', isAdmin: !!u.isAdmin, autoUpdate: u.autoUpdate !== undefined ? u.autoUpdate : (k === 'ADMIN' || k === 'MAT'), modules: u.modules || [] };
+        }
+        return out;
+    }
+    async function fetchAndNormalizeUsers(timeoutMs = 1200) {
+        const ctrl = new AbortController(), tid = setTimeout(() => { try { ctrl.abort(); } catch {} }, timeoutMs);
         try {
-            const res = await fetch(USERS_JSON_URL + '?t=' + Date.now(), { cache: 'no-store', signal: ctrl.signal });
-            if (!res.ok) throw new Error('HTTP ' + res.status);
-            const raw = await res.json(), out = {};
-            for (const k in raw) {
-                const u = raw[k];
-                out[k] = { pinHash: await hashPin(u.pinHash), status: u.status || 'active', isAdmin: !!u.isAdmin, autoUpdate: u.autoUpdate !== undefined ? u.autoUpdate : (k === 'ADMIN' || k === 'MAT'), modules: u.modules || [] };
-            }
-            return out;
+            const res = await withHardTimeout(fetch(USERS_JSON_URL + '?t=' + Date.now(), { cache: 'no-store', signal: ctrl.signal }), timeoutMs);
+            if (!res || !res.ok) throw new Error('HTTP ' + (res ? res.status : 0));
+            const raw = await withHardTimeout(res.json(), timeoutMs);
+            return await normalizeUsersMap(raw);
         } finally {
             clearTimeout(tid);
         }
@@ -1398,47 +1414,61 @@
         if (!Object.keys(dbUsers).length && activeUser && sess) { try { dbUsers[activeUser] = JSON.parse(sess); } catch {} }
         if (activeUser && dbUsers[activeUser]?.status === 'active') localStorage.setItem('innowatech_active_session_data', JSON.stringify(dbUsers[activeUser]));
     }
+    async function loadUsersFromSwCache() {
+        if (!('caches' in window)) return false;
+        try {
+            const cached = await withHardTimeout(caches.match('./users.json'), 400);
+            if (!cached || !cached.ok) return false;
+            const raw = await withHardTimeout(cached.json(), 400);
+            const norm = await normalizeUsersMap(raw);
+            if (Object.keys(norm).length > 0) {
+                dbUsers = norm;
+                saveUsersToLocalStorage();
+                try { checkAuthGuard(); } catch { $('appLoginOverlay').classList.remove('active'); }
+                return true;
+            }
+        } catch {}
+        return false;
+    }
     let bgSyncRunning = false;
-    async function syncUsersInBackground(timeoutMs = 1500) {
+    async function syncUsersInBackground(timeoutMs = 1200) {
         if (!navigator.onLine || bgSyncRunning) return;
         bgSyncRunning = true;
         try {
             const fresh = await fetchAndNormalizeUsers(timeoutMs);
-            dbUsers = fresh; saveUsersToLocalStorage(); updateNetBadge(false);
-            if (activeUser) {
-                const u = dbUsers[activeUser];
-                if (!u || u.status !== 'active') { showToast('Zugang gesperrt oder entfernt.'); performLogout(true); }
-                else { localStorage.setItem('innowatech_active_session_data', JSON.stringify(u)); applyUserPermissions(); }
+            if (Object.keys(fresh).length > 0) {
+                dbUsers = fresh; saveUsersToLocalStorage(); updateNetBadge(false);
+                if (activeUser) {
+                    const u = dbUsers[activeUser];
+                    if (!u || u.status !== 'active') { showToast('Zugang gesperrt oder entfernt.'); performLogout(true); }
+                    else { localStorage.setItem('innowatech_active_session_data', JSON.stringify(u)); applyUserPermissions(); }
+                } else {
+                    try { checkAuthGuard(); } catch {}
+                }
             }
         } catch {
             if (navigator.onLine) updateNetBadge(true);
         } finally { bgSyncRunning = false; }
     }
-    async function loadUsersDatabase() {
+    let netListenersAttached = false;
+    function loadUsersDatabaseSync() {
         updateNetBadge(false);
-        window.addEventListener('online', handleReconnectSync);
-        window.addEventListener('offline', () => updateNetBadge(false));
+        if (!netListenersAttached) {
+            netListenersAttached = true;
+            window.addEventListener('online', handleReconnectSync);
+            window.addEventListener('offline', () => updateNetBadge(false));
+        }
         loadLocalUsersSync();
-        if (Object.keys(dbUsers).length > 0) {
-            // Prio 1 Keller/Schwachnetz: App startet sofort lokal (<50 ms), Sync läuft leise mit 1,5s Timeout im Hintergrund
-            try { checkAuthGuard(); } catch { $('appLoginOverlay').classList.remove('active'); }
-            syncUsersInBackground(1500);
-            return;
-        }
-        if (navigator.onLine) {
-            try {
-                dbUsers = await fetchAndNormalizeUsers(2000);
-                saveUsersToLocalStorage();
-                updateNetBadge(false);
-            } catch {
-                updateNetBadge(true);
-            }
-        }
         try { checkAuthGuard(); } catch { $('appLoginOverlay').classList.remove('active'); }
+    }
+    async function loadUsersDatabase() {
+        loadUsersDatabaseSync();
+        if (!Object.keys(dbUsers).length) await loadUsersFromSwCache();
+        if (navigator.onLine) await syncUsersInBackground(1200);
     }
     async function handleReconnectSync() {
         updateNetBadge(false);
-        await syncUsersInBackground(1500);
+        await syncUsersInBackground(1200);
     }
     const saveUsersToLocalStorage = () => localStorage.setItem('innowatech_users_fallback', JSON.stringify(dbUsers));
     function downloadUsersJson() {
@@ -1591,23 +1621,24 @@
     function dismissAppUpdate() { $('update-banner').style.display = 'none'; if (isUserAllowedToUpdate()) $('footer-update-pill').style.display = 'inline-block'; }
     if ('serviceWorker' in navigator) {
         const isPreviewHost = window.self !== window.top || /(^|\.)run\.app$|localhost|127\.0\.0\.1|webcontainer/i.test(location.hostname);
-        window.addEventListener('load', () => {
+        const initSwNonBlocking = () => {
             if (isPreviewHost) {
                 navigator.serviceWorker.getRegistrations().then(regs => regs.forEach(r => r.unregister())).catch(() => {});
                 if (window.caches) caches.keys().then(ks => ks.filter(k => k.startsWith('mat-service-tool')).forEach(k => caches.delete(k))).catch(() => {});
                 return;
             }
             navigator.serviceWorker.register('./sw.js', { updateViaCache: 'none' }).then(reg => {
-                reg.update().catch(() => {});
                 if (reg.waiting) showUpdateBanner(reg.waiting);
                 reg.onupdatefound = () => {
                     const iw = reg.installing;
                     if (iw) iw.onstatechange = () => { if (iw.state === 'installed' && navigator.serviceWorker.controller) showUpdateBanner(iw); };
                 };
+                if (navigator.onLine) setTimeout(() => { if (navigator.onLine) reg.update().catch(() => {}); }, 2500);
             }).catch(() => {});
             let refreshing = false;
             navigator.serviceWorker.addEventListener('controllerchange', () => { if (userClickedUpdate && !refreshing) { refreshing = true; window.location.reload(); } });
-        });
+        };
+        setTimeout(initSwNonBlocking, 800);
     }
 
     function populatePdfHeader() {
@@ -1835,7 +1866,7 @@
         ).join('');
     }
 
-    async function loadSettings() {
+    function loadSettings() {
         $('first-letter').classList.toggle('santa-letter', new Date().getMonth() === 11);
         populateDbSelects(); renderVegaSteps(); captureTabDefaults();
         const isDark = localStorage.getItem('mat_darkmode') === 'true';
@@ -1862,11 +1893,18 @@
         if ($('fault_clear_after')) $('fault_clear_after').checked = localStorage.getItem('mat_fault_clear_after') !== 'false';
         isLauncherActive = localStorage.getItem('mat_launcher_view') !== 'false'; isInToolFromLauncher = false;
         initKofferViews();
-        await loadUsersDatabase(); renderTabs(true); applyViewMode(); initCustomDropdowns();
+        // Sofortiger, rein lokaler Start ohne jede Netzwerk-Wartezeit:
+        loadUsersDatabaseSync();
+        renderTabs(true); applyViewMode(); initCustomDropdowns();
         if (persistCalcInputs) restoreTabInputs();
         recalcAllModules(); syncWakeLock();
         const cont = document.querySelector('.container');
         ['input', 'change'].forEach(ev => cont?.addEventListener(ev, e => { if (e.target.closest('.tab-content') && isCalcInput(e.target)) saveTabInputs(); }));
+        // Nutzer-Sync strikt nachgelagert & mit hartem 1,2s Timeout:
+        (async () => {
+            if (!Object.keys(dbUsers).length) await loadUsersFromSwCache();
+            if (navigator.onLine) await syncUsersInBackground(1200);
+        })();
     }
     const saveSettings = () => localStorage.setItem('mat_modules', JSON.stringify(currentModules));
     const toggleDarkMode = on => { document.body.classList.toggle('dark-mode', on); localStorage.setItem('mat_darkmode', on); };
