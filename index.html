@@ -14,6 +14,7 @@
     <link rel="apple-touch-icon" href="icon.png">
     <style>
         :root {
+            color-scheme: light;
             --primary-color: #0d47a1; --secondary-color: #29b6f6; --bg-color: #f4f6f9; --card-bg: #ffffff;
             --input-bg: #f9fbf9; --text-color: #333333; --subtext-color: #666666; --border-color: #bbbbbb;
             --result-bg: #e3f2fd; --result-border: #90caf9; --result-label: #1565c0; --result-val: #0d47a1;
@@ -24,6 +25,9 @@
             --cat-parameter-bg: linear-gradient(to bottom, #ffffff 0%, #dcfce7 100%); --cat-parameter-border: #22c55e;
             --cat-werkzeuge-bg: linear-gradient(to bottom, #ffffff 0%, #fef9c3 100%); --cat-werkzeuge-border: #eab308;
             --cat-checklisten-bg: linear-gradient(to bottom, #ffffff 0%, #fee2e2 100%); --cat-checklisten-border: #ef4444;
+        }
+        html.dark-mode, body.dark-mode {
+            color-scheme: dark;
         }
         body.dark-mode {
             --primary-color: #1565c0; --secondary-color: #0288d1; --bg-color: #121212; --card-bg: #1e1e1e;
@@ -37,6 +41,8 @@
             --cat-werkzeuge-bg: linear-gradient(to bottom, #262626 0%, #3d3300 100%); --cat-werkzeuge-border: #ca8a04;
             --cat-checklisten-bg: linear-gradient(to bottom, #262626 0%, #3f1515 100%); --cat-checklisten-border: #dc2626;
         }
+        body.dark-mode input, body.dark-mode input[type="date"], body.dark-mode select, body.dark-mode textarea { color-scheme: dark; }
+        body.dark-mode select, body.dark-mode select option { background-color: var(--card-bg); color: var(--text-color); }
         body.screen-torch, body.screen-torch .container { background: #ffffff !important; color: #111111 !important; }
         body.screen-torch .section-title, body.screen-torch .hint { color: #111111 !important; }
         body[data-theme="keller"] { --border-color: #0f172a; --subtext-color: #1e293b; }
@@ -153,6 +159,7 @@
         .dropdown-modal-overlay.open { display: flex; }
         .dropdown-modal-content { background: var(--card-bg); width: 100%; max-height: 70vh; border-radius: 16px 16px 0 0; box-shadow: 0 -4px 20px rgba(0,0,0,0.3); display: flex; flex-direction: column; overflow: hidden; }
         .dropdown-modal-header { padding: 12px 16px; font-weight: bold; font-size: 0.9rem; color: var(--primary-color); border-bottom: 1px solid var(--border-color); background: var(--result-bg); }
+        body.dark-mode .desktop-dropdown-item:hover, body.dark-mode .desktop-dropdown-item.selected, body.dark-mode .dropdown-item:hover, body.dark-mode .dropdown-item.selected, body.dark-mode .dropdown-modal-header { color: #90caf9; }
         .dropdown-modal-list { overflow-y: auto; padding: 6px; }
         select.native-select-hidden { display: none !important; }
         .vega-step-card { background: var(--input-bg); border: 1px solid var(--border-color); border-radius: 8px; margin-bottom: 8px; overflow: hidden; }
@@ -241,16 +248,17 @@
         .et-seg .seg-btn { min-width: 72px; }
         .et-turbine-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 8px; }
         .et-turbine-card { position: relative; border: 1.5px solid var(--border-color); border-radius: 8px; padding: 6px; background: var(--card-bg); cursor: pointer; text-align: center; transition: all 0.14s; display: flex; flex-direction: column; align-items: center; gap: 4px; }
-        .et-turbine-card.active { border: 4.5px solid var(--primary-color); background: var(--card-bg); box-shadow: 0 2px 8px rgba(13,71,161,0.22); }
+        .et-turbine-card.active { border: 4.5px solid #0d47a1; background: var(--card-bg); box-shadow: 0 2px 8px rgba(13,71,161,0.22); }
         body.dark-mode .et-turbine-card.active { border-color: #60a5fa; }
-        .et-turbine-card.active::after { content: "✓"; position: absolute; top: 4px; left: 4px; width: 20px; height: 20px; border-radius: 50%; background: var(--primary-color); color: #ffffff; font-size: 0.78rem; font-weight: 900; display: flex; align-items: center; justify-content: center; box-shadow: 0 1px 3px rgba(0,0,0,0.35); }
+        .et-turbine-card.active::after { content: "✓"; position: absolute; top: 4px; left: 4px; width: 20px; height: 20px; border-radius: 50%; background: #0d47a1; color: #ffffff; font-size: 0.78rem; font-weight: 900; display: flex; align-items: center; justify-content: center; box-shadow: 0 1px 3px rgba(0,0,0,0.35); }
+        body.dark-mode .et-turbine-card.active::after { background: #60a5fa; color: #0f172a; }
         .et-turbine-card img { width: 100%; height: 64px; object-fit: contain; background: #ffffff; border-radius: 4px; padding: 2px; }
         .et-turbine-nr { font-size: 0.74rem; font-weight: 800; color: var(--text-color); }
         .et-turbine-zoom { position: absolute; top: 4px; right: 4px; background: rgba(13,71,161,0.88); color: #ffffff; border: none; border-radius: 4px; font-size: 0.66rem; padding: 2px 5px; cursor: pointer; }
         .et-ohne-icon { width: 100%; height: 64px; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: var(--subtext-color); background: var(--input-bg); border-radius: 4px; }
         .et-seg .seg-btn { border: 1.5px solid var(--border-color); background: var(--input-bg); color: var(--text-color); }
-        .et-seg .seg-btn.active { background: #ffffff; color: #0f172a; border: 4.5px solid var(--primary-color); font-weight: 800; box-shadow: 0 2px 6px rgba(13,71,161,0.18); }
-        body.dark-mode .et-seg .seg-btn.active { background: var(--card-bg); color: #ffffff; border-color: #60a5fa; }
+        .et-seg .seg-btn.active { background: #ffffff; color: #0d47a1; border: 4.5px solid #0d47a1; font-weight: 800; box-shadow: 0 2px 6px rgba(13,71,161,0.18); }
+        body.dark-mode .et-seg .seg-btn.active { background: var(--card-bg); color: #90caf9; border-color: #60a5fa; }
         .et-seg .seg-btn.active::before { content: "✓ "; font-weight: 900; }
         .et-custom-input { margin-top: 6px; display: none; }
         .et-custom-input.visible { display: flex; }
@@ -300,12 +308,22 @@
             .tab-content.active, .vega-step-body { display: block !important; }
             .result-box { border: 2px solid #0d47a1 !important; background: #f0f4f8 !important; }
             .result-value { color: #0d47a1 !important; }
-            #tab-enthaertertausch.active .et-card { background: #ffffff !important; border: 1.5px solid #334155 !important; }
+            #tab-enthaertertausch.active .section-title { color: #0d47a1 !important; border-bottom-color: #0d47a1 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            #tab-enthaertertausch.active .et-card { background: #ffffff !important; border: 1.5px solid #64748b !important; }
+            #tab-enthaertertausch.active .input-wrapper { background: #ffffff !important; border-color: #64748b !important; }
+            #tab-enthaertertausch.active label,
+            #tab-enthaertertausch.active .et-time-box,
+            #tab-enthaertertausch.active .input-wrapper input,
+            #tab-enthaertertausch.active .custom-select-trigger,
+            #tab-enthaertertausch.active #et_bemerkung_print { color: #0f172a !important; font-weight: 600 !important; }
+            #tab-enthaertertausch.active .et-time-box { background: #f8fafc !important; border: 1.5px solid #0d47a1 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
             #tab-enthaertertausch.active .et-seg .seg-btn,
-            #tab-enthaertertausch.active .et-turbine-card { background: #ffffff !important; color: #475569 !important; border: 1px solid #94a3b8 !important; box-shadow: none !important; font-weight: 500 !important; }
+            #tab-enthaertertausch.active .et-turbine-card { background: #ffffff !important; color: #1e293b !important; border: 1px solid #94a3b8 !important; box-shadow: none !important; font-weight: 600 !important; }
+            #tab-enthaertertausch.active .et-turbine-nr { color: #1e293b !important; font-weight: 700 !important; }
             #tab-enthaertertausch.active .et-seg .seg-btn.active,
-            #tab-enthaertertausch.active .et-turbine-card.active { background: #ffffff !important; color: #000000 !important; border: 5px solid #000000 !important; font-weight: 900 !important; box-shadow: none !important; }
-            #tab-enthaertertausch.active .et-turbine-card.active::after { background: #000000 !important; color: #ffffff !important; border: 2px solid #000000 !important; }
+            #tab-enthaertertausch.active .et-turbine-card.active { background: #ffffff !important; color: #0d47a1 !important; border: 5px solid #0d47a1 !important; font-weight: 900 !important; box-shadow: none !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            #tab-enthaertertausch.active .et-turbine-card.active .et-turbine-nr { color: #0d47a1 !important; font-weight: 900 !important; }
+            #tab-enthaertertausch.active .et-turbine-card.active::after { background: #0d47a1 !important; color: #ffffff !important; border: 2px solid #0d47a1 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
         }
     </style>
 <script src="/_aistudio-iframe.js?v=29045eb3"></script></head>
@@ -493,20 +511,13 @@
         </div>
 
         <div class="section-title">2. Dosiermenge &amp; Wirkstoff</div>
-        <div class="form-group">
-            <label>Art der Dosiermengen-Ablesung</label>
-            <input type="hidden" id="da_dos_mode" value="counter">
-            <div class="seg-group" id="da_dos_mode_btns" style="margin-bottom:4px;">
-                <button type="button" class="seg-btn active" data-val="counter" onclick="setDaDosMode('counter')">Zählerstand (steigend)</button>
-                <button type="button" class="seg-btn" data-val="tank" onclick="setDaDosMode('tank')">Tankinhalt (abnehmend)</button>
-            </div>
-        </div>
         <div class="et-row-2">
             <div class="form-group"><label>Dosiermenge alt</label><div class="input-wrapper"><input type="number" id="da_dos_alt" step="0.01" placeholder="z. B. 0" oninput="calcDosierauswertung()"><span class="unit">l</span></div></div>
             <div class="form-group"><label>Dosiermenge neu</label><div class="input-wrapper"><input type="number" id="da_dos_neu" step="0.01" placeholder="z. B. 100" oninput="calcDosierauswertung()"><span class="unit">l</span></div></div>
         </div>
+        <div class="hint" style="margin:-4px 0 8px;">Ablesung der Mengensummierung an der Dosierpumpe (Liter).</div>
         <div class="et-row-2">
-            <div class="form-group"><label>Anolyt-Konzentration</label><div class="input-wrapper"><input type="number" id="da_konz" step="1" placeholder="z. B. 500" oninput="calcDosierauswertung()"><span class="unit">mg/l</span></div></div>
+            <div class="form-group"><label>Chlorgehalt Anolytkonzentrat</label><div class="input-wrapper"><input type="number" id="da_konz" step="1" placeholder="z. B. 500" oninput="calcDosierauswertung()"><span class="unit">mg/l</span></div></div>
             <div class="form-group"><label>Chlor-Sollwert (Ziel)</label><div class="input-wrapper"><input type="number" id="da_soll" step="0.01" placeholder="z. B. 0.20" oninput="calcDosierauswertung()"><span class="unit">mg/l</span></div></div>
         </div>
 
@@ -1004,7 +1015,7 @@
                 <div class="setting-section-title" onclick="toggleSettingSection(this)">Erscheinungsbild & Icons</div>
                 <div class="setting-section-content">
                     <div class="toggle-row"><span>Dunkelmodus</span><input type="checkbox" id="darkmode-toggle" onchange="toggleDarkMode(this.checked)"></div>
-                    <div class="form-group" style="margin-top:6px;"><label style="font-size:0.78rem;">Optik-Profil</label><select id="theme-profile-select" class="field-box" style="padding:6px 8px; font-size:0.84rem;" onchange="changeThemeProfile(this.value)"><option value="klassik">INNOWATΞCH Klassik (Standard)</option><option value="keller">Keller-Hochkontrast</option><option value="dezent">Dezent / Monochrom</option></select></div>
+                    <div class="form-group" style="margin-top:6px;"><label style="font-size:0.78rem;">Optik-Profil</label><div class="input-wrapper"><select id="theme-profile-select" onchange="changeThemeProfile(this.value)"><option value="klassik">INNOWATΞCH Klassik (Standard)</option><option value="keller">Hochkontrast</option><option value="dezent">Monochrom</option></select></div></div>
                     <div class="toggle-row"><span>Icons in Schiebeleiste anzeigen</span><input type="checkbox" id="icons-slider-toggle" onchange="toggleSliderIcons(this.checked)"></div>
                     <div class="toggle-row"><span>Icons im Dashboard anzeigen</span><input type="checkbox" id="icons-dashboard-toggle" onchange="toggleDashboardIcons(this.checked)"></div>
                 </div>
@@ -2894,7 +2905,7 @@
     }
     function recalcAllModules() {
         syncAusliterButtons();
-        setDaDosMode($('da_dos_mode')?.value || 'counter', true); calcDosierauswertung();
+        calcDosierauswertung();
         calcStandard(); updateFromM3Tag(); calcWasserwerk(); calcPoolAll(); calcVerduennung();
         berechnePID(); calcSchlauch(); calcAusliter(); updateSondenData(); updateAnlagenData();
         updateRadarTankDefaults(); updateEnthaerterData();
@@ -2982,6 +2993,7 @@
         const prof = ['klassik', 'keller', 'dezent'].includes(p) ? p : 'klassik';
         document.body.dataset.theme = prof;
         if ($('theme-profile-select')) $('theme-profile-select').value = prof;
+        refreshDropdownTriggers($('settings-modal'));
         if (save) localStorage.setItem('mat_theme_profile', prof);
     }
 
@@ -3030,6 +3042,7 @@
         populateDbSelects(); renderVegaSteps(); initEtChecklistImages(); renderEtMailRecipients(); renderEtSavedList();
         captureTabDefaults();
         const isDark = localStorage.getItem('mat_darkmode') === 'true';
+        document.documentElement.classList.toggle('dark-mode', isDark);
         document.body.classList.toggle('dark-mode', isDark); $('darkmode-toggle').checked = isDark;
         if (localStorage.getItem('mat_darkmode') === null) localStorage.setItem('mat_darkmode', 'false');
         changeThemeProfile(localStorage.getItem('mat_theme_profile') || 'klassik', false);
@@ -3079,7 +3092,7 @@
         localStorage.setItem('mat_modules', JSON.stringify(currentModules));
         localStorage.setItem('mat_category_order', JSON.stringify(categoryOrder));
     };
-    const toggleDarkMode = on => { document.body.classList.toggle('dark-mode', on); localStorage.setItem('mat_darkmode', on); };
+    const toggleDarkMode = on => { document.documentElement.classList.toggle('dark-mode', on); document.body.classList.toggle('dark-mode', on); localStorage.setItem('mat_darkmode', on); };
     const toggleSliderIcons = on => { showSliderIcons = on; localStorage.setItem('mat_show_slider_icons', on); };
     const toggleDashboardIcons = on => { showDashboardIcons = on; localStorage.setItem('mat_show_dashboard_icons', on); };
     function toggleSettingSection(el) { el.closest('.setting-section')?.classList.toggle('collapsed'); setTimeout(() => checkSettingsScroll($('settings-modal-body')), 50); }
@@ -3906,19 +3919,12 @@
         } else { txt('pool_res_ph', '0 l / kg'); txt('pool_ph_hinweis', 'pH-Wert im Zielbereich oder unvollständig.'); }
     }
 
-    function setDaDosMode(mode, skipSave = false) {
-        const m = mode === 'tank' ? 'tank' : 'counter';
-        if ($('da_dos_mode')) $('da_dos_mode').value = m;
-        document.querySelectorAll('#da_dos_mode_btns .seg-btn').forEach(b => b.classList.toggle('active', b.dataset.val === m));
-        if (!skipSave) { calcDosierauswertung(); saveTabInputs(); }
-    }
     function calcDosierauswertung() {
         const readN = id => { const r = ($(id)?.value || '').trim(); return r === '' ? null : Number(r); };
         const wzAlt = readN('da_wz_alt'), wzNeu = readN('da_wz_neu');
         const dosAlt = readN('da_dos_alt'), dosNeu = readN('da_dos_neu');
         const konz = readN('da_konz'), soll = readN('da_soll');
         const dAlt = $('da_date_alt')?.value || '', dNeu = $('da_date_neu')?.value || '';
-        const mode = $('da_dos_mode')?.value || 'counter';
         const dailyBox = $('da_daily_box'), hint = $('da_hinweis');
         const clearRes = msg => {
             ['da_res_wasser', 'da_res_anolyt', 'da_res_quote', 'da_res_chlor', 'da_res_faktor'].forEach(i => txt(i, '-'));
@@ -3929,7 +3935,7 @@
             return clearRes('Wasserzähler alt/neu und Dosiermenge alt/neu eingeben, um reale Dosierquote und Wirkstoffeintrag zu berechnen.');
         }
         const waterM3 = wzNeu - wzAlt, waterL = waterM3 * 1000;
-        const dosL = mode === 'tank' ? (dosAlt - dosNeu) : (dosNeu - dosAlt);
+        const dosL = dosNeu - dosAlt;
         if (!Number.isFinite(waterM3) || waterM3 <= 0) {
             txt('da_res_wasser', `${Number.isFinite(waterM3) ? waterM3.toFixed(2) : '-'} m³`);
             return clearRes('<span style="color:#c62828;"><b>Eingabe prüfen:</b> Wasserzähler neu muss größer als Wasserzähler alt sein.</span>');
@@ -3937,7 +3943,7 @@
         if (!Number.isFinite(dosL) || dosL < 0) {
             txt('da_res_wasser', `${waterM3.toFixed(2)} m³`);
             txt('da_res_anolyt', `${Number.isFinite(dosL) ? dosL.toFixed(2) : '-'} l`);
-            return clearRes(`<span style="color:#c62828;"><b>Eingabe prüfen:</b> Dosiermenge ist negativ (${dosL.toFixed(2)} l) – Ablesemodus (${mode === 'tank' ? 'Tankinhalt abnehmend' : 'Zählerstand steigend'}) prüfen!</span>`);
+            return clearRes(`<span style="color:#c62828;"><b>Eingabe prüfen:</b> Dosiermenge neu muss größer oder gleich Dosiermenge alt sein (Differenz: ${dosL.toFixed(2)} l).</span>`);
         }
         const quoteLpM3 = dosL / waterM3, quotePct = (dosL / waterL) * 100;
         txt('da_res_wasser', `${waterM3.toFixed(2)} m³ (${waterL.toFixed(0)} l)`);
@@ -3965,7 +3971,7 @@
                 const faktor = clReal / soll, pct = faktor * 100;
                 txt('da_res_faktor', `× ${faktor.toFixed(2)} (${pct.toFixed(0)} % vom Soll)`);
                 let statusMsg = `<span style="color:#2e7d32;"><b>Plausibel:</b> Real eindosiertes Aktivchlor liegt bei <b>${clReal.toFixed(3)} mg/l</b> (${pct.toFixed(0)} % vom Sollwert ${soll.toFixed(2)} mg/l).</span>`;
-                if (faktor < 0.7) statusMsg = `<span style="color:#b45309;"><b>Hinweis (Unterdosierung):</b> Nur <b>${pct.toFixed(0)} %</b> des Sollwerts (${clReal.toFixed(3)} vs. ${soll.toFixed(2)} mg/l). Pumpenhub, Saugleitung oder Anolyte-Konz. prüfen.</span>`;
+                if (faktor < 0.7) statusMsg = `<span style="color:#b45309;"><b>Hinweis (Unterdosierung):</b> Nur <b>${pct.toFixed(0)} %</b> des Sollwerts (${clReal.toFixed(3)} vs. ${soll.toFixed(2)} mg/l). Pumpenhub, Saugleitung oder Chlorgehalt Anolytkonzentrat prüfen.</span>`;
                 else if (faktor > 1.5) statusMsg = `<span style="color:#c62828;"><b>Auffällig (Überdosierung / hohe Zehrung):</b> <b>${faktor.toFixed(2)}×</b> des Sollwerts (${clReal.toFixed(3)} vs. ${soll.toFixed(2)} mg/l) eindosiert.</span>`;
                 if (dateErr) statusMsg += `<br><span style="color:#c62828;"><b>Datum:</b> ${dateErr}</span>`;
                 else if (days > 0) statusMsg += `<br>Zeitraum ${days} Tage: <b>${(waterM3 / days).toFixed(2)} m³/Tag</b> Wasser · <b>${(dosL / days).toFixed(2)} l/Tag</b> Anolyte.`;
@@ -3976,7 +3982,7 @@
             }
         } else {
             txt('da_res_chlor', 'Konz. eingeben'); txt('da_res_faktor', '-');
-            if (hint) hint.innerHTML = `Dosierquote: <b>${quotePct.toFixed(3)} %</b> (${quoteLpM3.toFixed(3)} l/m³). Anolyt-Konzentration eingeben für Aktivchlor-Vergleich.${dateErr ? ' <span style="color:#c62828;">' + dateErr + '</span>' : ''}`;
+            if (hint) hint.innerHTML = `Dosierquote: <b>${quotePct.toFixed(3)} %</b> (${quoteLpM3.toFixed(3)} l/m³). Chlorgehalt Anolytkonzentrat eingeben für Aktivchlor-Vergleich.${dateErr ? ' <span style="color:#c62828;">' + dateErr + '</span>' : ''}`;
         }
     }
     function copyDosierAuswertungToNotes() {
@@ -3999,7 +4005,6 @@
     }
     function resetDosierauswertung() {
         ['da_wz_alt', 'da_wz_neu', 'da_date_alt', 'da_date_neu', 'da_dos_alt', 'da_dos_neu', 'da_konz', 'da_soll'].forEach(id => { if ($(id)) $(id).value = ''; });
-        setDaDosMode('counter', true);
         calcDosierauswertung();
         saveTabInputs();
         showToast('Dosierauswertung zurückgesetzt.');
