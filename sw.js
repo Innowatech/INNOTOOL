@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mat-service-tool-v5.3';
+const CACHE_NAME = 'mat-service-tool-v5.4';
 const CORE_URLS = [
   './',
   './index.html',
@@ -6,6 +6,7 @@ const CORE_URLS = [
 ];
 const OPTIONAL_URLS = [
   './users.json',
+  './databases.json',
   './icon.png'
 ];
 const IS_PREVIEW = /(^|\.)run\.app$|localhost|127\.0\.0\.1|webcontainer/i.test(self.location.hostname);
@@ -69,7 +70,7 @@ self.addEventListener('activate', event => {
   );
 });
 
-async function fetchUsersWithTimeout(request, ms = 1200) {
+async function fetchJsonWithTimeout(request, cacheKey, ms = 1200) {
   const res = await fetchWithHardTimeout(request, ms, { cache: 'no-store' });
   if (!res || !res.ok) throw new Error('HTTP ' + (res ? res.status : 0));
   const bodyText = await Promise.race([
@@ -81,7 +82,7 @@ async function fetchUsersWithTimeout(request, ms = 1200) {
     headers: { 'Content-Type': 'application/json; charset=utf-8' }
   });
   const cacheCopy = freshRes.clone();
-  caches.open(CACHE_NAME).then(c => c.put('./users.json', cacheCopy)).catch(() => {});
+  caches.open(CACHE_NAME).then(c => c.put(cacheKey, cacheCopy)).catch(() => {});
   return freshRes;
 }
 
@@ -108,21 +109,21 @@ self.addEventListener('fetch', event => {
       const cache = await caches.open(CACHE_NAME);
       const hit = (await cache.match(event.request, { ignoreSearch: true }))
         || (await cache.match('./index.html'))
-        || (await cache.match('./'))
-        || (await caches.match('./index.html'));
+        || (await cache.match('./'));
       if (hit) return toNonRedirectedResponse(hit);
       return fetchWithHardTimeout(event.request, 4000);
     })());
     return;
   }
 
-  // users.json: Harter 1,2s Timeout (inkl. Body-Read), bei Schwachnetz sofort Cache-Fallback
-  if (url.pathname.endsWith('/users.json')) {
+  // users.json & databases.json: Harter 1,2s Timeout (inkl. Body-Read), bei Schwachnetz sofort Cache-Fallback
+  if (url.pathname.endsWith('/users.json') || url.pathname.endsWith('/databases.json')) {
+    const cacheKey = url.pathname.endsWith('/databases.json') ? './databases.json' : './users.json';
     event.respondWith(
-      fetchUsersWithTimeout(event.request, 1200)
+      fetchJsonWithTimeout(event.request, cacheKey, 1200)
         .catch(async () => {
           const cache = await caches.open(CACHE_NAME);
-          const cached = (await cache.match('./users.json')) || (await caches.match('./users.json'));
+          const cached = await cache.match(cacheKey);
           return cached || new Response('{}', {
             status: 503,
             headers: { 'Content-Type': 'application/json; charset=utf-8' }
