@@ -1,0 +1,1965 @@
+{
+  "version": 1,
+  "sonden": {
+    "1": {
+      "label": "AS2MA1-CL-M12",
+      "messRv1": "0,003 ... 0,400 ppm",
+      "steilRv1": "48,0 mA/ppm"
+    },
+    "2": {
+      "label": "AS2MA2-CL-M12",
+      "messRv1": "0,003 ... 0,700 ppm",
+      "steilRv1": "24,0 mA/ppm"
+    },
+    "3": {
+      "label": "AS2MA5-CL-M12",
+      "messRv1": "0,003 ... 1,700 ppm",
+      "steilRv1": "9,6 mA/ppm"
+    },
+    "4": {
+      "label": "AS2MA10-CL-M12",
+      "messRv1": "0,003 ... 4,00 ppm",
+      "steilRv1": "4,8 mA/ppm"
+    },
+    "5": {
+      "label": "AS2MA20-CL-M12",
+      "messRv1": "0,003 ... 7,00 ppm",
+      "steilRv1": "2,4 mA/ppm"
+    },
+    "6": {
+      "label": "AS3MA1-CL-M12",
+      "messRv1": "0,003 ... 0,400 ppm",
+      "steilRv1": "48,0 mA/ppm"
+    },
+    "7": {
+      "label": "AS3MA2-CL-M12",
+      "messRv1": "0,003 ... 0,700 ppm",
+      "steilRv1": "24,0 mA/ppm"
+    },
+    "8": {
+      "label": "AS3MA5-CL-M12",
+      "messRv1": "0,003 ... 1,700 ppm",
+      "steilRv1": "9,6 mA/ppm"
+    },
+    "9": {
+      "label": "AS3MA10-CL-M12",
+      "messRv1": "0,003 ... 4,00 ppm",
+      "steilRv1": "4,8 mA/ppm"
+    },
+    "10": {
+      "label": "AS3MA20-CL-M12",
+      "messRv1": "0,003 ... 7,00 ppm",
+      "steilRv1": "2,4 mA/ppm"
+    },
+    "11": {
+      "label": "CCF1.0MA2-CL-M12",
+      "messRv1": "0,003 ... 2,00 ppm",
+      "steilRv1": "8,0 mA/ppm"
+    }
+  },
+  "enthaerter": {
+    "fk": {
+      "label": "FK",
+      "harz": "4 Liter",
+      "kapazitaet": "15 °dH x m³",
+      "sole": "3 l",
+      "salz": "0,96 kg",
+      "rueckfuelle": "2,7 l",
+      "rueckspuelen": "3 Min",
+      "besalzen": "30 Min",
+      "schnellspuelen": "15 Min",
+      "sole_nachf": "3 Min"
+    },
+    "fkl": {
+      "label": "FKL",
+      "harz": "4 Liter",
+      "kapazitaet": "15 °dH x m³",
+      "sole": "3 l",
+      "salz": "0,96 kg",
+      "rueckfuelle": "2,7 l",
+      "rueckspuelen": "3 Min",
+      "besalzen": "30 Min",
+      "schnellspuelen": "15 Min",
+      "sole_nachf": "3 Min"
+    },
+    "fx": {
+      "label": "FX",
+      "harz": "4 Liter",
+      "kapazitaet": "15 °dH x m³",
+      "sole": "3 l",
+      "salz": "0,96 kg",
+      "rueckfuelle": "2,7 l",
+      "rueckspuelen": "3 Min",
+      "besalzen": "30 Min",
+      "schnellspuelen": "15 Min",
+      "sole_nachf": "3 Min"
+    },
+    "gx": {
+      "label": "GX",
+      "harz": "4 Liter",
+      "kapazitaet": "15 °dH x m³",
+      "sole": "3 l",
+      "salz": "0,96 kg",
+      "rueckfuelle": "2,7 l",
+      "rueckspuelen": "3 Min",
+      "besalzen": "30 Min",
+      "schnellspuelen": "15 Min",
+      "sole_nachf": "3 Min"
+    },
+    "gxl": {
+      "label": "GXL",
+      "harz": "11 Liter",
+      "kapazitaet": "35 °dH x m³",
+      "sole": "8,5 l",
+      "salz": "2,65 kg",
+      "rueckfuelle": "7,4 l",
+      "rueckspuelen": "3 Min",
+      "besalzen": "30 Min",
+      "schnellspuelen": "15 Min",
+      "sole_nachf": "3 Min"
+    },
+    "fxl": {
+      "label": "FXL",
+      "harz": "11 Liter",
+      "kapazitaet": "35 °dH x m³",
+      "sole": "8,5 l",
+      "salz": "2,65 kg",
+      "rueckfuelle": "7,4 l",
+      "rueckspuelen": "3 Min",
+      "besalzen": "30 Min",
+      "schnellspuelen": "15 Min",
+      "sole_nachf": "3 Min"
+    },
+    "fxm": {
+      "label": "FXM",
+      "harz": "4 Liter",
+      "kapazitaet": "15 °dH x m³",
+      "sole": "3 l",
+      "salz": "0,96 kg",
+      "rueckfuelle": "2,7 l",
+      "rueckspuelen": "3 Min",
+      "besalzen": "30 Min",
+      "schnellspuelen": "15 Min",
+      "sole_nachf": "3 Min"
+    },
+    "kl": {
+      "label": "KL",
+      "harz": "4 Liter",
+      "kapazitaet": "15 °dH x m³",
+      "sole": "3 l",
+      "salz": "0,96 kg",
+      "rueckfuelle": "2,7 l",
+      "rueckspuelen": "3 Min",
+      "besalzen": "30 Min",
+      "schnellspuelen": "15 Min",
+      "sole_nachf": "3 Min"
+    },
+    "kl30_pg": {
+      "label": "KL30 + PG",
+      "harz": "8 Liter",
+      "kapazitaet": "30 °dH x m³",
+      "sole": "6 l",
+      "salz": "1,02 kg",
+      "rueckfuelle": "5,4 l",
+      "rueckspuelen": "3 Min",
+      "besalzen": "30 Min",
+      "schnellspuelen": "15 Min",
+      "sole_nachf": "5 Min"
+    },
+    "wat100": {
+      "label": "WAT 100-368",
+      "harz": "25 Liter",
+      "kapazitaet": "100 °dH x m³",
+      "sole": "19,2 l",
+      "salz": "6 kg",
+      "rueckfuelle": "16,8 l",
+      "rueckspuelen": "5 Min",
+      "besalzen": "55 Min",
+      "schnellspuelen": "10 Min",
+      "sole_nachf": "9 Min"
+    },
+    "wat200": {
+      "label": "WAT 200-368",
+      "harz": "56 Liter",
+      "kapazitaet": "200 °dH x m³",
+      "sole": "43 l",
+      "salz": "13,4 kg",
+      "rueckfuelle": "37,6 l",
+      "rueckspuelen": "5 Min",
+      "besalzen": "85 Min",
+      "schnellspuelen": "12 Min",
+      "sole_nachf": "14 Min"
+    }
+  },
+  "anlagen": {
+    "fk": {
+      "label": "Aquadron FK",
+      "durchfluss": "40 l/h",
+      "strom": "6,8 A",
+      "spannung": "24 V",
+      "zeit": "4 h",
+      "prod": "60 min",
+      "pause": "30 min"
+    },
+    "fxm": {
+      "label": "Aquadron FXM",
+      "durchfluss": "40 l/h",
+      "strom": "6,8 A",
+      "spannung": "24 V",
+      "zeit": "7 h",
+      "prod": "30 min",
+      "pause": "30 min"
+    },
+    "fx": {
+      "label": "Aquadron FX",
+      "durchfluss": "40 l/h",
+      "strom": "6,8 A",
+      "spannung": "24 V",
+      "zeit": "13 h",
+      "prod": "60 min",
+      "pause": "30 min"
+    },
+    "fxl_k2": {
+      "label": "Aquadron FXL K2",
+      "durchfluss": "40 l/h",
+      "strom": "6,8 A",
+      "spannung": "24 V",
+      "zeit": "19 h",
+      "prod": "60 min",
+      "pause": "15 min"
+    },
+    "fxl_k5": {
+      "label": "Aquadron FXL K5",
+      "durchfluss": "40 l/h",
+      "strom": "6.8 A",
+      "spannung": "24 V",
+      "zeit": "19 h",
+      "prod": "60 min",
+      "pause": "15 min"
+    },
+    "gx_k2": {
+      "label": "Aquadron GX K2",
+      "durchfluss": "40 l/h",
+      "strom": "6.8 A",
+      "spannung": "24 V",
+      "zeit": "13 h",
+      "prod": "60 min",
+      "pause": "30 min"
+    },
+    "gx_k5": {
+      "label": "Aquadron GX K5",
+      "durchfluss": "40 l/h",
+      "strom": "6,8 A",
+      "spannung": "24 V",
+      "zeit": "13 h",
+      "prod": "60 min",
+      "pause": "30 min"
+    },
+    "gxl_k5": {
+      "label": "Aquadron GXL K5",
+      "durchfluss": "40 l/h",
+      "strom": "6,8 A",
+      "spannung": "24 V",
+      "zeit": "19 h",
+      "prod": "60 min",
+      "pause": "15 min"
+    },
+    "sgx_k2": {
+      "label": "Aquadron SGX K2",
+      "durchfluss": "40 l/h",
+      "strom": "6.8 A",
+      "spannung": "24 V",
+      "zeit": "19 h",
+      "prod": "60 min",
+      "pause": "15 min"
+    },
+    "sgx_k5": {
+      "label": "Aquadron SGX K5",
+      "durchfluss": "40 l/h",
+      "strom": "6.8 A",
+      "spannung": "24 V",
+      "zeit": "19 h",
+      "prod": "60 min",
+      "pause": "15 min"
+    },
+    "g2_k5": {
+      "label": "Aquadron G2 K5",
+      "durchfluss": "110 l/h",
+      "strom": "6.8 A",
+      "spannung": "24 V",
+      "zeit": "18 h",
+      "prod": "90 min",
+      "pause": "15 min"
+    },
+    "cgk": {
+      "label": "Aquadron CGK",
+      "durchfluss": "40 l/h",
+      "strom": "6,8 A",
+      "spannung": "24 V",
+      "zeit": "7 h",
+      "prod": "30 min",
+      "pause": "30 min"
+    },
+    "cgx_k2": {
+      "label": "Aquadron CGX K2",
+      "durchfluss": "40 l/h",
+      "strom": "6.8 A",
+      "spannung": "24 V",
+      "zeit": "13 h",
+      "prod": "60 min",
+      "pause": "30 min"
+    },
+    "cgx_k5": {
+      "label": "Aquadron CGX K5",
+      "durchfluss": "40 l/h",
+      "strom": "6,8 A",
+      "spannung": "24 V",
+      "zeit": "13 h",
+      "prod": "60 min",
+      "pause": "30 min"
+    },
+    "cg1": {
+      "label": "Aquadron CG1",
+      "durchfluss": "60 l/h",
+      "strom": "18 A",
+      "spannung": "48 V",
+      "zeit": "21 h",
+      "prod": "120 min",
+      "pause": "15 min"
+    },
+    "cg2": {
+      "label": "Aquadron CG2",
+      "durchfluss": "120 l/h",
+      "strom": "18 A",
+      "spannung": "48 V",
+      "zeit": "21 h",
+      "prod": "120 min",
+      "pause": "15 min"
+    },
+    "cg3": {
+      "label": "Aquadron CG3",
+      "durchfluss": "100 l/h",
+      "strom": "38 A",
+      "spannung": "96 V",
+      "zeit": "20 h",
+      "prod": "90 min",
+      "pause": "15 min"
+    },
+    "cg4": {
+      "label": "Aquadron CG4",
+      "durchfluss": "200 l/h",
+      "strom": "2 x 38 A",
+      "spannung": "2 x 96 V",
+      "zeit": "20 h",
+      "prod": "90 min",
+      "pause": "15 min"
+    },
+    "pg1": {
+      "label": "Aquadron PG1",
+      "durchfluss": "60 l/h",
+      "strom": "18 A",
+      "spannung": "48 V",
+      "zeit": "21 h",
+      "prod": "120 min",
+      "pause": "15 min"
+    },
+    "pg2": {
+      "label": "Aquadron PG2",
+      "durchfluss": "120 l/h",
+      "strom": "18 A",
+      "spannung": "48 V",
+      "zeit": "21 h",
+      "prod": "120 min",
+      "pause": "15 min"
+    },
+    "pg3": {
+      "label": "Aquadron PG3",
+      "durchfluss": "100 l/h",
+      "strom": "38 A",
+      "spannung": "96 V",
+      "zeit": "20 h",
+      "prod": "90 min",
+      "pause": "15 min"
+    },
+    "pg4": {
+      "label": "Aquadron PG4",
+      "durchfluss": "200 l/h",
+      "strom": "2 x 38 A",
+      "spannung": "2 x 96 V",
+      "zeit": "20 h",
+      "prod": "90 min",
+      "pause": "15 min"
+    },
+    "fkl": {
+      "label": "Aquadron FKL",
+      "durchfluss": "40 l/h",
+      "strom": "6,8 A",
+      "spannung": "24 V",
+      "zeit": "7 h",
+      "prod": "30 min",
+      "pause": "30 min"
+    },
+    "kl1": {
+      "label": "Aquadron KL1",
+      "durchfluss": "40 l/h",
+      "strom": "6.8 A",
+      "spannung": "24 V",
+      "zeit": "16 h",
+      "prod": "60 min",
+      "pause": "30 min"
+    },
+    "kl2": {
+      "label": "Aquadron KL2",
+      "durchfluss": "110 l/h",
+      "strom": "7,5 A",
+      "spannung": "24 V",
+      "zeit": "13 h",
+      "prod": "60 min",
+      "pause": "30 min"
+    },
+    "kl3": {
+      "label": "Aquadron KL3",
+      "durchfluss": "110 l/h",
+      "strom": "7,5 A",
+      "spannung": "24 V",
+      "zeit": "19 h",
+      "prod": "90 min",
+      "pause": "15 min"
+    },
+    "kxl1": {
+      "label": "Aquadron KXL1",
+      "durchfluss": "100 l/h",
+      "strom": "38 A",
+      "spannung": "96 V",
+      "zeit": "20 h",
+      "prod": "90 min",
+      "pause": "15 min"
+    },
+    "kxl2": {
+      "label": "Aquadron KXL2",
+      "durchfluss": "200 l/h",
+      "strom": "2 x 38 A",
+      "spannung": "2 x 96 V",
+      "zeit": "20 h",
+      "prod": "90 min",
+      "pause": "15 min"
+    },
+    "eco_1_2": {
+      "label": "Aquadron ECO 1.2",
+      "durchfluss": "40 l/h",
+      "strom": "6.8 A",
+      "spannung": "24 V",
+      "zeit": "10 h",
+      "prod": "90 min",
+      "pause": "30 min"
+    },
+    "eco_3_1_chlorat": {
+      "label": "Aquadron ECO 3.1 (chlorat-optimiert)",
+      "durchfluss": "60 l/h",
+      "strom": "15 A",
+      "spannung": "24 V",
+      "zeit": "8 h",
+      "prod": "60 min",
+      "pause": "60 min"
+    },
+    "eco_3_1_chlorid": {
+      "label": "Aquadron ECO 3.1 (chlorid-optimiert)",
+      "durchfluss": "60 l/h",
+      "strom": "18 A",
+      "spannung": "24 V",
+      "zeit": "8 h",
+      "prod": "60 min",
+      "pause": "60 min"
+    },
+    "eco_3_2_chlorat": {
+      "label": "Aquadron ECO 3.2 (chlorat-optimiert)",
+      "durchfluss": "60 l/h",
+      "strom": "15 A",
+      "spannung": "24 V",
+      "zeit": "14 h",
+      "prod": "180 min",
+      "pause": "30 min"
+    },
+    "eco_3_2_chlorid": {
+      "label": "Aquadron ECO 3.2 (chlorid-optimiert)",
+      "durchfluss": "60 l/h",
+      "strom": "18 A",
+      "spannung": "24 V",
+      "zeit": "14 h",
+      "prod": "180 min",
+      "pause": "30 min"
+    },
+    "eco_4_2_chlorat": {
+      "label": "Aquadron ECO 4.2 (chlorat-optimiert)",
+      "durchfluss": "60 l/h",
+      "strom": "15 A",
+      "spannung": "32 V",
+      "zeit": "14 h",
+      "prod": "180 min",
+      "pause": "30 min"
+    },
+    "eco_4_2_chlorid": {
+      "label": "Aquadron ECO 4.2 (chlorid-optimiert)",
+      "durchfluss": "60 l/h",
+      "strom": "18 A",
+      "spannung": "48 V",
+      "zeit": "14 h",
+      "prod": "180 min",
+      "pause": "30 min"
+    },
+    "eco_4_3_chlorat": {
+      "label": "Aquadron ECO 4.3 (chlorat-optimiert)",
+      "durchfluss": "60 l/h",
+      "strom": "15 A",
+      "spannung": "32 V",
+      "zeit": "21 h",
+      "prod": "120 min",
+      "pause": "15 min"
+    },
+    "eco_4_3_chlorid": {
+      "label": "Aquadron ECO 4.3 (chlorid-optimiert)",
+      "durchfluss": "60 l/h",
+      "strom": "18 A",
+      "spannung": "48 V",
+      "zeit": "21 h",
+      "prod": "120 min",
+      "pause": "15 min"
+    },
+    "eco_5_1_chlorat": {
+      "label": "Aquadron ECO 5.1 (chlorat-optimiert)",
+      "durchfluss": "100 l/h",
+      "strom": "30 A",
+      "spannung": "64 V",
+      "zeit": "10 h",
+      "prod": "180 min",
+      "pause": "60 min"
+    },
+    "eco_5_1_chlorid": {
+      "label": "Aquadron ECO 5.1 (chlorid-optimiert)",
+      "durchfluss": "100 l/h",
+      "strom": "38 A",
+      "spannung": "96 V",
+      "zeit": "10 h",
+      "prod": "180 min",
+      "pause": "60 min"
+    },
+    "eco_5_2_chlorat": {
+      "label": "Aquadron ECO 5.2 (chlorat-optimiert)",
+      "durchfluss": "100 l/h",
+      "strom": "30 A",
+      "spannung": "64 V",
+      "zeit": "14 h",
+      "prod": "180 min",
+      "pause": "60 min"
+    },
+    "eco_5_2_chlorid": {
+      "label": "Aquadron ECO 5.2 (chlorid-optimiert)",
+      "durchfluss": "100 l/h",
+      "strom": "38 A",
+      "spannung": "96 V",
+      "zeit": "14 h",
+      "prod": "180 min",
+      "pause": "60 min"
+    },
+    "eco_5_3_chlorat": {
+      "label": "Aquadron ECO 5.3 (chlorat-optimiert)",
+      "durchfluss": "100 l/h",
+      "strom": "30 A",
+      "spannung": "64 V",
+      "zeit": "21 h",
+      "prod": "120 min",
+      "pause": "15 min"
+    },
+    "eco_5_3_chlorid": {
+      "label": "Aquadron ECO 5.3 (chlorid-optimiert)",
+      "durchfluss": "100 l/h",
+      "strom": "38 A",
+      "spannung": "96 V",
+      "zeit": "21 h",
+      "prod": "120 min",
+      "pause": "15 min"
+    },
+    "eco_6_2_chlorat": {
+      "label": "Aquadron ECO 6.2 (chlorat-optimiert)",
+      "durchfluss": "200 l/h",
+      "strom": "2 x 30 A",
+      "spannung": "2 x 64 V",
+      "zeit": "14 h",
+      "prod": "180 min",
+      "pause": "30 min"
+    },
+    "eco_6_2_chlorid": {
+      "label": "Aquadron ECO 6.2 (chlorid-optimiert)",
+      "durchfluss": "200 l/h",
+      "strom": "2 x 38 A",
+      "spannung": "2 x 96 V",
+      "zeit": "14 h",
+      "prod": "180 min",
+      "pause": "30 min"
+    },
+    "eco_6_3_chlorat": {
+      "label": "Aquadron ECO 6.3 (chlorat-optimiert)",
+      "durchfluss": "200 l/h",
+      "strom": "2 x 30 A",
+      "spannung": "2 x 64 V",
+      "zeit": "21 h",
+      "prod": "120 min",
+      "pause": "15 min"
+    },
+    "eco_6_3_chlorid": {
+      "label": "Aquadron ECO 6.3 (chlorid-optimiert)",
+      "durchfluss": "200 l/h",
+      "strom": "2 x 38 A",
+      "spannung": "2 x 96 V",
+      "zeit": "21 h",
+      "prod": "120 min",
+      "pause": "15 min"
+    }
+  },
+  "koffer": [
+    {
+      "id": "dosierung",
+      "name": "Dosierung / Pumpe",
+      "short": "Dosierung",
+      "icon": "💉",
+      "items": [
+        [
+          "1",
+          "Injektionsstelle PVC 3/4\"",
+          "Innowatech",
+          "-",
+          "102297",
+          "1"
+        ],
+        [
+          "2",
+          "O-Ringe FPM80 11,91 x 2,62 mm",
+          "Reiff",
+          "4698030",
+          "105269",
+          "4"
+        ],
+        [
+          "3",
+          "O-Ring FPM70 13,1 x 2,62 mm",
+          "Reiff",
+          "711350",
+          "105487",
+          "4"
+        ],
+        [
+          "4",
+          "Injektionsstelle PVDF 3/4\"",
+          "Asprion",
+          "-",
+          "101030",
+          "1"
+        ],
+        [
+          "5",
+          "Injektionsstelle PVC-C 1/2\"",
+          "Innowatech",
+          "-",
+          "103651",
+          "1"
+        ],
+        [
+          "6",
+          "Schlauchverschraubung",
+          "Grundfos",
+          "98345103",
+          "100906",
+          "4"
+        ],
+        [
+          "7",
+          "Anschlussstück DDA60",
+          "Polytron",
+          "12590374",
+          "103868",
+          "2"
+        ],
+        [
+          "8",
+          "Schlauchübergang PVC 1/2\" auf 6/3-Schlauch",
+          "Innowatech",
+          "-",
+          "100868",
+          "2"
+        ],
+        [
+          "9",
+          "Kugelhahn C200",
+          "Stübbe",
+          "145780",
+          "110414",
+          "1"
+        ],
+        [
+          "10",
+          "Kabelverschraubung M20",
+          "Helukabel",
+          "97529",
+          "103722",
+          "2"
+        ],
+        [
+          "11",
+          "Schlauchverbinder 6/3-Schlauch",
+          "Innowatech",
+          "-",
+          "105268",
+          "2"
+        ],
+        [
+          "12",
+          "Kabelverschraubung M25",
+          "Helukabel",
+          "97530",
+          "103723",
+          "2"
+        ],
+        [
+          "13",
+          "Einlegeteil Schlauchverschraubung",
+          "Grundfos",
+          "98345121",
+          "100015",
+          "2"
+        ],
+        [
+          "14a",
+          "Steuerkabel Dosierpumpe 4-polig A",
+          "Escha",
+          "8043405",
+          "100055",
+          "2"
+        ],
+        [
+          "14b",
+          "Steuerkabel Dosierpumpe 4-polig B",
+          "Escha",
+          "8051055",
+          "100056",
+          "1"
+        ]
+      ]
+    },
+    {
+      "id": "elektrik",
+      "name": "Elektrik",
+      "short": "Elektrik",
+      "icon": "⚡",
+      "items": [
+        [
+          "1",
+          "Potenzialklemme 2,5 PV",
+          "Wago",
+          "2002-2208",
+          "110500",
+          "6x"
+        ],
+        [
+          "1",
+          "Abschlussplatte 2,5",
+          "Wago",
+          "2002-1291",
+          "110505",
+          "4x"
+        ],
+        [
+          "2",
+          "Schütz DIL EEM-10-G",
+          "Sonepar",
+          "0710036",
+          "100189",
+          "1x"
+        ],
+        [
+          "3",
+          "Klemme blau ST 2,5",
+          "Wago",
+          "2002-1204",
+          "110496",
+          "3x"
+        ],
+        [
+          "3",
+          "Klemme PE ST 2,5",
+          "Wago",
+          "2002-1207",
+          "110497",
+          "3x"
+        ],
+        [
+          "3",
+          "Endklammer",
+          "Wago",
+          "249-116",
+          "110503",
+          "2x"
+        ],
+        [
+          "3",
+          "Durchgangsklemme 2,5",
+          "Wago",
+          "2002-1201",
+          "110494",
+          "6x"
+        ],
+        [
+          "3",
+          "Schildträger",
+          "Wago",
+          "-",
+          "110504",
+          "2x"
+        ],
+        [
+          "4",
+          "Schirmklemmbügel",
+          "Wago",
+          "-",
+          "110517",
+          "4x"
+        ],
+        [
+          "5",
+          "Abschlussplatte 2,5 (Doppelklemme)",
+          "Wago",
+          "2002-2291",
+          "110498",
+          "4x"
+        ],
+        [
+          "5",
+          "Doppelklemme 2,5",
+          "Wago",
+          "2002-1291",
+          "110506",
+          "20x"
+        ],
+        [
+          "6",
+          "Verdrahtungskabel 0,5 dunkelblau/weiß",
+          "Sonepar",
+          "7300525",
+          "103393",
+          "15m"
+        ],
+        [
+          "6",
+          "Verdrahtungskabel 0,5 weiß",
+          "Granzow",
+          "1123028",
+          "100131",
+          "15m"
+        ],
+        [
+          "6",
+          "Verdrahtungskabel 0,5 dunkelblau",
+          "Granzow",
+          "1153840",
+          "103139",
+          "15m"
+        ],
+        [
+          "6",
+          "Verdrahtungskabel 1,5 hellblau",
+          "Granzow",
+          "1123023",
+          "100129",
+          "15m"
+        ],
+        [
+          "6",
+          "Verdrahtungskabel 1,5 grün/gelb",
+          "Granzow",
+          "1123061",
+          "100135",
+          "15m"
+        ],
+        [
+          "6",
+          "Verdrahtungskabel 1 orange",
+          "Granzow",
+          "1123550",
+          "100133",
+          "15m"
+        ],
+        [
+          "6",
+          "Verdrahtungskabel 1,5 schwarz",
+          "Granzow",
+          "1123062",
+          "100134",
+          "15m"
+        ],
+        [
+          "7",
+          "Doppelklemme STTB 2,5",
+          "Phoenix Contact",
+          "3031270",
+          "100239",
+          "20x"
+        ],
+        [
+          "7",
+          "Potenzialklemme STTB 2,5 PV",
+          "Phoenix Contact",
+          "3031539",
+          "100243",
+          "6x"
+        ],
+        [
+          "7",
+          "Abschlussplatte D-STTB 2,5",
+          "Phoenix Contact",
+          "3030459",
+          "100240",
+          "4x"
+        ],
+        [
+          "7",
+          "Abschlussplatte D-ST 2,5",
+          "Phoenix Contact",
+          "3030417",
+          "100232",
+          "4x"
+        ],
+        [
+          "7",
+          "Schildträger KLM3",
+          "Phoenix Contact",
+          "0811969",
+          "100220",
+          "2x"
+        ],
+        [
+          "8",
+          "Klemme ST 2,5",
+          "Phoenix Contact",
+          "3031212",
+          "100229",
+          "6x"
+        ],
+        [
+          "8",
+          "Endblock Clipfix 35-5",
+          "Phoenix Contact",
+          "3022276",
+          "100218",
+          "2x"
+        ],
+        [
+          "9",
+          "Klemme blau ST 2,5",
+          "Phoenix Contact",
+          "3031225",
+          "100230",
+          "3x"
+        ],
+        [
+          "9",
+          "Klemme PE ST 2,5",
+          "Phoenix Contact",
+          "3031238",
+          "100231",
+          "3x"
+        ],
+        [
+          "10",
+          "Überbrückungsklemme 10-polig",
+          "Phoenix",
+          "3030213",
+          "100233",
+          "5x"
+        ],
+        [
+          "10",
+          "Compact-Verbindungsklemme 2-polig",
+          "WAGO",
+          "221-412",
+          "103372",
+          "10x"
+        ],
+        [
+          "10",
+          "Compact-Verbindungsklemme 3-polig",
+          "WAGO",
+          "221-413",
+          "103373",
+          "5x"
+        ],
+        [
+          "10",
+          "Compact-Verbindungsklemme 5-polig",
+          "WAGO",
+          "221-415",
+          "105549",
+          "2x"
+        ],
+        [
+          "11",
+          "Ventilstecker mit LED",
+          "Phoenix Contact",
+          "1544714",
+          "100705",
+          "2x"
+        ],
+        [
+          "12",
+          "Leuchtmeldevorsatz rot",
+          "Sonepar",
+          "0723521",
+          "100196",
+          "1x"
+        ],
+        [
+          "12",
+          "Leuchtmeldevorsatz grün",
+          "Sonepar",
+          "0723522",
+          "100197",
+          "1x"
+        ],
+        [
+          "12",
+          "Leuchtdrucktaster blau",
+          "Sonepar",
+          "0724451",
+          "100203",
+          "1x"
+        ],
+        [
+          "12",
+          "Leuchtdrucktaster rot",
+          "Sonepar",
+          "0724448",
+          "100201",
+          "1x"
+        ],
+        [
+          "12",
+          "Leuchtdrucktaster grün",
+          "Sonepar",
+          "0724449",
+          "100202",
+          "1x"
+        ],
+        [
+          "12",
+          "Drehknebelschalter",
+          "Sonepar",
+          "0723568",
+          "105364",
+          "1x"
+        ],
+        [
+          "12",
+          "Blindstopfen",
+          "Sonepar",
+          "0723365",
+          "105365",
+          "2x"
+        ],
+        [
+          "12",
+          "Schildträger",
+          "Sonepar",
+          "0723500",
+          "100192",
+          "4x"
+        ],
+        [
+          "12",
+          "Befestigungsadapter",
+          "Sonepar",
+          "0723503",
+          "100193",
+          "6x"
+        ],
+        [
+          "13",
+          "Schaltelement Schließer",
+          "Sonepar",
+          "0723505",
+          "100194",
+          "2x"
+        ],
+        [
+          "13",
+          "Schaltelement Öffner",
+          "Sonepar",
+          "0723507",
+          "100195",
+          "2x"
+        ],
+        [
+          "13",
+          "Leuchtelement",
+          "Sonepar",
+          "0724330",
+          "100199",
+          "2x"
+        ],
+        [
+          "14",
+          "Relais 24V 2-polig",
+          "Wago",
+          "788-312",
+          "100298",
+          "2x"
+        ],
+        [
+          "15",
+          "Relais 230V 2-polig",
+          "Wago",
+          "788-516",
+          "103805",
+          "1x"
+        ],
+        [
+          "15",
+          "Halbleiter-Relais 24V 1-polig (788-700)",
+          "Wago",
+          "788-700",
+          "100872",
+          "1x"
+        ],
+        [
+          "16",
+          "Relais 24V 1-polig",
+          "Wago",
+          "859-304",
+          "103690",
+          "2x"
+        ],
+        [
+          "16",
+          "Halbleiter-Relais 24V 1-polig (859-797)",
+          "Wago",
+          "859-797",
+          "104144",
+          "2x"
+        ],
+        [
+          "17",
+          "Stecksockel mit Relais 24V 2-polig Handverriegelung",
+          "Wago",
+          "788-346",
+          "104146",
+          "2x"
+        ],
+        [
+          "18",
+          "Stromwandler DMI51-12-V02 0-12V",
+          "3K",
+          "9993130",
+          "100937",
+          "1x"
+        ],
+        [
+          "19",
+          "Netzteil 24V 2,5A",
+          "Wago",
+          "787-1012",
+          "103290",
+          "1x"
+        ],
+        [
+          "20",
+          "Strommessumformer Jumpflex",
+          "Wago",
+          "2857-0550",
+          "103525",
+          "1x"
+        ]
+      ]
+    },
+    {
+      "id": "elektrolyse",
+      "name": "Elektrolyse",
+      "short": "Elektrolyse",
+      "icon": "⚗️",
+      "items": [
+        [
+          "1",
+          "Elektrolyse-Teilzelle",
+          "Innowatech",
+          "-",
+          "110103",
+          "2"
+        ],
+        [
+          "2",
+          "Gerade Schottverschraubung 8mm",
+          "Serto",
+          "SO 21521-8",
+          "100571",
+          "2"
+        ],
+        [
+          "3",
+          "Winkelverschraubung 8mm",
+          "Serto",
+          "SO 22021-8",
+          "100582",
+          "2"
+        ],
+        [
+          "4",
+          "Schlauchverbinder Y-Stück",
+          "Bürkle",
+          "8712-0006",
+          "102024",
+          "2"
+        ],
+        [
+          "5",
+          "Gerade Einschraubverschraubung 1/4\"-8mm",
+          "Serto",
+          "SO 21124-1/4 OR",
+          "100577",
+          "2"
+        ],
+        [
+          "6",
+          "T-Verschraubung 8mm",
+          "Serto",
+          "SO 23021-8",
+          "100579",
+          "1"
+        ],
+        [
+          "7",
+          "Einstellnippel PVDF 1/4\"-8mm",
+          "Serto",
+          "SO 21624-A8-1/4 OR",
+          "100586",
+          "2"
+        ],
+        [
+          "8",
+          "Gerade Einschraubverschraubung 1/8\"-8mm",
+          "Serto",
+          "SO 21124-8-1/8 OR",
+          "100578",
+          "2"
+        ],
+        [
+          "9",
+          "Banderdungsschelle",
+          "OBO",
+          "430103",
+          "100116",
+          "1"
+        ],
+        [
+          "10",
+          "Einschraubverschraubung 8mm",
+          "Riegler",
+          "110266",
+          "100561",
+          "1"
+        ],
+        [
+          "11",
+          "Schottverschraubung 1/2\" für 8mm",
+          "Fluid Conc.",
+          "100107333",
+          "100420",
+          "1"
+        ],
+        [
+          "12",
+          "T-Verbinder 8mm",
+          "Fluid Conc.",
+          "100064188",
+          "103475",
+          "1"
+        ],
+        [
+          "13",
+          "Verbinder 8mm",
+          "Fluid Conc.",
+          "100042772",
+          "103477",
+          "1"
+        ],
+        [
+          "14",
+          "Einschraub-Verbinder 1/2\"-12mm",
+          "Fluid Conc.",
+          "100041890",
+          "100432",
+          "1"
+        ],
+        [
+          "14",
+          "Reduzierstück 12-10mm",
+          "Fluid Conc.",
+          "200014541",
+          "105397",
+          "1"
+        ],
+        [
+          "15",
+          "Einschraubverschraubung 1/4\"-10mm",
+          "Fluid Conc.",
+          "100041888",
+          "103474",
+          "1"
+        ],
+        [
+          "16",
+          "Batterie SPS",
+          "Tadiran",
+          "650112",
+          "103694",
+          "1"
+        ],
+        [
+          "17",
+          "Einsteck-Winkelverbinder 8mm",
+          "Fluid Conc.",
+          "100066277",
+          "100566",
+          "1"
+        ],
+        [
+          "17",
+          "Winkelverbinder 8mm",
+          "Fluid Conc.",
+          "100066321",
+          "100565",
+          "1"
+        ],
+        [
+          "18",
+          "Reduzierstück 10-8mm",
+          "Fluid Conc.",
+          "100042728",
+          "105396",
+          "1"
+        ],
+        [
+          "19",
+          "Einsteckdorn 8mm",
+          "Fluid Conc.",
+          "200095516",
+          "100426",
+          "2"
+        ],
+        [
+          "20",
+          "Winkel-Steckanschluss 12mm 90°",
+          "Fluid Conc.",
+          "100066314",
+          "105626",
+          "1"
+        ],
+        [
+          "21",
+          "Einschraub-Steckstutzen 12mm",
+          "Fluid Conc.",
+          "200010646",
+          "106131",
+          "1"
+        ],
+        [
+          "22",
+          "Regulierventil PVDF",
+          "Serto",
+          "SO NV 22A00-1/8",
+          "100593",
+          "1"
+        ],
+        [
+          "23",
+          "O-Ring FPM80 14x1,5",
+          "Reiff",
+          "4421130",
+          "105484",
+          "4"
+        ],
+        [
+          "23",
+          "O-Ring FPM80 10x1,5",
+          "Reiff",
+          "1093840",
+          "105518",
+          "4"
+        ],
+        [
+          "23",
+          "O-Ring FPM80 4,8x1,8",
+          "Reiff",
+          "10023537",
+          "105519",
+          "4"
+        ],
+        [
+          "24",
+          "Schlauchschelle Schraublos",
+          "Würth",
+          "0541001080",
+          "105011",
+          "10"
+        ]
+      ]
+    },
+    {
+      "id": "enthaerter",
+      "name": "Enthärter",
+      "short": "Enthärter",
+      "icon": "💧",
+      "items": [
+        [
+          "1",
+          "Turbine Messing Reedkontakt",
+          "B.I.O-Tech",
+          "150175",
+          "100041",
+          "1x"
+        ],
+        [
+          "2",
+          "Nockenwelle für 368",
+          "Spiegl",
+          "-",
+          "111097",
+          "1x"
+        ],
+        [
+          "3",
+          "Lichtschrankenhalterung für 368",
+          "Spiegl",
+          "-",
+          "110963",
+          "1x"
+        ],
+        [
+          "3",
+          "Motor für 368",
+          "Spiegl",
+          "-",
+          "110637",
+          "1x"
+        ],
+        [
+          "4",
+          "Winkelverschraubung 3/8\" IGxAG",
+          "Spiegl",
+          "AV154",
+          "110978",
+          "2x"
+        ],
+        [
+          "5",
+          "9100 Unterer Kolbensatz",
+          "Fleck",
+          "24235",
+          "103557",
+          "1x"
+        ],
+        [
+          "5",
+          "9100 Oberer Kolbensatz",
+          "Fleck",
+          "24234",
+          "103457",
+          "1x"
+        ],
+        [
+          "6",
+          "9100 Dichtungs- und Scheibensatz",
+          "Fleck",
+          "25642",
+          "102052",
+          "1x"
+        ],
+        [
+          "7",
+          "9100 Injektorbaugruppe komplett",
+          "Fleck",
+          "28244",
+          "103564",
+          "1x"
+        ],
+        [
+          "8",
+          "5600 Kolbensatz",
+          "Fleck",
+          "27077",
+          "103902",
+          "1x"
+        ],
+        [
+          "9",
+          "5600 Dichtungs- und Scheibensatz",
+          "Fleck",
+          "24115",
+          "100899",
+          "1x"
+        ],
+        [
+          "10",
+          "5600 Soleventil komplett",
+          "Fleck",
+          "24118",
+          "100917",
+          "1x"
+        ],
+        [
+          "11",
+          "Mikroschalter für Enthärter",
+          "Conrad",
+          "702831",
+          "105366",
+          "1x"
+        ],
+        [
+          "12",
+          "Turbine Fleck 9100",
+          "Fleck",
+          "60626-01",
+          "103547",
+          "1x"
+        ],
+        [
+          "13",
+          "Steuerungsplatine SXT",
+          "Fleck",
+          "BR42766-02",
+          "105302",
+          "1x"
+        ],
+        [
+          "14",
+          "Spiegl Härtesensor",
+          "Spiegl",
+          "2828",
+          "105208",
+          "2x"
+        ],
+        [
+          "15",
+          "Spiegl Klappensatz",
+          "Spiegl",
+          "3007947",
+          "105234",
+          "1x"
+        ],
+        [
+          "15",
+          "Federblech (Spiegl Klappensatz)",
+          "Spiegl",
+          "3022017",
+          "105233",
+          "1x"
+        ],
+        [
+          "16",
+          "Spiegl Lichtschranke",
+          "Spiegl",
+          "PM-L25-P",
+          "105368",
+          "1x"
+        ],
+        [
+          "17",
+          "Zylinderschraube M3x10mm für 368",
+          "Online Schraub.",
+          "91200301004",
+          "105015",
+          "10"
+        ],
+        [
+          "18",
+          "Spiegl Mikroschalter Grundstellung",
+          "Spiegl",
+          "1414442-62",
+          "105369",
+          "1x"
+        ],
+        [
+          "19",
+          "Kabel Turbine/Steuerungsplatine",
+          "Fleck",
+          "BU27808",
+          "105367",
+          "1x"
+        ]
+      ]
+    },
+    {
+      "id": "netzteile",
+      "name": "Netzteile / Pumpen-Kits / Schläuche",
+      "short": "Netzteile/Kits",
+      "icon": "🔌",
+      "items": [
+        [
+          "1",
+          "Netzteil 24V – 20A",
+          "Phoenix Contact",
+          "2903151",
+          "105524",
+          "1"
+        ],
+        [
+          "2",
+          "Netzteil 24V – 10A",
+          "Phoenix Contact",
+          "2903149",
+          "103929",
+          "1"
+        ],
+        [
+          "3",
+          "Netzteil 24V – 5A",
+          "Phoenix Contact",
+          "2903148",
+          "103928",
+          "1"
+        ],
+        [
+          "4",
+          "Schaltverstärker",
+          "Schuhmann Messtechnik",
+          "SI5.20GW",
+          "100105",
+          "1"
+        ],
+        [
+          "5",
+          "Netzteil 24V",
+          "JK Automation",
+          "491476",
+          "103491",
+          "1"
+        ],
+        [
+          "6a",
+          "Servicekit DDA 17,7 komplett",
+          "Grundfos",
+          "97751497",
+          "101010",
+          "1"
+        ],
+        [
+          "6b",
+          "Servicekit DDA 7,5 komplett",
+          "Grundfos",
+          "97751479",
+          "102098",
+          "1"
+        ],
+        [
+          "7",
+          "PE-Schlauch 7x1,5mm",
+          "Fluid Concept",
+          "200096682",
+          "100428",
+          "10m"
+        ],
+        [
+          "8",
+          "Panzerschlauch 1/2\" IGxIG",
+          "W&S",
+          "9206359",
+          "100102",
+          "1x"
+        ],
+        [
+          "9",
+          "Steckverbinder DN10 ES",
+          "Schwer Fittings",
+          "PI-Um10-4LV",
+          "103484",
+          "2"
+        ],
+        [
+          "9",
+          "Dichtung TPE 10x18x3mm",
+          "Köro / Lotter",
+          "KD152907999",
+          "110465",
+          "4x"
+        ],
+        [
+          "9",
+          "A-Box 025",
+          "Ernst Grazow",
+          "24042332",
+          "105363",
+          "1"
+        ],
+        [
+          "10",
+          "Servicekit DDA 60 komplett",
+          "Grundfos",
+          "99151276",
+          "104027",
+          "1"
+        ],
+        [
+          "11",
+          "H07V-K 4 dbl/ws",
+          "Sonepar",
+          "7306795",
+          "103396",
+          "5m"
+        ],
+        [
+          "11",
+          "H07V-K 4 dbl",
+          "Sonepar",
+          "0102150",
+          "110438",
+          "5m"
+        ],
+        [
+          "12",
+          "Sensor-/Aktor-Kabel, 3-polig",
+          "Phoenix Contact",
+          "1439502",
+          "103433",
+          "2x 5m"
+        ],
+        [
+          "13",
+          "Schlauch Soledosierung",
+          "Reiff",
+          "191790",
+          "103825",
+          "10m"
+        ],
+        [
+          "14",
+          "Schlauch PVC",
+          "Reiff",
+          "190710",
+          "102027",
+          "5"
+        ],
+        [
+          "15",
+          "Kunststoffrohr LDPE",
+          "John Guest",
+          "PE-12-EI-0500F-N",
+          "100430",
+          "10m"
+        ],
+        [
+          "16",
+          "Dichtung Filtergehäuse",
+          "Reiff",
+          "525740",
+          "105988",
+          "4"
+        ]
+      ]
+    },
+    {
+      "id": "ventile",
+      "name": "Ventile / MMC",
+      "short": "Ventile/MMC",
+      "icon": "🔧",
+      "items": [
+        [
+          "1",
+          "2/2-Wegeventil 0330 PP / EPDM",
+          "Bürkert",
+          "00021660",
+          "100043",
+          "2x"
+        ],
+        [
+          "2",
+          "2/2-Wegeventil 0330 PVDF / FKM",
+          "Bürkert",
+          "00023472",
+          "100044",
+          "2x"
+        ],
+        [
+          "3",
+          "3/2-Wegeventil 0330 PVDF / FKM",
+          "Bürkert",
+          "00025858",
+          "102206",
+          "2x"
+        ],
+        [
+          "4",
+          "2/2-Wegeventil 0330 PVDF / FFKM",
+          "Bürkert",
+          "00310592",
+          "103693",
+          "1x"
+        ],
+        [
+          "5",
+          "3/2-Wegeventil 0330 PVDF / FFKM",
+          "Bürkert",
+          "00312789",
+          "103835",
+          "1x"
+        ],
+        [
+          "6",
+          "Proportionalventil 2873",
+          "Bürkert",
+          "00239080",
+          "100877",
+          "1x"
+        ],
+        [
+          "7",
+          "Ansteuerung Proportionalventil",
+          "Bürkert",
+          "00316530",
+          "100045",
+          "1x"
+        ],
+        [
+          "8",
+          "2/2-Wegeventil 6213EV VA 1/2\"",
+          "Bürkert",
+          "00222156",
+          "100875",
+          "1x"
+        ],
+        [
+          "9",
+          "Probenahmehahn 1/4\"",
+          "Dosatronic",
+          "9268000",
+          "103905",
+          "1x"
+        ],
+        [
+          "10",
+          "Injektionsstelle Sole 1/2\"",
+          "Prominent",
+          "924680",
+          "100023",
+          "1x"
+        ],
+        [
+          "10",
+          "Injektionsstelle PVC 1/2\"",
+          "Grundfos",
+          "95730912",
+          "100017",
+          "1x"
+        ],
+        [
+          "11",
+          "Dichtungsset Acrylmessblock",
+          "Dosatronic",
+          "9088663",
+          "103873",
+          "1x"
+        ],
+        [
+          "12",
+          "2/2-Wegeventil 6213EV VA 3/4\"",
+          "Bürkert",
+          "00222122",
+          "102063",
+          "1x"
+        ],
+        [
+          "13",
+          "Rittal Filtermatten 120x120x12mm",
+          "Granzow",
+          "2965996",
+          "103243",
+          "2x"
+        ],
+        [
+          "14",
+          "Fußventil PVDF",
+          "Grundfos",
+          "98070953",
+          "100414",
+          "1x"
+        ],
+        [
+          "15",
+          "Kunststoff-Winkel 3/8\" für Sauglanze",
+          "Enfido",
+          "46.004.01",
+          "103968",
+          "1x"
+        ],
+        [
+          "16",
+          "Messinghülsen und Filter für Sauglanze",
+          "Enfido",
+          "99.001.24",
+          "105188",
+          "1x"
+        ],
+        [
+          "17",
+          "Rotor 47-13 blau",
+          "Saier",
+          "18-43061",
+          "100907",
+          "1x"
+        ],
+        [
+          "17",
+          "Rotor 88-11 gelb",
+          "Saier",
+          "18-43044",
+          "111208",
+          "1x"
+        ],
+        [
+          "18",
+          "Schlauchkit PS 138-3,2x1,6 Ph",
+          "Saier",
+          "18-43301",
+          "103837",
+          "1x"
+        ],
+        [
+          "18",
+          "Schlauchkit PS 140-4,8x1,6 Ph",
+          "Saier",
+          "18-43300",
+          "111207",
+          "1x"
+        ],
+        [
+          "19",
+          "Reinigungsvorrichtung RV1",
+          "Reiss",
+          "12112",
+          "103574",
+          "1x"
+        ],
+        [
+          "20",
+          "Drosselrückschlagventil Zuluft",
+          "Riegler",
+          "187.014-8",
+          "100563",
+          "1x"
+        ],
+        [
+          "21",
+          "Drosselrückschlagventil Abluft",
+          "Riegler",
+          "188.014-8",
+          "100564",
+          "1x"
+        ]
+      ]
+    }
+  ]
+}
