@@ -1,5 +1,7 @@
 {
   "ADMIN": {
+    "name": "Thomas Mayer (Admin)",
+    "email": "thomasmayer@innowatech.de",
     "pinHash": "8b80f370dc16f2eb08b9ec884e790fc1aee067738b50df49d56678d0e68fff9b",
     "status": "active",
     "isAdmin": true,
@@ -10,6 +12,7 @@
       "schwimmbad",
       "pid",
       "verdünnung",
+      "dosierauswertung",
       "sonden",
       "anlagen",
       "radar",
@@ -19,10 +22,13 @@
       "taschenlampe",
       "auslitern",
       "schlauchvolumen",
-      "notizen"
+      "notizen",
+      "kundennotizen"
     ]
   },
   "MAT": {
+    "name": "Thomas Mayer",
+    "email": "thomasmayer@innowatech.de",
     "pinHash": "7b7c6cb27f053e343e64130d8f50496ddeb4000e42ec619d6fcb763715cf55da",
     "status": "active",
     "isAdmin": false,
@@ -33,6 +39,7 @@
       "schwimmbad",
       "pid",
       "verdünnung",
+      "dosierauswertung",
       "sonden",
       "anlagen",
       "radar",
@@ -42,10 +49,13 @@
       "taschenlampe",
       "schlauchvolumen",
       "auslitern",
-      "notizen"
+      "notizen",
+      "kundennotizen"
     ]
   },
   "MÜR": {
+    "name": "Rico Müller",
+    "email": "ricomueller@innowatech.de",
     "pinHash": "7b7c6cb27f053e343e64130d8f50496ddeb4000e42ec619d6fcb763715cf55da",
     "status": "active",
     "isAdmin": false,
@@ -65,10 +75,13 @@
       "taschenlampe",
       "schlauchvolumen",
       "auslitern",
-      "notizen"
+      "notizen",
+      "kundennotizen"
     ]
   },
   "RIT": {
+    "name": "Tobias Ritzmann",
+    "email": "tobiasritzmann@innowatech.de",
     "pinHash": "7b7c6cb27f053e343e64130d8f50496ddeb4000e42ec619d6fcb763715cf55da",
     "status": "active",
     "isAdmin": false,
@@ -88,10 +101,13 @@
       "taschenlampe",
       "schlauchvolumen",
       "auslitern",
-      "notizen"
+      "notizen",
+      "kundennotizen"
     ]
   },
   "GUM": {
+    "name": "Matthias Guth",
+    "email": "matthiasguth@innowatech.de",
     "pinHash": "7b7c6cb27f053e343e64130d8f50496ddeb4000e42ec619d6fcb763715cf55da",
     "status": "active",
     "isAdmin": false,
@@ -111,10 +127,13 @@
       "taschenlampe",
       "schlauchvolumen",
       "auslitern",
-      "notizen"
+      "notizen",
+      "kundennotizen"
     ]
   },
   "FIV": {
+    "name": "Volker Fischer",
+    "email": "volkerfischer@innowatech.de",
     "pinHash": "7b7c6cb27f053e343e64130d8f50496ddeb4000e42ec619d6fcb763715cf55da",
     "status": "active",
     "isAdmin": false,
@@ -134,10 +153,13 @@
       "taschenlampe",
       "schlauchvolumen",
       "auslitern",
-      "notizen"
+      "notizen",
+      "kundennotizen"
     ]
   },
   "SAG": {
+    "name": "Georg Sauter",
+    "email": "georgsauter@innowatech.de",
     "pinHash": "7b7c6cb27f053e343e64130d8f50496ddeb4000e42ec619d6fcb763715cf55da",
     "status": "active",
     "isAdmin": false,
@@ -157,10 +179,13 @@
       "taschenlampe",
       "schlauchvolumen",
       "auslitern",
-      "notizen"
+      "notizen",
+      "kundennotizen"
     ]
   },
   "KAM": {
+    "name": "Malcolm Kampmann",
+    "email": "malcolmkampmann@innowatech.de",
     "pinHash": "7b7c6cb27f053e343e64130d8f50496ddeb4000e42ec619d6fcb763715cf55da",
     "status": "active",
     "isAdmin": false,
@@ -180,10 +205,13 @@
       "taschenlampe",
       "schlauchvolumen",
       "auslitern",
-      "notizen"
+      "notizen",
+      "kundennotizen"
     ]
   },
   "NAM": {
+    "name": "Markus Nastvogel",
+    "email": "markusnastvogel@innowatech.de",
     "pinHash": "7b7c6cb27f053e343e64130d8f50496ddeb4000e42ec619d6fcb763715cf55da",
     "status": "active",
     "isAdmin": false,
@@ -203,10 +231,13 @@
       "taschenlampe",
       "schlauchvolumen",
       "auslitern",
-      "notizen"
+      "notizen",
+      "kundennotizen"
     ]
   },
   "CRC": {
+    "name": "Christian Creuzberger",
+    "email": "christiancreuzberger@innowatech.de",
     "pinHash": "7b7c6cb27f053e343e64130d8f50496ddeb4000e42ec619d6fcb763715cf55da",
     "status": "active",
     "isAdmin": false,
@@ -226,10 +257,13 @@
       "taschenlampe",
       "schlauchvolumen",
       "auslitern",
-      "notizen"
+      "notizen",
+      "kundennotizen"
     ]
   },
   "KNM": {
+    "name": "Michael Knauf",
+    "email": "michaelknauf@innowatech.de",
     "pinHash": "7b7c6cb27f053e343e64130d8f50496ddeb4000e42ec619d6fcb763715cf55da",
     "status": "active",
     "isAdmin": false,
@@ -249,10 +283,13 @@
       "taschenlampe",
       "schlauchvolumen",
       "auslitern",
-      "notizen"
+      "notizen",
+      "kundennotizen"
     ]
   },
   "FEC": {
+    "name": "Christoph Feil",
+    "email": "christophfeil@innowatech.de",
     "pinHash": "7b7c6cb27f053e343e64130d8f50496ddeb4000e42ec619d6fcb763715cf55da",
     "status": "active",
     "isAdmin": false,
@@ -272,10 +309,13 @@
       "taschenlampe",
       "schlauchvolumen",
       "auslitern",
-      "notizen"
+      "notizen",
+      "kundennotizen"
     ]
   },
   "FUM": {
+    "name": "Marina Fuhrer",
+    "email": "marinafuhrer@innowatech.de",
     "pinHash": "7b7c6cb27f053e343e64130d8f50496ddeb4000e42ec619d6fcb763715cf55da",
     "status": "active",
     "isAdmin": false,
@@ -295,10 +335,13 @@
       "taschenlampe",
       "schlauchvolumen",
       "auslitern",
-      "notizen"
+      "notizen",
+      "kundennotizen"
     ]
   },
   "HEW": {
+    "name": "Wolfgang Henes",
+    "email": "wolfganghenes@innowatech.de",
     "pinHash": "7b7c6cb27f053e343e64130d8f50496ddeb4000e42ec619d6fcb763715cf55da",
     "status": "active",
     "isAdmin": false,
@@ -318,10 +361,13 @@
       "taschenlampe",
       "schlauchvolumen",
       "auslitern",
-      "notizen"
+      "notizen",
+      "kundennotizen"
     ]
   },
   "KAG": {
+    "name": "Gregor Karbowski",
+    "email": "gregorkarbowski@innowatech.de",
     "pinHash": "7b7c6cb27f053e343e64130d8f50496ddeb4000e42ec619d6fcb763715cf55da",
     "status": "active",
     "isAdmin": false,
@@ -341,7 +387,8 @@
       "taschenlampe",
       "schlauchvolumen",
       "auslitern",
-      "notizen"
+      "notizen",
+      "kundennotizen"
     ]
   }
 }
