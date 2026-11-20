@@ -7,8 +7,9 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Innowatech">
     <meta name="theme-color" content="#0d47a1">
+    <meta name="color-scheme" content="light" id="meta-color-scheme">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>INNOWATΞCH Service Tool v5.4</title>
+    <title>INNOWATΞCH Service Tool v5.6</title>
     <link rel="icon" href="data:,">
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="icon.png">
@@ -62,7 +63,6 @@
         .header-btn { background: linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(255,255,255,0.05)); border: 1px solid rgba(255,255,255,0.4); color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.15s ease; flex-shrink: 0; box-shadow: 0 2px 4px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.4); border-radius: 6px; height: 30px; }
         .header-btn:hover { background: linear-gradient(to bottom, rgba(255,255,255,0.35), rgba(255,255,255,0.15)); }
         .header-btn:active { transform: translateY(1px); }
-        .view-toggle-btn { padding: 0 8px; font-size: 0.68rem; font-weight: bold; gap: 3px; }
         .settings-btn { width: 30px; font-size: 0.9rem; }
         .header-btn.pinned-active { background: #f59e0b; border-color: #fde68a; }
         .santa-letter { position: relative; display: inline-block; }
@@ -107,17 +107,27 @@
         .launcher-category.checklisten .launcher-category-title { color: #b91c1c; border-color: #ef4444; }
         body.dark-mode .launcher-category.checklisten .launcher-category-title { color: #fca5a5; border-color: #dc2626; }
         .launcher-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+        .launcher-view.compact-grid .launcher-category { margin-bottom: 8px; }
+        .launcher-view.compact-grid .launcher-category-title { font-size: 0.7rem; margin-bottom: 5px; }
+        .launcher-view.compact-grid .launcher-grid { grid-template-columns: repeat(3, 1fr); gap: 6px; }
         .launcher-card { background: var(--cat-anwendung-bg); border: 1.5px solid var(--cat-anwendung-border); border-radius: 8px; padding: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; cursor: pointer; box-shadow: 0 4px 8px rgba(0,0,0,0.14), inset 0 1px 0 rgba(255,255,255,0.9); transition: all 0.12s; min-height: 54px; }
+        .launcher-view.compact-grid .launcher-card { padding: 6px 4px; min-height: 52px; box-shadow: 0 2px 5px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,0.85); }
         .launcher-category.param .launcher-card { background: var(--cat-parameter-bg); border-color: var(--cat-parameter-border); }
         .launcher-category.werkzeuge .launcher-card { background: var(--cat-werkzeuge-bg); border-color: var(--cat-werkzeuge-border); }
         .launcher-category.checklisten .launcher-card { background: var(--cat-checklisten-bg); border-color: var(--cat-checklisten-border); }
         .launcher-card:active { transform: translateY(3px); background: var(--card-bg); }
         .launcher-card:hover { border-color: var(--primary-color); }
         .launcher-icon { font-size: 1.25rem; margin-bottom: 2px; }
+        .launcher-view.compact-grid .launcher-icon { font-size: 1.12rem; margin-bottom: 2px; }
         .launcher-label { font-size: 0.74rem; font-weight: bold; color: var(--text-color); line-height: 1.12; }
+        .launcher-view.compact-grid .launcher-label { font-size: 0.67rem; line-height: 1.12; overflow-wrap: anywhere; hyphens: auto; }
         .dashboard-back-bar { display: none; background: var(--result-bg); border-bottom: 1px solid var(--result-border); padding: 6px 10px; }
-        .dashboard-back-bar.active { display: block; }
+        .dashboard-back-bar.active { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
         .dashboard-back-btn { background: linear-gradient(to bottom, #1976d2, #0d47a1); color: white; border: 1px solid #1565c0; border-radius: 6px; font-weight: bold; font-size: 0.78rem; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; padding: 5px 10px; }
+        .top-reset-btn { background: var(--card-bg); color: var(--text-color); border: 1px solid var(--border-color); border-radius: 6px; font-weight: 700; font-size: 0.74rem; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; padding: 5px 9px; white-space: nowrap; flex-shrink: 0; }
+        .top-reset-btn:active { transform: translateY(1px); }
+        .top-reset-btn.danger { color: #c62828; border-color: rgba(198,40,40,0.45); }
+        body.dark-mode .top-reset-btn.danger { color: #fca5a5; border-color: rgba(252,165,165,0.4); }
         .tab-content { display: none; padding: 12px; flex: 1; }
         .tab-content.active { display: block; }
         .form-group { margin-bottom: 8px; position: relative; }
@@ -155,18 +165,38 @@
         .desktop-dropdown-item, .dropdown-item { padding: 10px 12px; font-size: 0.9rem; color: var(--text-color); cursor: pointer; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; }
         .desktop-dropdown-item:last-child { border-bottom: none; }
         .desktop-dropdown-item:hover, .desktop-dropdown-item.selected, .dropdown-item:hover, .dropdown-item.selected { background: var(--result-bg); color: var(--primary-color); font-weight: bold; }
-        .dropdown-modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 4600; justify-content: center; align-items: flex-end; backdrop-filter: blur(2px); }
+        .dropdown-modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 5800; justify-content: center; align-items: flex-end; backdrop-filter: blur(2px); }
         .dropdown-modal-overlay.open { display: flex; }
         .dropdown-modal-content { background: var(--card-bg); width: 100%; max-height: 70vh; border-radius: 16px 16px 0 0; box-shadow: 0 -4px 20px rgba(0,0,0,0.3); display: flex; flex-direction: column; overflow: hidden; }
         .dropdown-modal-header { padding: 12px 16px; font-weight: bold; font-size: 0.9rem; color: var(--primary-color); border-bottom: 1px solid var(--border-color); background: var(--result-bg); }
         body.dark-mode .desktop-dropdown-item:hover, body.dark-mode .desktop-dropdown-item.selected, body.dark-mode .dropdown-item:hover, body.dark-mode .dropdown-item.selected, body.dark-mode .dropdown-modal-header { color: #90caf9; }
         .dropdown-modal-list { overflow-y: auto; padding: 6px; }
         select.native-select-hidden { display: none !important; }
+        .date-picker-trigger::after { content: "📅"; font-size: 0.85rem; }
+        .date-picker-trigger.is-placeholder { color: var(--subtext-color); }
+        .calendar-modal-overlay { align-items: center; padding: 12px; z-index: 5850; }
+        .calendar-modal-content { max-width: 360px; max-height: 90vh; border-radius: 12px; border: 1px solid var(--border-color); }
+        .cal-nav-bar { display: flex; align-items: center; justify-content: space-between; padding: 8px 10px; gap: 4px; background: var(--input-bg); border-bottom: 1px solid var(--border-color); }
+        .cal-nav-btn { width: 34px; height: 32px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--card-bg); color: var(--text-color); font-size: 1rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .cal-nav-btn:active { background: var(--result-bg); }
+        .cal-month-label { flex: 1; text-align: center; font-weight: 800; font-size: 0.9rem; color: var(--text-color); }
+        .cal-weekdays { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; padding: 8px 8px 4px; font-size: 0.72rem; font-weight: 700; color: var(--subtext-color); }
+        .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; padding: 4px 8px 10px; }
+        .cal-day-btn { height: 36px; border: 1px solid transparent; border-radius: 6px; background: transparent; color: var(--text-color); font-size: 0.85rem; font-weight: 600; cursor: pointer; }
+        .cal-day-btn:hover { background: var(--result-bg); border-color: var(--result-border); }
+        .cal-day-btn.today { border-color: var(--primary-color); color: var(--result-label); font-weight: 800; }
+        .cal-day-btn.selected { background: var(--primary-color); color: #ffffff; border-color: var(--primary-color); font-weight: 800; }
+        .cal-actions { display: flex; gap: 8px; padding: 8px 10px 10px; border-top: 1px solid var(--border-color); background: var(--input-bg); }
+        .cal-act-btn { flex: 1; padding: 8px; border-radius: 6px; border: 1px solid var(--border-color); background: var(--card-bg); color: var(--text-color); font-size: 0.8rem; font-weight: 700; cursor: pointer; }
+        .cal-act-btn.primary { background: var(--primary-color); color: #ffffff; border-color: var(--primary-color); }
         .vega-step-card { background: var(--input-bg); border: 1px solid var(--border-color); border-radius: 8px; margin-bottom: 8px; overflow: hidden; }
         .vega-step-header { padding: 9px 12px; display: flex; justify-content: space-between; align-items: center; background: linear-gradient(to right, rgba(13,71,161,0.04), transparent); }
         .vega-step-title { font-size: 0.82rem; font-weight: bold; color: var(--primary-color); }
         body.dark-mode .vega-step-title, body.dark-mode .param-highlight { color: #90caf9; }
         .param-highlight { color: var(--primary-color); font-weight: bold; }
+        .vega-tank-row { padding: 3px 6px; border-radius: 5px; border: 1.5px solid transparent; margin: 2px 0; transition: all 0.14s; }
+        .vega-tank-row.active { background: var(--result-bg); border-color: #0d47a1; color: #0d47a1; font-weight: 700; }
+        body.dark-mode .vega-tank-row.active { border-color: #60a5fa; color: #90caf9; }
         .vega-img-badge { background: var(--primary-color); color: white; font-size: 0.68rem; font-weight: bold; padding: 3px 7px; border-radius: 4px; border: none; cursor: pointer; }
         .vega-step-body { padding: 10px 12px; border-top: 1px solid var(--border-color); font-size: 0.8rem; line-height: 1.38; background: var(--card-bg); }
         .vega-preview-box { margin-top: 8px; border: 1px solid var(--border-color); border-radius: 6px; overflow: hidden; background: #f8fafc; text-align: center; }
@@ -308,6 +338,7 @@
             .tab-content.active, .vega-step-body { display: block !important; }
             .result-box { border: 2px solid #0d47a1 !important; background: #f0f4f8 !important; }
             .result-value { color: #0d47a1 !important; }
+            .vega-tank-row.active { background: #e3f2fd !important; border: 2px solid #0d47a1 !important; color: #0d47a1 !important; font-weight: 800 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
             #tab-enthaertertausch.active .section-title { color: #0d47a1 !important; border-bottom-color: #0d47a1 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
             #tab-enthaertertausch.active .et-card { background: #ffffff !important; border: 1.5px solid #64748b !important; }
             #tab-enthaertertausch.active .input-wrapper { background: #ffffff !important; border-color: #64748b !important; }
@@ -356,7 +387,7 @@
     </div>
 
     <div class="header">
-        <div class="header-left"><button type="button" class="header-btn view-toggle-btn" id="view-toggle-btn" onclick="toggleMainView()" title="Ansicht umschalten"><span id="toggle-icon">田</span> <span id="toggle-text">Ansicht</span></button></div>
+        <div class="header-left"></div>
         <div class="header-center"><h1 id="app-title"><span id="first-letter">I</span>NNOWATΞCH</h1><div class="header-sub" id="header-sub">Service Tool</div></div>
         <div class="header-right"><button type="button" class="header-btn settings-btn" id="pin-tab-btn" onclick="togglePinCurrentTab()" title="Aktuellen Tab anheften (max. 5)" style="display:none;">📌</button><button type="button" class="header-btn settings-btn" onclick="openSettings()" title="Einstellungen">⚙️</button></div>
     </div>
@@ -368,7 +399,7 @@
     </div>
 
     <div class="pinned-bar" id="pinned-bar"></div>
-    <div class="dashboard-back-bar" id="dashboard-back-bar"><button type="button" class="dashboard-back-btn" onclick="backToDashboard()">⬅️ Zurück zur Übersicht</button></div>
+    <div class="dashboard-back-bar" id="dashboard-back-bar"><button type="button" class="dashboard-back-btn" onclick="backToDashboard()">⬅️ Zurück zur Übersicht</button><button type="button" class="top-reset-btn" id="top-reset-btn" onclick="triggerActiveTabReset()" style="display:none;"></button></div>
     <div id="pdf-print-header">
         <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #90caf9; padding-bottom:4px;">
             <strong style="font-size:1rem; color:#0d47a1;">INNOWATΞCH Service-Bericht</strong>
@@ -506,8 +537,8 @@
             <div class="form-group"><label>Wasserzähler neu</label><div class="input-wrapper"><input type="number" id="da_wz_neu" step="0.01" placeholder="z. B. 1350" oninput="calcDosierauswertung()"><span class="unit">m³</span></div></div>
         </div>
         <div class="et-row-2">
-            <div class="form-group"><label>Datum alt (Optional)</label><div class="input-wrapper"><input type="date" id="da_date_alt" oninput="calcDosierauswertung()"></div></div>
-            <div class="form-group"><label>Datum neu (Optional)</label><div class="input-wrapper"><input type="date" id="da_date_neu" oninput="calcDosierauswertung()"></div></div>
+            <div class="form-group"><label>Datum alt (Optional)</label><div class="input-wrapper"><input type="hidden" id="da_date_alt" value=""><button type="button" class="custom-select-trigger date-picker-trigger is-placeholder" id="da_date_alt_btn" onclick="openDatePicker('da_date_alt')">TT.MM.JJJJ</button></div></div>
+            <div class="form-group"><label>Datum neu (Optional)</label><div class="input-wrapper"><input type="hidden" id="da_date_neu" value=""><button type="button" class="custom-select-trigger date-picker-trigger is-placeholder" id="da_date_neu_btn" onclick="openDatePicker('da_date_neu')">TT.MM.JJJJ</button></div></div>
         </div>
 
         <div class="section-title">2. Dosiermenge &amp; Wirkstoff</div>
@@ -565,7 +596,8 @@
         <div class="section-title">1. Tank-Stammdaten & Abgleich</div>
         <div class="form-group"><label>Standard-Tankvolumen</label><div class="input-wrapper"><select id="radar_tankvol" onchange="updateRadarTankDefaults()"><option value="">-- Bitte Tankvolumen wählen --</option></select></div></div>
         <div class="form-group"><label>Abgleich Minimum (0%)</label><div class="input-wrapper"><input type="number" id="radar_abgleich_min" value="0" step="1"><span class="unit">mm</span></div></div>
-        <div class="form-group"><label>Abgleich Maximum (100% / Voll - ab Sensorunterseite)</label><div class="input-wrapper"><input type="number" id="radar_abgleich_max" placeholder="z. B. 535" step="1"><span class="unit">mm</span></div><div class="hint" id="radar_tank_hint">Wähle oben ein Tankvolumen, um den Standardwert automatisch zu setzen.</div></div>
+        <div class="form-group"><label>Abgleich Maximum (100% / Voll - ab Sensorunterseite)</label><div class="input-wrapper"><input type="number" id="radar_abgleich_max" placeholder="z. B. 535" step="1"><span class="unit">mm</span></div><div class="hint" id="radar_tank_hint">Wähle oben ein Tankvolumen, um die Standardwerte automatisch zu setzen.</div></div>
+        <div class="form-group"><label>Tankdurchmesser (Ø)</label><div class="input-wrapper" style="opacity:0.9;"><input type="text" id="radar_tank_durchmesser" readonly placeholder="-"><span class="unit">mm</span></div></div>
         <div class="section-title">2. Innowatech Inbetriebnahmeanleitung (VEGAPULS 11)</div>
         <div class="hint" style="margin-bottom:8px;">Tippe auf einen Menüpunkt für Details & Original-Screenshot (für die parallele Eingabe in der VEGA Tools App):</div>
         <div id="vega-steps-container"></div>
@@ -664,7 +696,7 @@
         </div>
         <div class="et-time-box" id="et_typ_time_box">
             <strong>Zeitaufwand Enthärtertausch mit Regeneration:</strong><br>
-            <span id="et_typ_time_val">Bitte Typ auswählen · FK/FKL/CGK: 2,5 Std | FXM: 2,5 Std | FX/GX/PG1/PG2/CGX/FXL/GXL/SGX1–2/ECO1–4: 3,0 Std</span>
+            <span id="et_typ_time_val">Bitte oben Enthärtertyp auswählen – der exakte Zeitaufwand wird automatisch ermittelt.</span>
         </div>
 
         <div class="section-title">2. Kabinett &amp; Schläuche</div>
@@ -996,7 +1028,7 @@
             <span id="net-status-badge" style="font-size:0.72rem; padding:2px 6px; border-radius:10px; background:rgba(0,0,0,0.08);">● Online</span>
             <span id="footer-update-pill" onclick="applyAppUpdate()" title="Update jetzt installieren" style="display:none; font-size:0.7rem; padding:2px 7px; border-radius:10px; background:#f59e0b; color:white; cursor:pointer; font-weight:bold;">🔄 Update</span>
         </div>
-        <span class="footer-version" style="flex:1; text-align:right;" onclick="handleVersionClick()">v5.4</span>
+        <span class="footer-version" style="flex:1; text-align:right;" onclick="handleVersionClick()">v5.6</span>
     </div>
 </div>
 
@@ -1016,6 +1048,8 @@
                 <div class="setting-section-content">
                     <div class="toggle-row"><span>Dunkelmodus</span><input type="checkbox" id="darkmode-toggle" onchange="toggleDarkMode(this.checked)"></div>
                     <div class="form-group" style="margin-top:6px;"><label style="font-size:0.78rem;">Optik-Profil</label><div class="input-wrapper"><select id="theme-profile-select" onchange="changeThemeProfile(this.value)"><option value="klassik">INNOWATΞCH Klassik (Standard)</option><option value="keller">Hochkontrast</option><option value="dezent">Monochrom</option></select></div></div>
+                    <div class="form-group" style="margin-top:6px;"><label style="font-size:0.78rem;">Startansicht / Navigation</label><div class="input-wrapper"><select id="main-view-select" onchange="changeMainViewMode(this.value)"><option value="dashboard">Dashboard (Standard)</option><option value="slider">Schiebeleiste</option></select></div></div>
+                    <div class="form-group" style="margin-top:6px;"><label style="font-size:0.78rem;">Dashboard-Kacheldichte</label><div class="input-wrapper"><select id="dashboard-density-select" onchange="changeDashboardDensity(this.value)"><option value="compact">Kompakt (3er-Raster)</option><option value="large">Groß (2er-Raster)</option></select></div></div>
                     <div class="toggle-row"><span>Icons in Schiebeleiste anzeigen</span><input type="checkbox" id="icons-slider-toggle" onchange="toggleSliderIcons(this.checked)"></div>
                     <div class="toggle-row"><span>Icons im Dashboard anzeigen</span><input type="checkbox" id="icons-dashboard-toggle" onchange="toggleDashboardIcons(this.checked)"></div>
                 </div>
@@ -1027,6 +1061,7 @@
                     <div class="toggle-row"><span>Signalton bei Timer-Ende</span><input type="checkbox" id="beep-toggle" onchange="toggleTimerBeep(this.checked)"></div>
                     <div class="toggle-row"><span>Rechner-Eingaben nach Neustart merken</span><input type="checkbox" id="calc-persist-toggle" onchange="toggleCalcPersist(this.checked)"></div>
                     <div class="hint">Service-Notizen bleiben unabhängig davon immer gespeichert.</div>
+                    <div class="form-group" style="margin-top:8px; margin-bottom:0;"><label style="font-size:0.78rem;">E-Mail-Trennzeichen (Mehrere Empfänger)</label><div class="input-wrapper"><select id="mail-sep-select" onchange="changeEmailSeparatorMode(this.value)"><option value="auto">Automatisch (Handy: , / Windows-PC: ;)</option><option value="comma">Immer Komma (,)</option><option value="semi">Immer Semikolon (;)</option></select></div></div>
                 </div>
             </div>
             <div class="setting-section collapsed">
@@ -1068,7 +1103,7 @@
 
 <div class="admin-modal-overlay" id="adminAuthModal">
     <div class="admin-modal-content">
-        <div class="admin-modal-header"><span>Admin Authentifizierung (v5.4)</span><button type="button" class="modal-close-btn" style="color:var(--primary-color);" onclick="closeAdminModal('adminAuthModal')">✕</button></div>
+        <div class="admin-modal-header"><span>Admin Authentifizierung (v5.6)</span><button type="button" class="modal-close-btn" style="color:var(--primary-color);" onclick="closeAdminModal('adminAuthModal')">✕</button></div>
         <p style="font-size:0.82rem; color:var(--subtext-color); margin-bottom:12px;">Bitte die Admin-PIN eingeben:</p>
         <div class="form-group"><label>Admin-PIN</label><input type="password" id="adminPin8" class="field-box" value="" autocomplete="new-password" placeholder="••••••••" style="letter-spacing:2px;"></div>
         <button type="button" class="admin-btn admin-btn-primary" style="margin-top:10px;" onclick="verifyAdminAuth8()">Admin Console öffnen</button>
@@ -1077,7 +1112,7 @@
 
 <div class="admin-modal-overlay" id="adminConsoleModal">
     <div class="admin-modal-content" style="max-width:540px;">
-        <div class="admin-modal-header"><span>Admin Konsole (v5.4)</span><button type="button" class="modal-close-btn" style="color:var(--primary-color);" onclick="closeAdminModal('adminConsoleModal')">✕</button></div>
+        <div class="admin-modal-header"><span>Admin Konsole (v5.6)</span><button type="button" class="modal-close-btn" style="color:var(--primary-color);" onclick="closeAdminModal('adminConsoleModal')">✕</button></div>
         <div class="admin-tab-bar">
             <button type="button" class="admin-tab-btn active" id="adminTabBtnUsers" onclick="switchAdminTab('users')">👥 Techniker (users.json)</button>
             <button type="button" class="admin-tab-btn" id="adminTabBtnDb" onclick="switchAdminTab('db')">🗂️ Datenbanken (databases.json)</button>
@@ -1119,16 +1154,20 @@
             <div style="background:var(--result-bg); border:1px solid var(--result-border); padding:8px; border-radius:6px; margin-bottom:10px; font-size:0.78rem;"><b>Datenbankpflege:</b> Sonden, Enthärter, Aquadron-Anlagen &amp; Servicekoffer direkt bearbeiten oder per Excel-CSV abgleichen. Danach <i>„databases.json herunterladen“</i> und im Repo aktualisieren.</div>
             <div class="form-group">
                 <label>Datenbank-Tabelle wählen</label>
-                <select id="adminDbDataset" class="field-box" onchange="onAdminDbDatasetChange()">
-                    <option value="sonden">⚡ Sonden (sonden)</option>
-                    <option value="enthaerter">💧 Enthärter (enthaerter)</option>
-                    <option value="anlagen">⚙️ Aquadron Anlagen (anlagen)</option>
-                    <option value="koffer">🧰 Servicekoffer (koffer)</option>
-                </select>
+                <div class="input-wrapper">
+                    <select id="adminDbDataset" onchange="onAdminDbDatasetChange()">
+                        <option value="sonden">⚡ Sonden (sonden)</option>
+                        <option value="enthaerter">💧 Enthärter (enthaerter)</option>
+                        <option value="anlagen">⚙️ Aquadron Anlagen (anlagen)</option>
+                        <option value="koffer">🧰 Servicekoffer (koffer)</option>
+                    </select>
+                </div>
             </div>
             <div class="form-group" id="adminDbKofferBoxGroup" style="display:none;">
                 <label>Servicekoffer (L-Box)</label>
-                <select id="adminDbKofferBox" class="field-box" onchange="renderAdminDbTable()"></select>
+                <div class="input-wrapper">
+                    <select id="adminDbKofferBox" onchange="renderAdminDbTable()"></select>
+                </div>
             </div>
             <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:8px;">
                 <button type="button" class="admin-btn-sm admin-btn-success" style="padding:6px 10px;" onclick="openAdminDbEditor(null)">➕ Neuer Eintrag</button>
@@ -1150,6 +1189,28 @@
 
 <div class="dropdown-modal-overlay" id="dropdown-modal" onclick="closeCustomDropdown(event)">
     <div class="dropdown-modal-content" onclick="event.stopPropagation()"><div class="dropdown-modal-header" id="dropdown-modal-title">Auswahl treffen</div><div class="dropdown-modal-list" id="dropdown-modal-list"></div></div>
+</div>
+
+<div class="dropdown-modal-overlay calendar-modal-overlay" id="calendar-modal" onclick="closeDatePicker(event)">
+    <div class="dropdown-modal-content calendar-modal-content" onclick="event.stopPropagation()">
+        <div class="dropdown-modal-header" style="display:flex; justify-content:space-between; align-items:center;">
+            <span id="calModalTitle">Datum wählen</span>
+            <button type="button" onclick="closeDatePicker()" style="border:none; background:transparent; color:inherit; font-size:1.1rem; cursor:pointer; padding:2px 6px;">✕</button>
+        </div>
+        <div class="cal-nav-bar">
+            <button type="button" class="cal-nav-btn" onclick="shiftCalMonth(-12)" title="Vorheriges Jahr">«</button>
+            <button type="button" class="cal-nav-btn" onclick="shiftCalMonth(-1)" title="Vorheriger Monat">‹</button>
+            <div class="cal-month-label" id="calMonthLabel"></div>
+            <button type="button" class="cal-nav-btn" onclick="shiftCalMonth(1)" title="Nächster Monat">›</button>
+            <button type="button" class="cal-nav-btn" onclick="shiftCalMonth(12)" title="Nächstes Jahr">»</button>
+        </div>
+        <div class="cal-weekdays"><span>Mo</span><span>Di</span><span>Mi</span><span>Do</span><span>Fr</span><span>Sa</span><span>So</span></div>
+        <div class="cal-grid" id="calGrid"></div>
+        <div class="cal-actions">
+            <button type="button" class="cal-act-btn" onclick="clearPickedDate()">Löschen</button>
+            <button type="button" class="cal-act-btn primary" onclick="pickTodayDate()">Heute</button>
+        </div>
+    </div>
 </div>
 
 <div class="modal-overlay" id="kofferPickerModal" style="z-index:3500;" onclick="if(event.target===this)closeKofferPicker()">
@@ -1236,7 +1297,7 @@
         { num: "1", title: "Messstellenname", imgKey: "page_1", text: `Generiert sich aus: <b>Letzte 3 Ziffern der Fabrikationsnummer – Aquadron-Anlagentyp – Tankvolumen – Tanknummer</b>.<br>• Beispiel: <span class="param-highlight">517-FXM-60-1</span><br><small>(Tanknummer ab 1 hochzählend, falls mehrere Tanks beim Kunden vorhanden sind.)</small>` },
         { num: "2", title: "Anwendung", imgKey: "page_2", text: `• Mediumtyp: <span class="param-highlight">Flüssigkeit</span><br>• Anwendung: <span class="param-highlight">Lagertank</span><br><small>Hinweis: Nach Anpassungen in den Spezialparametern wird dieser Bereich ausgegraut und gesperrt.</small>` },
         { num: "3", title: "Einheiten", imgKey: "page_3", text: `• Distanzeinheit des Gerätes: <span class="param-highlight">mm</span> (Millimeter)<br>• Temperatureinheit des Gerätes: <span class="param-highlight">°C</span> (Grad Celsius)` },
-        { num: "4", title: "Abgleich (0% / 100%)", imgKey: "page_4", text: `Messwertabgleich abhängig vom Tank (immer ab <b>Sensorunterseite</b> gemessen):<br>• <b>40 l</b> (Ø 414 mm): Min <b>0 mm</b> | Max <b>385 mm</b><br>• <b>60 l</b> (Ø 414 mm): Min <b>0 mm</b> | Max <b>535 mm</b><br>• <b>100 l</b> (Ø 450 mm): Min <b>0 mm</b> | Max <b>723 mm</b><br>• <b>200 l</b> (Ø 588 mm): Min <b>0 mm</b> | Max <b>830 mm</b><br>• <b>500 l</b> (Ø 764 mm): Min <b>0 mm</b> | Max <b>1108 mm</b><br>• <b>1000 l</b> (Ø 1084 mm): Min <b>0 mm</b> | Max <b>1190 mm</b><br><small>Hinweis: Fertigungsbedingte Abweichungen prüfen.</small>` },
+        { num: "4", title: "Abgleich (0% / 100%)", imgKey: "page_4", text: `Messwertabgleich abhängig vom Tank (immer ab <b>Sensorunterseite</b> gemessen):<div class="vega-tank-row" data-tank="40">• <b>40 l</b> (Ø 414 mm): Min <b>0 mm</b> | Max <b>385 mm</b></div><div class="vega-tank-row" data-tank="60">• <b>60 l</b> (Ø 414 mm): Min <b>0 mm</b> | Max <b>535 mm</b></div><div class="vega-tank-row" data-tank="100">• <b>100 l</b> (Ø 450 mm): Min <b>0 mm</b> | Max <b>723 mm</b></div><div class="vega-tank-row" data-tank="200">• <b>200 l</b> (Ø 588 mm): Min <b>0 mm</b> | Max <b>830 mm</b></div><div class="vega-tank-row" data-tank="500">• <b>500 l</b> (Ø 764 mm): Min <b>0 mm</b> | Max <b>1108 mm</b></div><div class="vega-tank-row" data-tank="1000">• <b>1000 l</b> (Ø 1084 mm): Min <b>0 mm</b> | Max <b>1190 mm</b></div><small>Hinweis: Fertigungsbedingte Abweichungen prüfen.</small>` },
         { num: "5", title: "Skalierung", imgKey: "page_5", text: `• Skalierungsgröße: <span class="param-highlight">dimensionslos</span><br>• Skalierungseinheit: <span class="param-highlight">-</span> (Strich)<br>• Skalierungsformat: <span class="param-highlight">#</span><br>• 100% entspricht: <span class="param-highlight">100</span><br>• 0% entspricht: <span class="param-highlight">0</span>` },
         { num: "6", title: "Stromausgang", imgKey: "page_6", text: `Da die Wago-Analogeingangskarte Werte &lt; 4 mA und &gt; 20 mA als Fehler wertet:<br>• Ausgangskennlinie: <span class="param-highlight">0 ... 100% entspricht 4 ... 20 mA</span><br>• Strombereich: <span class="param-highlight">4 ... 20 mA</span><br>• Verhalten bei Störung: <span class="param-highlight">&le; 3,6 mA</span>` },
         { num: "7", title: "Störsignalausblendung", imgKey: "page_7", text: `Aktuelle Messkurve prüfen: Die erste/höchste Welle ist der Wasserspiegel.<br><b>Bestehende Störsignale zurücksetzen:</b><br>• Auf <i>Störsignalausblendung</i> unten im Dropdown <span class="param-highlight">Alles löschen</span> wählen und <b>Ausführen</b>.<br>• Auf <i>Störsignale bearbeiten</i> alle Einträge in der Tabelle löschen.<br><small>Nahbereichs-Ausblendung erfolgt über die Spezialparameter!</small>` },
@@ -1244,7 +1305,7 @@
         { num: "9", title: "Zugriffsschutz (Bluetooth-PIN)", imgKey: "page_9", text: `Im Menü <b>Erweiterte Funktionen &rarr; Zugriffsschutz</b>:<br>• Bluetooth-Zugangscode auf <span class="param-highlight">072186</span> einstellen.<br>• Schutz der Parametrierung: <b>Deaktiviert</b>` }
     ];
 
-    const radarTankDatabase = { "40": { max: 385, label: "40 Liter (Ø 414 mm)" }, "60": { max: 535, label: "60 Liter (Ø 414 mm)" }, "100": { max: 723, label: "100 Liter (Ø 450 mm)" }, "200": { max: 830, label: "200 Liter (Ø 588 mm)" }, "500": { max: 1108, label: "500 Liter (Ø 764 mm)" }, "1000": { max: 1190, label: "1000 Liter (Ø 1084 mm)" } };
+    const radarTankDatabase = { "40": { max: 385, diameter: 414, label: "40 Liter" }, "60": { max: 535, diameter: 414, label: "60 Liter" }, "100": { max: 723, diameter: 450, label: "100 Liter" }, "200": { max: 830, diameter: 588, label: "200 Liter" }, "500": { max: 1108, diameter: 764, label: "500 Liter" }, "1000": { max: 1190, diameter: 1084, label: "1000 Liter" } };
     const DEFAULT_SONDEN_DB = {
         1: { label: "AS2MA1-CL-M12", messRv1: "0,003 ... 0,400 ppm", steilRv1: "48,0 mA/ppm" }, 2: { label: "AS2MA2-CL-M12", messRv1: "0,003 ... 0,700 ppm", steilRv1: "24,0 mA/ppm" },
         3: { label: "AS2MA5-CL-M12", messRv1: "0,003 ... 1,700 ppm", steilRv1: "9,6 mA/ppm" }, 4: { label: "AS2MA10-CL-M12", messRv1: "0,003 ... 4,00 ppm", steilRv1: "4,8 mA/ppm" },
@@ -1806,6 +1867,7 @@
         if ($('kofferQtyModal')?.classList.contains('active')) { closeKofferQtyModal(true); return; }
         if ($('imageLightboxOverlay')?.classList.contains('open')) { closeImageLightbox(null, true); return; }
         if ($('kofferPickerModal')?.classList.contains('open')) { closeKofferPicker(true); return; }
+        if ($('calendar-modal')?.classList.contains('open')) { closeDatePicker(null, true); return; }
         if ($('dropdown-modal')?.classList.contains('open')) { closeCustomDropdown(null, true); return; }
         if ($('adminConsoleModal')?.classList.contains('active')) { closeAdminModal('adminConsoleModal', true); return; }
         if ($('adminAuthModal')?.classList.contains('active')) { closeAdminModal('adminAuthModal', true); return; }
@@ -1818,7 +1880,8 @@
         lightboxCtx = null;
         if ($('lightboxPins')) $('lightboxPins').innerHTML = '';
         txt('lightboxTitle', title); $('lightboxImg').src = src; resetLb();
-        const s = VEGA_STEPS_DATA[idx]; $('lightboxCaption').innerHTML = s ? s.text.replace(/<br>/g, ' • ') : '';
+        const s = VEGA_STEPS_DATA[idx];
+        $('lightboxCaption').innerHTML = s ? s.text.replace(/<div[^>]*>/g, '').replace(/<\/div>/g, ' • ').replace(/<br>/g, ' • ') : '';
         $('imageLightboxOverlay').classList.add('open'); initLightboxGestures();
         pushAppNav('lightbox');
     }
@@ -1945,8 +2008,8 @@
         if (!el) return;
         const spec = ET_TYP_TIME_MAP[v];
         el.innerHTML = spec
-            ? `<b>${escHtml(spec)}</b> · alle Werte: FK/FKL/CGK 2,5 Std | FXM 2,5 Std | FX/GX/PG1/PG2/CGX/FXL/GXL/SGX1–2/ECO1–4: 3,0 Std`
-            : 'Bitte Typ auswählen · FK/FKL/CGK: 2,5 Std | FXM: 2,5 Std | FX/GX/PG1/PG2/CGX/FXL/GXL/SGX1/2/ECO1–4: 3,0 Std';
+            ? `<b>${escHtml(spec)}</b>`
+            : 'Bitte oben Enthärtertyp auswählen – der exakte Zeitaufwand wird automatisch ermittelt.';
     }
     function selectEtTurbine(nr) {
         const inp = $('et_turbine'); if (!inp) return;
@@ -2116,7 +2179,8 @@
         const base = k ? `Aufnahme Enthärtertausch - ${k}` : 'Aufnahme Enthärtertausch';
         const subject = `${base}${fn ? ' (Fab.-Nr. ' + fn + ')' : ''} (${ku})`;
         const body = buildEnthaertertauschText() + '\n\nHinweis: Gespeicherte PDF („' + base + '.pdf“) und zugehörige Handy-Fotos bitte direkt in dieser E-Mail anhängen.';
-        window.location.href = `mailto:${recipients.join(',')}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        const sep = getMailSeparator();
+        window.location.href = `mailto:${recipients.join(sep)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     }
     function copyEtClipboard() {
         const txtBlock = buildEnthaertertauschText();
@@ -2453,13 +2517,14 @@
         if ($('adminTabDb')) $('adminTabDb').style.display = isDb ? 'block' : 'none';
         $('adminTabBtnUsers')?.classList.toggle('active', !isDb);
         $('adminTabBtnDb')?.classList.toggle('active', isDb);
-        if (isDb) { populateAdminKofferBoxSelect(); onAdminDbDatasetChange(); }
+        if (isDb) { populateAdminKofferBoxSelect(); onAdminDbDatasetChange(); refreshDropdownTriggers($('adminTabDb')); }
     }
     function populateAdminKofferBoxSelect() {
         const sel = $('adminDbKofferBox'); if (!sel) return;
         const prev = sel.value;
         sel.innerHTML = KOFFER_DATA.map(b => `<option value="${escHtml(b.id)}">${b.icon} ${escHtml(b.short)} (${b.items.length} Teile)</option>`).join('');
         if (prev && KOFFER_DATA.some(b => b.id === prev)) sel.value = prev;
+        refreshDropdownTriggers($('adminTabDb'));
     }
     function onAdminDbDatasetChange() {
         const ds = $('adminDbDataset')?.value || 'sonden';
@@ -2888,6 +2953,88 @@
         }
     }
 
+    let calTargetId = '', calViewYear = new Date().getFullYear(), calViewMonth = new Date().getMonth();
+    const CAL_MONTHS = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
+    function formatIsoToDe(iso) {
+        if (!iso || !/^\d{4}-\d{2}-\d{2}$/.test(iso)) return '';
+        const [y, m, d] = iso.split('-');
+        return `${d}.${m}.${y}`;
+    }
+    function syncDatePickerTriggers() {
+        ['da_date_alt', 'da_date_neu'].forEach(id => {
+            const btn = $(id + '_btn'), v = $(id)?.value || '';
+            if (!btn) return;
+            const fmt = formatIsoToDe(v);
+            btn.innerText = fmt || 'TT.MM.JJJJ';
+            btn.classList.toggle('is-placeholder', !fmt);
+        });
+    }
+    function openDatePicker(id) {
+        calTargetId = id;
+        const cur = $(id)?.value || '';
+        if (/^\d{4}-\d{2}-\d{2}$/.test(cur)) {
+            const [y, m] = cur.split('-').map(Number);
+            calViewYear = y; calViewMonth = m - 1;
+        } else {
+            const now = new Date();
+            calViewYear = now.getFullYear(); calViewMonth = now.getMonth();
+        }
+        const lbl = $(id)?.closest('.form-group')?.querySelector('label')?.innerText || 'Datum wählen';
+        txt('calModalTitle', lbl);
+        renderCalendarGrid();
+        $('calendar-modal')?.classList.add('open');
+        pushAppNav('calendar');
+    }
+    function closeDatePicker(e, fromPop = false) {
+        if (!e || e.target.id === 'calendar-modal') {
+            const m = $('calendar-modal'); if (!m?.classList.contains('open')) return;
+            m.classList.remove('open');
+            if (!fromPop) popAppNavIf('calendar');
+        }
+    }
+    function shiftCalMonth(delta) {
+        const dt = new Date(calViewYear, calViewMonth + delta, 1);
+        calViewYear = dt.getFullYear(); calViewMonth = dt.getMonth();
+        renderCalendarGrid();
+    }
+    function renderCalendarGrid() {
+        const grid = $('calGrid'); if (!grid) return;
+        txt('calMonthLabel', `${CAL_MONTHS[calViewMonth]} ${calViewYear}`);
+        const firstDay = (new Date(calViewYear, calViewMonth, 1).getDay() + 6) % 7;
+        const daysInMonth = new Date(calViewYear, calViewMonth + 1, 0).getDate();
+        const selected = $(calTargetId)?.value || '';
+        const now = new Date();
+        const todayIso = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+        let html = '';
+        for (let i = 0; i < firstDay; i++) html += '<div></div>';
+        for (let d = 1; d <= daysInMonth; d++) {
+            const iso = `${calViewYear}-${String(calViewMonth + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+            const cls = 'cal-day-btn' + (iso === todayIso ? ' today' : '') + (iso === selected ? ' selected' : '');
+            html += `<button type="button" class="${cls}" onclick="pickCalDate('${iso}')">${d}</button>`;
+        }
+        grid.innerHTML = html;
+    }
+    function pickCalDate(iso) {
+        const inp = $(calTargetId); if (!inp) return;
+        inp.value = iso;
+        syncDatePickerTriggers();
+        calcDosierauswertung();
+        saveTabInputs();
+        closeDatePicker();
+    }
+    function pickTodayDate() {
+        const now = new Date();
+        pickCalDate(`${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`);
+    }
+    function clearPickedDate() {
+        const inp = $(calTargetId); if (!inp) return;
+        inp.value = '';
+        syncDatePickerTriggers();
+        calcDosierauswertung();
+        saveTabInputs();
+        closeDatePicker();
+    }
+
     let pinnedTabs = [], keepScreenAwake = false, timerBeepEnabled = true, persistCalcInputs = false, wakeLockSentinel = null, audioCtx = null;
     const defaultTabInputs = {};
 
@@ -2904,7 +3051,7 @@
         });
     }
     function recalcAllModules() {
-        syncAusliterButtons();
+        syncAusliterButtons(); syncDatePickerTriggers();
         calcDosierauswertung();
         calcStandard(); updateFromM3Tag(); calcWasserwerk(); calcPoolAll(); calcVerduennung();
         berechnePID(); calcSchlauch(); calcAusliter(); updateSondenData(); updateAnlagenData();
@@ -2934,7 +3081,7 @@
                     else el.value = v;
                 }
             });
-            refreshDropdownTriggers();
+            refreshDropdownTriggers(); syncDatePickerTriggers();
         } catch {}
     }
     function resetTabInputs(tabId) {
@@ -3044,6 +3191,7 @@
         const isDark = localStorage.getItem('mat_darkmode') === 'true';
         document.documentElement.classList.toggle('dark-mode', isDark);
         document.body.classList.toggle('dark-mode', isDark); $('darkmode-toggle').checked = isDark;
+        $('meta-color-scheme')?.setAttribute('content', isDark ? 'dark' : 'light');
         if (localStorage.getItem('mat_darkmode') === null) localStorage.setItem('mat_darkmode', 'false');
         changeThemeProfile(localStorage.getItem('mat_theme_profile') || 'klassik', false);
         keepScreenAwake = localStorage.getItem('mat_keep_awake') === 'true'; if ($('wakelock-toggle')) $('wakelock-toggle').checked = keepScreenAwake;
@@ -3065,7 +3213,14 @@
         } catch { currentModules = [...defaultModules]; }
         const notes = localStorage.getItem('mat_service_notes'); if (notes && $('service_notes_area')) $('service_notes_area').value = notes;
         if ($('fault_clear_after')) $('fault_clear_after').checked = localStorage.getItem('mat_fault_clear_after') !== 'false';
+        if (!localStorage.getItem('mat_v55_home_init')) {
+            localStorage.setItem('mat_launcher_view', 'true');
+            localStorage.setItem('mat_v55_home_init', '1');
+        }
         isLauncherActive = localStorage.getItem('mat_launcher_view') !== 'false'; isInToolFromLauncher = false;
+        changeMainViewMode(isLauncherActive ? 'dashboard' : 'slider', false);
+        changeDashboardDensity(localStorage.getItem('mat_dashboard_density') || 'compact', false);
+        changeEmailSeparatorMode(localStorage.getItem('mat_mail_sep') || 'auto', false);
         initKofferViews();
         // Sofortiger, rein lokaler Start ohne jede Netzwerk-Wartezeit:
         loadUsersDatabaseSync();
@@ -3092,26 +3247,85 @@
         localStorage.setItem('mat_modules', JSON.stringify(currentModules));
         localStorage.setItem('mat_category_order', JSON.stringify(categoryOrder));
     };
-    const toggleDarkMode = on => { document.documentElement.classList.toggle('dark-mode', on); document.body.classList.toggle('dark-mode', on); localStorage.setItem('mat_darkmode', on); };
+    const toggleDarkMode = on => { document.documentElement.classList.toggle('dark-mode', on); document.body.classList.toggle('dark-mode', on); $('meta-color-scheme')?.setAttribute('content', on ? 'dark' : 'light'); localStorage.setItem('mat_darkmode', on); };
     const toggleSliderIcons = on => { showSliderIcons = on; localStorage.setItem('mat_show_slider_icons', on); };
     const toggleDashboardIcons = on => { showDashboardIcons = on; localStorage.setItem('mat_show_dashboard_icons', on); };
     function toggleSettingSection(el) { el.closest('.setting-section')?.classList.toggle('collapsed'); setTimeout(() => checkSettingsScroll($('settings-modal-body')), 50); }
     function changeZoom(v, save = true) { const z = Math.min(1.2, parseFloat(v) || 1); document.documentElement.style.setProperty('--app-zoom', z); txt('zoom-val-text', Math.round(z * 100) + '%'); if (save) localStorage.setItem('mat_zoom', z); }
-    function toggleMainView() { isLauncherActive = !isLauncherActive; isInToolFromLauncher = false; localStorage.setItem('mat_launcher_view', isLauncherActive); applyViewMode(); }
+    function isWindowsDesktop() {
+        const ua = navigator.userAgent || '';
+        const plat = navigator.userAgentData?.platform || navigator.platform || '';
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua) || (plat === 'MacIntel' && navigator.maxTouchPoints > 1);
+        return !isMobile && (/Win/i.test(plat) || /Windows NT/i.test(ua));
+    }
+    function getMailSeparator() {
+        const mode = localStorage.getItem('mat_mail_sep') || 'auto';
+        if (mode === 'comma') return ',';
+        if (mode === 'semi') return ';';
+        return isWindowsDesktop() ? ';' : ',';
+    }
+    function changeEmailSeparatorMode(mode, save = true) {
+        const m = ['auto', 'comma', 'semi'].includes(mode) ? mode : 'auto';
+        if ($('mail-sep-select')) $('mail-sep-select').value = m;
+        refreshDropdownTriggers($('settings-modal'));
+        if (save) localStorage.setItem('mat_mail_sep', m);
+    }
+    function changeMainViewMode(mode, save = true) {
+        const useDash = mode !== 'slider';
+        isLauncherActive = useDash; isInToolFromLauncher = false;
+        if ($('main-view-select')) $('main-view-select').value = useDash ? 'dashboard' : 'slider';
+        refreshDropdownTriggers($('settings-modal'));
+        if (save) {
+            localStorage.setItem('mat_launcher_view', String(useDash));
+            applyViewMode();
+        }
+    }
+    function changeDashboardDensity(mode, save = true) {
+        const dense = mode === 'large' ? 'large' : 'compact';
+        const lv = $('launcher-view');
+        if (lv) lv.classList.toggle('compact-grid', dense === 'compact');
+        if ($('dashboard-density-select')) $('dashboard-density-select').value = dense;
+        refreshDropdownTriggers($('settings-modal'));
+        if (save) localStorage.setItem('mat_dashboard_density', dense);
+        if (lv?.classList.contains('active')) setTimeout(() => checkDashboardScroll(lv), 60);
+    }
+    function getActiveTabResetConfig(tabId) {
+        if (!tabId || tabId === 'koffer' || tabId === 'taschenlampe') return null;
+        if (tabId === 'dosierauswertung') return { label: '↺ Zurücksetzen', title: 'Eingaben zurücksetzen', fn: () => resetDosierauswertung() };
+        if (tabId === 'schlauchvolumen') return { label: '↺ Zurücksetzen', title: 'Eingaben zurücksetzen', fn: () => resetSchlauch() };
+        if (tabId === 'auslitern') return { label: '↺ Reset', title: 'Timer & Werte zurücksetzen', fn: () => resetAusliter() };
+        if (tabId === 'enthaertertausch') return { label: '➕ Neu', title: 'Neue / leere Checkliste', fn: () => resetEnthaertertausch() };
+        if (tabId === 'kundennotizen') return { label: '➕ Neu', title: 'Neue Notiz', fn: () => newKnEntry() };
+        if (tabId === 'notizen') return { label: '🗑️ Leeren', title: 'Service-Notizen leeren', danger: true, fn: () => clearServiceNotes() };
+        return { label: '↺ Zurücksetzen', title: 'Eingaben zurücksetzen', fn: () => resetTabInputs(tabId) };
+    }
+    function updateTopResetButton() {
+        const btn = $('top-reset-btn'); if (!btn) return;
+        const cfg = (isLauncherActive && isInToolFromLauncher) ? getActiveTabResetConfig(currentActiveTab) : null;
+        if (!cfg) { btn.style.display = 'none'; return; }
+        btn.innerText = cfg.label;
+        btn.title = cfg.title || cfg.label;
+        btn.classList.toggle('danger', !!cfg.danger);
+        btn.style.display = 'inline-flex';
+    }
+    function triggerActiveTabReset() {
+        const cfg = getActiveTabResetConfig(currentActiveTab);
+        if (cfg) cfg.fn();
+    }
     function applyViewMode() {
         const tb = $('tab-bar-wrapper'), lv = $('launcher-view'), bb = $('dashboard-back-bar');
         if (isLauncherActive && !isInToolFromLauncher) {
-            tb.style.display = 'none'; lv.classList.add('active'); bb.classList.remove('active'); txt('toggle-icon', '📄');
+            tb.style.display = 'none'; lv.classList.add('active'); bb.classList.remove('active');
             currentModules.forEach(t => $('tab-' + t.id)?.classList.remove('active'));
             renderLauncherGrid(); setTimeout(() => checkDashboardScroll(lv), 80);
         } else if (isLauncherActive && isInToolFromLauncher) {
-            tb.style.display = 'none'; lv.classList.remove('active'); bb.classList.add('active'); txt('toggle-icon', '田');
+            tb.style.display = 'none'; lv.classList.remove('active'); bb.classList.add('active');
         } else {
-            tb.style.display = 'block'; lv.classList.remove('active'); bb.classList.remove('active'); txt('toggle-icon', '田');
+            tb.style.display = 'block'; lv.classList.remove('active'); bb.classList.remove('active');
             const vis = currentModules.filter(m => m.visible && m.userAllowed);
             if (currentActiveTab) switchTab(currentActiveTab); else if (vis.length) switchTab(vis[0].id);
         }
-        updatePinButton(); renderPinnedBar();
+        updatePinButton(); renderPinnedBar(); updateTopResetButton();
     }
     function renderLauncherGrid() {
         const lv = $('launcher-view'), bottomInd = $('dashboard-scroll-indicator-bottom');
@@ -3196,7 +3410,7 @@
         const b = $('btn-' + name), c = $('tab-' + name);
         if (b) { b.classList.add('active'); b.scrollIntoView({ behavior: 'smooth', inline: 'nearest', block: 'nearest' }); }
         if (c && (!isLauncherActive || isInToolFromLauncher)) c.classList.add('active');
-        updatePinButton(); renderPinnedBar();
+        updatePinButton(); renderPinnedBar(); updateTopResetButton();
     }
 
     function openSettings() { renderCategoryManager(); renderModuleManager(); $('settings-modal').classList.add('open'); pushAppNav('settings'); setTimeout(() => checkSettingsScroll($('settings-modal-body')), 50); }
@@ -3754,8 +3968,9 @@
         if (!toList.length) return showToast('Bitte mindestens einen Empfänger auswählen oder eingeben.');
         const ccList = [...document.querySelectorAll('#kn_mail_cc_list .kn-cc-cb:checked')].map(c => c.value).filter(e => !toList.includes(e));
         const { subject, body } = buildKnTextPayload();
-        let url = `mailto:${toList.join(',')}?`;
-        if (ccList.length) url += `cc=${encodeURIComponent(ccList.join(','))}&`;
+        const sep = getMailSeparator();
+        let url = `mailto:${toList.join(sep)}?`;
+        if (ccList.length) url += `cc=${ccList.map(encodeURIComponent).join(sep)}&`;
         url += `subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
         window.location.href = url;
     }
@@ -3767,7 +3982,9 @@
     function updateRadarTankDefaults() {
         const v = $('radar_tankvol').value, d = radarTankDatabase[v];
         $('radar_abgleich_max').value = d ? d.max : '';
-        $('radar_tank_hint').innerHTML = d ? `<span style="color:#2e7d32;"><b>Werte automatisch eingetragen:</b> Min = 0 mm, Max = ${d.max} mm für ${v}l Tank.</span>` : 'Wähle oben ein Tankvolumen, um die Abgleichwerte automatisch zu setzen.';
+        if ($('radar_tank_durchmesser')) $('radar_tank_durchmesser').value = d ? d.diameter : '';
+        document.querySelectorAll('#vega-steps-container .vega-tank-row').forEach(r => r.classList.toggle('active', r.dataset.tank === v));
+        $('radar_tank_hint').innerHTML = d ? `<span style="color:#2e7d32;"><b>Werte automatisch eingetragen:</b> Min = 0 mm, Max = ${d.max} mm, Ø = ${d.diameter} mm (${v} l Tank).</span>` : 'Wähle oben ein Tankvolumen, um die Standardwerte automatisch zu setzen.';
     }
     function updateEnthaerterData() {
         const d = enthaerterDatabase[$('enthaerter_select').value];
@@ -3945,10 +4162,10 @@
             txt('da_res_anolyt', `${Number.isFinite(dosL) ? dosL.toFixed(2) : '-'} l`);
             return clearRes(`<span style="color:#c62828;"><b>Eingabe prüfen:</b> Dosiermenge neu muss größer oder gleich Dosiermenge alt sein (Differenz: ${dosL.toFixed(2)} l).</span>`);
         }
-        const quoteLpM3 = dosL / waterM3, quotePct = (dosL / waterL) * 100;
-        txt('da_res_wasser', `${waterM3.toFixed(2)} m³ (${waterL.toFixed(0)} l)`);
+        const quotePct = (dosL / waterL) * 100;
+        txt('da_res_wasser', `${waterM3.toFixed(2)} m³`);
         txt('da_res_anolyt', `${dosL.toFixed(2)} l`);
-        txt('da_res_quote', `${quotePct.toFixed(3)} % (${quoteLpM3.toFixed(3)} l/m³)`);
+        txt('da_res_quote', `${quotePct.toFixed(2)} %`);
 
         let days = 0, dateErr = '';
         if (dAlt && dNeu) {
@@ -3960,7 +4177,7 @@
             if (days > 0) {
                 dailyBox.style.display = 'block';
                 txt('da_res_tage', `${days} ${days === 1 ? 'Tag' : 'Tage'}`);
-                txt('da_res_w_tag', `${(waterM3 / days).toFixed(2)} m³/Tag (${(waterL / days).toFixed(1)} l/Tag)`);
+                txt('da_res_w_tag', `${(waterM3 / days).toFixed(2)} m³/Tag`);
                 txt('da_res_d_tag', `${(dosL / days).toFixed(2)} l/Tag`);
             } else dailyBox.style.display = 'none';
         }
@@ -3969,10 +4186,10 @@
             txt('da_res_chlor', `${clReal.toFixed(3)} mg/l`);
             if (soll !== null && Number.isFinite(soll) && soll > 0) {
                 const faktor = clReal / soll, pct = faktor * 100;
-                txt('da_res_faktor', `× ${faktor.toFixed(2)} (${pct.toFixed(0)} % vom Soll)`);
+                txt('da_res_faktor', `${pct.toFixed(0)} %`);
                 let statusMsg = `<span style="color:#2e7d32;"><b>Plausibel:</b> Real eindosiertes Aktivchlor liegt bei <b>${clReal.toFixed(3)} mg/l</b> (${pct.toFixed(0)} % vom Sollwert ${soll.toFixed(2)} mg/l).</span>`;
                 if (faktor < 0.7) statusMsg = `<span style="color:#b45309;"><b>Hinweis (Unterdosierung):</b> Nur <b>${pct.toFixed(0)} %</b> des Sollwerts (${clReal.toFixed(3)} vs. ${soll.toFixed(2)} mg/l). Pumpenhub, Saugleitung oder Chlorgehalt Anolytkonzentrat prüfen.</span>`;
-                else if (faktor > 1.5) statusMsg = `<span style="color:#c62828;"><b>Auffällig (Überdosierung / hohe Zehrung):</b> <b>${faktor.toFixed(2)}×</b> des Sollwerts (${clReal.toFixed(3)} vs. ${soll.toFixed(2)} mg/l) eindosiert.</span>`;
+                else if (faktor > 1.5) statusMsg = `<span style="color:#c62828;"><b>Auffällig (Überdosierung / hohe Zehrung):</b> <b>${pct.toFixed(0)} %</b> des Sollwerts (${clReal.toFixed(3)} vs. ${soll.toFixed(2)} mg/l) eindosiert.</span>`;
                 if (dateErr) statusMsg += `<br><span style="color:#c62828;"><b>Datum:</b> ${dateErr}</span>`;
                 else if (days > 0) statusMsg += `<br>Zeitraum ${days} Tage: <b>${(waterM3 / days).toFixed(2)} m³/Tag</b> Wasser · <b>${(dosL / days).toFixed(2)} l/Tag</b> Anolyte.`;
                 if (hint) hint.innerHTML = statusMsg;
@@ -3982,7 +4199,7 @@
             }
         } else {
             txt('da_res_chlor', 'Konz. eingeben'); txt('da_res_faktor', '-');
-            if (hint) hint.innerHTML = `Dosierquote: <b>${quotePct.toFixed(3)} %</b> (${quoteLpM3.toFixed(3)} l/m³). Chlorgehalt Anolytkonzentrat eingeben für Aktivchlor-Vergleich.${dateErr ? ' <span style="color:#c62828;">' + dateErr + '</span>' : ''}`;
+            if (hint) hint.innerHTML = `Dosierquote: <b>${quotePct.toFixed(2)} %</b>. Chlorgehalt Anolytkonzentrat eingeben für Aktivchlor-Vergleich.${dateErr ? ' <span style="color:#c62828;">' + dateErr + '</span>' : ''}`;
         }
     }
     function copyDosierAuswertungToNotes() {
@@ -4005,6 +4222,7 @@
     }
     function resetDosierauswertung() {
         ['da_wz_alt', 'da_wz_neu', 'da_date_alt', 'da_date_neu', 'da_dos_alt', 'da_dos_neu', 'da_konz', 'da_soll'].forEach(id => { if ($(id)) $(id).value = ''; });
+        syncDatePickerTriggers();
         calcDosierauswertung();
         saveTabInputs();
         showToast('Dosierauswertung zurückgesetzt.');
