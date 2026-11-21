@@ -1,0 +1,1387 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>INNOWATΞCH Service Tool v5.8 – Interaktive PC-Bedienungsanleitung</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-page: #f8fafc;
+            --bg-surface: #ffffff;
+            --bg-subtle: #f1f5f9;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --text-soft: #64748b;
+            --border-hairline: #e2e8f0;
+            --border-strong: #cbd5e1;
+            --accent: #0d47a1;
+            --accent-hover: #0a367c;
+            --accent-tint: #eff6ff;
+            --cat-app: #0d47a1;
+            --cat-param: #1b5e20;
+            --cat-tools: #a16207;
+            --cat-check: #b91c1c;
+            --warn-bg: #fef2f2;
+            --warn-border: #fecaca;
+            --warn-text: #991b1b;
+            --radius-lg: 12px;
+            --radius-md: 8px;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-page);
+            color: var(--text-main);
+            line-height: 1.55;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        code, .mono {
+            font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .tabular {
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* Top Bar */
+        .topbar {
+            position: sticky;
+            top: 0;
+            z-index: 40;
+            background: rgba(255, 255, 255, 0.94);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid var(--border-hairline);
+        }
+
+        .topbar-inner {
+            max-width: 1520px;
+            margin: 0 auto;
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .brand-wrap {
+            display: flex;
+            align-items: baseline;
+            gap: 12px;
+            min-width: 0;
+        }
+
+        .brand-title {
+            font-size: 1rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            color: var(--text-main);
+            white-space: nowrap;
+        }
+
+        .brand-title span {
+            color: var(--accent);
+        }
+
+        .brand-sub {
+            font-size: 0.8125rem;
+            color: var(--text-soft);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .topbar-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 7px 12px;
+            font-family: inherit;
+            font-size: 0.78rem;
+            font-weight: 600;
+            line-height: 1.2;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-hairline);
+            background: var(--bg-surface);
+            color: var(--text-main);
+            cursor: pointer;
+            text-decoration: none;
+            white-space: nowrap;
+            transition: background-color 0.14s ease, border-color 0.14s ease, color 0.14s ease;
+        }
+
+        .btn:hover {
+            background: var(--bg-subtle);
+            border-color: var(--border-strong);
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #ffffff;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-hover);
+            border-color: var(--accent-hover);
+            color: #ffffff;
+        }
+
+        .btn-subtle-accent {
+            background: var(--accent-tint);
+            border-color: #bfdbfe;
+            color: var(--accent);
+        }
+
+        .btn-subtle-accent:hover {
+            background: #dbeafe;
+            border-color: #93c5fd;
+        }
+
+        /* Mobile / Small Screen Notice */
+        .mobile-notice {
+            display: none;
+            max-width: 1520px;
+            margin: 14px auto 0;
+            padding: 0 16px;
+        }
+
+        .mobile-notice-box {
+            background: #fffbeb;
+            border: 1px solid #fde68a;
+            color: #92400e;
+            border-radius: var(--radius-md);
+            padding: 10px 14px;
+            font-size: 0.8125rem;
+        }
+
+        @media (max-width: 899px) {
+            .mobile-notice {
+                display: block;
+            }
+            .topbar-inner {
+                padding: 10px 14px;
+                flex-wrap: wrap;
+            }
+            .brand-sub {
+                display: none;
+            }
+        }
+
+        /* Main Two-Column Desktop Layout */
+        .workspace {
+            max-width: 1520px;
+            margin: 0 auto;
+            padding: 24px 24px 64px;
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 420px;
+            gap: 28px;
+            align-items: start;
+        }
+
+        @media (max-width: 1080px) {
+            .workspace {
+                grid-template-columns: minmax(0, 1fr) 390px;
+                gap: 20px;
+                padding: 18px 16px 48px;
+            }
+        }
+
+        @media (max-width: 899px) {
+            .workspace {
+                grid-template-columns: 1fr;
+                padding: 14px 16px 40px;
+            }
+        }
+
+        /* Left Documentation Column */
+        .guide-column {
+            min-width: 0;
+            display: grid;
+            grid-template-columns: 210px minmax(0, 1fr);
+            gap: 24px;
+            align-items: start;
+        }
+
+        @media (max-width: 1279px) {
+            .guide-column {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+        }
+
+        /* Sticky Chapter Nav (Wide Desktop) */
+        .chapter-rail {
+            position: sticky;
+            top: 76px;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-hairline);
+            border-radius: var(--radius-lg);
+            padding: 14px;
+        }
+
+        .chapter-rail-title {
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--text-soft);
+            margin: 0 0 10px 0;
+        }
+
+        .chapter-rail-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .chapter-rail-link {
+            display: block;
+            padding: 6px 9px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            text-decoration: none;
+            border-radius: 6px;
+            transition: background-color 0.12s ease, color 0.12s ease;
+        }
+
+        .chapter-rail-link:hover {
+            background: var(--bg-subtle);
+            color: var(--text-main);
+        }
+
+        .chapter-rail-link.is-current {
+            background: var(--accent-tint);
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        .chapter-rail-divider {
+            height: 1px;
+            background: var(--border-hairline);
+            margin: 10px 0;
+        }
+
+        .chapter-rail-sublist {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .chapter-rail-sublink {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            padding: 4px 9px;
+            font-size: 0.75rem;
+            color: var(--text-soft);
+            text-decoration: none;
+            border-radius: 6px;
+        }
+
+        .chapter-rail-sublink:hover {
+            background: var(--bg-subtle);
+            color: var(--text-main);
+        }
+
+        .cat-swatch {
+            width: 8px;
+            height: 8px;
+            border-radius: 2px;
+            flex-shrink: 0;
+        }
+
+        @media (max-width: 1279px) {
+            .chapter-rail {
+                position: static;
+                padding: 12px 14px;
+            }
+            .chapter-rail-list {
+                flex-direction: row;
+                flex-wrap: wrap;
+                gap: 6px;
+            }
+            .chapter-rail-divider,
+            .chapter-rail-sublist {
+                display: none;
+            }
+        }
+
+        /* Guide Main Content */
+        .guide-flow {
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+        }
+
+        .hero-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-hairline);
+            border-radius: var(--radius-lg);
+            padding: 22px 24px;
+        }
+
+        .hero-kicker {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 6px;
+        }
+
+        .hero-title {
+            margin: 0;
+            font-size: 1.45rem;
+            font-weight: 800;
+            letter-spacing: -0.025em;
+            line-height: 1.25;
+            color: var(--text-main);
+        }
+
+        .hero-desc {
+            margin: 10px 0 0 0;
+            font-size: 0.92rem;
+            color: var(--text-muted);
+            max-width: 68ch;
+        }
+
+        .how-it-works-grid {
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border-hairline);
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        @media (max-width: 720px) {
+            .how-it-works-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .how-step-num {
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 3px;
+        }
+
+        .how-step-title {
+            font-size: 0.84rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 3px;
+        }
+
+        .how-step-text {
+            font-size: 0.79rem;
+            color: var(--text-muted);
+        }
+
+        /* Chapter Sections */
+        .chapter-section {
+            scroll-margin-top: 76px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .chapter-header {
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border-strong);
+            display: flex;
+            flex-wrap: wrap;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 8px;
+        }
+
+        .chapter-title {
+            margin: 0;
+            font-size: 1.15rem;
+            font-weight: 800;
+            letter-spacing: -0.015em;
+            color: var(--text-main);
+        }
+
+        .chapter-meta {
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--text-soft);
+        }
+
+        .chapter-intro {
+            margin: 0;
+            font-size: 0.88rem;
+            color: var(--text-muted);
+        }
+
+        /* Category Subheadings inside Chapter 4 */
+        .category-divider {
+            margin-top: 8px;
+            padding-top: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            scroll-margin-top: 76px;
+        }
+
+        .category-heading {
+            margin: 0;
+            font-size: 0.94rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .category-count {
+            font-size: 0.76rem;
+            font-weight: 600;
+            color: var(--text-soft);
+        }
+
+        /* Step / Module Cards (Single-level clean cards, zero static pill badges) */
+        .step-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-hairline);
+            border-radius: var(--radius-lg);
+            padding: 16px 18px;
+            transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+        }
+
+        .step-card:hover {
+            border-color: var(--border-strong);
+        }
+
+        .step-card.is-active {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px rgba(13, 71, 161, 0.14);
+            background: #fbfdff;
+        }
+
+        .step-card.is-warning {
+            background: var(--warn-bg);
+            border-color: var(--warn-border);
+        }
+
+        .step-card-top {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 8px;
+            margin-bottom: 6px;
+        }
+
+        .step-card-title {
+            margin: 0;
+            font-size: 0.96rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .step-card.is-warning .step-card-title {
+            color: var(--warn-text);
+        }
+
+        .step-card-meta {
+            font-size: 0.74rem;
+            font-weight: 600;
+            color: var(--text-soft);
+        }
+
+        .step-card-body {
+            margin: 0;
+            font-size: 0.855rem;
+            color: var(--text-muted);
+        }
+
+        .step-card.is-warning .step-card-body {
+            color: #7f1d1d;
+        }
+
+        .step-points {
+            margin: 8px 0 0 0;
+            padding-left: 18px;
+            font-size: 0.83rem;
+            color: var(--text-muted);
+        }
+
+        .step-points li + li {
+            margin-top: 3px;
+        }
+
+        .step-actions {
+            margin-top: 12px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .jump-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 12px;
+            font-family: inherit;
+            font-size: 0.78rem;
+            font-weight: 600;
+            border-radius: var(--radius-md);
+            border: 1px solid #bfdbfe;
+            background: var(--accent-tint);
+            color: var(--accent);
+            cursor: pointer;
+            transition: background-color 0.12s ease, border-color 0.12s ease, color 0.12s ease;
+        }
+
+        .jump-btn:hover {
+            background: #dbeafe;
+            border-color: #93c5fd;
+        }
+
+        .step-card.is-active .jump-btn.is-last-clicked,
+        .jump-btn.is-last-clicked {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #ffffff;
+        }
+
+        .jump-btn-secondary {
+            border-color: var(--border-hairline);
+            background: var(--bg-subtle);
+            color: var(--text-main);
+        }
+
+        .jump-btn-secondary:hover {
+            background: #e2e8f0;
+            border-color: var(--border-strong);
+        }
+
+        /* Right Phone Column */
+        .phone-column {
+            position: sticky;
+            top: 76px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: center;
+        }
+
+        @media (max-width: 899px) {
+            .phone-column {
+                position: static;
+            }
+        }
+
+        .phone-toolbar {
+            width: 100%;
+            max-width: 416px;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-hairline);
+            border-radius: var(--radius-lg);
+            padding: 10px 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .phone-target-line {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            font-size: 0.76rem;
+        }
+
+        .phone-target-label {
+            color: var(--text-soft);
+            white-space: nowrap;
+        }
+
+        .phone-target-value {
+            font-weight: 700;
+            color: var(--accent);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .phone-toolbar-btns {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .phone-toolbar-btns .btn {
+            flex: 1;
+            min-width: 0;
+            padding: 6px 8px;
+            font-size: 0.74rem;
+        }
+
+        .phone-frame {
+            width: 100%;
+            max-width: 416px;
+            height: min(760px, calc(100vh - 208px));
+            min-height: 540px;
+            background: #ffffff;
+            border: 1px solid var(--border-strong);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 12px 32px -12px rgba(15, 23, 42, 0.16);
+        }
+
+        .phone-frame iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+            display: block;
+            background: #ffffff;
+        }
+
+        .phone-footnote {
+            width: 100%;
+            max-width: 416px;
+            text-align: center;
+            font-size: 0.74rem;
+            color: var(--text-soft);
+        }
+    </style>
+<script src="/_aistudio-iframe.js?v=29045eb3"></script></head>
+<body>
+    <header class="topbar">
+        <div class="topbar-inner">
+            <div class="brand-wrap">
+                <div class="brand-title"><span>INNOWATΞCH</span> Bedienungsanleitung</div>
+                <div class="brand-sub">Version 5.8 · Interaktive PC-Schulung mit Live-App rechts</div>
+            </div>
+            <div class="topbar-actions">
+                <button type="button" class="btn btn-subtle-accent" id="top-btn-dashboard">↺ Startseite</button>
+                <button type="button" class="btn" id="top-btn-settings">⚙️ Zahnrad-Menü</button>
+                <button type="button" class="btn" id="top-btn-darkmode">🌗 Dark Mode</button>
+                <a href="./index.html?demo=1" target="_blank" rel="noopener noreferrer" class="btn btn-primary" id="open-fullscreen-link">↗ Vollbild öffnen</a>
+            </div>
+        </div>
+    </header>
+
+    <div class="mobile-notice">
+        <div class="mobile-notice-box">
+            <strong>Hinweis für schmale Bildschirme:</strong> Diese zweispaltige Bedienungsanleitung ist für PC- und Laptop-Browser gedacht, damit Anleitung (links) und Live-App (rechts) nebeneinander sichtbar sind. Unten finden Sie die interaktive App direkt im Anschluss.
+        </div>
+    </div>
+
+    <main class="workspace">
+        <!-- LINKE SPALTE: INHALTSVERZEICHNIS + CHRONOLOGISCHE ANLEITUNG -->
+        <div class="guide-column">
+            <nav class="chapter-rail" aria-label="Kapitel-Navigation">
+                <h2 class="chapter-rail-title">Kapitel-Übersicht</h2>
+                <ul class="chapter-rail-list">
+                    <li><a href="#kapitel-1" class="chapter-rail-link is-current">1. System &amp; Offline</a></li>
+                    <li><a href="#kapitel-2" class="chapter-rail-link">2. Header &amp; Dashboard</a></li>
+                    <li><a href="#kapitel-3" class="chapter-rail-link">3. Zahnrad-Menü</a></li>
+                    <li><a href="#kapitel-4" class="chapter-rail-link">4. Alle 17 Module</a></li>
+                </ul>
+                <div class="chapter-rail-divider"></div>
+                <div class="chapter-rail-title">Kategorien in Kapitel 4</div>
+                <ul class="chapter-rail-sublist">
+                    <li><a href="#cat-anwendung" class="chapter-rail-sublink"><span class="cat-swatch" style="background:var(--cat-app);"></span>Anwendung (6)</a></li>
+                    <li><a href="#cat-parameter" class="chapter-rail-sublink"><span class="cat-swatch" style="background:var(--cat-param);"></span>Parameter (4)</a></li>
+                    <li><a href="#cat-hilfsmittel" class="chapter-rail-sublink"><span class="cat-swatch" style="background:var(--cat-tools);"></span>Hilfsmittel (5)</a></li>
+                    <li><a href="#cat-checklisten" class="chapter-rail-sublink"><span class="cat-swatch" style="background:var(--cat-check);"></span>Katalog &amp; Checkl. (2)</a></li>
+                </ul>
+            </nav>
+
+            <div class="guide-flow">
+                <section class="hero-card">
+                    <div class="hero-kicker">Einarbeitung &amp; Schulungsleitfaden · Stand v5.8</div>
+                    <h1 class="hero-title">Interaktive Bedienungsanleitung für neue Kollegen</h1>
+                    <p class="hero-desc">
+                        Links lesen und erklären Sie die App Schritt für Schritt in fester Reihenfolge. Rechts läuft die echte <strong>INNOWATΞCH Service Tool</strong> App im sicheren Demo-Modus – jederzeit frei bedienbar.
+                    </p>
+                    <div class="how-it-works-grid">
+                        <div>
+                            <div class="how-step-num">01 · Klicken &amp; Springen</div>
+                            <div class="how-step-title">Einmaliger gezielter Sprung</div>
+                            <div class="how-step-text">Jeder Button links öffnet rechts exakt das erklärte Modul oder Einstellungsfeld und hebt es kurz hervor.</div>
+                        </div>
+                        <div>
+                            <div class="how-step-num">02 · Frei Ausprobieren</div>
+                            <div class="how-step-title">Keine Sperre in der App</div>
+                            <div class="how-step-text">Nach dem Sprung bleibt die App rechts 100 % frei bedienbar: tippen, rechnen, scrollen und spontane Fragen zeigen.</div>
+                        </div>
+                        <div>
+                            <div class="how-step-num">03 · Zurückfinden</div>
+                            <div class="how-step-title">Nächster Klick führt weiter</div>
+                            <div class="how-step-text">Klicken Sie links wieder auf denselben oder den nächsten Punkt – sofort springt die App rechts an die passende Stelle zurück.</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- KAPITEL 1: SYSTEM, PWA & OFFLINE-VERHALTEN -->
+                <section class="chapter-section" id="kapitel-1">
+                    <div class="chapter-header">
+                        <h2 class="chapter-title">1. System, PWA &amp; Offline-Prinzip</h2>
+                        <span class="chapter-meta">Wichtige Grundlagen zuerst</span>
+                    </div>
+                    <p class="chapter-intro">
+                        Bevor Sie ein Modul erklären: Das Service Tool ist keine gewöhnliche Website, sondern eine offlinefähige Progressive Web App (PWA) für Technikräume und Keller ohne Handyempfang.
+                    </p>
+
+                    <article class="step-card" id="card-sys-offline">
+                        <div class="step-card-top">
+                            <h3 class="step-card-title">1.1 · 100 % Offline-Sofortstart im Keller (&lt; 30 ms)</h3>
+                            <span class="step-card-meta">Service Worker · sw.js &amp; media.js</span>
+                        </div>
+                        <p class="step-card-body">
+                            Beim ersten Öffnen legt der Service Worker (<code>sw.js</code>) die komplette App inkl. aller Modulbilder (<code>media.js</code>), Kofferfotos und Radar-Screenshots im Gerätespeicher ab. Im Keller startet das Tool danach sofort aus dem Cache – selbst bei komplettem Funkloch oder „1 Balken ohne Datenfluss“.
+                        </p>
+                        <ul class="step-points">
+                            <li>Synchroner UI-Start ohne Warten aufs Mobilfunknetz.</li>
+                            <li>Harter 1,2-Sekunden-Timeout verhindert ewige Ladekreise bei schwachem Netz.</li>
+                        </ul>
+                        <div class="step-actions">
+                            <button type="button" class="jump-btn" data-guide-action='{"action":"dashboard"}' data-label="Startseite (Dashboard)">▶ Startseite rechts zeigen</button>
+                        </div>
+                    </article>
+
+                    <article class="step-card" id="card-sys-updates">
+                        <div class="step-card-top">
+                            <h3 class="step-card-title">1.2 · Automatische Updates &amp; Datenfluss (users.json / databases.json)</h3>
+                            <span class="step-card-meta">Hintergrund-Sync · Update-Banner</span>
+                        </div>
+                        <p class="step-card-body">
+                            Sobald wieder Internet besteht, prüft die App leise im Hintergrund, ob eine neue Version oder aktualisierte Stammdaten vorliegen:
+                        </p>
+                        <ul class="step-points">
+                            <li><strong><code>users.json</code>:</strong> Techniker-Kürzel, PINs, Namen, E-Mail-Adressen für das Kollegen-Adressbuch und persönliche Modul-Freigaben.</li>
+                            <li><strong><code>databases.json</code>:</strong> Aktuelle Messsonden (11), Enthärtertypen (11), Aquadron-Anlagen (47) und Servicekoffer-Artikel (162).</li>
+                            <li><strong>Neue App-Version:</strong> Erscheint automatisch als Banner oben (<em>„Jetzt aktualisieren“</em>) bzw. als kleiner Button in der Fußzeile – einmal tippen übernimmt die neue Version ohne Neuinstallation.</li>
+                        </ul>
+                    </article>
+
+                    <article class="step-card is-warning" id="card-sys-warning">
+                        <div class="step-card-top">
+                            <h3 class="step-card-title">1.3 · Wichtig: Browser-Cache &amp; App-Daten NIEMALS löschen!</h3>
+                            <span class="step-card-meta">Datenschutz &amp; Offline-Sicherheit</span>
+                        </div>
+                        <p class="step-card-body">
+                            Löschen Sie in den Smartphone- oder Browser-Einstellungen niemals leichtfertig <em>„Browserdaten / Websitedaten / Cache leeren“</em> für die App-Domain!
+                        </p>
+                        <ul class="step-points">
+                            <li><strong>Folge 1:</strong> Alle lokal gespeicherten <strong>Service-Notizen</strong>, Ihr <strong>Kunden- &amp; Eigennotizen-Archiv</strong> sowie zwischengespeicherte <strong>Enthärtertausch-Aufnahmen</strong> gehen unwiederbringlich verloren.</li>
+                            <li><strong>Folge 2:</strong> Ihre persönliche Dashboard-Sortierung, angepinnte Tabs (📌) und Einstellungen werden zurückgesetzt.</li>
+                            <li><strong>Folge 3:</strong> Im Keller ohne Internet lässt sich die App danach nicht mehr neu aus dem Cache laden. Für Updates ausschließlich das eingebaute Update-Banner nutzen.</li>
+                        </ul>
+                    </article>
+                </section>
+
+                <!-- KAPITEL 2: KOPFZEILE, STARTSEITE & NAVIGATION -->
+                <section class="chapter-section" id="kapitel-2">
+                    <div class="chapter-header">
+                        <h2 class="chapter-title">2. Kopfzeile, Startseite (Dashboard) &amp; Navigation</h2>
+                        <span class="chapter-meta">Orientierung in 30 Sekunden</span>
+                    </div>
+                    <p class="chapter-intro">
+                        Nach der Anmeldung mit Kürzel &amp; PIN landet jeder Techniker standardmäßig auf dem aufgeräumten Dashboard im 3er-Kompaktraster.
+                    </p>
+
+                    <article class="step-card" id="card-nav-header">
+                        <div class="step-card-top">
+                            <h3 class="step-card-title">2.1 · Kopfzeile, Techniker-Kürzel &amp; Netzstatus-Anzeige</h3>
+                            <span class="step-card-meta">Kopf- &amp; Fußzeile</span>
+                        </div>
+                        <p class="step-card-body">
+                            Oben zeigt die App das aktive Techniker-Kürzel (rechts im Demo-Modus <code>DEMO</code>). Unten in der Fußzeile zeigt <code>● Online</code> bzw. <code>○ Schwaches Netz</code> sofort, ob eine Netzverbindung besteht (wichtig z. B. für Diktierfunktion oder E-Mail-Versand) und welche Version installiert ist.
+                        </p>
+                        <div class="step-actions">
+                            <button type="button" class="jump-btn" data-guide-action='{"action":"dashboard","targetSelector":"#net-status-badge"}' data-label="Netzstatus in Fußzeile">▶ Netzstatus unten hervorheben</button>
+                        </div>
+                    </article>
+
+                    <article class="step-card" id="card-nav-dashboard">
+                        <div class="step-card-top">
+                            <h3 class="step-card-title">2.2 · Die 4 farbcodierten Kategorien auf dem Dashboard</h3>
+                            <span class="step-card-meta">Blau · Grün · Gelb · Rot</span>
+                        </div>
+                        <p class="step-card-body">
+                            Alle 17 Module sind nach Einsatzbereich sortiert: <strong>Anwendungen</strong> (Blau: Dosier- und Anlagenrechner), <strong>Parameter</strong> (Grün: Datenbanken &amp; Radarsensor), <strong>Hilfsmittel</strong> (Gelb: Baustellentools &amp; Notizen) sowie <strong>Katalog &amp; Checklisten</strong> (Rot: Servicekoffer &amp; Enthärtertausch).
+                        </p>
+                        <div class="step-actions">
+                            <button type="button" class="jump-btn" data-guide-action='{"action":"dashboard"}' data-label="Dashboard Übersicht">▶ Dashboard komplett zeigen</button>
+                        </div>
+                    </article>
+
+                    <article class="step-card" id="card-nav-back-pin">
+                        <div class="step-card-top">
+                            <h3 class="step-card-title">2.3 · Zurück-Leiste, Top-Reset (↺ / ➕ / 🗑️) &amp; Tab-Pinning (📌)</h3>
+                            <span class="step-card-meta">Schnellwechsel im Einsatz</span>
+                        </div>
+                        <p class="step-card-body">
+                            Sobald Sie ein Modul öffnen, erscheint oben die Leiste <strong>⬅️ Zurück zur Übersicht</strong> mit dem kompakten Reset-/Neu-Button direkt daneben (je nach Modul <code>↺ Zurücksetzen</code>, <code>➕ Neu</code> oder <code>🗑️ Leeren</code>). Mit dem <strong>📌-Button</strong> oben rechts heften Sie bis zu <strong>5 häufig genutzte Module</strong> dauerhaft als Schnellleiste an.
+                        </p>
+                        <div class="step-actions">
+                            <button type="button" class="jump-btn" data-guide-action='{"action":"tab","tabId":"standard","highlightSelector":"#dashboard-back-bar"}' data-label="Zurück-Leiste & Top-Reset">▶ Zurück-Leiste &amp; Reset zeigen</button>
+                            <button type="button" class="jump-btn jump-btn-secondary" data-guide-action='{"action":"tab","tabId":"standard","highlightSelector":"#pin-tab-btn"}' data-label="Pin-Button (📌)">▶ Pin-Button (📌) zeigen</button>
+                        </div>
+                    </article>
+
+                    <article class="step-card" id="card-nav-slider">
+                        <div class="step-card-top">
+                            <h3 class="step-card-title">2.4 · Alternative Navigation: Die Schiebeleiste</h3>
+                            <span class="step-card-meta">Umschaltbar im Zahnrad-Menü</span>
+                        </div>
+                        <p class="step-card-body">
+                            Wer lieber horizontal zwischen Modulen wischt statt über das Dashboard zu gehen, kann im Zahnrad-Menü auf <em>„Schiebeleiste“</em> umstellen. Alle Module bleiben exakt gleich – nur die Navigation oben ändert sich.
+                        </p>
+                        <div class="step-actions">
+                            <button type="button" class="jump-btn" data-guide-action='{"action":"slider","tabId":"standard","targetSelector":"#tab-bar-wrapper"}' data-label="Schiebeleiste testen">▶ Schiebeleiste rechts testen</button>
+                            <button type="button" class="jump-btn jump-btn-secondary" data-guide-action='{"action":"dashboard"}' data-label="Dashboard (Standard)">▶ Zurück zum Dashboard</button>
+                        </div>
+                    </article>
+                </section>
+
+                <!-- KAPITEL 3: ZAHNRAD-MENÜ (EINSTELLUNGEN) -->
+                <section class="chapter-section" id="kapitel-3">
+                    <div class="chapter-header">
+                        <h2 class="chapter-title">3. Zahnrad-Menü (⚙️ Einstellungen) Schritt für Schritt</h2>
+                        <span class="chapter-meta">Persönliche Anpassung pro Gerät</span>
+                    </div>
+                    <p class="chapter-intro">
+                        Über das Zahnrad oben rechts passt jeder Kollege Optik, Komfort und Reihenfolge der Kacheln auf sein eigenes Smartphone an. Alle Punkte öffnen rechts auf Klick automatisch den passenden Abschnitt.
+                    </p>
+
+                    <article class="step-card" id="card-set-appearance">
+                        <div class="step-card-top">
+                            <h3 class="step-card-title">3.1 · Erscheinungsbild &amp; Icons</h3>
+                            <span class="step-card-meta">Dunkelmodus · Optik · Raster</span>
+                        </div>
+                        <p class="step-card-body">
+                            Hier stellen Sie den <strong>Dunkelmodus</strong> für dunkle Technikräume, drei <strong>Optik-Profile</strong> (<em>Klassik</em>, <em>Hochkontrast</em>, <em>Monochrom</em>), die <strong>Startansicht</strong> (<em>Dashboard</em> vs. <em>Schiebeleiste</em>), die <strong>Kacheldichte</strong> (<em>3er-Kompaktraster</em> vs. <em>2er-Großraster</em>) sowie die Sichtbarkeit von Icons ein.
+                        </p>
+                        <div class="step-actions">
+                            <button type="button" class="jump-btn" data-guide-action='{"action":"settings","sectionIndex":0}' data-label="Einstellungen: Erscheinungsbild">▶ Erscheinungsbild öffnen</button>
+                            <button type="button" class="jump-btn jump-btn-secondary" id="btn-card-darkmode" data-label="Dark Mode umschalten">🌗 Dark Mode umschalten</button>
+                        </div>
+                    </article>
+
+                    <article class="step-card" id="card-set-comfort">
+                        <div class="step-card-top">
+                            <h3 class="step-card-title">3.2 · Komfort, Timer &amp; E-Mail-Trennzeichen</h3>
+                            <span class="step-card-meta">Wake Lock · Signalton · Outlook/Handy</span>
+                        </div>
+                        <ul class="step-points">
+                            <li><strong>Display wach halten (Wake Lock):</strong> Verhindert beim Auslitern oder Checklisten-Ausfüllen das automatische Abschalten des Handy-Displays.</li>
+                            <li><strong>Signalton bei Timer-Ende:</strong> Akustischer Piepton nach Ablauf der Ausliter-Stoppuhr (funktioniert 100 % offline über Web Audio).</li>
+                            <li><strong>Rechner-Eingaben nach Neustart merken:</strong> Standardmäßig AUS; Service-Notizen bleiben unabhängig davon immer gespeichert.</li>
+                            <li><strong>E-Mail-Trennzeichen:</strong> Standardmäßig <em>Automatisch</em> (Handy iOS/Android nutzt Komma <code>,</code>, Windows-Outlook automatisch Semikolon <code>;</code>) – bei Bedarf fest umstellbar.</li>
+                        </ul>
+                        <div class="step-actions">
+                            <button type="button" class="jump-btn" data-guide-action='{"action":"settings","sectionIndex":1,"focusSelector":"#mail-sep-select"}' data-label="Einstellungen: Komfort & Timer">▶ Komfort &amp; Mail-Trennzeichen zeigen</button>
+                        </div>
+                    </article>
+
+                    <article class="step-card" id="card-set-zoom">
+                        <div class="step-card-top">
+                            <h3 class="step-card-title">3.3 · Darstellungsgröße (70 % – 120 %)</h3>
+                            <span class="step-card-meta">Stufenloser Zoom-Regler</span>
+                        </div>
+                        <p class="step-card-body">
+                            Passt Schrift- und Bedienfeldgröße stufenlos an das eigene Smartphone-Display an – von kompakter Übersicht (70 %) bis zu extra großer Schrift (120 %).
+                        </p>
+                        <div class="step-actions">
+                            <button type="button" class="jump-btn" data-guide-action='{"action":"settings","sectionIndex":2,"focusSelector":"#zoom-slider"}' data-label="Einstellungen: Darstellungsgröße">▶ Zoom-Regler zeigen</button>
+                        </div>
+                    </article>
+
+                    <article class="step-card" id="card-set-catorder">
+                        <div class="step-card-top">
+                            <h3 class="step-card-title">3.4 · Reihenfolge der Kategorien (☰ halten &amp; ziehen)</h3>
+                            <span class="step-card-meta">Synchron für Dashboard &amp; Schiebeleiste</span>
+                        </div>
+                        <p class="step-card-body">
+                            Wer z. B. <em>Hilfsmittel</em> oder <em>Katalog &amp; Checklisten</em> ganz oben sehen möchte, hält das <strong>☰-Symbol</strong> gedrückt und zieht die Kategorie an die gewünschte Position.
+                        </p>
+                        <div class="step-actions">
+                            <button type="button" class="jump-btn" data-guide-action='{"action":"settings","sectionIndex":3,"focusSelector":"#category-order-list"}' data-label="Einstellungen: Kategorien sortieren">▶ Kategorie-Sortierung zeigen</button>
+                        </div>
+                    </article>
+
+                    <article class="step-card" id="card-set-modules">
+                        <div class="step-card-top">
+                            <h3 class="step-card-title">3.5 · Module sortieren, ausblenden &amp; wieder aktivieren</h3>
+                            <span class="step-card-meta">4 Kategorien + Inaktive Module</span>
+                        </div>
+                        <p class="step-card-body">
+                            Innerhalb jeder Kategorie lassen sich einzelne Kacheln per <strong>☰</strong> umsortieren oder per Häkchen vorübergehend in den Bereich <em>„Inaktive Module“</em> verschieben, um den Startbildschirm noch schlanker zu halten.
+                        </p>
+                        <div class="step-actions">
+                            <button type="button" class="jump-btn" data-guide-action='{"action":"settings","sectionIndex":4}' data-label="Einstellungen: Anwendung">▶ Anwendung</button>
+                            <button type="button" class="jump-btn jump-btn-secondary" data-guide-action='{"action":"settings","sectionIndex":5}' data-label="Einstellungen: Parameter">▶ Parameter</button>
+                            <button type="button" class="jump-btn jump-btn-secondary" data-guide-action='{"action":"settings","sectionIndex":6}' data-label="Einstellungen: Hilfsmittel">▶ Hilfsmittel</button>
+                            <button type="button" class="jump-btn jump-btn-secondary" data-guide-action='{"action":"settings","sectionIndex":7}' data-label="Einstellungen: Checklisten">▶ Checklisten</button>
+                            <button type="button" class="jump-btn jump-btn-secondary" data-guide-action='{"action":"settings","sectionIndex":8}' data-label="Einstellungen: Inaktive Module">▶ Inaktive</button>
+                        </div>
+                    </article>
+                </section>
+
+                <!-- KAPITEL 4: ALLE 17 MODULE CHRONOLOGISCH -->
+                <section class="chapter-section" id="kapitel-4">
+                    <div class="chapter-header">
+                        <h2 class="chapter-title">4. Alle 17 Module in Dashboard-Reihenfolge</h2>
+                        <span class="chapter-meta">Von oben nach unten · Komplett-Durchgang</span>
+                    </div>
+                    <p class="chapter-intro">
+                        Folgen Sie in der Schulung einfach dieser exakten Reihenfolge. Jeder Klick auf <em>„▶ Modul rechts öffnen“</em> springt direkt in die jeweilige Funktion – rechts können Sie sofort Testwerte eintippen.
+                    </p>
+
+                    <!-- KATEGORIE 1: ANWENDUNG (BLAU) -->
+                    <div class="category-divider" id="cat-anwendung">
+                        <h3 class="category-heading" style="color:var(--cat-app);">
+                            <span class="cat-swatch" style="background:var(--cat-app); width:10px; height:10px;"></span>
+                            Kategorie 1 · Anwendung (Blau)
+                        </h3>
+                        <span class="category-count">Module 1 – 6</span>
+                    </div>
+
+                    <article class="step-card" id="mod-standard">
+                        <div class="step-card-top">
+                            <h3 class="step-card-title">4.1 · Trinkwasser (Standard-Dosierung)</h3>
+                            <span class="step-card-meta">Kategorie Anwendung · Blau · Modul 1 von 17</span>
+                        </div>
+                        <p class="step-card-body">
+                            Berechnet die benötigte Anolyte-Impfmenge in <strong>ml</strong> je Wasserzähler-Kontakt aus Zielkonzentration (mg/l), Zehrungszuschlag, Wasserzählertaktung (Liter pro Impuls) und der gemessenen Anolytekonzentration.
+                        </p>
+                        <div class="step-actions">
+                            <button type="button" class="jump-btn" data-guide-action='{"action":"tab","tabId":"standard"}' data-label="Modul: Trinkwasser">▶ Modul rechts öffnen</button>
+                        </div>
+                    </article>
+
+                    <article class="step-card" id="mod-wasserwerk">
+                        <div class="step-card-top">
+                            <h3 class="step-card-title">4.2 · Wasserwerk</h3>
+                            <span class="step-card-meta">Kategorie Anwendung · Blau · Modul 2 von 17</span>
+                        </div>
+                        <p class="step-card-body">
+                            Für größere Fördermengen: Rechnet Durchflusswerte (<code>l/s</code>, <code>m³/h</code> und <code>m³/Tag</code> bei eingegebenen Betriebsstunden) gekoppelt um und liefert Tagesbedarf (Liter/Tag), Impfmenge pro Kontakt (ml/Hub), spezifischen Bedarf (l/m³) sowie die 20-mA-Pumpenauslegung.
+                        </p>
+                        <div class="step-actions">
+                            <button type="button" class="jump-btn" data-guide-action='{"action":"tab","tabId":"wasserwerk"}' data-label="Modul: Wasserwerk">▶ Modul rechts öffnen</button>
+                        </div>
+                    </article>
+
+                    <article class="step-card" id="mod-schwimmbad">
+                        <div class="step-card-top">
+                            <h3 class="step-card-title">4.3 · Schwimmbad (Chlor- &amp; pH-Korrektur)</h3>
+                            <span class="step-card-meta">Kategorie Anwendung · Blau · Modul 3 von 17</span>
+                        </div>
+                        <p class="step-card-body">
+                            Ermittelt aus Beckenlänge/-breite/-tiefe das Volumen und berechnet anschließend getrennt die exakte Zugabemenge für Chlor (Flüssigchlor/Anolyte in Litern oder Calciumhypochlorit-Granulat in kg) sowie pH-Heber/-Senker unter Berücksichtigung von Alkalinität und Säurekonzentration.
+                        </p>
+                        <div class="step-actions">
+                            <button type="button" class="jump-btn" data-guide-action='{"action":"tab","tabId":"schwimmbad"}' data-label="Modul: Schwimmbad">▶ Modul rechts öffnen</button>
+                        </div>
+                    </article>
+
+                    <article class="step-card" id="mod-pid">
+                        <div class="step-card-top">
+                            <h3 class="step-card-title">4.4 · PID-Regler &amp; Hauptleitungs-Rückrechnung</h3>
+                            <span class="step-card-meta">Kategorie Anwendung · Blau · Modul 4 von 17</span>
+                        </div>
+                        <p class="step-card-body">
+                            Unterstützt die Einregulierung von Warmwasser- (Zirkulation) und Kaltwasser-Systemen (inkl. Vorwahl-Empfehlung für den Grunddosierabstand von 0,075 mg/l). Über eine Testdosierung und den gemessenen Chloranstieg (<code>ΔY</code>) rechnet das Modul den realen Hauptleitungs-Durchfluss in <code>l/s</code> und <code>m³/h</code> zurück.
+                        </p>
+                        <div class="step-actions">
+                            <button type="button" class="jump-btn" data-guide-action='{"action":"tab","tabId":"pid"}' data-label="Modul: PID-Regler">▶ Modul rechts öffnen</button>
+                        </div>
+                    </article>
+
+                    <article class="step-card" id="mod-verduennung">
+                        <div class="step-card-top">
+                            <h3 class="step-card-title">4.5 · Verdünnung</h3>
+                            <span class="step-card-meta">Kategorie Anwendung · Blau · Modul 5 von 17</span>
+                        </div>
+                        <p class="step-card-body">
+                            Berechnet für Vorlagebehälter oder Testansätze das exakte Mischungsverhältnis aus Ausgangs-Anolytekonzentration, gewünschter Zielkonzentration und Gesamtansatzmenge – ausgegeben als Liter Konzentrat plus Liter Verdünnungswasser.
+                        </p>
+                        <div class="step-actions">
+                            <button type="button" class="jump-btn" data-guide-action='{"action":"tab","tabId":"verdünnung"}' data-label="Modul: Verdünnung">▶ Modul rechts öffnen</button>
+                        </div>
+                    </article>
+
+                    <article class="step-card" id="mod-dosierauswertung">
+                        <div class="step-card-top">
+                            <h3 class="step-card-title">4.6 · Dosierauswertung (Ist-vs.-Soll-Abgleich)</h3>
+                            <span class="step-card-meta">Kategorie Anwendung · Blau · Modul 6 von 17</span>
+                        </div>
+                        <p class="step-card-body">
+                            Vergleicht alte und neue Zählerstände von Wasserzähler (m³) und Pumpen-Mengensummierung (l). Optional mit Datum alt/neu für automatische Tageswerte (<code>m³/Tag</code> und <code>l/Tag</code>). Zeigt reale Dosierquote (%), real eindosiertes Aktivchlor (mg/l), Verhältnis zum Sollwert inkl. Plausibilitäts-Hinweis (Unter-/Überdosierung) und übernimmt das Ergebnis per Klick in die Service-Notizen.
+                        </p>
+                        <div class="step-actions">
+                            <button type="button" class="jump-btn" data-guide-action='{"action":"tab","tabId":"dosierauswertung"}' data-label="Modul: Dosierauswertung">▶ Modul rechts öffnen</button>
+                        </div>
+                    </article>
+
+                    <!-- KATEGORIE 2: PARAMETER (GRÜN) -->
+                    <div class="category-divider" id="cat-parameter">
+                        <h3 class="category-heading" style="color:var(--cat-param);">
+                            <span class="cat-swatch" style="background:var(--cat-param); width:10px; height:10px;"></span>
+                            Kategorie 2 · Parameter (Grün)
+                        </h3>
+                        <span class="category-count">Module 7 – 10</span>
+                    </div>
+
+                    <article class="step-card" id="mod-sonden">
+                        <div class="step-card-top">
+                            <h3 class="step-card-title">4.7 · Sonden-Datenbank (11 Messsonden)</h3>
+                            <span class="step-card-meta">Kategorie Parameter · Grün · Modul 7 von 17</span>
+                        </div>
+                        <p class="step-card-body">
+                            Nachschlagewerk für alle eingesetzten Chlor-, pH-, Redox- und Leitfähigkeitssonden aus <code>databases.json</code> – mit Messbereich, Ausgangssignal, Einbau-/Kalibrierhinweisen und Artikelnummern direkt vor Ort.
+                        </p>
+                        <div class="step-actions">
+                            <button type="button" class="jump-btn" data-guide-action='{"action":"tab","tabId":"sonden"}' data-label="Modul: Sonden">▶ Modul rechts öffnen</button>
+                        </div>
+                    </article>
+
+                    <article class="step-card" id="mod-anlagen">
+                        <div class="step-card-top">
+                            <h3 class="step-card-title">4.8 · Aquadron-Anlagen (47 Anlagentypen)</h3>
+                            <span class="step-card-meta">Kategorie Parameter · Grün · Modul 8 von 17</span>
+                        </div>
+                        <p class="step-card-body">
+                            Vollständige Übersicht aller 47 Aquadron-Baugrößen mit Nennleistung, Zellenzahl, Salz-/Wasserverbrauch, Druckbereichen und technischen Eckdaten – jederzeit offline abrufbar.
+                        </p>
+                        <div class="step-actions">
+                            <button type="button" class="jump-btn" data-guide-action='{"action":"tab","tabId":"anlagen"}' data-label="Modul: Aquadron-Anlagen">▶ Modul rechts öffnen</button>
+                        </div>
+                    </article>
+
+                    <article class="step-card" id="mod-radar">
+                        <div class="step-card-top">
+                            <h3 class="step-card-title">4.9 · Vega Radarsensor (VEGAPULS Tank-Parametrierung)</h3>
+                            <span class="step-card-meta">Kategorie Parameter · Grün · Modul 9 von 17</span>
+                        </div>
+                        <p class="step-card-body">
+                            Schritt-für-Schritt-Einrichtung für VEGAPULS Radarsensoren am Vorlagetank: Nach Tankwahl (nur Litervolumen) erscheinen direkt die exakten Parameter inkl. separatem Feld <strong>Tankdurchmesser (Ø)</strong> in mm. Jeder Schritt enthält originale App-Screenshots mit 2-Finger-Zoom.
+                        </p>
+                        <div class="step-actions">
+                            <button type="button" class="jump-btn" data-guide-action='{"action":"tab","tabId":"radar"}' data-label="Modul: Vega Radarsensor">▶ Modul rechts öffnen</button>
+                            <button type="button" class="jump-btn jump-btn-secondary" data-guide-action='{"action":"tab","tabId":"radar","targetSelector":"#vega-step-card-3"}' data-label="Vega Schritt 4 (Abgleich 0%/100%)">▶ Direkt zu Schritt 4 (Abgleich 0% / 100%)</button>
+                        </div>
+                    </article>
+
+                    <article class="step-card" id="mod-enthaerter">
+                        <div class="step-card-top">
+                            <h3 class="step-card-title">4.10 · Enthärter (80-%-Nutzkapazität &amp; Laufzeit)</h3>
+                            <span class="step-card-meta">Kategorie Parameter · Grün · Modul 10 von 17</span>
+                        </div>
+                        <p class="step-card-body">
+                            Berechnet aus dem gewählten Enthärtermodell (11 Typen aus <code>databases.json</code>) und der gemessenen Rohwasserhärte (<code>°dH</code>) die verfügbare 80-%-Nutzkapazität (Quellharz-Sensor) sowie die exakt enthärtete Wassermenge in Litern/m³ bis zur nächsten Regeneration.
+                        </p>
+                        <div class="step-actions">
+                            <button type="button" class="jump-btn" data-guide-action='{"action":"tab","tabId":"enthaerter"}' data-label="Modul: Enthärter">▶ Modul rechts öffnen</button>
+                        </div>
+                    </article>
+
+                    <!-- KATEGORIE 3: HILFSMITTEL (GELB) -->
+                    <div class="category-divider" id="cat-hilfsmittel">
+                        <h3 class="category-heading" style="color:var(--cat-tools);">
+                            <span class="cat-swatch" style="background:var(--cat-tools); width:10px; height:10px;"></span>
+                            Kategorie 3 · Hilfsmittel (Gelb)
+                        </h3>
+                        <span class="category-count">Module 11 – 15</span>
+                    </div>
+
+                    <article class="step-card" id="mod-taschenlampe">
+                        <div class="step-card-top">
+                            <h3 class="step-card-title">4.11 · Taschenlampe (Vollbild-Displaylicht)</h3>
+                            <span class="step-card-meta">Kategorie Hilfsmittel · Gelb · Modul 11 von 17</span>
+                        </div>
+                        <p class="step-card-body">
+                            Schaltet blitzschnell eine extrem helle Leuchtfläche ein, um im dunklen Schaltschrank oder hinter der Anlage ohne Verlassen der App Licht zu haben.
+                        </p>
+                        <div class="step-actions">
+                            <button type="button" class="jump-btn" data-guide-action='{"action":"tab","tabId":"taschenlampe"}' data-label="Modul: Taschenlampe">▶ Modul rechts öffnen</button>
+                        </div>
+                    </article>
+
+                    <article class="step-card" id="mod-schlauchvolumen">
+                        <div class="step-card-top">
+                            <h3 class="step-card-title">4.12 · Schlauchvolumen &amp; Vorpumpzeit</h3>
+                            <span class="step-card-meta">Kategorie Hilfsmittel · Gelb · Modul 12 von 17</span>
+                        </div>
+                        <p class="step-card-body">
+                            Berechnet aus Innendurchmesser (mm) und Schlauchlänge (m) den exakten Inhalt in <strong>Litern</strong> (sowie <code>l/m</code>). Mit optionaler Pumpenleistung (l/h) zeigt das Tool sofort die Vorpumpzeit bis zum Impfpunkt.
+                        </p>
+                        <div class="step-actions">
+                            <button type="button" class="jump-btn" data-guide-action='{"action":"tab","tabId":"schlauchvolumen"}' data-label="Modul: Schlauchvolumen">▶ Modul rechts öffnen</button>
+                        </div>
+                    </article>
+
+                    <article class="step-card" id="mod-auslitern">
+                        <div class="step-card-top">
+                            <h3 class="step-card-title">4.13 · Auslitern (Messbecher &amp; Stoppuhr)</h3>
+                            <span class="step-card-meta">Kategorie Hilfsmittel · Gelb · Modul 13 von 17</span>
+                        </div>
+                        <p class="step-card-body">
+                            Praxiswerkzeug zum Überprüfen realer Dosierpumpen-Leistungen: Auswahl zwischen <em>Katholyte</em>, <em>Anolyte</em> oder <em>Beides</em>, eingebauter Timer mit Presets (<strong>15 s / 30 s / 60 s</strong>) inkl. Offline-Signalton und automatischer Hochrechnung auf <code>l/h</code>.
+                        </p>
+                        <div class="step-actions">
+                            <button type="button" class="jump-btn" data-guide-action='{"action":"tab","tabId":"auslitern"}' data-label="Modul: Auslitern">▶ Modul rechts öffnen</button>
+                        </div>
+                    </article>
+
+                    <article class="step-card" id="mod-notizen">
+                        <div class="step-card-top">
+                            <h3 class="step-card-title">4.14 · Service-Notizen, Diktat, PDF &amp; Hotline-Mail</h3>
+                            <span class="step-card-meta">Kategorie Hilfsmittel · Gelb · Modul 14 von 17</span>
+                        </div>
+                        <p class="step-card-body">
+                            Das zentrale Einsatzprotokoll auf der Baustelle – bleibt lokal immer gespeichert:
+                        </p>
+                        <ul class="step-points">
+                            <li><strong>8 Schnellbausteine + ⏱️ Zeitstempel:</strong> Fügen Mitarbeiterkürzel, Kunde, SN, Einsatzgrund, Ersatzteile, Angebote oder Nachorder sauber strukturiert ein.</li>
+                            <li><strong>🎙️ Diktieren &amp; 🧰 Koffer-Teil wählen:</strong> Spracheingabe (bei Netzverbindung) sowie direkte Übernahme fehlender/verbauter Artikel aus dem Servicekoffer.</li>
+                            <li><strong>PDF-Berichtskopf &amp; E-Mail:</strong> Optionaler Berichtskopf für ungekürzten PDF-Druck sowie direkter Mailversand an <code>service-hotline@innowatech.de</code> (im Demo-Modus hier rechts sicher als Vorschau simuliert).</li>
+                        </ul>
+                        <div class="step-actions">
+                            <button type="button" class="jump-btn" data-guide-action='{"action":"tab","tabId":"notizen"}' data-label="Modul: Service-Notizen">▶ Modul rechts öffnen</button>
+                        </div>
+                    </article>
+
+                    <article class="step-card" id="mod-kundennotizen">
+                        <div class="step-card-top">
+                            <h3 class="step-card-title">4.15 · Kunden- &amp; Eigennotizen (Archiv &amp; Kollegen-Verteiler)</h3>
+                            <span class="step-card-meta">Kategorie Hilfsmittel · Gelb · Modul 15 von 17</span>
+                        </div>
+                        <p class="step-card-body">
+                            Separates Notizbuch für Kundennotizen, Eigennotizen, Wartungshinweise, To-Dos/Rückrufe und Materialbestellungen. Bietet ein eigenes durchsuchbares Lokalarchiv mit Typ-Filter, PDF-Druck sowie An/CC-Versand direkt an gespeicherte Kollegen aus <code>users.json</code> (mit hervorgehobener Option <em>„An mich“</em>).
+                        </p>
+                        <div class="step-actions">
+                            <button type="button" class="jump-btn" data-guide-action='{"action":"tab","tabId":"kundennotizen"}' data-label="Modul: Kunden- & Eigennotizen">▶ Modul rechts öffnen</button>
+                        </div>
+                    </article>
+
+                    <!-- KATEGORIE 4: KATALOG & CHECKLISTEN (ROT) -->
+                    <div class="category-divider" id="cat-checklisten">
+                        <h3 class="category-heading" style="color:var(--cat-check);">
+                            <span class="cat-swatch" style="background:var(--cat-check); width:10px; height:10px;"></span>
+                            Kategorie 4 · Katalog &amp; Checklisten (Rot)
+                        </h3>
+                        <span class="category-count">Module 16 – 17</span>
+                    </div>
+
+                    <article class="step-card" id="mod-koffer">
+                        <div class="step-card-top">
+                            <h3 class="step-card-title">4.16 · Servicekoffer (6 L-Boxen · 162 Teile · Bidirektional)</h3>
+                            <span class="step-card-meta">Kategorie Katalog &amp; Checklisten · Rot · Modul 16 von 17</span>
+                        </div>
+                        <p class="step-card-body">
+                            Enthält alle 6 Servicekoffer mit offline eingebetteten Originalfotos und Suchfunktion. Besonders praktisch in beide Richtungen:
+                        </p>
+                        <ul class="step-points">
+                            <li><strong>Oben → Unten:</strong> Nummer im Kofferfoto antippen markiert den zugehörigen Artikel gelb in der Liste.</li>
+                            <li><strong>Unten → Oben:</strong> Artikel oder <em>„📍 Fach X“</em> antippen markiert das Fach direkt gelb im Foto (inkl. Pinch-to-Zoom).</li>
+                            <li><strong>Nachorder / Verbaut:</strong> Über das Mengenfenster (+ / − / 1–10) sauber formatiert in die Service-Notizen übernehmen.</li>
+                        </ul>
+                        <div class="step-actions">
+                            <button type="button" class="jump-btn" data-guide-action='{"action":"tab","tabId":"koffer"}' data-label="Modul: Servicekoffer">▶ Modul rechts öffnen</button>
+                        </div>
+                    </article>
+
+                    <article class="step-card" id="mod-enthaertertausch">
+                        <div class="step-card-top">
+                            <h3 class="step-card-title">4.17 · Checkliste Enthärtertausch (Aufnahme, PDF &amp; Verteiler)</h3>
+                            <span class="step-card-meta">Kategorie Katalog &amp; Checklisten · Rot · Modul 17 von 17</span>
+                        </div>
+                        <p class="step-card-body">
+                            Komplette Baustellenaufnahme für den Enthärtertausch: Stammdaten, 14 Enthärtertypen inkl. Artikelnummer &amp; kalkulatorischem Zeitaufwand, Kabinett-/Schlauch-/Panzerschlauch-/Schwimmerlanzen-Auswahl (inkl. freier <em>„Sonstiges“</em>-Eingabe) sowie 3 Turbinenfotos (100041, 109012, 103547) plus Option <em>„Ohne“</em>.
+                        </p>
+                        <ul class="step-points">
+                            <li>Mehrere Aufnahmen lokal speichern &amp; laden (über <code>➕ Neu</code> oben sauber neu anlegen).</li>
+                            <li>Drucksicheres PDF (<em>Aufnahme Enthärtertausch - Kunde.pdf</em>) mit INNOWATΞCH-Blau-Markierungen auch in S/W klar lesbar.</li>
+                            <li>Separater E-Mail-Verteiler für den Innendienst (einzeln abwählbar, automatisch mit <code>,</code> am Handy oder <code>;</code> am Windows-PC).</li>
+                        </ul>
+                        <div class="step-actions">
+                            <button type="button" class="jump-btn" data-guide-action='{"action":"tab","tabId":"enthaertertausch"}' data-label="Modul: Checkliste Enthärtertausch">▶ Modul rechts öffnen</button>
+                        </div>
+                    </article>
+                </section>
+            </div>
+        </div>
+
+        <!-- RECHTE SPALTE: LIVE-APP IM DEMO-MODUS -->
+        <aside class="phone-column" aria-label="Interaktive App-Vorschau">
+            <div class="phone-toolbar">
+                <div class="phone-target-line">
+                    <span class="phone-target-label">Aktiver Sprungpunkt:</span>
+                    <span class="phone-target-value" id="current-jump-label">Startseite (Dashboard)</span>
+                </div>
+                <div class="phone-toolbar-btns">
+                    <button type="button" class="btn" id="frame-btn-dashboard">↺ Dashboard</button>
+                    <button type="button" class="btn" id="frame-btn-settings">⚙️ Einstellungen</button>
+                    <button type="button" class="btn" id="frame-btn-dark">🌗 Dunkel</button>
+                </div>
+            </div>
+
+            <div class="phone-frame">
+                <iframe id="guide-app-iframe" title="INNOWATΞCH Service Tool v5.8 Live-Demo"></iframe>
+            </div>
+
+            <div class="phone-footnote">
+                Demo-Modus aktiv · App rechts bleibt jederzeit frei bedienbar · E-Mails werden nicht versendet
+            </div>
+        </aside>
+    </main>
+
+    <script>
+        (function () {
+            const isPreviewHost = /(^|\.)run\.app$|localhost|127\.0\.0\.1|webcontainer/i.test(window.location.hostname);
+            const appUrl = isPreviewHost ? './index_V5.1_kompakt.html?demo=1' : './index.html?demo=1';
+
+            const iframe = document.getElementById('guide-app-iframe');
+            const fullLink = document.getElementById('open-fullscreen-link');
+            const statusLabel = document.getElementById('current-jump-label');
+
+            if (iframe) iframe.src = appUrl;
+            if (fullLink) fullLink.href = appUrl;
+
+            let demoDarkMode = false;
+            let pendingAction = null;
+
+            function postToApp(payload, labelText, triggerBtn) {
+                if (labelText && statusLabel) {
+                    statusLabel.textContent = labelText;
+                }
+                document.querySelectorAll('.step-card.is-active').forEach(card => card.classList.remove('is-active'));
+                document.querySelectorAll('.jump-btn.is-last-clicked').forEach(btn => btn.classList.remove('is-last-clicked'));
+
+                if (triggerBtn) {
+                    triggerBtn.classList.add('is-last-clicked');
+                    const parentCard = triggerBtn.closest('.step-card');
+                    if (parentCard) parentCard.classList.add('is-active');
+                }
+
+                const message = Object.assign({ source: 'innowatech-guide' }, payload);
+                if (iframe && iframe.contentWindow) {
+                    try {
+                        iframe.contentWindow.postMessage(message, '*');
+                    } catch (err) {
+                        pendingAction = message;
+                    }
+                } else {
+                    pendingAction = message;
+                }
+            }
+
+            if (iframe) {
+                iframe.addEventListener('load', () => {
+                    if (pendingAction && iframe.contentWindow) {
+                        const msg = pendingAction;
+                        pendingAction = null;
+                        setTimeout(() => {
+                            try { iframe.contentWindow.postMessage(msg, '*'); } catch {}
+                        }, 120);
+                    }
+                });
+            }
+
+            // Alle Klick-Buttons in den Karten links verdrahten
+            document.querySelectorAll('[data-guide-action]').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    let payload = {};
+                    try {
+                        payload = JSON.parse(btn.getAttribute('data-guide-action') || '{}');
+                    } catch {}
+                    const label = btn.getAttribute('data-label') || 'App-Bereich';
+                    postToApp(payload, label, btn);
+                });
+            });
+
+            // Dark-Mode-Button in Einstellungen-Karte & Header/Toolbar synchron halten
+            function toggleDemoDarkMode(triggerBtn) {
+                demoDarkMode = !demoDarkMode;
+                const label = demoDarkMode ? 'Dark Mode: Aktiv' : 'Dark Mode: Hell';
+                postToApp({ action: 'setDarkMode', enabled: demoDarkMode }, label, triggerBtn);
+                const topDark = document.getElementById('top-btn-darkmode');
+                const frameDark = document.getElementById('frame-btn-dark');
+                if (topDark) topDark.textContent = demoDarkMode ? '☀️ Hell-Modus' : '🌗 Dark Mode';
+                if (frameDark) frameDark.textContent = demoDarkMode ? '☀️ Hell' : '🌗 Dunkel';
+            }
+
+            const cardDarkBtn = document.getElementById('btn-card-darkmode');
+            if (cardDarkBtn) cardDarkBtn.addEventListener('click', () => toggleDemoDarkMode(cardDarkBtn));
+
+            const topDarkBtn = document.getElementById('top-btn-darkmode');
+            if (topDarkBtn) topDarkBtn.addEventListener('click', () => toggleDemoDarkMode(null));
+
+            const frameDarkBtn = document.getElementById('frame-btn-dark');
+            if (frameDarkBtn) frameDarkBtn.addEventListener('click', () => toggleDemoDarkMode(null));
+
+            // Topbar & Frame-Toolbar Aktionen
+            const topDash = document.getElementById('top-btn-dashboard');
+            if (topDash) topDash.addEventListener('click', () => postToApp({ action: 'dashboard' }, 'Startseite (Dashboard)', null));
+
+            const frameDash = document.getElementById('frame-btn-dashboard');
+            if (frameDash) frameDash.addEventListener('click', () => postToApp({ action: 'dashboard' }, 'Startseite (Dashboard)', null));
+
+            const topSettings = document.getElementById('top-btn-settings');
+            if (topSettings) topSettings.addEventListener('click', () => postToApp({ action: 'settings', sectionIndex: 0 }, 'Einstellungen (Zahnrad-Menü)', null));
+
+            const frameSettings = document.getElementById('frame-btn-settings');
+            if (frameSettings) frameSettings.addEventListener('click', () => postToApp({ action: 'settings', sectionIndex: 0 }, 'Einstellungen (Zahnrad-Menü)', null));
+
+            // Aktives Kapitel in linker Navigationsleiste beim Scrollen markieren
+            const railLinks = [...document.querySelectorAll('.chapter-rail-link')];
+            const sections = railLinks
+                .map(link => document.querySelector(link.getAttribute('href')))
+                .filter(Boolean);
+
+            if ('IntersectionObserver' in window && sections.length) {
+                const observer = new IntersectionObserver(entries => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const id = '#' + entry.target.id;
+                            railLinks.forEach(l => l.classList.toggle('is-current', l.getAttribute('href') === id));
+                        }
+                    });
+                }, { rootMargin: '-20% 0px -65% 0px', threshold: 0 });
+                sections.forEach(sec => observer.observe(sec));
+            }
+        })();
+    </script>
+</body>
+</html>
