@@ -9,7 +9,7 @@
     <meta name="theme-color" content="#0d47a1">
     <meta name="color-scheme" content="light" id="meta-color-scheme">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>INNOWATΞCH Service Tool v5.6</title>
+    <title>INNOWATΞCH Service Tool v5.7</title>
     <link rel="icon" href="data:,">
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="icon.png">
@@ -165,7 +165,7 @@
         .desktop-dropdown-item, .dropdown-item { padding: 10px 12px; font-size: 0.9rem; color: var(--text-color); cursor: pointer; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; }
         .desktop-dropdown-item:last-child { border-bottom: none; }
         .desktop-dropdown-item:hover, .desktop-dropdown-item.selected, .dropdown-item:hover, .dropdown-item.selected { background: var(--result-bg); color: var(--primary-color); font-weight: bold; }
-        .dropdown-modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 5800; justify-content: center; align-items: flex-end; backdrop-filter: blur(2px); }
+        .dropdown-modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 5800; justify-content: center; align-items: flex-end; }
         .dropdown-modal-overlay.open { display: flex; }
         .dropdown-modal-content { background: var(--card-bg); width: 100%; max-height: 70vh; border-radius: 16px 16px 0 0; box-shadow: 0 -4px 20px rgba(0,0,0,0.3); display: flex; flex-direction: column; overflow: hidden; }
         .dropdown-modal-header { padding: 12px 16px; font-weight: bold; font-size: 0.9rem; color: var(--primary-color); border-bottom: 1px solid var(--border-color); background: var(--result-bg); }
@@ -1028,7 +1028,7 @@
             <span id="net-status-badge" style="font-size:0.72rem; padding:2px 6px; border-radius:10px; background:rgba(0,0,0,0.08);">● Online</span>
             <span id="footer-update-pill" onclick="applyAppUpdate()" title="Update jetzt installieren" style="display:none; font-size:0.7rem; padding:2px 7px; border-radius:10px; background:#f59e0b; color:white; cursor:pointer; font-weight:bold;">🔄 Update</span>
         </div>
-        <span class="footer-version" style="flex:1; text-align:right;" onclick="handleVersionClick()">v5.6</span>
+        <span class="footer-version" style="flex:1; text-align:right;" onclick="handleVersionClick()">v5.7</span>
     </div>
 </div>
 
@@ -1103,7 +1103,7 @@
 
 <div class="admin-modal-overlay" id="adminAuthModal">
     <div class="admin-modal-content">
-        <div class="admin-modal-header"><span>Admin Authentifizierung (v5.6)</span><button type="button" class="modal-close-btn" style="color:var(--primary-color);" onclick="closeAdminModal('adminAuthModal')">✕</button></div>
+        <div class="admin-modal-header"><span>Admin Authentifizierung (v5.7)</span><button type="button" class="modal-close-btn" style="color:var(--primary-color);" onclick="closeAdminModal('adminAuthModal')">✕</button></div>
         <p style="font-size:0.82rem; color:var(--subtext-color); margin-bottom:12px;">Bitte die Admin-PIN eingeben:</p>
         <div class="form-group"><label>Admin-PIN</label><input type="password" id="adminPin8" class="field-box" value="" autocomplete="new-password" placeholder="••••••••" style="letter-spacing:2px;"></div>
         <button type="button" class="admin-btn admin-btn-primary" style="margin-top:10px;" onclick="verifyAdminAuth8()">Admin Console öffnen</button>
@@ -1112,7 +1112,7 @@
 
 <div class="admin-modal-overlay" id="adminConsoleModal">
     <div class="admin-modal-content" style="max-width:540px;">
-        <div class="admin-modal-header"><span>Admin Konsole (v5.6)</span><button type="button" class="modal-close-btn" style="color:var(--primary-color);" onclick="closeAdminModal('adminConsoleModal')">✕</button></div>
+        <div class="admin-modal-header"><span>Admin Konsole (v5.7)</span><button type="button" class="modal-close-btn" style="color:var(--primary-color);" onclick="closeAdminModal('adminConsoleModal')">✕</button></div>
         <div class="admin-tab-bar">
             <button type="button" class="admin-tab-btn active" id="adminTabBtnUsers" onclick="switchAdminTab('users')">👥 Techniker (users.json)</button>
             <button type="button" class="admin-tab-btn" id="adminTabBtnDb" onclick="switchAdminTab('db')">🗂️ Datenbanken (databases.json)</button>
@@ -1868,7 +1868,6 @@
         if ($('imageLightboxOverlay')?.classList.contains('open')) { closeImageLightbox(null, true); return; }
         if ($('kofferPickerModal')?.classList.contains('open')) { closeKofferPicker(true); return; }
         if ($('calendar-modal')?.classList.contains('open')) { closeDatePicker(null, true); return; }
-        if ($('dropdown-modal')?.classList.contains('open')) { closeCustomDropdown(null, true); return; }
         if ($('adminConsoleModal')?.classList.contains('active')) { closeAdminModal('adminConsoleModal', true); return; }
         if ($('adminAuthModal')?.classList.contains('active')) { closeAdminModal('adminAuthModal', true); return; }
         if ($('settings-modal')?.classList.contains('open')) { closeSettings(true); return; }
@@ -2929,7 +2928,6 @@
                 list.appendChild(it);
             });
             $('dropdown-modal').classList.add('open');
-            pushAppNav('dropdown');
         } else {
             let list = wrap.querySelector('.desktop-dropdown-list');
             document.querySelectorAll('.desktop-dropdown-list.open').forEach(l => { if (l !== list) l.classList.remove('open'); });
@@ -2945,11 +2943,10 @@
             list.classList.add('open');
         }
     }
-    function closeCustomDropdown(e, fromPop = false) {
+    function closeCustomDropdown(e) {
         if (!e || e.target.id === 'dropdown-modal') {
             const m = $('dropdown-modal'); if (!m?.classList.contains('open')) return;
             m.classList.remove('open');
-            if (!fromPop) popAppNavIf('dropdown');
         }
     }
 
