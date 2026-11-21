@@ -1,10 +1,12 @@
-const CACHE_NAME = 'mat-service-tool-v5.7';
+const CACHE_NAME = 'mat-service-tool-v5.8';
 const CORE_URLS = [
   './',
   './index.html',
+  './media.js',
   './manifest.json'
 ];
 const OPTIONAL_URLS = [
+  './anleitung.html',
   './users.json',
   './databases.json',
   './icon.png'
