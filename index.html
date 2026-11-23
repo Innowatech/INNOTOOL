@@ -9,7 +9,7 @@
     <meta name="theme-color" content="#0d47a1">
     <meta name="color-scheme" content="light" id="meta-color-scheme">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>INNOWATΞCH Service Tool v5.8</title>
+    <title>INNOWATΞCH Service Tool v5.9</title>
     <link rel="icon" href="data:,">
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="icon.png">
@@ -54,81 +54,119 @@
         body[data-theme="dezent"] .category-title, body[data-theme="dezent"] .launcher-category-title { color: var(--primary-color) !important; border-color: var(--border-color) !important; }
         * { box-sizing: border-box; }
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: var(--bg-color); margin: 0; padding: calc(6px * var(--app-zoom)); color: var(--text-color); -webkit-tap-highlight-color: transparent; zoom: var(--app-zoom); }
-        .container { max-width: 580px; margin: 0 auto; background: var(--card-bg); border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); position: relative; display: flex; flex-direction: column; min-height: calc(100vh - 12px); }
-        .header { background: linear-gradient(to bottom, #1565c0 0%, #0d47a1 100%); color: white; padding: 10px 12px; position: sticky; top: 0; z-index: 2000; display: flex; justify-content: space-between; align-items: center; min-height: 44px; box-shadow: 0 2px 6px rgba(0,0,0,0.25); border-radius: 12px 12px 0 0; overflow: hidden; }
-        .header-left, .header-right { display: flex; align-items: center; z-index: 2; gap: 6px; }
-        .header-center { position: absolute; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; pointer-events: none; width: 65%; z-index: 1; }
-        .header h1 { margin: 0; font-size: 1.05rem; letter-spacing: 0.5px; white-space: nowrap; text-shadow: 0 1px 2px rgba(0,0,0,0.3); }
-        .header-sub { font-size: 0.7rem; opacity: 0.95; font-weight: 500; margin-top: 1px; white-space: nowrap; }
-        .header-btn { background: linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(255,255,255,0.05)); border: 1px solid rgba(255,255,255,0.4); color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.15s ease; flex-shrink: 0; box-shadow: 0 2px 4px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.4); border-radius: 6px; height: 30px; }
-        .header-btn:hover { background: linear-gradient(to bottom, rgba(255,255,255,0.35), rgba(255,255,255,0.15)); }
+        .container { max-width: 580px; margin: 0 auto; background: var(--card-bg); border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); position: relative; display: flex; flex-direction: column; height: calc((100vh - 12px) / var(--app-zoom, 1)); height: calc((100dvh - 12px) / var(--app-zoom, 1)); overflow: hidden; }
+        .header { background: linear-gradient(to bottom, #1565c0 0%, #0d47a1 100%); color: white; padding: 9px 12px; position: relative; z-index: 2000; display: flex; justify-content: space-between; align-items: center; min-height: 48px; box-shadow: 0 2px 6px rgba(0,0,0,0.22); border-radius: 12px 12px 0 0; overflow: hidden; gap: 8px; flex-shrink: 0; }
+        body.dark-mode .header { background: #0b1120; border-bottom: 1px solid #1e293b; box-shadow: 0 2px 8px rgba(0,0,0,0.45); }
+        .header-left { display: flex; align-items: center; z-index: 2; gap: 6px; min-width: 0; }
+        .header-left.header-brand { flex-direction: column; align-items: flex-start; gap: 1px; }
+        .header-right { display: flex; align-items: center; z-index: 2; gap: 6px; flex-shrink: 0; }
+        .header h1 { margin: 0; font-size: 1.04rem; font-weight: 800; letter-spacing: 0.5px; white-space: nowrap; text-shadow: 0 1px 2px rgba(0,0,0,0.28); line-height: 1.15; }
+        .header-sub { font-size: 0.71rem; opacity: 0.95; font-weight: 600; margin-top: 0; white-space: nowrap; color: #dbeafe; }
+        body.dark-mode .header-sub { color: #38bdf8; }
+        .header-btn { background: rgba(255,255,255,0.16); border: 1px solid rgba(255,255,255,0.34); color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.15s ease; flex-shrink: 0; border-radius: 7px; height: 32px; }
+        body.dark-mode .header-btn { background: rgba(255,255,255,0.06); border-color: rgba(148,163,184,0.28); color: #e2e8f0; }
+        .header-btn:hover { background: rgba(255,255,255,0.26); }
+        body.dark-mode .header-btn:hover { background: rgba(255,255,255,0.14); }
         .header-btn:active { transform: translateY(1px); }
-        .settings-btn { width: 30px; font-size: 0.9rem; }
-        .header-btn.pinned-active { background: #f59e0b; border-color: #fde68a; }
+        .settings-btn { width: 32px; font-size: 0.92rem; padding: 0; }
+        .settings-btn svg { width: 17px; height: 17px; display: block; }
+        .header-btn.pinned-active { background: #f59e0b; border-color: #fde68a; color: #ffffff; }
         .santa-letter { position: relative; display: inline-block; }
         .santa-letter::before { content: "🎅"; position: absolute; top: -11px; left: -5px; font-size: 0.9rem; transform: rotate(-15deg); pointer-events: none; }
-        .tab-bar-wrapper { background: var(--tab-bar-bg); border-bottom: 1px solid var(--border-color); position: sticky; top: 44px; z-index: 1500; overflow: hidden; padding: 5px 8px; }
-        .scroll-arrow { position: absolute; top: 0; bottom: 0; width: 24px; z-index: 10; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: bold; color: var(--primary-color); pointer-events: none; opacity: 0; transition: opacity 0.2s; }
-        .scroll-arrow.left { left: 0; background: linear-gradient(to right, var(--tab-bar-bg) 60%, transparent); }
-        .scroll-arrow.right { right: 0; background: linear-gradient(to left, var(--tab-bar-bg) 60%, transparent); }
-        .scroll-arrow.visible { opacity: 1; }
-        .categories-container { display: flex; gap: 8px; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; align-items: stretch; }
-        .categories-container::-webkit-scrollbar { display: none; }
-        .category-group { display: flex; flex-direction: column; background: var(--cat-anwendung-bg); border: 1.5px solid var(--cat-anwendung-border); border-radius: 8px; padding: 4px; flex-shrink: 0; box-shadow: 0 2px 4px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.7); }
-        .category-group.category-parameters { background: var(--cat-parameter-bg); border-color: var(--cat-parameter-border); }
-        .category-group.category-werkzeuge { background: var(--cat-werkzeuge-bg); border-color: var(--cat-werkzeuge-border); }
-        .category-group.category-checklisten { background: var(--cat-checklisten-bg); border-color: var(--cat-checklisten-border); }
-        .category-title { font-size: 0.62rem; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px; color: var(--primary-color); margin-bottom: 2px; text-align: center; }
-        .category-group.category-parameters .category-title { color: #1b5e20; }
-        body.dark-mode .category-group.category-parameters .category-title { color: #a5d6a7; }
-        .category-group.category-werkzeuge .category-title { color: #ca8a04; }
-        body.dark-mode .category-group.category-werkzeuge .category-title { color: #fde047; }
-        .category-group.category-checklisten .category-title { color: #b91c1c; }
-        body.dark-mode .category-group.category-checklisten .category-title { color: #fca5a5; }
-        .tab-buttons-inner { display: flex; gap: 4px; flex: 1; }
-        .tab-btn { flex: 0 0 auto; min-width: 80px; padding: 4px 6px; border: 1px solid var(--tab-btn-border); border-radius: 6px; background: var(--tab-btn-bg); font-weight: bold; font-size: 0.66rem; color: var(--tab-btn-text); cursor: pointer; transition: all 0.12s; white-space: nowrap; text-align: left; box-shadow: 0 3px 5px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,0.8); display: flex; align-items: center; min-height: 36px; line-height: 1.12; }
-        .tab-btn:hover { border-color: var(--primary-color); color: var(--primary-color); }
-        .tab-btn:active { transform: translateY(2px); }
-        .tab-btn.active { background: linear-gradient(to bottom, var(--card-bg) 0%, var(--result-bg) 100%); color: var(--primary-color); border: 2px solid var(--primary-color); box-shadow: 0 3px 6px rgba(13,71,161,0.25); }
-        .btn-content-inner { display: flex; flex-direction: column; align-items: flex-start; width: 100%; }
-        .btn-text-line { display: block; width: 100%; white-space: nowrap; }
-        .launcher-view { display: none; padding: 10px 12px; position: relative; flex: 1; overflow-y: auto; }
+        .launcher-view { display: none; padding: 10px 12px 14px; position: relative; flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; }
         .launcher-view.active { display: block; }
-        .dashboard-scroll-indicator { position: sticky; left: 50%; transform: translateX(-50%); background: var(--primary-color); color: white; width: 30px; height: 30px; border-radius: 50%; display: none; align-items: center; justify-content: center; font-size: 0.85rem; box-shadow: 0 2px 8px rgba(0,0,0,0.35); cursor: pointer; z-index: 20; margin: 0 auto; }
+        .dashboard-search-wrap { position: relative; display: flex; align-items: center; background: var(--input-bg); border: 1px solid var(--border-color); border-radius: 10px; padding: 0 10px; margin-bottom: 12px; transition: border-color 0.15s, box-shadow 0.15s; }
+        .dashboard-search-wrap:focus-within { border-color: var(--primary-color); box-shadow: 0 0 0 2px rgba(13,71,161,0.16); }
+        body.dark-mode .dashboard-search-wrap { background: #0f172a; border-color: #334155; }
+        body.dark-mode .dashboard-search-wrap:focus-within { border-color: #3b82f6; box-shadow: 0 0 0 2px rgba(59,130,246,0.22); }
+        .dashboard-search-icon { width: 16px; height: 16px; color: var(--subtext-color); flex-shrink: 0; margin-right: 8px; }
+        #dashboard-search-input { flex: 1; min-width: 0; border: none; background: transparent; padding: 9px 4px; font-size: 0.84rem; color: var(--text-color); outline: none; }
+        #dashboard-search-input::placeholder { color: var(--subtext-color); opacity: 0.85; }
+        #dashboard-search-clear { display: none; background: transparent; border: none; color: var(--subtext-color); font-size: 0.88rem; cursor: pointer; padding: 4px 6px; border-radius: 4px; }
+        #dashboard-search-clear.visible { display: inline-flex; align-items: center; justify-content: center; }
+        .dashboard-scroll-indicator { position: sticky; left: 50%; transform: translateX(-50%); background: var(--card-bg); color: var(--subtext-color); border: 1px solid var(--border-color); padding: 3px 10px; border-radius: 999px; display: none; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: 600; box-shadow: 0 2px 8px rgba(0,0,0,0.12); cursor: pointer; z-index: 20; width: max-content; margin: 0 auto; }
         .dashboard-scroll-indicator.visible { display: flex; }
         .dashboard-scroll-indicator.top-indicator { top: 2px; margin-bottom: 6px; }
-        .dashboard-scroll-indicator.bottom-indicator { bottom: 2px; margin-top: 6px; }
-        .launcher-category { margin-bottom: 10px; }
-        .launcher-category-title { font-size: 0.75rem; font-weight: bold; text-transform: uppercase; letter-spacing: 0.8px; color: var(--primary-color); border-bottom: 2px solid var(--primary-color); padding-bottom: 2px; margin-bottom: 6px; }
+        body.dark-mode .dashboard-scroll-indicator { background: #1e293b; border-color: #334155; color: #cbd5e1; box-shadow: 0 2px 10px rgba(0,0,0,0.45); }
+        .dashboard-scroll-fade { position: sticky; bottom: -14px; left: 0; right: 0; height: 50px; margin: -36px -12px -14px; padding: 14px 12px 7px; background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, var(--card-bg) 80%); display: none; align-items: flex-end; justify-content: center; pointer-events: none; z-index: 20; }
+        body.dark-mode .dashboard-scroll-fade { background: linear-gradient(to bottom, rgba(30,30,30,0) 0%, var(--card-bg) 80%); }
+        .dashboard-scroll-fade.visible { display: flex; }
+        .dashboard-scroll-pill { pointer-events: auto; display: inline-flex; align-items: center; gap: 4px; padding: 4px 12px; border-radius: 999px; font-size: 0.71rem; font-weight: 700; color: var(--subtext-color); background: var(--card-bg); border: 1px solid var(--border-color); box-shadow: 0 2px 8px rgba(0,0,0,0.14); cursor: pointer; transition: transform 0.12s, color 0.12s, border-color 0.12s; }
+        .dashboard-scroll-pill:hover { color: var(--primary-color); border-color: var(--primary-color); }
+        .dashboard-scroll-pill:active { transform: translateY(1px); }
+        body.dark-mode .dashboard-scroll-pill { background: #1e293b; border-color: #334155; color: #cbd5e1; box-shadow: 0 2px 10px rgba(0,0,0,0.45); }
+        .launcher-category { margin-bottom: 11px; }
+        .launcher-category-title { font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; color: var(--primary-color); border-bottom: 2px solid var(--primary-color); padding-bottom: 2px; margin-bottom: 7px; display: flex; align-items: center; gap: 7px; }
         .launcher-category.param .launcher-category-title { color: #1b5e20; border-color: #1b5e20; }
         body.dark-mode .launcher-category.param .launcher-category-title { color: #a5d6a7; border-color: #a5d6a7; }
-        .launcher-category.werkzeuge .launcher-category-title { color: #ca8a04; border-color: #eab308; }
+        .launcher-category.werkzeuge .launcher-category-title { color: #b45309; border-color: #eab308; }
         body.dark-mode .launcher-category.werkzeuge .launcher-category-title { color: #fde047; border-color: #ca8a04; }
         .launcher-category.checklisten .launcher-category-title { color: #b91c1c; border-color: #ef4444; }
         body.dark-mode .launcher-category.checklisten .launcher-category-title { color: #fca5a5; border-color: #dc2626; }
         .launcher-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
-        .launcher-view.compact-grid .launcher-category { margin-bottom: 8px; }
-        .launcher-view.compact-grid .launcher-category-title { font-size: 0.7rem; margin-bottom: 5px; }
-        .launcher-view.compact-grid .launcher-grid { grid-template-columns: repeat(3, 1fr); gap: 6px; }
-        .launcher-card { background: var(--cat-anwendung-bg); border: 1.5px solid var(--cat-anwendung-border); border-radius: 8px; padding: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; cursor: pointer; box-shadow: 0 4px 8px rgba(0,0,0,0.14), inset 0 1px 0 rgba(255,255,255,0.9); transition: all 0.12s; min-height: 54px; }
-        .launcher-view.compact-grid .launcher-card { padding: 6px 4px; min-height: 52px; box-shadow: 0 2px 5px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,0.85); }
+        .launcher-view.compact-grid .launcher-category { margin-bottom: 10px; }
+        .launcher-view.compact-grid .launcher-category-title { font-size: 0.74rem; margin-bottom: 6px; }
+        .launcher-view.compact-grid .launcher-grid { grid-template-columns: repeat(3, 1fr); gap: 7px; }
+        .launcher-card { background: var(--cat-anwendung-bg); border: 1.5px solid var(--cat-anwendung-border); border-radius: 10px; padding: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; cursor: pointer; box-shadow: 0 3px 6px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.85); transition: transform 0.12s, border-color 0.14s, background 0.14s; min-height: 58px; position: relative; }
+        .launcher-view.compact-grid .launcher-card { padding: 7px 5px; min-height: 56px; }
+        .launcher-view.single-cat-mode .launcher-card { min-height: 76px; padding: 11px 8px; }
         .launcher-category.param .launcher-card { background: var(--cat-parameter-bg); border-color: var(--cat-parameter-border); }
         .launcher-category.werkzeuge .launcher-card { background: var(--cat-werkzeuge-bg); border-color: var(--cat-werkzeuge-border); }
         .launcher-category.checklisten .launcher-card { background: var(--cat-checklisten-bg); border-color: var(--cat-checklisten-border); }
-        .launcher-card:active { transform: translateY(3px); background: var(--card-bg); }
+        .launcher-card:active { transform: translateY(2px); }
         .launcher-card:hover { border-color: var(--primary-color); }
-        .launcher-icon { font-size: 1.25rem; margin-bottom: 2px; }
-        .launcher-view.compact-grid .launcher-icon { font-size: 1.12rem; margin-bottom: 2px; }
-        .launcher-label { font-size: 0.74rem; font-weight: bold; color: var(--text-color); line-height: 1.12; }
-        .launcher-view.compact-grid .launcher-label { font-size: 0.67rem; line-height: 1.12; overflow-wrap: anywhere; hyphens: auto; }
-        .dashboard-back-bar { display: none; background: var(--result-bg); border-bottom: 1px solid var(--result-border); padding: 6px 10px; }
+        .launcher-icon { font-size: 1.25rem; margin-bottom: 3px; line-height: 1; }
+        .launcher-view.compact-grid .launcher-icon { font-size: 1.12rem; margin-bottom: 3px; }
+        .launcher-label { font-size: 0.74rem; font-weight: 700; color: var(--text-color); line-height: 1.15; }
+        .launcher-view.compact-grid .launcher-label { font-size: 0.68rem; line-height: 1.14; overflow-wrap: anywhere; hyphens: auto; }
+        /* Puristisches Dashboard-Theme */
+        .launcher-view.purist-mode .launcher-category-title { border-bottom: none; text-transform: none; letter-spacing: 0.1px; font-size: 0.84rem; color: var(--text-color) !important; padding-bottom: 0; margin-bottom: 7px; }
+        .launcher-view.purist-mode.compact-grid .launcher-category-title { font-size: 0.8rem; }
+        .launcher-view.purist-mode .launcher-category-title::before { content: ""; width: 4px; height: 14px; border-radius: 3px; background: #2563eb; flex-shrink: 0; }
+        .launcher-view.purist-mode .launcher-category.param .launcher-category-title::before { background: #16a34a; }
+        .launcher-view.purist-mode .launcher-category.werkzeuge .launcher-category-title::before { background: #eab308; }
+        .launcher-view.purist-mode .launcher-category.checklisten .launcher-category-title::before { background: #dc2626; }
+        .launcher-view.purist-mode .launcher-card { background: var(--card-bg); border: 1px solid #cbd5e1; border-top: 2px solid #2563eb; box-shadow: 0 1px 3px rgba(15,23,42,0.06); }
+        .launcher-view.purist-mode .launcher-category.param .launcher-card { border-top-color: #16a34a; }
+        .launcher-view.purist-mode .launcher-category.werkzeuge .launcher-card { border-top-color: #eab308; }
+        .launcher-view.purist-mode .launcher-category.checklisten .launcher-card { border-top-color: #dc2626; }
+        body.dark-mode .launcher-view.purist-mode .launcher-card { background: #0f172a; border-color: #293548; box-shadow: none; }
+        body.dark-mode .launcher-view.purist-mode .launcher-category[data-cat="Anwendung"] .launcher-card { border-top-color: #3b82f6; }
+        body.dark-mode .launcher-view.purist-mode .launcher-category.param .launcher-card { border-top-color: #22c55e; }
+        body.dark-mode .launcher-view.purist-mode .launcher-category.werkzeuge .launcher-card { border-top-color: #eab308; }
+        body.dark-mode .launcher-view.purist-mode .launcher-category.checklisten .launcher-card { border-top-color: #ef4444; }
+        body[data-theme="dezent"] .launcher-view.purist-mode .launcher-card { border-top-color: #64748b !important; }
+        body[data-theme="dezent"] .launcher-view.purist-mode .launcher-category-title::before { background: #64748b !important; }
+        .purist-icon-badge { width: 34px; height: 34px; border-radius: 9px; display: flex; align-items: center; justify-content: center; margin-bottom: 6px; background: #dbeafe; color: #1d4ed8; flex-shrink: 0; }
+        .launcher-view.compact-grid .purist-icon-badge { width: 31px; height: 31px; border-radius: 8px; margin-bottom: 5px; }
+        .purist-icon-badge svg { width: 18px; height: 18px; display: block; }
+        .launcher-category.param .purist-icon-badge { background: #dcfce7; color: #15803d; }
+        .launcher-category.werkzeuge .purist-icon-badge { background: #fef3c7; color: #b45309; }
+        .launcher-category.checklisten .purist-icon-badge { background: #fee2e2; color: #b91c1c; }
+        body.dark-mode .purist-icon-badge { background: rgba(37,99,235,0.2); color: #60a5fa; }
+        body.dark-mode .launcher-category.param .purist-icon-badge { background: rgba(22,163,74,0.2); color: #4ade80; }
+        body.dark-mode .launcher-category.werkzeuge .purist-icon-badge { background: rgba(234,179,8,0.18); color: #facc15; }
+        body.dark-mode .launcher-category.checklisten .purist-icon-badge { background: rgba(220,38,38,0.2); color: #f87171; }
+        /* Untere Kategorie-Leiste (nur Startbildschirm) */
+        .bottom-cat-nav { display: none; position: relative; z-index: 1600; background: var(--card-bg); border-top: 1px solid var(--border-color); padding: 6px 6px calc(6px + env(safe-area-inset-bottom, 0px)); justify-content: space-around; align-items: center; gap: 4px; border-radius: 0 0 12px 12px; flex-shrink: 0; }
+        .bottom-cat-nav.visible { display: flex; }
+        body.dark-mode .bottom-cat-nav { background: #0b1120; border-top-color: #1e293b; }
+        .bottom-nav-btn { flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; padding: 4px 2px; border: none; background: transparent; color: var(--subtext-color); cursor: pointer; font-family: inherit; }
+        body.dark-mode .bottom-nav-btn { color: #94a3b8; }
+        .bottom-nav-icon { display: flex; align-items: center; justify-content: center; width: 48px; height: 26px; border-radius: 999px; transition: background 0.14s, color 0.14s; }
+        .bottom-nav-icon svg { width: 17px; height: 17px; display: block; }
+        .bottom-nav-label { font-size: 0.67rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+        .bottom-nav-btn.active .bottom-nav-icon { background: #1565c0; color: #ffffff; }
+        .bottom-nav-btn.active .bottom-nav-label { color: var(--primary-color); font-weight: 700; }
+        body.dark-mode .bottom-nav-btn.active .bottom-nav-label { color: #e2e8f0; }
+        .dashboard-back-bar { display: none; background: var(--result-bg); border-bottom: 1px solid var(--result-border); padding: 6px 10px; flex-shrink: 0; }
         .dashboard-back-bar.active { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
         .dashboard-back-btn { background: linear-gradient(to bottom, #1976d2, #0d47a1); color: white; border: 1px solid #1565c0; border-radius: 6px; font-weight: bold; font-size: 0.78rem; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; padding: 5px 10px; }
         .top-reset-btn { background: var(--card-bg); color: var(--text-color); border: 1px solid var(--border-color); border-radius: 6px; font-weight: 700; font-size: 0.74rem; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; padding: 5px 9px; white-space: nowrap; flex-shrink: 0; }
         .top-reset-btn:active { transform: translateY(1px); }
         .top-reset-btn.danger { color: #c62828; border-color: rgba(198,40,40,0.45); }
         body.dark-mode .top-reset-btn.danger { color: #fca5a5; border-color: rgba(252,165,165,0.4); }
-        .tab-content { display: none; padding: 12px; flex: 1; }
+        .tab-content { display: none; padding: 12px; flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; }
         .tab-content.active { display: block; }
         .form-group { margin-bottom: 8px; position: relative; }
         label { display: block; font-size: 0.8rem; font-weight: 600; margin-bottom: 2px; color: var(--text-color); }
@@ -149,7 +187,7 @@
         .seg-group { display: flex; gap: 6px; margin-bottom: 10px; }
         .seg-btn { flex: 1; padding: 7px 6px; border: 1.5px solid var(--border-color); border-radius: 6px; background: var(--input-bg); color: var(--text-color); font-size: 0.78rem; font-weight: bold; cursor: pointer; text-align: center; transition: all 0.12s; }
         .seg-btn.active { background: var(--primary-color); color: white; border-color: var(--primary-color); }
-        .pinned-bar { display: none; background: var(--result-bg); border-bottom: 1px solid var(--result-border); padding: 5px 8px; gap: 6px; overflow-x: auto; scrollbar-width: none; align-items: center; }
+        .pinned-bar { display: none; background: var(--result-bg); border-bottom: 1px solid var(--result-border); padding: 5px 8px; gap: 6px; overflow-x: auto; scrollbar-width: none; align-items: center; flex-shrink: 0; }
         .pinned-bar.visible { display: flex; }
         .pinned-bar::-webkit-scrollbar { display: none; }
         .pin-chip { display: inline-flex; align-items: center; gap: 5px; padding: 4px 8px; border-radius: 999px; border: 1px solid var(--border-color); background: var(--card-bg); color: var(--text-color); font-size: 0.72rem; font-weight: 600; white-space: nowrap; cursor: pointer; flex-shrink: 0; }
@@ -212,8 +250,16 @@
         .lightbox-pins { position: absolute; inset: 0; }
         .image-lightbox-caption { color: #e2e8f0; font-size: 0.78rem; margin-top: 8px; text-align: center; max-width: 680px; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 6px; }
         .lightbox-jump-btn { background: #fde047; color: #0f172a; border: 1.5px solid #ca8a04; border-radius: 6px; padding: 4px 10px; font-size: 0.74rem; font-weight: 800; cursor: pointer; }
-        .footer { display: flex; justify-content: space-between; align-items: center; padding: 8px 10px; font-size: 0.78rem; font-weight: bold; color: var(--subtext-color); background: var(--footer-bg); border-top: 1px solid var(--border-color); user-select: none; margin-top: auto; border-radius: 0 0 12px 12px; }
+        .footer { display: flex; justify-content: space-between; align-items: center; padding: 6px 10px; font-size: 0.78rem; font-weight: bold; color: var(--subtext-color); background: var(--footer-bg); border-top: 1px solid var(--border-color); user-select: none; margin-top: auto; border-radius: 0; flex-shrink: 0; }
         .footer-version { font-size: 0.7rem; color: var(--primary-color); cursor: pointer; padding: 4px 8px; }
+        .net-signal-btn { display: inline-flex; align-items: center; justify-content: center; gap: 3px; border: 1px solid transparent; border-radius: 999px; padding: 3px 9px; cursor: pointer; background: rgba(22,163,74,0.12); color: #16a34a; transition: transform 0.12s, background 0.14s; }
+        .net-signal-btn:active { transform: scale(0.95); }
+        .net-signal-btn svg { width: 16px; height: 15px; display: block; }
+        .net-signal-btn.is-weak { background: rgba(234,88,12,0.14); color: #ea580c; }
+        .net-signal-btn.is-offline { background: rgba(220,38,38,0.13); color: #dc2626; }
+        body.dark-mode .net-signal-btn { background: rgba(34,197,94,0.16); color: #4ade80; }
+        body.dark-mode .net-signal-btn.is-weak { background: rgba(251,146,60,0.18); color: #fb923c; }
+        body.dark-mode .net-signal-btn.is-offline { background: rgba(248,113,113,0.16); color: #f87171; }
         .modal-overlay, .admin-modal-overlay, .app-login-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.65); z-index: 5500; justify-content: center; align-items: center; backdrop-filter: blur(3px); padding: 12px; overflow-y: auto; }
         .modal-overlay { z-index: 2500; }
         .app-login-overlay { z-index: 5000; background: rgba(0,0,0,0.75); }
@@ -325,24 +371,24 @@
         .checkbox-item:last-child { border-bottom: none; }
         .master-checkbox { font-weight: bold; background: var(--result-bg); padding: 6px; border-radius: 4px; margin-bottom: 6px; }
         .user-item { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--border-color); font-size: 0.82rem; }
-        #app-toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #1e293b; color: white; padding: 10px 16px; border-radius: 8px; font-size: 0.82rem; font-weight: 600; z-index: 7000; box-shadow: 0 4px 16px rgba(0,0,0,0.35); display: none; max-width: 90%; text-align: center; }
+        #app-toast { position: fixed; bottom: 72px; left: 50%; transform: translateX(-50%); background: #1e293b; color: white; padding: 10px 16px; border-radius: 8px; font-size: 0.82rem; font-weight: 600; z-index: 7000; box-shadow: 0 4px 16px rgba(0,0,0,0.35); display: none; max-width: 90%; text-align: center; }
         #app-toast.show { display: block; }
         .desktop-guide-wrap { display: none; }
-        @media (min-width: 900px) { .desktop-guide-wrap { display: block; } }
+        @media (min-width: 900px) { .desktop-guide-wrap.guide-allowed { display: block; } }
         @keyframes guidePulseRing {
             0%, 100% { box-shadow: 0 0 0 0 rgba(13, 71, 161, 0); }
             25%, 75% { box-shadow: 0 0 0 4px rgba(41, 182, 246, 0.85); }
         }
         .guide-highlight-pulse { animation: guidePulseRing 1.05s ease 2; border-radius: 8px; }
         @media print {
-            body { background: white !important; color: black !important; padding: 0 !important; zoom: 1 !important; }
-            .container { box-shadow: none !important; max-width: 100% !important; border-radius: 0 !important; }
-            .header-btn, .tab-bar-wrapper, .pinned-bar, .dashboard-back-bar, .pdf-export-btn, .reset-tab-btn, .no-print, .modal-overlay, .admin-modal-overlay, .footer, .vega-img-badge, .vega-zoom-hint { display: none !important; }
+            body { background: white !important; color: black !important; padding: 0 !important; zoom: 1 !important; overflow: visible !important; }
+            .container { box-shadow: none !important; max-width: 100% !important; border-radius: 0 !important; height: auto !important; max-height: none !important; overflow: visible !important; display: block !important; }
+            .header-btn, .bottom-cat-nav, .dashboard-search-wrap, .dashboard-scroll-fade, .dashboard-scroll-indicator, .pinned-bar, .dashboard-back-bar, .pdf-export-btn, .reset-tab-btn, .no-print, .modal-overlay, .admin-modal-overlay, .footer, .vega-img-badge, .vega-zoom-hint { display: none !important; }
             #pdf-print-header, #pdf_notes_print_view, #et_bemerkung_print, #kn_print_view { display: block !important; }
             #pdf-print-header { border: 2px solid #0d47a1; border-radius: 6px; padding: 10px 12px; margin: 8px 12px 4px; background: #f8fafc !important; color: #111 !important; }
             #service_notes_area, #et_bemerkung, #kn_text { display: none !important; }
-            .tab-content { display: none !important; }
-            .tab-content.active, .vega-step-body { display: block !important; }
+            .tab-content { display: none !important; overflow: visible !important; height: auto !important; }
+            .tab-content.active, .vega-step-body { display: block !important; overflow: visible !important; height: auto !important; }
             .result-box { border: 2px solid #0d47a1 !important; background: #f0f4f8 !important; }
             .result-value { color: #0d47a1 !important; }
             .vega-tank-row.active { background: #e3f2fd !important; border: 2px solid #0d47a1 !important; color: #0d47a1 !important; font-weight: 800 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
@@ -394,15 +440,15 @@
     </div>
 
     <div class="header">
-        <div class="header-left"></div>
-        <div class="header-center"><h1 id="app-title"><span id="first-letter">I</span>NNOWATΞCH</h1><div class="header-sub" id="header-sub">Service Tool</div></div>
-        <div class="header-right"><button type="button" class="header-btn settings-btn" id="pin-tab-btn" onclick="togglePinCurrentTab()" title="Aktuellen Tab anheften (max. 5)" style="display:none;">📌</button><button type="button" class="header-btn settings-btn" onclick="openSettings()" title="Einstellungen">⚙️</button></div>
-    </div>
-
-    <div class="tab-bar-wrapper" id="tab-bar-wrapper">
-        <div class="scroll-arrow left" id="scroll-arrow-left">◄</div>
-        <div class="categories-container" id="categories-container" onscroll="checkScrollArrows()"></div>
-        <div class="scroll-arrow right" id="scroll-arrow-right">►</div>
+        <div class="header-left header-brand">
+            <h1 id="app-title"><span id="first-letter">I</span>NNOWATΞCH</h1>
+            <div class="header-sub" id="header-sub">Service Tool</div>
+        </div>
+        <div class="header-right">
+            <button type="button" class="header-btn settings-btn" id="pin-tab-btn" onclick="togglePinCurrentTab()" title="Aktuellen Tab anheften (max. 5)" style="display:none;">📌</button>
+            <button type="button" class="header-btn settings-btn" id="header-theme-btn" onclick="toggleDarkModeHeader()" title="Hell-/Dunkelmodus umschalten" aria-label="Hell-/Dunkelmodus umschalten"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button>
+            <button type="button" class="header-btn settings-btn" onclick="openSettings()" title="Einstellungen" aria-label="Einstellungen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
+        </div>
     </div>
 
     <div class="pinned-bar" id="pinned-bar"></div>
@@ -416,12 +462,20 @@
     </div>
 
     <div class="launcher-view" id="launcher-view" onscroll="checkDashboardScroll(this)">
-        <div class="dashboard-scroll-indicator top-indicator" id="dashboard-scroll-indicator-top" onclick="scrollDashboardTo('top')">▲</div>
-        <div class="launcher-category" data-cat="Anwendung"><div class="launcher-category-title">Anwendungen</div><div class="launcher-grid" id="launcher-grid-anwendung"></div></div>
+        <div class="dashboard-scroll-indicator top-indicator" id="dashboard-scroll-indicator-top" onclick="scrollDashboardTo('top')">↑ Nach oben</div>
+        <div class="dashboard-search-wrap" id="dashboard-search-wrap">
+            <svg class="dashboard-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            <input type="search" id="dashboard-search-input" placeholder="Modul oder Rechner suchen (z. B. Radar, Koffer, Chlor)..." oninput="onDashboardSearchInput(this.value)" autocomplete="off" spellcheck="false">
+            <button type="button" id="dashboard-search-clear" onclick="clearDashboardSearch()" title="Suche leeren" aria-label="Suche leeren">✕</button>
+        </div>
+        <div class="launcher-category" data-cat="Anwendung"><div class="launcher-category-title">Anwendung</div><div class="launcher-grid" id="launcher-grid-anwendung"></div></div>
         <div class="launcher-category param" data-cat="Parameter"><div class="launcher-category-title">Parameter</div><div class="launcher-grid" id="launcher-grid-parameter"></div></div>
-        <div class="launcher-category werkzeuge" data-cat="Hilfsmittel"><div class="launcher-category-title">Hilfsmittel</div><div class="launcher-grid" id="launcher-grid-werkzeuge"></div></div>
+        <div class="launcher-category werkzeuge" data-cat="Tools"><div class="launcher-category-title">Tools</div><div class="launcher-grid" id="launcher-grid-werkzeuge"></div></div>
         <div class="launcher-category checklisten" data-cat="Katalog & Checklisten"><div class="launcher-category-title">Katalog &amp; Checklisten</div><div class="launcher-grid" id="launcher-grid-checklisten"></div></div>
-        <div class="dashboard-scroll-indicator bottom-indicator" id="dashboard-scroll-indicator-bottom" onclick="scrollDashboardTo('bottom')">▼</div>
+        <div id="dashboard-search-empty" class="hint" style="display:none; text-align:center; padding:18px 10px; font-size:0.84rem;">Kein passendes Modul gefunden.</div>
+        <div class="dashboard-scroll-fade" id="dashboard-scroll-indicator-bottom">
+            <button type="button" class="dashboard-scroll-pill" onclick="scrollDashboardMore()">↓ Weitere Module</button>
+        </div>
     </div>
 
     <div id="tab-standard" class="tab-content">
@@ -1031,12 +1085,31 @@
 
     <div class="footer">
         <span style="flex:1; text-align:left;">© 2026 #MAT</span>
-        <div style="flex:1; text-align:center; display:flex; justify-content:center; align-items:center; gap:4px;">
-            <span id="net-status-badge" style="font-size:0.72rem; padding:2px 6px; border-radius:10px; background:rgba(0,0,0,0.08);">● Online</span>
+        <div style="flex:1; text-align:center; display:flex; justify-content:center; align-items:center; gap:6px;">
+            <button type="button" id="net-status-badge" class="net-signal-btn" onclick="showNetStatusToast()" title="Verbindungsstatus anzeigen" aria-label="Verbindungsstatus"></button>
             <span id="footer-update-pill" onclick="applyAppUpdate()" title="Update jetzt installieren" style="display:none; font-size:0.7rem; padding:2px 7px; border-radius:10px; background:#f59e0b; color:white; cursor:pointer; font-weight:bold;">🔄 Update</span>
         </div>
-        <span class="footer-version" style="flex:1; text-align:right;" onclick="handleVersionClick()">v5.8</span>
+        <span class="footer-version" style="flex:1; text-align:right;" onclick="handleVersionClick()">v5.9</span>
     </div>
+
+    <nav class="bottom-cat-nav" id="bottom-cat-nav" aria-label="Bereiche">
+        <button type="button" class="bottom-nav-btn active" data-bcat="overview" onclick="selectBottomCategory('overview')">
+            <span class="bottom-nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg></span>
+            <span class="bottom-nav-label">Übersicht</span>
+        </button>
+        <button type="button" class="bottom-nav-btn" data-bcat="anwendung" onclick="selectBottomCategory('anwendung')">
+            <span class="bottom-nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="11" x2="10" y2="11"/><line x1="14" y1="11" x2="16" y2="11"/><line x1="8" y1="15" x2="10" y2="15"/><line x1="14" y1="15" x2="16" y2="15"/></svg></span>
+            <span class="bottom-nav-label">Anwendung</span>
+        </button>
+        <button type="button" class="bottom-nav-btn" data-bcat="parameter" onclick="selectBottomCategory('parameter')">
+            <span class="bottom-nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><circle cx="9" cy="6" r="2"/><line x1="4" y1="12" x2="20" y2="12"/><circle cx="15" cy="12" r="2"/><line x1="4" y1="18" x2="20" y2="18"/><circle cx="11" cy="18" r="2"/></svg></span>
+            <span class="bottom-nav-label">Parameter</span>
+        </button>
+        <button type="button" class="bottom-nav-btn" data-bcat="werkzeuge" onclick="selectBottomCategory('werkzeuge')">
+            <span class="bottom-nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></span>
+            <span class="bottom-nav-label">Tools &amp; Kat.</span>
+        </button>
+    </nav>
 </div>
 
 <div class="image-lightbox-overlay" id="imageLightboxOverlay" onclick="closeImageLightbox(event)">
@@ -1055,10 +1128,10 @@
                 <div class="setting-section-content">
                     <div class="toggle-row"><span>Dunkelmodus</span><input type="checkbox" id="darkmode-toggle" onchange="toggleDarkMode(this.checked)"></div>
                     <div class="form-group" style="margin-top:6px;"><label style="font-size:0.78rem;">Optik-Profil</label><div class="input-wrapper"><select id="theme-profile-select" onchange="changeThemeProfile(this.value)"><option value="klassik">INNOWATΞCH Klassik (Standard)</option><option value="keller">Hochkontrast</option><option value="dezent">Monochrom</option></select></div></div>
-                    <div class="form-group" style="margin-top:6px;"><label style="font-size:0.78rem;">Startansicht / Navigation</label><div class="input-wrapper"><select id="main-view-select" onchange="changeMainViewMode(this.value)"><option value="dashboard">Dashboard (Standard)</option><option value="slider">Schiebeleiste</option></select></div></div>
+                    <div class="form-group" style="margin-top:6px;"><label style="font-size:0.78rem;">Startseiten-Navigation</label><div class="input-wrapper"><select id="main-view-select" onchange="changeMainViewMode(this.value)"><option value="bottombar">Übersicht + untere Leiste (Standard)</option><option value="overview">Nur Übersicht (Kompakt)</option></select></div></div>
                     <div class="form-group" style="margin-top:6px;"><label style="font-size:0.78rem;">Dashboard-Kacheldichte</label><div class="input-wrapper"><select id="dashboard-density-select" onchange="changeDashboardDensity(this.value)"><option value="compact">Kompakt (3er-Raster)</option><option value="large">Groß (2er-Raster)</option></select></div></div>
-                    <div class="toggle-row"><span>Icons in Schiebeleiste anzeigen</span><input type="checkbox" id="icons-slider-toggle" onchange="toggleSliderIcons(this.checked)"></div>
-                    <div class="toggle-row"><span>Icons im Dashboard anzeigen</span><input type="checkbox" id="icons-dashboard-toggle" onchange="toggleDashboardIcons(this.checked)"></div>
+                    <div class="form-group" style="margin-top:6px;"><label style="font-size:0.78rem;">Icon-Stil im Dashboard</label><div class="input-wrapper"><select id="dashboard-icon-style-select" onchange="changeDashboardIconStyle(this.value)"><option value="purist-color">Puristisch (Kategoriefarben)</option><option value="emoji">Klassik (Farbige Emojis)</option><option value="none">Ohne Icons</option></select></div></div>
+                    <div class="toggle-row"><span>Suchleiste auf Startseite anzeigen</span><input type="checkbox" id="dashboard-search-toggle" onchange="toggleDashboardSearch(this.checked)"></div>
                 </div>
             </div>
             <div class="setting-section collapsed">
@@ -1080,7 +1153,7 @@
             </div>
             <div class="setting-section collapsed">
                 <div class="setting-section-title" onclick="toggleSettingSection(this)">Reihenfolge der Kategorien (Sortieren)</div>
-                <div class="setting-section-content"><div class="hint" style="margin-bottom:6px;">☰ halten &amp; ziehen = Reihenfolge in Dashboard &amp; Schiebeleiste ändern</div><div id="category-order-list"></div></div>
+                <div class="setting-section-content"><div class="hint" style="margin-bottom:6px;">☰ halten &amp; ziehen = Reihenfolge im Dashboard ändern</div><div id="category-order-list"></div></div>
             </div>
             <div class="setting-section collapsed">
                 <div class="setting-section-title" onclick="toggleSettingSection(this)" style="color:#0d47a1;">Kategorie: Anwendung (Sortieren / Aktivieren)</div>
@@ -1091,7 +1164,7 @@
                 <div class="setting-section-content"><div class="hint" style="margin-bottom:6px;">Haken = aktiv | ☰ halten & ziehen = Reihenfolge ändern</div><div id="active-list-parameter"></div></div>
             </div>
             <div class="setting-section collapsed">
-                <div class="setting-section-title" onclick="toggleSettingSection(this)" style="color:#ca8a04;">Kategorie: Hilfsmittel (Sortieren / Aktivieren)</div>
+                <div class="setting-section-title" onclick="toggleSettingSection(this)" style="color:#ca8a04;">Kategorie: Tools (Sortieren / Aktivieren)</div>
                 <div class="setting-section-content"><div class="hint" style="margin-bottom:6px;">Haken = aktiv | ☰ halten & ziehen = Reihenfolge ändern</div><div id="active-list-werkzeuge"></div></div>
             </div>
             <div class="setting-section collapsed">
@@ -1102,7 +1175,7 @@
                 <div class="setting-section-title" onclick="toggleSettingSection(this)" style="opacity:0.8;">Inaktive Module</div>
                 <div class="setting-section-content"><div id="inactive-module-list"></div></div>
             </div>
-            <div class="setting-section desktop-guide-wrap">
+            <div class="setting-section desktop-guide-wrap" id="settings-guide-section">
                 <a href="./anleitung.html" target="_blank" rel="noopener noreferrer" class="admin-btn admin-btn-primary" style="display:block; text-align:center; text-decoration:none; margin-top:0; background:#0d47a1;">📖 Interaktive PC-Bedienungsanleitung öffnen</a>
                 <div class="hint" style="text-align:center; margin-top:5px;">Zweispaltige Schulungs- &amp; Klick-Anleitung für Browser auf dem PC.</div>
             </div>
@@ -1114,7 +1187,7 @@
 
 <div class="admin-modal-overlay" id="adminAuthModal">
     <div class="admin-modal-content">
-        <div class="admin-modal-header"><span>Admin Authentifizierung (v5.8)</span><button type="button" class="modal-close-btn" style="color:var(--primary-color);" onclick="closeAdminModal('adminAuthModal')">✕</button></div>
+        <div class="admin-modal-header"><span>Admin Authentifizierung (v5.9)</span><button type="button" class="modal-close-btn" style="color:var(--primary-color);" onclick="closeAdminModal('adminAuthModal')">✕</button></div>
         <p style="font-size:0.82rem; color:var(--subtext-color); margin-bottom:12px;">Bitte die Admin-PIN eingeben:</p>
         <div class="form-group"><label>Admin-PIN</label><input type="password" id="adminPin8" class="field-box" value="" autocomplete="new-password" placeholder="••••••••" style="letter-spacing:2px;"></div>
         <button type="button" class="admin-btn admin-btn-primary" style="margin-top:10px;" onclick="verifyAdminAuth8()">Admin Console öffnen</button>
@@ -1123,7 +1196,7 @@
 
 <div class="admin-modal-overlay" id="adminConsoleModal">
     <div class="admin-modal-content" style="max-width:540px;">
-        <div class="admin-modal-header"><span>Admin Konsole (v5.8)</span><button type="button" class="modal-close-btn" style="color:var(--primary-color);" onclick="closeAdminModal('adminConsoleModal')">✕</button></div>
+        <div class="admin-modal-header"><span>Admin Konsole (v5.9)</span><button type="button" class="modal-close-btn" style="color:var(--primary-color);" onclick="closeAdminModal('adminConsoleModal')">✕</button></div>
         <div class="admin-tab-bar">
             <button type="button" class="admin-tab-btn active" id="adminTabBtnUsers" onclick="switchAdminTab('users')">👥 Techniker (users.json)</button>
             <button type="button" class="admin-tab-btn" id="adminTabBtnDb" onclick="switchAdminTab('db')">🗂️ Datenbanken (databases.json)</button>
@@ -1139,6 +1212,7 @@
             <div class="form-group"><label>E-Mail-Adresse (für Kunden-/Eigennotizen)</label><input type="email" id="newUserEmail" class="field-box" placeholder="z. B. maxmustermann@innowatech.de"></div>
             <div class="form-group"><label>PIN für Techniker (9+ Zeichen empfohlen)</label><input type="password" id="newPin" class="field-box" placeholder="PIN eingeben"></div>
             <div class="form-group"><label style="display:flex; align-items:center; gap:8px; cursor:pointer; background:var(--input-bg); padding:8px; border:1px solid var(--border-color); border-radius:6px;"><input type="checkbox" id="newAutoUpdate" checked style="width:18px; height:18px;"><span>🚀 Auto-Updates erhalten (Empfohlen für Tester/Admin)</span></label></div>
+            <div class="form-group"><label style="display:flex; align-items:center; gap:8px; cursor:pointer; background:var(--input-bg); padding:8px; border:1px solid var(--border-color); border-radius:6px;"><input type="checkbox" id="newPcGuide" style="width:18px; height:18px;"><span>📖 PC-Anleitung (anleitung.html) im Zahnrad-Menü freigeben</span></label></div>
             <div class="form-group">
                 <label>Modul-Freigaben</label>
                 <div class="checkbox-group">
@@ -2229,12 +2303,31 @@
             return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, '0')).join('');
         } catch { return pin; }
     }
+    let currentNetState = 'online';
     function updateNetBadge(weakOffline = false) {
         const b = $('net-status-badge'); if (!b) return;
-        const on = navigator.onLine && !weakOffline;
-        b.innerText = !navigator.onLine ? '○ Offline' : (weakOffline ? '○ Schwaches Netz' : '● Online');
-        b.style.color = on ? '#2e7d32' : '#e65100';
-        b.style.background = on ? 'rgba(46,125,50,0.12)' : 'rgba(230,81,0,0.12)';
+        currentNetState = !navigator.onLine ? 'offline' : (weakOffline ? 'weak' : 'online');
+        b.classList.remove('is-weak', 'is-offline');
+        if (currentNetState === 'online') {
+            b.title = 'Online – Verbindung aktiv (antippen für Details)';
+            b.setAttribute('aria-label', 'Status: Online');
+            b.innerHTML = '<svg viewBox="0 0 18 14" fill="currentColor" aria-hidden="true"><rect x="1" y="10" width="2.8" height="3.5" rx="0.8"/><rect x="5.4" y="7" width="2.8" height="6.5" rx="0.8"/><rect x="9.8" y="4" width="2.8" height="9.5" rx="0.8"/><rect x="14.2" y="1" width="2.8" height="12.5" rx="0.8"/></svg>';
+        } else if (currentNetState === 'weak') {
+            b.classList.add('is-weak');
+            b.title = 'Schwaches Netz – Offline-Speicher aktiv (antippen für Details)';
+            b.setAttribute('aria-label', 'Status: Schwaches Netz');
+            b.innerHTML = '<svg viewBox="0 0 18 14" fill="currentColor" aria-hidden="true"><rect x="1" y="10" width="2.8" height="3.5" rx="0.8"/><rect x="5.4" y="7" width="2.8" height="6.5" rx="0.8" opacity="0.25"/><rect x="9.8" y="4" width="2.8" height="9.5" rx="0.8" opacity="0.25"/><rect x="14.2" y="1" width="2.8" height="12.5" rx="0.8" opacity="0.25"/></svg>';
+        } else {
+            b.classList.add('is-offline');
+            b.title = 'Offline – Lokal aus dem Speicher aktiv (antippen für Details)';
+            b.setAttribute('aria-label', 'Status: Offline');
+            b.innerHTML = '<svg viewBox="0 0 18 14" fill="currentColor" aria-hidden="true"><rect x="1" y="10" width="2.8" height="3.5" rx="0.8" opacity="0.28"/><rect x="5.4" y="7" width="2.8" height="6.5" rx="0.8" opacity="0.28"/><rect x="9.8" y="4" width="2.8" height="9.5" rx="0.8" opacity="0.28"/><rect x="14.2" y="1" width="2.8" height="12.5" rx="0.8" opacity="0.28"/><line x1="2" y1="12.5" x2="16" y2="1.5" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg>';
+        }
+    }
+    function showNetStatusToast() {
+        if (currentNetState === 'online') showToast('📶 Online – Verbindung aktiv (Diktat, Mail & Abgleich bereit)');
+        else if (currentNetState === 'weak') showToast('📶 Schwaches Netz – App läuft stabil lokal aus dem Speicher');
+        else showToast('📵 Offline – App läuft lokal ohne Einschränkung');
     }
     function withHardTimeout(promise, ms = 1200) {
         return new Promise((resolve, reject) => {
@@ -2258,6 +2351,7 @@
                 status: u.status || 'active',
                 isAdmin: !!u.isAdmin,
                 autoUpdate: u.autoUpdate !== undefined ? u.autoUpdate : (k === 'ADMIN' || k === 'MAT'),
+                pcGuide: u.pcGuide !== undefined ? !!u.pcGuide : (k === 'ADMIN' || k === 'MAT' || !!u.isAdmin),
                 modules: Array.isArray(u.modules) ? u.modules : []
             };
         }
@@ -2468,7 +2562,7 @@
             pHash = await hashPin(pin);
         } else if (dbUsers[k]?.pinHash) pHash = dbUsers[k].pinHash;
         else return showToast('Bitte eine PIN eingeben!');
-        dbUsers[k] = { name, email, pinHash: pHash, status: dbUsers[k]?.status || 'active', isAdmin: k === 'ADMIN' || !!dbUsers[k]?.isAdmin, autoUpdate: k === 'ADMIN' ? true : $('newAutoUpdate').checked, modules: mods };
+        dbUsers[k] = { name, email, pinHash: pHash, status: dbUsers[k]?.status || 'active', isAdmin: k === 'ADMIN' || !!dbUsers[k]?.isAdmin, autoUpdate: k === 'ADMIN' ? true : $('newAutoUpdate').checked, pcGuide: k === 'ADMIN' ? true : !!$('newPcGuide')?.checked, modules: mods };
         if (k === activeUser) { localStorage.setItem('innowatech_active_session_data', JSON.stringify(dbUsers[k])); applyUserPermissions(); }
         else renderKnMailRecipients();
         saveUsersToLocalStorage(); showToast(`Techniker ${k} gespeichert – users.json bei Bedarf exportieren.`); cancelEditUser(); renderUserList();
@@ -2480,6 +2574,7 @@
         if ($('newUserEmail')) $('newUserEmail').value = u.email || '';
         $('newPin').value = ''; $('newPin').placeholder = 'Neu (optional)';
         $('newAutoUpdate').checked = u.autoUpdate !== false; $('newAutoUpdate').disabled = k === 'ADMIN';
+        if ($('newPcGuide')) { $('newPcGuide').checked = !!u.pcGuide || !!u.isAdmin || k === 'ADMIN'; $('newPcGuide').disabled = k === 'ADMIN'; }
         txt('adminFormTitle', `Techniker ${k} bearbeiten`); txt('saveUserBtn', 'Änderungen Speichern'); $('cancelEditBtn').style.display = 'block';
         document.querySelectorAll('.admin-mod-check').forEach(cb => cb.checked = !!u.modules?.includes(cb.value));
     }
@@ -2489,14 +2584,16 @@
         if ($('newUserEmail')) $('newUserEmail').value = '';
         $('newPin').value = ''; $('newPin').placeholder = 'PIN eingeben';
         $('newAutoUpdate').checked = true; $('newAutoUpdate').disabled = false;
+        if ($('newPcGuide')) { $('newPcGuide').checked = false; $('newPcGuide').disabled = false; }
         txt('adminFormTitle', 'Neuen Techniker anlegen / anpassen'); txt('saveUserBtn', 'Techniker Speichern'); $('cancelEditBtn').style.display = 'none';
         document.querySelectorAll('.admin-mod-check').forEach(cb => cb.checked = false); $('selectAllModules').checked = false;
     }
     function renderUserList() {
         $('userListContainer').innerHTML = Object.keys(dbUsers).map(k => {
             const u = dbUsers[k], upd = u.autoUpdate !== false ? '<span style="color:#2e7d32;font-weight:bold;">🚀 Update: AN</span>' : '<span style="color:#d97706;">⏸️ Update: AUS</span>';
+            const guide = (u.isAdmin || u.pcGuide) ? '<span style="color:#0d47a1;font-weight:bold;">📖 Anleitung: AN</span>' : '<span style="color:var(--subtext-color);">📖 Anleitung: AUS</span>';
             const metaName = [u.name ? escHtml(u.name) : '', u.email ? escHtml(u.email) : ''].filter(Boolean).join(' · ');
-            return `<div class="user-item"><div><strong>${k}</strong> ${u.isAdmin ? '(Admin)' : ''} (${u.status === 'active' ? 'Freigeschaltet' : 'Gesperrt'})${metaName ? `<br><small style="color:var(--text-color);">${metaName}</small>` : ''}<br><small style="color:var(--subtext-color);">Module: ${u.modules?.length || 0} | ${upd}</small></div><div style="display:flex;gap:4px;"><button type="button" class="admin-btn-sm admin-btn-primary" onclick="editUser('${k}')" style="background:#0288d1;">✏️</button>${k !== 'ADMIN' ? `<button type="button" class="admin-btn-sm ${u.status === 'active' ? 'admin-btn-danger' : 'admin-btn-success'}" onclick="toggleUserStatus('${k}')">${u.status === 'active' ? 'Sperren' : 'Freigeben'}</button><button type="button" class="admin-btn-sm admin-btn-danger" onclick="deleteUser('${k}')">🗑️</button>` : ''}</div></div>`;
+            return `<div class="user-item"><div><strong>${k}</strong> ${u.isAdmin ? '(Admin)' : ''} (${u.status === 'active' ? 'Freigeschaltet' : 'Gesperrt'})${metaName ? `<br><small style="color:var(--text-color);">${metaName}</small>` : ''}<br><small style="color:var(--subtext-color);">Module: ${u.modules?.length || 0} | ${upd} | ${guide}</small></div><div style="display:flex;gap:4px;"><button type="button" class="admin-btn-sm admin-btn-primary" onclick="editUser('${k}')" style="background:#0288d1;">✏️</button>${k !== 'ADMIN' ? `<button type="button" class="admin-btn-sm ${u.status === 'active' ? 'admin-btn-danger' : 'admin-btn-success'}" onclick="toggleUserStatus('${k}')">${u.status === 'active' ? 'Sperren' : 'Freigeben'}</button><button type="button" class="admin-btn-sm admin-btn-danger" onclick="deleteUser('${k}')">🗑️</button>` : ''}</div></div>`;
         }).join('') || '<div class="hint">Keine Techniker hinterlegt (Offline-/Freimodus aktiv).</div>';
     }
     function toggleUserStatus(k) { if (k !== 'ADMIN') { dbUsers[k].status = dbUsers[k].status === 'active' ? 'blocked' : 'active'; saveUsersToLocalStorage(); renderUserList(); } }
@@ -2525,8 +2622,12 @@
         }
         const kofferAllowed = !!currentModules.find(m => m.id === 'koffer')?.userAllowed;
         if ($('notizen_koffer_btn')) $('notizen_koffer_btn').style.display = kofferAllowed ? '' : 'none';
+        const guideAllowed = (IS_DEMO_MODE || !activeUser || !Object.keys(dbUsers).length)
+            ? true
+            : (!!dbUsers[activeUser]?.isAdmin || dbUsers[activeUser]?.pcGuide === true);
+        $('settings-guide-section')?.classList.toggle('guide-allowed', guideAllowed);
         renderKnMailRecipients();
-        renderTabs(); if (isLauncherActive && !isInToolFromLauncher) renderLauncherGrid(); renderPinnedBar();
+        if (isLauncherActive && !isInToolFromLauncher) renderLauncherGrid(); renderPinnedBar();
     }
     const openAdminModal = id => { $(id).classList.add('active'); pushAppNav(id); };
     const closeAdminModal = (id, fromPop = false) => { const m = $(id); if (!m?.classList.contains('active')) return; m.classList.remove('active'); if (!fromPop) popAppNavIf(id); };
@@ -2898,13 +2999,13 @@
     const CATEGORY_DEFS = {
         'Anwendung': { listId: 'active-list-anwendung', gridId: 'launcher-grid-anwendung', tabCls: '', color: '#0d47a1' },
         'Parameter': { listId: 'active-list-parameter', gridId: 'launcher-grid-parameter', tabCls: 'category-parameters', color: '#1b5e20' },
-        'Hilfsmittel': { listId: 'active-list-werkzeuge', gridId: 'launcher-grid-werkzeuge', tabCls: 'category-werkzeuge', color: '#ca8a04' },
+        'Tools': { listId: 'active-list-werkzeuge', gridId: 'launcher-grid-werkzeuge', tabCls: 'category-werkzeuge', color: '#ca8a04' },
         'Katalog & Checklisten': { listId: 'active-list-checklisten', gridId: 'launcher-grid-checklisten', tabCls: 'category-checklisten', color: '#b91c1c' }
     };
-    const DEFAULT_CATEGORY_ORDER = ['Anwendung', 'Parameter', 'Hilfsmittel', 'Katalog & Checklisten'];
+    const DEFAULT_CATEGORY_ORDER = ['Anwendung', 'Parameter', 'Tools', 'Katalog & Checklisten'];
     let categoryOrder = [...DEFAULT_CATEGORY_ORDER];
     function normalizeCategoryOrder(raw) {
-        const list = Array.isArray(raw) ? raw.map(c => c === 'Werkzeuge' ? 'Hilfsmittel' : c) : [];
+        const list = Array.isArray(raw) ? raw.map(c => (c === 'Werkzeuge' || c === 'Hilfsmittel') ? 'Tools' : c) : [];
         const out = [];
         list.forEach(c => { if (DEFAULT_CATEGORY_ORDER.includes(c) && !out.includes(c)) out.push(c); });
         DEFAULT_CATEGORY_ORDER.forEach(c => { if (!out.includes(c)) out.push(c); });
@@ -2921,15 +3022,54 @@
         { id: 'anlagen', title: 'Produktionsparameter AQD', icon: '⚙️', category: 'Parameter', visible: true, userAllowed: true },
         { id: 'radar', title: 'Vega Radarsensor', icon: '📡', category: 'Parameter', visible: true, userAllowed: true },
         { id: 'enthaerter', title: 'Enthärtungsanlagen', icon: '💧', category: 'Parameter', visible: true, userAllowed: true },
-        { id: 'taschenlampe', title: 'Taschenlampe', icon: '🔦', category: 'Hilfsmittel', visible: true, userAllowed: true },
-        { id: 'schlauchvolumen', title: 'Schlauchvolumen', icon: '📏', category: 'Hilfsmittel', visible: true, userAllowed: true },
-        { id: 'auslitern', title: 'Ausliter-Hilfe', icon: '⏱️', category: 'Hilfsmittel', visible: true, userAllowed: true },
-        { id: 'notizen', title: 'Service-Notizen', icon: '📝', category: 'Hilfsmittel', visible: true, userAllowed: true },
-        { id: 'kundennotizen', title: 'Kunden- & Eigennotizen', icon: '📒', category: 'Hilfsmittel', visible: true, userAllowed: true },
+        { id: 'taschenlampe', title: 'Taschenlampe', icon: '🔦', category: 'Tools', visible: true, userAllowed: true },
+        { id: 'schlauchvolumen', title: 'Schlauchvolumen', icon: '📏', category: 'Tools', visible: true, userAllowed: true },
+        { id: 'auslitern', title: 'Ausliter-Hilfe', icon: '⏱️', category: 'Tools', visible: true, userAllowed: true },
+        { id: 'notizen', title: 'Service-Notizen', icon: '📝', category: 'Tools', visible: true, userAllowed: true },
+        { id: 'kundennotizen', title: 'Kunden- & Eigennotizen', icon: '📒', category: 'Tools', visible: true, userAllowed: true },
         { id: 'koffer', title: 'Servicekoffer', icon: '🧰', category: 'Katalog & Checklisten', visible: true, userAllowed: true },
         { id: 'enthaertertausch', title: 'Checkliste Enthärtertausch', icon: '📋', category: 'Katalog & Checklisten', visible: true, userAllowed: true }
     ];
-    let currentModules = [...defaultModules], currentActiveTab = '', isLauncherActive = true, isInToolFromLauncher = false, showSliderIcons = true, showDashboardIcons = true;
+    let currentModules = [...defaultModules], currentActiveTab = '', isLauncherActive = true, isInToolFromLauncher = false;
+    let bottomNavEnabled = true, activeBottomCategory = 'overview', dashboardSearchQuery = '', showDashboardSearch = true, dashboardIconStyle = 'purist-color';
+    const MODULE_KEYWORDS = {
+        standard: 'chlor trinkwasser dosierung anolyte zehrung impuls',
+        wasserwerk: 'durchfluss m3 h tag pumpe 20ma hub',
+        schwimmbad: 'pool becken ph säure granulat chlor',
+        pid: 'regler zirkulation warmwasser kaltwasser hauptleitung volumenstrom',
+        'verdünnung': 'mischen kanister ansatz konzentration wasser',
+        dosierauswertung: 'zähler wasserzähler auswertung quote sollwert überdosierung unterdosierung',
+        sonden: 'sensor messsonde kalibrierung steilheit ph redox chlor',
+        anlagen: 'aquadron zellen salz leistung druck',
+        radar: 'vegapuls tank durchmesser füllstand abgleich sensor',
+        enthaerter: 'härte dh regeneration quellharz kapazität weichwasser',
+        taschenlampe: 'licht blitz led bildschirm dunkel schaltschrank',
+        schlauchvolumen: 'leitung inhalt vorpumpzeit durchmesser pumpe',
+        auslitern: 'stoppuhr timer messbecher katholyte anolyte piepton',
+        notizen: 'bericht doku diktieren hotline mail pdf baustelle',
+        kundennotizen: 'kunde archiv todo rückruf kollegen mail bestellung',
+        koffer: 'l-boxx ersatzteile fach foto nachorder werkzeug',
+        enthaertertausch: 'checkliste aufnahme turbine kabinett panzerschlauch verteiler'
+    };
+    const MODULE_SVGS = {
+        standard: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.7C12 2.7 6 9.8 6 14.3a6 6 0 0 0 12 0C18 9.8 12 2.7 12 2.7z"/></svg>',
+        wasserwerk: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20h20"/><path d="M4 20V10l6 3V10l6 3V7l4 2v11"/></svg>',
+        schwimmbad: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M2 16c1.5 1.2 3.2 1.2 4.8 0 1.6-1.2 3.2-1.2 4.8 0 1.6 1.2 3.2 1.2 4.8 0 1.6-1.2 3.2-1.2 4.8 0"/><path d="M2 20c1.5 1.2 3.2 1.2 4.8 0 1.6-1.2 3.2-1.2 4.8 0 1.6 1.2 3.2 1.2 4.8 0 1.6-1.2 3.2-1.2 4.8 0"/><path d="M8 12V6a2 2 0 0 1 4 0"/><path d="M15 12V6a2 2 0 0 1 4 0"/><line x1="8" y1="9" x2="15" y2="9"/></svg>',
+        pid: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="7" x2="20" y2="7"/><circle cx="9" cy="7" r="2"/><line x1="4" y1="12" x2="20" y2="12"/><circle cx="15" cy="12" r="2"/><line x1="4" y1="17" x2="20" y2="17"/><circle cx="10" cy="17" r="2"/></svg>',
+        'verdünnung': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6"/><path d="M10 3v5l-5.2 9.1A2 2 0 0 0 6.5 20h11a2 2 0 0 0 1.7-2.9L14 8V3"/><line x1="7.5" y1="14" x2="16.5" y2="14"/></svg>',
+        dosierauswertung: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 17v-5"/><path d="M12 17V9"/><path d="M16 17v-7"/></svg>',
+        sonden: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/></svg>',
+        anlagen: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>',
+        radar: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M5.6 18.4A9 9 0 0 1 18.4 5.6"/><path d="M8.5 15.5a5 5 0 0 1 7-7"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/></svg>',
+        enthaerter: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.5 10 19 14 21 14 12.5 22 3"/></svg>',
+        taschenlampe: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6c0 2-2 2-2 4v10a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2V10c0-2-2-2-2-4V2h12z"/><line x1="6" y1="6" x2="18" y2="6"/><line x1="12" y1="12" x2="12" y2="14"/></svg>',
+        schlauchvolumen: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 17l5-6 5 4 6-8"/><circle cx="4" cy="17" r="1.5"/><circle cx="20" cy="7" r="1.5"/></svg>',
+        auslitern: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2"/><path d="M10 2h4"/><path d="M19 5l1.5 1.5"/></svg>',
+        notizen: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></svg>',
+        kundennotizen: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2z"/></svg>',
+        koffer: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="3" y1="12" x2="21" y2="12"/></svg>',
+        enthaertertausch: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>'
+    };
     const isMobileDevice = () => window.innerWidth <= 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
     function initCustomDropdowns() {
@@ -3214,17 +3354,21 @@
         populateDbSelects(); renderVegaSteps(); initEtChecklistImages(); renderEtMailRecipients(); renderEtSavedList();
         captureTabDefaults();
         const isDark = !IS_DEMO_MODE && localStorage.getItem('mat_darkmode') === 'true';
-        document.documentElement.classList.toggle('dark-mode', isDark);
-        document.body.classList.toggle('dark-mode', isDark); $('darkmode-toggle').checked = isDark;
-        $('meta-color-scheme')?.setAttribute('content', isDark ? 'dark' : 'light');
+        toggleDarkMode(isDark, false);
+        if ($('darkmode-toggle')) $('darkmode-toggle').checked = isDark;
         if (!IS_DEMO_MODE && localStorage.getItem('mat_darkmode') === null) localStorage.setItem('mat_darkmode', 'false');
         changeThemeProfile(IS_DEMO_MODE ? 'klassik' : (localStorage.getItem('mat_theme_profile') || 'klassik'), false);
         keepScreenAwake = !IS_DEMO_MODE && localStorage.getItem('mat_keep_awake') === 'true'; if ($('wakelock-toggle')) $('wakelock-toggle').checked = keepScreenAwake;
         timerBeepEnabled = IS_DEMO_MODE ? true : localStorage.getItem('mat_timer_beep') !== 'false'; if ($('beep-toggle')) $('beep-toggle').checked = timerBeepEnabled;
         persistCalcInputs = !IS_DEMO_MODE && localStorage.getItem('mat_save_calc_inputs') === 'true'; if ($('calc-persist-toggle')) $('calc-persist-toggle').checked = persistCalcInputs;
         try { const pt = IS_DEMO_MODE ? [] : JSON.parse(localStorage.getItem('mat_pinned_tabs') || '[]'); if (Array.isArray(pt)) pinnedTabs = pt.slice(0, 5); } catch {}
-        showSliderIcons = IS_DEMO_MODE ? true : localStorage.getItem('mat_show_slider_icons') !== 'false'; $('icons-slider-toggle').checked = showSliderIcons;
-        showDashboardIcons = IS_DEMO_MODE ? true : localStorage.getItem('mat_show_dashboard_icons') !== 'false'; $('icons-dashboard-toggle').checked = showDashboardIcons;
+        let savedStyle = IS_DEMO_MODE ? 'purist-color' : localStorage.getItem('mat_dashboard_icon_style');
+        if (!IS_DEMO_MODE && !savedStyle) {
+            savedStyle = localStorage.getItem('mat_show_dashboard_icons') === 'false' ? 'none' : 'purist-color';
+        }
+        changeDashboardIconStyle(savedStyle || 'purist-color', false);
+        showDashboardSearch = IS_DEMO_MODE ? true : localStorage.getItem('mat_dashboard_search') !== 'false';
+        if ($('dashboard-search-toggle')) $('dashboard-search-toggle').checked = showDashboardSearch;
         const z = IS_DEMO_MODE ? 1 : Math.min(1.2, parseFloat(localStorage.getItem('mat_zoom') || '1'));
         changeZoom(z, false); $('zoom-slider').value = z;
         try { categoryOrder = IS_DEMO_MODE ? [...DEFAULT_CATEGORY_ORDER] : normalizeCategoryOrder(JSON.parse(localStorage.getItem('mat_category_order') || 'null')); } catch { categoryOrder = [...DEFAULT_CATEGORY_ORDER]; }
@@ -3232,7 +3376,7 @@
             const parsed = IS_DEMO_MODE ? null : JSON.parse(localStorage.getItem('mat_modules') || 'null');
             if (Array.isArray(parsed)) {
                 currentModules = parsed;
-                currentModules.forEach(m => { const d = defaultModules.find(x => x.id === m.id); if (d) Object.assign(m, { title: d.title, category: d.category, icon: d.icon || '🛠️' }); else if (m.category === 'Werkzeuge') m.category = 'Hilfsmittel'; });
+                currentModules.forEach(m => { const d = defaultModules.find(x => x.id === m.id); if (d) Object.assign(m, { title: d.title, category: d.category, icon: d.icon || '🛠️' }); else if (m.category === 'Werkzeuge' || m.category === 'Hilfsmittel') m.category = 'Tools'; });
                 defaultModules.forEach(d => { if (!currentModules.some(m => m.id === d.id)) currentModules.push({ ...d }); });
             } else {
                 currentModules = defaultModules.map(m => ({ ...m }));
@@ -3240,18 +3384,15 @@
         } catch { currentModules = defaultModules.map(m => ({ ...m })); }
         const notes = IS_DEMO_MODE ? '' : localStorage.getItem('mat_service_notes'); if (notes && $('service_notes_area')) $('service_notes_area').value = notes;
         if ($('fault_clear_after')) $('fault_clear_after').checked = IS_DEMO_MODE ? true : localStorage.getItem('mat_fault_clear_after') !== 'false';
-        if (!IS_DEMO_MODE && !localStorage.getItem('mat_v55_home_init')) {
-            localStorage.setItem('mat_launcher_view', 'true');
-            localStorage.setItem('mat_v55_home_init', '1');
-        }
-        isLauncherActive = IS_DEMO_MODE ? true : localStorage.getItem('mat_launcher_view') !== 'false'; isInToolFromLauncher = false;
-        changeMainViewMode(isLauncherActive ? 'dashboard' : 'slider', false);
+        isLauncherActive = true; isInToolFromLauncher = false; activeBottomCategory = 'overview';
+        const savedNav = IS_DEMO_MODE ? 'bottombar' : (localStorage.getItem('mat_bottom_nav_mode') || 'bottombar');
+        changeMainViewMode(savedNav, false);
         changeDashboardDensity(IS_DEMO_MODE ? 'compact' : (localStorage.getItem('mat_dashboard_density') || 'compact'), false);
         changeEmailSeparatorMode(IS_DEMO_MODE ? 'auto' : (localStorage.getItem('mat_mail_sep') || 'auto'), false);
         initKofferViews();
         // Sofortiger, rein lokaler Start ohne jede Netzwerk-Wartezeit:
         loadUsersDatabaseSync();
-        renderTabs(true); applyViewMode(); initCustomDropdowns();
+        applyViewMode(); initCustomDropdowns();
         if (!IS_DEMO_MODE) { restoreEtDraft(); loadKnDraft(); }
         renderKnArchive(); renderKnMailRecipients();
         if (persistCalcInputs) restoreTabInputs();
@@ -3274,9 +3415,36 @@
         setLocalPref('mat_modules', JSON.stringify(currentModules));
         setLocalPref('mat_category_order', JSON.stringify(categoryOrder));
     };
-    const toggleDarkMode = on => { document.documentElement.classList.toggle('dark-mode', on); document.body.classList.toggle('dark-mode', on); $('meta-color-scheme')?.setAttribute('content', on ? 'dark' : 'light'); setLocalPref('mat_darkmode', on); };
-    const toggleSliderIcons = on => { showSliderIcons = on; setLocalPref('mat_show_slider_icons', on); };
-    const toggleDashboardIcons = on => { showDashboardIcons = on; setLocalPref('mat_show_dashboard_icons', on); };
+    function syncHeaderThemeIcon(isDark) {
+        const btn = $('header-theme-btn'); if (!btn) return;
+        btn.innerHTML = isDark
+            ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>'
+            : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+    }
+    function toggleDarkMode(on, save = true) {
+        const isDark = !!on;
+        document.documentElement.classList.toggle('dark-mode', isDark);
+        document.body.classList.toggle('dark-mode', isDark);
+        $('meta-color-scheme')?.setAttribute('content', isDark ? 'dark' : 'light');
+        if ($('darkmode-toggle')) $('darkmode-toggle').checked = isDark;
+        syncHeaderThemeIcon(isDark);
+        if (save) setLocalPref('mat_darkmode', isDark);
+    }
+    function toggleDarkModeHeader() { toggleDarkMode(!document.body.classList.contains('dark-mode'), true); }
+    function changeDashboardIconStyle(style, save = true) {
+        const st = ['purist-color', 'emoji', 'none'].includes(style) ? style : 'purist-color';
+        dashboardIconStyle = st;
+        if ($('dashboard-icon-style-select')) $('dashboard-icon-style-select').value = st;
+        refreshDropdownTriggers($('settings-modal'));
+        if (save) setLocalPref('mat_dashboard_icon_style', st);
+        if (!isInToolFromLauncher) renderLauncherGrid();
+    }
+    function toggleDashboardSearch(on) {
+        showDashboardSearch = !!on;
+        if (!showDashboardSearch) dashboardSearchQuery = '';
+        setLocalPref('mat_dashboard_search', showDashboardSearch);
+        if (!isInToolFromLauncher) renderLauncherGrid();
+    }
     function toggleSettingSection(el) { el.closest('.setting-section')?.classList.toggle('collapsed'); setTimeout(() => checkSettingsScroll($('settings-modal-body')), 50); }
     function changeZoom(v, save = true) { const z = Math.min(1.2, parseFloat(v) || 1); document.documentElement.style.setProperty('--app-zoom', z); txt('zoom-val-text', Math.round(z * 100) + '%'); if (save) setLocalPref('mat_zoom', z); }
     function isWindowsDesktop() {
@@ -3298,14 +3466,37 @@
         if (save) setLocalPref('mat_mail_sep', m);
     }
     function changeMainViewMode(mode, save = true) {
-        const useDash = mode !== 'slider';
-        isLauncherActive = useDash; isInToolFromLauncher = false;
-        if ($('main-view-select')) $('main-view-select').value = useDash ? 'dashboard' : 'slider';
+        const useBottom = mode !== 'overview';
+        bottomNavEnabled = useBottom;
+        if (!useBottom) activeBottomCategory = 'overview';
+        if ($('main-view-select')) $('main-view-select').value = useBottom ? 'bottombar' : 'overview';
         refreshDropdownTriggers($('settings-modal'));
         if (save) {
-            setLocalPref('mat_launcher_view', String(useDash));
+            setLocalPref('mat_bottom_nav_mode', useBottom ? 'bottombar' : 'overview');
             applyViewMode();
         }
+    }
+    function selectBottomCategory(catKey) {
+        activeBottomCategory = ['overview', 'anwendung', 'parameter', 'werkzeuge'].includes(catKey) ? catKey : 'overview';
+        if (dashboardSearchQuery) {
+            dashboardSearchQuery = '';
+            if ($('dashboard-search-input')) $('dashboard-search-input').value = '';
+            $('dashboard-search-clear')?.classList.remove('visible');
+        }
+        document.querySelectorAll('.bottom-nav-btn').forEach(b => b.classList.toggle('active', b.dataset.bcat === activeBottomCategory));
+        renderLauncherGrid();
+        $('launcher-view')?.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    function onDashboardSearchInput(val) {
+        dashboardSearchQuery = String(val || '');
+        $('dashboard-search-clear')?.classList.toggle('visible', dashboardSearchQuery.trim().length > 0);
+        renderLauncherGrid();
+    }
+    function clearDashboardSearch() {
+        dashboardSearchQuery = '';
+        if ($('dashboard-search-input')) $('dashboard-search-input').value = '';
+        $('dashboard-search-clear')?.classList.remove('visible');
+        renderLauncherGrid();
     }
     function changeDashboardDensity(mode, save = true) {
         const dense = mode === 'large' ? 'large' : 'compact';
@@ -3328,7 +3519,7 @@
     }
     function updateTopResetButton() {
         const btn = $('top-reset-btn'); if (!btn) return;
-        const cfg = (isLauncherActive && isInToolFromLauncher) ? getActiveTabResetConfig(currentActiveTab) : null;
+        const cfg = isInToolFromLauncher ? getActiveTabResetConfig(currentActiveTab) : null;
         if (!cfg) { btn.style.display = 'none'; return; }
         btn.innerText = cfg.label;
         btn.title = cfg.title || cfg.label;
@@ -3340,36 +3531,59 @@
         if (cfg) cfg.fn();
     }
     function applyViewMode() {
-        const tb = $('tab-bar-wrapper'), lv = $('launcher-view'), bb = $('dashboard-back-bar');
-        if (isLauncherActive && !isInToolFromLauncher) {
-            tb.style.display = 'none'; lv.classList.add('active'); bb.classList.remove('active');
+        const lv = $('launcher-view'), bb = $('dashboard-back-bar'), bn = $('bottom-cat-nav');
+        if (!isInToolFromLauncher) {
+            lv.classList.add('active'); bb.classList.remove('active');
+            if (bn) bn.classList.toggle('visible', !!bottomNavEnabled);
             currentModules.forEach(t => $('tab-' + t.id)?.classList.remove('active'));
             renderLauncherGrid(); setTimeout(() => checkDashboardScroll(lv), 80);
-        } else if (isLauncherActive && isInToolFromLauncher) {
-            tb.style.display = 'none'; lv.classList.remove('active'); bb.classList.add('active');
         } else {
-            tb.style.display = 'block'; lv.classList.remove('active'); bb.classList.remove('active');
-            const vis = currentModules.filter(m => m.visible && m.userAllowed);
-            if (currentActiveTab) switchTab(currentActiveTab); else if (vis.length) switchTab(vis[0].id);
+            lv.classList.remove('active'); bb.classList.add('active');
+            if (bn) bn.classList.remove('visible');
         }
         updatePinButton(); renderPinnedBar(); updateTopResetButton();
     }
     function renderLauncherGrid() {
         const lv = $('launcher-view'), bottomInd = $('dashboard-scroll-indicator-bottom');
+        const sw = $('dashboard-search-wrap'), emptyEl = $('dashboard-search-empty');
+        if (sw) sw.style.display = showDashboardSearch ? 'flex' : 'none';
+        const q = showDashboardSearch ? dashboardSearchQuery.trim().toLowerCase() : '';
+        const isPurist = dashboardIconStyle === 'purist-color';
+        if (lv) {
+            lv.classList.toggle('purist-mode', isPurist);
+            lv.classList.toggle('single-cat-mode', !q && bottomNavEnabled && activeBottomCategory !== 'overview');
+        }
+        document.querySelectorAll('.bottom-nav-btn').forEach(b => b.classList.toggle('active', b.dataset.bcat === activeBottomCategory));
         const grids = {
             'Anwendung': $('launcher-grid-anwendung'),
             'Parameter': $('launcher-grid-parameter'),
-            'Hilfsmittel': $('launcher-grid-werkzeuge'),
+            'Tools': $('launcher-grid-werkzeuge'),
             'Katalog & Checklisten': $('launcher-grid-checklisten')
         };
         Object.values(grids).forEach(g => { if (g) g.innerHTML = ''; });
+        let visibleTotal = 0;
         currentModules.filter(m => m.visible && m.userAllowed).forEach(mod => {
-            const cat = mod.category === 'Werkzeuge' ? 'Hilfsmittel' : (mod.category || 'Anwendung');
+            const cat = (mod.category === 'Werkzeuge' || mod.category === 'Hilfsmittel') ? 'Tools' : (mod.category || 'Anwendung');
+            if (q) {
+                const hay = (mod.title + ' ' + cat + ' ' + (MODULE_KEYWORDS[mod.id] || '')).toLowerCase();
+                if (!hay.includes(q)) return;
+            } else if (bottomNavEnabled && activeBottomCategory !== 'overview') {
+                if (activeBottomCategory === 'anwendung' && cat !== 'Anwendung') return;
+                if (activeBottomCategory === 'parameter' && cat !== 'Parameter') return;
+                if (activeBottomCategory === 'werkzeuge' && cat !== 'Tools' && cat !== 'Katalog & Checklisten') return;
+            }
             const g = grids[cat] || grids['Anwendung'];
             if (!g) return;
+            visibleTotal++;
             const c = document.createElement('div'); c.className = 'launcher-card';
             c.onclick = () => { isInToolFromLauncher = true; pushAppNav('tool'); applyViewMode(); switchTab(mod.id); };
-            c.innerHTML = (showDashboardIcons ? `<div class="launcher-icon">${mod.icon || '🛠️'}</div>` : '') + `<div class="launcher-label">${mod.title}</div>`;
+            let iconHtml = '';
+            if (isPurist) {
+                iconHtml = `<div class="purist-icon-badge">${MODULE_SVGS[mod.id] || MODULE_SVGS.anlagen}</div>`;
+            } else if (dashboardIconStyle === 'emoji') {
+                iconHtml = `<div class="launcher-icon">${mod.icon || '🛠️'}</div>`;
+            }
+            c.innerHTML = iconHtml + `<div class="launcher-label">${mod.title}</div>`;
             g.appendChild(c);
         });
         if (lv) {
@@ -3378,10 +3592,13 @@
                 const g = grids[cat];
                 if (sec) {
                     sec.style.display = g && g.children.length ? '' : 'none';
-                    if (bottomInd) lv.insertBefore(sec, bottomInd);
+                    if (emptyEl) lv.insertBefore(sec, emptyEl);
+                    else if (bottomInd) lv.insertBefore(sec, bottomInd);
                     else lv.appendChild(sec);
                 }
             });
+            if (emptyEl) emptyEl.style.display = visibleTotal === 0 ? 'block' : 'none';
+            setTimeout(() => checkDashboardScroll(lv), 40);
         }
     }
     const backToDashboard = (fromPop = false) => {
@@ -3389,17 +3606,14 @@
         isInToolFromLauncher = false; applyViewMode();
         if (!fromPop) popAppNavIf('tool');
     };
-    function checkScrollArrows() {
-        const c = $('categories-container'); if (!c) return;
-        $('scroll-arrow-left').classList.toggle('visible', c.scrollLeft > 5);
-        $('scroll-arrow-right').classList.toggle('visible', c.scrollWidth - c.clientWidth - c.scrollLeft > 5);
-    }
     function checkDashboardScroll(el) {
         if (!el) return;
-        $('dashboard-scroll-indicator-top').classList.toggle('visible', el.scrollTop > 10);
+        $('dashboard-scroll-indicator-top').classList.toggle('visible', el.scrollTop > 18);
         $('dashboard-scroll-indicator-bottom').classList.toggle('visible', el.scrollHeight - el.scrollTop - el.clientHeight > 10);
     }
     const scrollDashboardTo = d => $('launcher-view')?.scrollTo({ top: d === 'top' ? 0 : $('launcher-view').scrollHeight, behavior: 'smooth' });
+    const scrollDashboardMore = () => { const lv = $('launcher-view'); if (lv) lv.scrollBy({ top: Math.max(180, lv.clientHeight * 0.72), behavior: 'smooth' }); };
+    window.addEventListener('resize', () => checkDashboardScroll($('launcher-view')));
     const checkSettingsScroll = el => {
         if (!el) return;
         $('settings-scroll-indicator-top').classList.toggle('visible', el.scrollTop > 20);
@@ -3407,43 +3621,20 @@
     };
     const scrollSettingsTo = d => $('settings-modal-body')?.scrollTo({ top: d === 'top' ? 0 : $('settings-modal-body').scrollHeight, behavior: 'smooth' });
 
-    function renderTabs(autoFirst = false) {
-        const cont = $('categories-container'); cont.innerHTML = '';
-        const active = currentModules.filter(m => m.visible && m.userAllowed);
-        categoryOrder.forEach(cat => {
-            const cls = CATEGORY_DEFS[cat]?.tabCls || '';
-            const mods = active.filter(m => (m.category === 'Werkzeuge' ? 'Hilfsmittel' : (m.category || 'Anwendung')) === cat);
-            if (!mods.length) return;
-            const grp = document.createElement('div'); grp.className = 'category-group ' + cls;
-            grp.innerHTML = `<div class="category-title">${cat}</div><div class="tab-buttons-inner"></div>`;
-            const inner = grp.querySelector('.tab-buttons-inner');
-            mods.forEach(mod => {
-                const btn = document.createElement('button'); btn.type = 'button'; btn.className = 'tab-btn'; btn.id = 'btn-' + mod.id;
-                btn.onclick = () => switchTab(mod.id);
-                btn.innerHTML = `<div class="btn-content-inner">${showSliderIcons && mod.icon ? `<span style="font-size:0.8rem;margin-bottom:1px;">${mod.icon}</span>` : ''}${mod.title.split(' ').map(w => `<span class="btn-text-line">${w}</span>`).join('')}</div>`;
-                inner.appendChild(btn);
-            });
-            cont.appendChild(grp);
-        });
-        if ((autoFirst || !active.some(m => m.id === currentActiveTab)) && active.length) switchTab(active[0].id);
-        else if (currentActiveTab) switchTab(currentActiveTab);
-        setTimeout(checkScrollArrows, 100);
-    }
     function switchTab(name) {
         if (name !== 'notizen' && name !== 'kundennotizen') stopNoteDictation();
         else if (isDictatingNote && activeDictateTarget && activeDictateTarget !== name) stopNoteDictation();
         currentActiveTab = name;
-        currentModules.forEach(t => { $('btn-' + t.id)?.classList.remove('active'); $('tab-' + t.id)?.classList.remove('active'); });
-        const b = $('btn-' + name), c = $('tab-' + name);
-        if (b) { b.classList.add('active'); b.scrollIntoView({ behavior: 'smooth', inline: 'nearest', block: 'nearest' }); }
-        if (c && (!isLauncherActive || isInToolFromLauncher)) c.classList.add('active');
+        currentModules.forEach(t => $('tab-' + t.id)?.classList.remove('active'));
+        const c = $('tab-' + name);
+        if (c && isInToolFromLauncher) c.classList.add('active');
         updatePinButton(); renderPinnedBar(); updateTopResetButton();
     }
 
     function openSettings() { renderCategoryManager(); renderModuleManager(); $('settings-modal').classList.add('open'); pushAppNav('settings'); setTimeout(() => checkSettingsScroll($('settings-modal-body')), 50); }
     function closeSettings(fromPop = false) {
         const m = $('settings-modal'); if (!m?.classList.contains('open')) return;
-        m.classList.remove('open'); saveSettings(); renderTabs(); if (isLauncherActive && !isInToolFromLauncher) renderLauncherGrid(); renderPinnedBar();
+        m.classList.remove('open'); saveSettings(); if (!isInToolFromLauncher) renderLauncherGrid(); renderPinnedBar();
         if (!fromPop) popAppNavIf('settings');
     }
     function attachDragSort(handle, item, container, onFinish = updateModulesOrderFromDOM) {
@@ -3477,8 +3668,7 @@
             window.removeEventListener('touchcancel', onEnd);
             window.removeEventListener('blur', onEnd);
             onFinish();
-            renderTabs();
-            if (isLauncherActive && !isInToolFromLauncher) renderLauncherGrid();
+            if (!isInToolFromLauncher) renderLauncherGrid();
             renderPinnedBar();
         };
         handle.addEventListener('mousedown', e => {
@@ -3527,14 +3717,14 @@
         const map = {
             'Anwendung': $('active-list-anwendung'),
             'Parameter': $('active-list-parameter'),
-            'Hilfsmittel': $('active-list-werkzeuge'),
+            'Tools': $('active-list-werkzeuge'),
             'Katalog & Checklisten': $('active-list-checklisten')
         };
         const inactEl = $('inactive-module-list'), actMods = currentModules.filter(m => m.visible), inactMods = currentModules.filter(m => !m.visible);
         Object.entries(map).forEach(([cat, el]) => {
             if (!el) return;
             el.innerHTML = '';
-            const list = actMods.filter(m => (m.category === 'Werkzeuge' ? 'Hilfsmittel' : (m.category || 'Anwendung')) === cat);
+            const list = actMods.filter(m => ((m.category === 'Werkzeuge' || m.category === 'Hilfsmittel') ? 'Tools' : (m.category || 'Anwendung')) === cat);
             if (!list.length) return void (el.innerHTML = '<div class="hint">Keine aktiven Module in dieser Kategorie.</div>');
             list.forEach(mod => {
                 const item = document.createElement('div'); item.className = 'module-list-item'; item.dataset.id = mod.id;
@@ -4279,33 +4469,36 @@
         if (!msg || msg.source !== 'innowatech-guide') return;
         if (msg.action === 'setDarkMode') {
             toggleDarkMode(!!msg.enabled);
-            if ($('darkmode-toggle')) $('darkmode-toggle').checked = !!msg.enabled;
+            return;
+        }
+        if (msg.action === 'setIconStyle') {
+            changeDashboardIconStyle(msg.style || 'purist-color');
             return;
         }
         closeAllGuideOverlays();
-        if (msg.action === 'dashboard') {
-            changeMainViewMode('dashboard');
+        if (msg.action === 'dashboard' || msg.action === 'bottomTab') {
+            changeMainViewMode('bottombar');
             isInToolFromLauncher = false;
+            if (msg.bottomCat) activeBottomCategory = msg.bottomCat;
+            else if (msg.action === 'dashboard') activeBottomCategory = 'overview';
+            clearDashboardSearch();
             applyViewMode();
-            if (msg.targetSelector) {
+            if (msg.focusSearch) {
+                setTimeout(() => {
+                    const si = $('dashboard-search-input');
+                    if (si) { si.focus(); pulseGuideTarget($('dashboard-search-wrap')); }
+                }, 90);
+            } else if (msg.targetSelector) {
                 setTimeout(() => {
                     const t = document.querySelector(msg.targetSelector);
                     if (t) {
                         t.scrollIntoView({ behavior: 'smooth', block: 'center' });
                         pulseGuideTarget(t);
                     }
-                }, 80);
+                }, 90);
             } else {
                 $('launcher-view')?.scrollTo({ top: 0, behavior: 'smooth' });
                 window.scrollTo({ top: 0, behavior: 'smooth' });
-            }
-            return;
-        }
-        if (msg.action === 'slider') {
-            changeMainViewMode('slider');
-            if (msg.tabId) switchTab(msg.tabId);
-            if (msg.targetSelector) {
-                setTimeout(() => pulseGuideTarget(document.querySelector(msg.targetSelector)), 80);
             }
             return;
         }
@@ -4334,13 +4527,9 @@
             return;
         }
         if (msg.action === 'tab' && msg.tabId) {
-            if (msg.viewMode === 'slider') {
-                changeMainViewMode('slider');
-            } else {
-                isLauncherActive = true;
-                isInToolFromLauncher = true;
-                applyViewMode();
-            }
+            isLauncherActive = true;
+            isInToolFromLauncher = true;
+            applyViewMode();
             switchTab(msg.tabId);
             setTimeout(() => {
                 const tabEl = $('tab-' + msg.tabId);
