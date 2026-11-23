@@ -377,10 +377,35 @@
             25%, 75% { box-shadow: 0 0 0 4px rgba(41, 182, 246, 0.85); }
         }
         .guide-highlight-pulse { animation: guidePulseRing 1.05s ease 2; border-radius: 8px; }
+        #app-splash-overlay { position: fixed; inset: 0; z-index: 9500; display: flex; flex-direction: column; align-items: center; justify-content: center; background: radial-gradient(circle at 50% 38%, #1976d2 0%, #0d47a1 58%, #072963 100%); color: #ffffff; opacity: 1; transform: scale(1); transition: opacity 0.42s cubic-bezier(0.22, 1, 0.36, 1), transform 0.42s cubic-bezier(0.22, 1, 0.36, 1); user-select: none; -webkit-user-select: none; cursor: pointer; }
+        html.dark-mode #app-splash-overlay, body.dark-mode #app-splash-overlay { background: radial-gradient(circle at 50% 38%, #102a52 0%, #081224 62%, #040812 100%); }
+        #app-splash-overlay.is-hiding { opacity: 0; transform: scale(1.03); pointer-events: none; }
+        .splash-stage { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 24px; }
+        .splash-emblem { position: relative; width: 68px; height: 68px; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; opacity: 0; animation: splashPopIn 0.52s cubic-bezier(0.22, 1, 0.36, 1) 0.04s forwards; }
+        .splash-ring { position: absolute; inset: 0; border-radius: 50%; border: 1.5px solid rgba(125, 211, 252, 0.55); opacity: 0; animation: splashRipple 1.15s cubic-bezier(0.16, 1, 0.3, 1) 0.14s forwards; }
+        .splash-badge { width: 54px; height: 54px; border-radius: 16px; background: rgba(255, 255, 255, 0.12); border: 1px solid rgba(255, 255, 255, 0.28); box-shadow: 0 10px 28px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.25); display: flex; align-items: center; justify-content: center; backdrop-filter: blur(6px); }
+        .splash-badge svg { width: 30px; height: 30px; color: #e0f2fe; }
+        .splash-wordmark { position: relative; font-size: 1.55rem; font-weight: 800; letter-spacing: 2.2px; line-height: 1.1; text-shadow: 0 2px 12px rgba(0, 0, 0, 0.32); opacity: 0; animation: splashRiseIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.14s forwards; overflow: hidden; }
+        .splash-wordmark .splash-xi { color: #7dd3fc; }
+        .splash-wordmark::after { content: ''; position: absolute; top: 0; left: -120%; width: 55%; height: 100%; background: linear-gradient(105deg, transparent 0%, rgba(255, 255, 255, 0.42) 50%, transparent 100%); animation: splashSheen 0.72s ease-out 0.34s forwards; pointer-events: none; }
+        .splash-sub { margin-top: 6px; font-size: 0.78rem; font-weight: 600; letter-spacing: 1.8px; text-transform: uppercase; color: #bfdbfe; opacity: 0; animation: splashRiseIn 0.46s cubic-bezier(0.22, 1, 0.36, 1) 0.24s forwards; }
+        .splash-track { margin-top: 22px; width: 132px; height: 2.5px; border-radius: 999px; background: rgba(255, 255, 255, 0.18); overflow: hidden; opacity: 0; animation: splashFadeOnly 0.28s ease 0.2s forwards; }
+        .splash-bar { width: 100%; height: 100%; border-radius: 999px; background: linear-gradient(90deg, #38bdf8 0%, #ffffff 70%, #7dd3fc 100%); transform-origin: left center; transform: scaleX(0); animation: splashProgress 0.74s cubic-bezier(0.4, 0, 0.2, 1) 0.2s forwards; }
+        @keyframes splashPopIn { from { opacity: 0; transform: scale(0.84) translateY(8px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+        @keyframes splashRipple { 0% { opacity: 0.75; transform: scale(0.84); } 100% { opacity: 0; transform: scale(1.48); } }
+        @keyframes splashRiseIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes splashSheen { from { left: -120%; } to { left: 160%; } }
+        @keyframes splashFadeOnly { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes splashProgress { 0% { transform: scaleX(0); } 65% { transform: scaleX(0.78); } 100% { transform: scaleX(1); } }
+        @media (prefers-reduced-motion: reduce) {
+            .splash-emblem, .splash-wordmark, .splash-sub, .splash-track { animation: none !important; opacity: 1 !important; transform: none !important; }
+            .splash-ring, .splash-wordmark::after { animation: none !important; display: none !important; }
+            .splash-bar { animation: none !important; transform: scaleX(1) !important; }
+        }
         @media print {
             body { background: white !important; color: black !important; padding: 0 !important; zoom: 1 !important; overflow: visible !important; }
             .container { box-shadow: none !important; max-width: 100% !important; border-radius: 0 !important; height: auto !important; max-height: none !important; overflow: visible !important; display: block !important; }
-            .header-btn, .bottom-cat-nav, .dashboard-search-wrap, .dashboard-scroll-fade, .dashboard-scroll-indicator, .pinned-bar, .dashboard-back-bar, .pdf-export-btn, .reset-tab-btn, .no-print, .modal-overlay, .admin-modal-overlay, .footer, .vega-img-badge, .vega-zoom-hint { display: none !important; }
+            #app-splash-overlay, .header-btn, .bottom-cat-nav, .dashboard-search-wrap, .dashboard-scroll-fade, .dashboard-scroll-indicator, .pinned-bar, .dashboard-back-bar, .pdf-export-btn, .reset-tab-btn, .no-print, .modal-overlay, .admin-modal-overlay, .footer, .vega-img-badge, .vega-zoom-hint { display: none !important; }
             #pdf-print-header, #pdf_notes_print_view, #et_bemerkung_print, #kn_print_view { display: block !important; }
             #pdf-print-header { border: 2px solid #0d47a1; border-radius: 6px; padding: 10px 12px; margin: 8px 12px 4px; background: #f8fafc !important; color: #111 !important; }
             #service_notes_area, #et_bemerkung, #kn_text { display: none !important; }
@@ -409,6 +434,38 @@
     </style>
 <script src="/_aistudio-iframe.js?v=29045eb3"></script></head>
 <body>
+
+<div id="app-splash-overlay" onclick="dismissAppSplash()" role="status" aria-label="INNOWATΞCH Service Tool wird geladen">
+    <div class="splash-stage">
+        <div class="splash-emblem">
+            <span class="splash-ring" aria-hidden="true"></span>
+            <div class="splash-badge">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M12 2.6C12 2.6 5.5 9.8 5.5 14.5a6.5 6.5 0 0 0 13 0C18.5 9.8 12 2.6 12 2.6z"/>
+                    <path d="M9.4 15.2a2.9 2.9 0 0 0 2.6 2.3" opacity="0.85"/>
+                </svg>
+            </div>
+        </div>
+        <div class="splash-wordmark">INNOWAT<span class="splash-xi">Ξ</span>CH</div>
+        <div class="splash-sub">Service Tool</div>
+        <div class="splash-track"><div class="splash-bar"></div></div>
+    </div>
+</div>
+<script>
+    (function(){
+        var el = document.getElementById('app-splash-overlay');
+        if (!el) return;
+        if (location.search.indexOf('demo=1') !== -1) { el.remove(); return; }
+        try { if (localStorage.getItem('mat_darkmode') === 'true') document.documentElement.classList.add('dark-mode'); } catch (e) {}
+        window.dismissAppSplash = function() {
+            if (!el || el.dataset.hiding) return;
+            el.dataset.hiding = '1';
+            el.classList.add('is-hiding');
+            setTimeout(function(){ try { el.remove(); } catch (e) {} }, 460);
+        };
+        setTimeout(window.dismissAppSplash, 960);
+    })();
+</script>
 
 <div class="app-login-overlay" id="appLoginOverlay">
     <div class="app-login-box">
