@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mat-service-tool-v6.01';
+const CACHE_NAME = 'mat-service-tool-v6.1';
 const CORE_URLS = [
   './',
   './index.html',
@@ -157,4 +157,3 @@ self.addEventListener('fetch', event => {
     }
   })());
 });
-
