@@ -9,7 +9,7 @@
     <meta name="theme-color" content="#0d47a1">
     <meta name="color-scheme" content="light" id="meta-color-scheme">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>INNOWATΞCH Service Tool v6.0</title>
+    <title>INNOWATΞCH Service Tool v6.1</title>
     <link rel="icon" href="data:,">
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="icon.png">
@@ -158,7 +158,7 @@
         body.dark-mode .bottom-nav-btn.active .bottom-nav-label { color: #e2e8f0; }
         .dashboard-back-bar { display: none; background: var(--result-bg); border-bottom: 1px solid var(--result-border); padding: 6px 10px; flex-shrink: 0; }
         .dashboard-back-bar.active { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
-        .dashboard-back-btn { background: linear-gradient(to bottom, #1976d2, #0d47a1); color: white; border: 1px solid #1565c0; border-radius: 6px; font-weight: bold; font-size: 0.78rem; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; padding: 5px 10px; }
+        .dashboard-back-btn { margin-left: auto; background: linear-gradient(to bottom, #1976d2, #0d47a1); color: white; border: 1px solid #1565c0; border-radius: 6px; font-weight: bold; font-size: 0.78rem; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; padding: 5px 10px; }
         .top-reset-btn { background: var(--card-bg); color: var(--text-color); border: 1px solid var(--border-color); border-radius: 6px; font-weight: 700; font-size: 0.74rem; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; padding: 5px 9px; white-space: nowrap; flex-shrink: 0; }
         .top-reset-btn:active { transform: translateY(1px); }
         .top-reset-btn.danger { color: #c62828; border-color: rgba(198,40,40,0.45); }
@@ -506,7 +506,7 @@
     </div>
 
     <div class="pinned-bar" id="pinned-bar"></div>
-    <div class="dashboard-back-bar" id="dashboard-back-bar"><button type="button" class="dashboard-back-btn" onclick="backToDashboard()">⬅️ Zurück zur Übersicht</button><button type="button" class="top-reset-btn" id="top-reset-btn" onclick="triggerActiveTabReset()" style="display:none;"></button></div>
+    <div class="dashboard-back-bar" id="dashboard-back-bar"><button type="button" class="top-reset-btn" id="top-reset-btn" onclick="triggerActiveTabReset()" style="display:none;"></button><button type="button" class="dashboard-back-btn" onclick="backToDashboard()">⬅️ Zurück zur Übersicht</button></div>
     <div id="pdf-print-header">
         <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #90caf9; padding-bottom:4px;">
             <strong style="font-size:1rem; color:#0d47a1;">INNOWATΞCH Service-Bericht</strong>
@@ -546,12 +546,12 @@
     </div>
 
     <div id="tab-wasserwerk" class="tab-content">
-        <div class="section-title">1. Fördermenge & Durchfluss</div>
-        <div class="form-group"><label>Gesamtfördermenge pro Tag</label><div class="input-wrapper"><input type="number" id="ww_m3tag" step="1" placeholder="z. B. 500" oninput="updateFromM3Tag()"><span class="unit">m³/Tag</span></div></div>
-        <div class="form-group"><label>Anzahl Stunden/Tag Betrieb (Optional)</label><div class="input-wrapper"><input type="number" id="ww_stunden" step="0.1" placeholder="z. B. 12" oninput="updateFromLsek()"><span class="unit">Std/Tag</span></div></div>
-        <div class="form-group"><label>Durchflussrate / Förderleistung (Optional)</label><div class="input-wrapper"><input type="number" id="ww_lsek" step="0.1" placeholder="z. B. 11.5" oninput="updateFromLsek()"><span class="unit">l/s</span></div></div>
+        <div class="section-title">1. Fördermenge &amp; Durchfluss</div>
+        <div class="form-group"><label>Gesamtfördermenge pro Tag (Optional)</label><div class="input-wrapper"><input type="number" id="ww_m3tag" step="1" placeholder="z. B. 500" oninput="onWwFlowInput('m3tag')"><span class="unit">m³/Tag</span></div></div>
+        <div class="form-group"><label>Anzahl Stunden/Tag Betrieb (Optional)</label><div class="input-wrapper"><input type="number" id="ww_stunden" step="0.1" placeholder="z. B. 12" oninput="onWwFlowInput('stunden')"><span class="unit">Std/Tag</span></div></div>
+        <div class="form-group"><label>Durchflussrate / Förderleistung (Optional)</label><div class="input-wrapper"><input type="number" id="ww_lsek" step="0.1" placeholder="z. B. 11.5" oninput="onWwFlowInput('lsek')"><span class="unit">l/s</span></div></div>
         <div class="form-group"><label>Errechneter Durchsatz pro Stunde</label><div class="input-wrapper" style="opacity:0.85;"><input type="number" id="ww_m3h" readonly placeholder="0.00"><span class="unit">m³/h</span></div></div>
-        <div class="section-title">2. Konzentrationen & Zehrung</div>
+        <div class="section-title">2. Konzentrationen &amp; Zehrung</div>
         <div class="form-group"><label>Wirkstoffkonzentration Anolyte</label><div class="input-wrapper"><input type="number" id="ww_anol_konz" step="1" placeholder="z. B. 500" oninput="calcWasserwerk()"><span class="unit">mg/l (ppm)</span></div></div>
         <div class="form-group"><label>Zielkonzentration</label><div class="input-wrapper"><input type="number" id="ww_ziel" step="0.01" placeholder="z. B. 0.20" oninput="calcWasserwerk()"><span class="unit">mg/l</span></div></div>
         <div class="form-group"><label>Zehrung</label><div class="input-wrapper"><input type="number" id="ww_zehrung" step="0.01" placeholder="z. B. 0.05" oninput="calcWasserwerk()"><span class="unit">mg/l</span></div></div>
@@ -559,13 +559,28 @@
             <label>Kalkulierte Anwendungs-Konz. (inkl. Zehrung)</label><div class="result-value" id="ww_res_soll">0.00 mg/l</div><br>
             <label>Resultierender Anolyte-Bedarf pro Tag</label><div class="result-value" id="ww_res_bedarf">0.00 Liter/Tag</div>
         </div>
-        <div class="section-title">3. Impulssteuerung (IDM / Kontaktwasserzähler)</div>
-        <div class="form-group"><label>Wasserzähler/IDM-Impuls</label><div class="input-wrapper"><input type="number" id="ww_impuls" step="0.1" placeholder="z. B. 10" oninput="calcWasserwerk()"><span class="unit">L/Impuls</span></div></div>
+        <div class="section-title">3. Impulssteuerung (MID / Kontaktwasserzähler)</div>
+        <div class="form-group"><label>Wasserzähler / MID-Impuls</label><div class="input-wrapper"><input type="number" id="ww_impuls" step="0.1" placeholder="z. B. 10" oninput="calcWasserwerk()"><span class="unit">L/Impuls</span></div></div>
         <div class="result-box"><label>Einzustellende Hubmenge an Dosierpumpe</label><div class="result-value" id="ww_res_hub">0.00 ml/Hub</div></div>
-        <div class="section-title">4. Analogsteuerung (4–20 mA Signal)</div>
-        <div class="form-group"><label>Max. Wasserfluss bei 20 mA Signal</label><div class="input-wrapper"><input type="number" id="ww_max_flow" step="1" placeholder="z. B. 50" oninput="calcWasserwerk()"><span class="unit">m³/h</span></div></div>
+        <div class="section-title">4. Analogsteuerung (4–20 mA Signal · MID)</div>
+        <div class="form-group">
+            <label>Max. Wasserfluss bei 20 mA Signal (MID-Endwert)</label>
+            <div class="input-wrapper"><input type="number" id="ww_max_flow" step="0.1" placeholder="z. B. 50" oninput="onWwMaxFlowInput()"><span class="unit">m³/h</span></div>
+            <div id="ww_max_flow_auto_hint" class="hint" style="display:none; margin-top:4px; color:#1565c0;">✓ Automatisch aus Punkt 1 übernommen – bei abweichendem MID-Endwert einfach überschreiben.</div>
+            <div id="ww_max_flow_adopt_wrap" style="display:none; margin-top:5px;"><button type="button" class="snippet-chip" onclick="adoptWwMaxFlowFromCalc()">↺ <span id="ww_adopt_m3h_val">0.00</span> m³/h aus Punkt 1 übernehmen</button></div>
+        </div>
         <div class="form-group"><label>Soll-Dosierleistung der Pumpe bei 20 mA</label><div class="input-wrapper" style="opacity:0.85;"><input type="number" id="ww_res_pumpe_20ma" readonly placeholder="0.00"><span class="unit">l/h</span></div></div>
-        <div class="result-box"><label>Proportionale Dosiermenge je m³ Wasser</label><div class="result-value" id="ww_res_l_pro_m3">0.00 l/m³</div></div>
+        <div id="ww_analog_warn" class="alert-box" style="display:none; margin-top:4px; margin-bottom:8px; padding:7px 9px; font-size:0.77rem;"></div>
+        <div class="result-box"><label>Proportionale Dosiermenge je m³ Wasser</label><div class="result-value" id="ww_res_l_pro_m3">0.000 l/m³</div></div>
+        <div class="toggle-row" style="margin-top:8px; padding:7px 10px; background:var(--input-bg); border:1px solid var(--border-color); border-radius:6px;">
+            <span style="font-size:0.8rem; font-weight:600;">mA-Ausgang MID anzeigen (Kurven-Abgleich)</span>
+            <input type="checkbox" id="ww_show_mid_ma" onchange="calcWasserwerk()" style="width:18px; height:18px;">
+        </div>
+        <div id="ww_mid_ma_box" class="result-box" style="display:none; margin-top:8px;">
+            <div class="result-row"><span class="result-label">Soll-Ausgangsstrom MID</span><span class="result-value" id="ww_res_mid_ma">- mA</span></div>
+            <div class="result-row"><span class="result-label">Soll-Dosierleistung Pumpe (aktuell)</span><span class="result-value" id="ww_res_mid_lh">- l/h</span></div>
+            <div id="ww_mid_ma_hint" class="hint" style="margin-top:6px; margin-bottom:0;"></div>
+        </div>
         <button type="button" class="pdf-export-btn" onclick="exportToPDF()">📄 Als PDF speichern / drucken</button>
         <button type="button" class="reset-tab-btn" onclick="resetTabInputs('wasserwerk')">↺ Eingaben zurücksetzen</button>
     </div>
@@ -1143,7 +1158,7 @@
             <button type="button" id="net-status-badge" class="net-signal-btn" onclick="showNetStatusToast()" title="Verbindungsstatus anzeigen" aria-label="Verbindungsstatus"></button>
             <span id="footer-update-pill" onclick="applyAppUpdate()" title="Update jetzt installieren" style="display:none; font-size:0.7rem; padding:2px 7px; border-radius:10px; background:#f59e0b; color:white; cursor:pointer; font-weight:bold;">🔄 Update</span>
         </div>
-        <span class="footer-version" style="flex:1; text-align:right;" onclick="handleVersionClick()">v6.0</span>
+        <span class="footer-version" style="flex:1; text-align:right;" onclick="handleVersionClick()">v6.1</span>
     </div>
 
     <nav class="bottom-cat-nav" id="bottom-cat-nav" aria-label="Bereiche">
@@ -1241,7 +1256,7 @@
 
 <div class="admin-modal-overlay" id="adminAuthModal">
     <div class="admin-modal-content">
-        <div class="admin-modal-header"><span>Admin Authentifizierung (v6.0)</span><button type="button" class="modal-close-btn" style="color:var(--primary-color);" onclick="closeAdminModal('adminAuthModal')">✕</button></div>
+        <div class="admin-modal-header"><span>Admin Authentifizierung (v6.1)</span><button type="button" class="modal-close-btn" style="color:var(--primary-color);" onclick="closeAdminModal('adminAuthModal')">✕</button></div>
         <p style="font-size:0.82rem; color:var(--subtext-color); margin-bottom:12px;">Bitte die Admin-PIN eingeben:</p>
         <div class="form-group"><label>Admin-PIN</label><input type="password" id="adminPin8" class="field-box" value="" autocomplete="new-password" placeholder="••••••••" style="letter-spacing:2px;"></div>
         <button type="button" class="admin-btn admin-btn-primary" style="margin-top:10px;" onclick="verifyAdminAuth8()">Admin Console öffnen</button>
@@ -1250,7 +1265,7 @@
 
 <div class="admin-modal-overlay" id="adminConsoleModal">
     <div class="admin-modal-content" style="max-width:540px;">
-        <div class="admin-modal-header"><span>Admin Konsole (v6.0)</span><button type="button" class="modal-close-btn" style="color:var(--primary-color);" onclick="closeAdminModal('adminConsoleModal')">✕</button></div>
+        <div class="admin-modal-header"><span>Admin Konsole (v6.1)</span><button type="button" class="modal-close-btn" style="color:var(--primary-color);" onclick="closeAdminModal('adminConsoleModal')">✕</button></div>
         <div class="admin-tab-bar">
             <button type="button" class="admin-tab-btn active" id="adminTabBtnUsers" onclick="switchAdminTab('users')">👥 Techniker (users.json)</button>
             <button type="button" class="admin-tab-btn" id="adminTabBtnDb" onclick="switchAdminTab('db')">🗂️ Datenbanken (databases.json)</button>
@@ -3272,7 +3287,7 @@
     function recalcAllModules() {
         syncAusliterButtons(); syncDatePickerTriggers();
         calcDosierauswertung();
-        calcStandard(); updateFromM3Tag(); calcWasserwerk(); calcPoolAll(); calcVerduennung();
+        calcStandard(); calcWasserwerk(); calcPoolAll(); calcVerduennung();
         berechnePID(); calcSchlauch(); calcAusliter(); updateSondenData(); updateAnlagenData();
         updateRadarTankDefaults(); updateEnthaerterData();
     }
@@ -3300,6 +3315,16 @@
                     else el.value = v;
                 }
             });
+            wwFlowState.m3tag = ($('ww_m3tag')?.value.trim() || '') !== '';
+            wwFlowState.stunden = ($('ww_stunden')?.value.trim() || '') !== '';
+            wwFlowState.lsek = ($('ww_lsek')?.value.trim() || '') !== '';
+            wwLastFlowSrc = wwFlowState.lsek ? 'lsek' : (wwFlowState.m3tag ? 'm3tag' : null);
+            if (!val('ww_m3h')) {
+                if (val('ww_lsek') > 0) $('ww_m3h').value = (val('ww_lsek') * 3.6).toFixed(2);
+                else if (val('ww_m3tag') > 0 && val('ww_stunden') > 0) $('ww_m3h').value = (val('ww_m3tag') / val('ww_stunden')).toFixed(2);
+            }
+            const restM3h = val('ww_m3h'), restMax = val('ww_max_flow');
+            wwMaxFlowManual = restMax > 0 && (restM3h <= 0 || Math.abs(restMax - restM3h) >= 0.02);
             refreshDropdownTriggers(); syncDatePickerTriggers();
         } catch {}
     }
@@ -3311,6 +3336,7 @@
                 else el.value = defaultTabInputs[el.id];
             }
         });
+        if (tabId === 'wasserwerk') resetWwTracking();
         refreshDropdownTriggers(root);
         recalcAllModules();
         saveTabInputs();
@@ -4355,24 +4381,166 @@
         txt('std_res_soll', soll.toFixed(2) + ' mg/l');
         txt('std_res_menge', (anol > 0 ? ((soll * val('std_vol')) / anol) * 1000 : 0).toFixed(2) + ' ml');
     }
-    function updateFromLsek() {
-        const ls = val('ww_lsek'), h = val('ww_stunden'), m3h = ls * 3.6;
-        $('ww_m3h').value = m3h > 0 ? m3h.toFixed(2) : '';
-        if (h > 0 && ls > 0) $('ww_m3tag').value = (m3h * h).toFixed(2);
+    let wwFlowState = { m3tag: false, stunden: false, lsek: false }, wwLastFlowSrc = null, wwMaxFlowManual = false;
+    function resetWwTracking() {
+        wwFlowState = { m3tag: false, stunden: false, lsek: false };
+        wwLastFlowSrc = null;
+        wwMaxFlowManual = false;
+    }
+    function syncWwMaxFlowFromCalc(m3h) {
+        if (wwMaxFlowManual || !$('ww_max_flow')) return;
+        $('ww_max_flow').value = m3h > 0 ? m3h.toFixed(2) : '';
+    }
+    function onWwMaxFlowInput() {
+        wwMaxFlowManual = true;
         calcWasserwerk();
     }
-    function updateFromM3Tag() {
-        const t = val('ww_m3tag'), h = val('ww_stunden');
-        if (h > 0 && t > 0) { const m3h = t / h; $('ww_m3h').value = m3h.toFixed(2); $('ww_lsek').value = (m3h / 3.6).toFixed(2); }
+    function adoptWwMaxFlowFromCalc() {
+        wwMaxFlowManual = false;
+        syncWwMaxFlowFromCalc(val('ww_m3h'));
+        calcWasserwerk();
+        saveTabInputs();
+    }
+    function onWwFlowInput(src) {
+        const rawT = $('ww_m3tag')?.value.trim() || '';
+        const rawH = $('ww_stunden')?.value.trim() || '';
+        const rawL = $('ww_lsek')?.value.trim() || '';
+        wwFlowState[src] = (src === 'm3tag' ? rawT : (src === 'stunden' ? rawH : rawL)) !== '';
+        if (src === 'm3tag' || src === 'lsek') {
+            if (wwFlowState[src]) wwLastFlowSrc = src;
+            else if (wwLastFlowSrc === src) wwLastFlowSrc = wwFlowState.lsek ? 'lsek' : (wwFlowState.m3tag ? 'm3tag' : null);
+        }
+        const t = val('ww_m3tag'), h = val('ww_stunden'), ls = val('ww_lsek');
+        let m3h = 0;
+
+        if (src === 'm3tag') {
+            if (t > 0 && h > 0) {
+                m3h = t / h;
+                $('ww_m3h').value = m3h.toFixed(2);
+                $('ww_lsek').value = (m3h / 3.6).toFixed(2);
+                wwFlowState.lsek = false;
+            } else if (t > 0 && ls > 0 && wwFlowState.lsek && !wwFlowState.stunden) {
+                m3h = ls * 3.6;
+                $('ww_m3h').value = m3h.toFixed(2);
+                $('ww_stunden').value = (t / m3h).toFixed(2);
+            } else {
+                if (!wwFlowState.lsek) {
+                    $('ww_lsek').value = '';
+                    $('ww_m3h').value = '';
+                } else if (ls > 0) {
+                    m3h = ls * 3.6;
+                    $('ww_m3h').value = m3h.toFixed(2);
+                    if (!wwFlowState.stunden) $('ww_stunden').value = '';
+                }
+            }
+        } else if (src === 'lsek') {
+            if (ls > 0) {
+                m3h = ls * 3.6;
+                $('ww_m3h').value = m3h.toFixed(2);
+                if (h > 0 && wwFlowState.stunden) {
+                    $('ww_m3tag').value = (m3h * h).toFixed(2);
+                    wwFlowState.m3tag = false;
+                } else if (t > 0 && wwFlowState.m3tag && !wwFlowState.stunden) {
+                    $('ww_stunden').value = (t / m3h).toFixed(2);
+                } else if (!wwFlowState.m3tag) {
+                    $('ww_m3tag').value = '';
+                }
+            } else {
+                if (t > 0 && h > 0 && wwFlowState.m3tag && wwFlowState.stunden) {
+                    m3h = t / h;
+                    $('ww_m3h').value = m3h.toFixed(2);
+                } else {
+                    $('ww_m3h').value = '';
+                    if (!wwFlowState.m3tag) $('ww_m3tag').value = '';
+                    if (!wwFlowState.stunden) $('ww_stunden').value = '';
+                }
+            }
+        } else if (src === 'stunden') {
+            if (h > 0) {
+                if (wwLastFlowSrc === 'lsek' || (!wwFlowState.m3tag && wwFlowState.lsek && ls > 0)) {
+                    if (ls > 0) {
+                        m3h = ls * 3.6;
+                        $('ww_m3h').value = m3h.toFixed(2);
+                        $('ww_m3tag').value = (m3h * h).toFixed(2);
+                        wwFlowState.m3tag = false;
+                    }
+                } else if (t > 0) {
+                    m3h = t / h;
+                    $('ww_m3h').value = m3h.toFixed(2);
+                    $('ww_lsek').value = (m3h / 3.6).toFixed(2);
+                    wwFlowState.lsek = false;
+                }
+            } else {
+                if (wwFlowState.lsek && ls > 0) {
+                    m3h = ls * 3.6;
+                    $('ww_m3h').value = m3h.toFixed(2);
+                    if (!wwFlowState.m3tag) $('ww_m3tag').value = '';
+                } else {
+                    $('ww_m3h').value = '';
+                    if (!wwFlowState.lsek) $('ww_lsek').value = '';
+                }
+            }
+        }
+
+        syncWwMaxFlowFromCalc(val('ww_m3h'));
         calcWasserwerk();
     }
+    function updateFromLsek() { onWwFlowInput('lsek'); }
+    function updateFromM3Tag() { onWwFlowInput('m3tag'); }
     function calcWasserwerk() {
         const anol = val('ww_anol_konz'), konz = val('ww_ziel') + val('ww_zehrung'), lM3 = anol > 0 ? (konz * 1000) / anol : 0;
+        const m3Tag = val('ww_m3tag'), m3h = val('ww_m3h'), maxFlow = val('ww_max_flow');
         txt('ww_res_soll', konz.toFixed(2) + ' mg/l');
-        txt('ww_res_bedarf', (anol > 0 ? (val('ww_m3tag') * 1000 * konz) / anol : 0).toFixed(2) + ' Liter/Tag');
+        txt('ww_res_bedarf', (anol > 0 && m3Tag > 0 ? (m3Tag * 1000 * konz) / anol : 0).toFixed(2) + ' Liter/Tag');
         txt('ww_res_hub', (anol > 0 ? (val('ww_impuls') * konz * 1000) / anol : 0).toFixed(2) + ' ml/Hub');
         txt('ww_res_l_pro_m3', lM3.toFixed(3) + ' l/m³');
-        const p20 = val('ww_max_flow') * lM3; $('ww_res_pumpe_20ma').value = p20 > 0 ? p20.toFixed(2) : '';
+        const p20 = maxFlow * lM3;
+        $('ww_res_pumpe_20ma').value = p20 > 0 ? p20.toFixed(2) : '';
+
+        const autoHint = $('ww_max_flow_auto_hint'), adoptWrap = $('ww_max_flow_adopt_wrap');
+        if (autoHint) autoHint.style.display = (!wwMaxFlowManual && m3h > 0 && maxFlow > 0 && Math.abs(maxFlow - m3h) < 0.02) ? 'block' : 'none';
+        if (adoptWrap) {
+            const showAdopt = wwMaxFlowManual && m3h > 0 && (maxFlow <= 0 || Math.abs(maxFlow - m3h) >= 0.02);
+            adoptWrap.style.display = showAdopt ? 'block' : 'none';
+            if (showAdopt) txt('ww_adopt_m3h_val', m3h.toFixed(2));
+        }
+
+        const warnEl = $('ww_analog_warn');
+        if (warnEl) {
+            if (maxFlow > 0 && (anol <= 0 || konz <= 0)) {
+                const miss = anol <= 0 && konz <= 0 ? 'Wirkstoffkonzentration Anolyte & Zielkonzentration' : (anol <= 0 ? 'Wirkstoffkonzentration Anolyte' : 'Zielkonzentration');
+                warnEl.innerHTML = `ℹ️ Für die Soll-Dosierleistung (l/h) bitte in Abschnitt 2 noch <b>${miss}</b> eingeben.`;
+                warnEl.style.display = 'block';
+            } else {
+                warnEl.style.display = 'none';
+            }
+        }
+
+        const showMa = !!$('ww_show_mid_ma')?.checked, maBox = $('ww_mid_ma_box');
+        if (maBox) {
+            maBox.style.display = showMa ? 'block' : 'none';
+            if (showMa) {
+                const maEl = $('ww_res_mid_ma'), hintEl = $('ww_mid_ma_hint');
+                if (m3h > 0 && maxFlow > 0) {
+                    const ma = 4 + 16 * (m3h / maxFlow);
+                    const pAkt = m3h * lM3;
+                    if (maEl) {
+                        maEl.innerText = ma.toFixed(2) + ' mA';
+                        maEl.style.color = m3h > maxFlow ? '#c62828' : '';
+                    }
+                    txt('ww_res_mid_lh', lM3 > 0 ? pAkt.toFixed(2) + ' l/h' : 'Konz. (Pkt. 2) fehlt');
+                    if (hintEl) {
+                        hintEl.innerHTML = m3h > maxFlow
+                            ? `<span style="color:#c62828;font-weight:600;">⚠️ Aktueller Durchsatz (${m3h.toFixed(2)} m³/h) liegt über dem 20-mA-Endwert (${maxFlow.toFixed(2)} m³/h) – MID im Überbereich (&gt; 20 mA)!</span>`
+                            : `Vergleichswert am Pumpendisplay bei <b>${m3h.toFixed(2)} m³/h</b> (MID-Bereich 0–${Number(maxFlow.toFixed(2))} m³/h = 4–20 mA).`;
+                    }
+                } else {
+                    if (maEl) { maEl.innerText = '- mA'; maEl.style.color = ''; }
+                    txt('ww_res_mid_lh', '- l/h');
+                    if (hintEl) hintEl.textContent = 'Für den MID-Abgleich bitte oben einen Durchsatz (Abschnitt 1) und „Max. Wasserfluss bei 20 mA“ ausfüllen.';
+                }
+            }
+        }
     }
     function calcPoolVolumen() {
         const l = Number($('pool_laenge').value || 0), b = Number($('pool_breite').value || 0), t = Number($('pool_tiefe').value || 0), v = l * b * t * 1000;
