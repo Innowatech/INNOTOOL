@@ -9,7 +9,7 @@
     <meta name="theme-color" content="#0d47a1">
     <meta name="color-scheme" content="light" id="meta-color-scheme">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>INNOWATΞCH Service Tool v6.1</title>
+    <title>INNOWATΞCH Service Tool v6.2</title>
     <link rel="icon" href="data:,">
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="icon.png">
@@ -573,11 +573,25 @@
         <div id="ww_analog_warn" class="alert-box" style="display:none; margin-top:4px; margin-bottom:8px; padding:7px 9px; font-size:0.77rem;"></div>
         <div class="result-box"><label>Proportionale Dosiermenge je m³ Wasser</label><div class="result-value" id="ww_res_l_pro_m3">0.000 l/m³</div></div>
         <div class="toggle-row" style="margin-top:8px; padding:7px 10px; background:var(--input-bg); border:1px solid var(--border-color); border-radius:6px;">
-            <span style="font-size:0.8rem; font-weight:600;">mA-Ausgang MID anzeigen (Kurven-Abgleich)</span>
+            <span style="font-size:0.8rem; font-weight:600;">4–20 mA Kurven-Schieberegler (MID → Pumpe)</span>
             <input type="checkbox" id="ww_show_mid_ma" onchange="calcWasserwerk()" style="width:18px; height:18px;">
         </div>
         <div id="ww_mid_ma_box" class="result-box" style="display:none; margin-top:8px;">
-            <div class="result-row"><span class="result-label">Soll-Ausgangsstrom MID</span><span class="result-value" id="ww_res_mid_ma">- mA</span></div>
+            <div style="display:flex; justify-content:space-between; align-items:baseline; gap:8px; flex-wrap:wrap; margin-bottom:4px;">
+                <span style="font-size:0.78rem; font-weight:700; color:var(--result-label);">Betriebspunkt-Schieberegler (4–20 mA)</span>
+                <span id="ww_mid_slider_badge" style="font-size:0.86rem; font-weight:800; color:var(--result-val);">20.0 mA (100 %)</span>
+            </div>
+            <input type="range" id="ww_mid_slider" min="4" max="20" step="0.1" value="20" oninput="onWwMidSliderInput()" style="width:100%; height:28px; margin:2px 0; accent-color:var(--primary-color); cursor:pointer;">
+            <div style="display:flex; justify-content:space-between; gap:4px; margin-bottom:8px; flex-wrap:wrap;">
+                <button type="button" class="snippet-chip" onclick="setWwMidSliderMa(4)" style="padding:3px 6px; font-size:0.7rem;">4 mA (0%)</button>
+                <button type="button" class="snippet-chip" onclick="setWwMidSliderMa(8)" style="padding:3px 6px; font-size:0.7rem;">8 mA</button>
+                <button type="button" class="snippet-chip" onclick="setWwMidSliderMa(12)" style="padding:3px 6px; font-size:0.7rem;">12 mA (50%)</button>
+                <button type="button" class="snippet-chip" onclick="setWwMidSliderMa(16)" style="padding:3px 6px; font-size:0.7rem;">16 mA</button>
+                <button type="button" class="snippet-chip" onclick="setWwMidSliderMa(20)" style="padding:3px 6px; font-size:0.7rem;">20 mA (100%)</button>
+                <button type="button" id="ww_mid_snap_p1_btn" class="snippet-chip" onclick="snapWwMidSliderToCalc()" style="display:none; padding:3px 6px; font-size:0.7rem; border-color:var(--primary-color); color:var(--primary-color);">↺ Pkt. 1</button>
+            </div>
+            <div class="result-row"><span class="result-label">Signal (MID-Ausgang / Pumpen-Eingang)</span><span class="result-value" id="ww_res_mid_ma">- mA</span></div>
+            <div class="result-row"><span class="result-label">Aktueller Wasserdurchfluss</span><span class="result-value" id="ww_res_mid_flow">- m³/h</span></div>
             <div class="result-row"><span class="result-label">Soll-Dosierleistung Pumpe (aktuell)</span><span class="result-value" id="ww_res_mid_lh">- l/h</span></div>
             <div id="ww_mid_ma_hint" class="hint" style="margin-top:6px; margin-bottom:0;"></div>
         </div>
@@ -1158,7 +1172,7 @@
             <button type="button" id="net-status-badge" class="net-signal-btn" onclick="showNetStatusToast()" title="Verbindungsstatus anzeigen" aria-label="Verbindungsstatus"></button>
             <span id="footer-update-pill" onclick="applyAppUpdate()" title="Update jetzt installieren" style="display:none; font-size:0.7rem; padding:2px 7px; border-radius:10px; background:#f59e0b; color:white; cursor:pointer; font-weight:bold;">🔄 Update</span>
         </div>
-        <span class="footer-version" style="flex:1; text-align:right;" onclick="handleVersionClick()">v6.1</span>
+        <span class="footer-version" style="flex:1; text-align:right;" onclick="handleVersionClick()">v6.2</span>
     </div>
 
     <nav class="bottom-cat-nav" id="bottom-cat-nav" aria-label="Bereiche">
@@ -1256,7 +1270,7 @@
 
 <div class="admin-modal-overlay" id="adminAuthModal">
     <div class="admin-modal-content">
-        <div class="admin-modal-header"><span>Admin Authentifizierung (v6.1)</span><button type="button" class="modal-close-btn" style="color:var(--primary-color);" onclick="closeAdminModal('adminAuthModal')">✕</button></div>
+        <div class="admin-modal-header"><span>Admin Authentifizierung (v6.2)</span><button type="button" class="modal-close-btn" style="color:var(--primary-color);" onclick="closeAdminModal('adminAuthModal')">✕</button></div>
         <p style="font-size:0.82rem; color:var(--subtext-color); margin-bottom:12px;">Bitte die Admin-PIN eingeben:</p>
         <div class="form-group"><label>Admin-PIN</label><input type="password" id="adminPin8" class="field-box" value="" autocomplete="new-password" placeholder="••••••••" style="letter-spacing:2px;"></div>
         <button type="button" class="admin-btn admin-btn-primary" style="margin-top:10px;" onclick="verifyAdminAuth8()">Admin Console öffnen</button>
@@ -1265,7 +1279,7 @@
 
 <div class="admin-modal-overlay" id="adminConsoleModal">
     <div class="admin-modal-content" style="max-width:540px;">
-        <div class="admin-modal-header"><span>Admin Konsole (v6.1)</span><button type="button" class="modal-close-btn" style="color:var(--primary-color);" onclick="closeAdminModal('adminConsoleModal')">✕</button></div>
+        <div class="admin-modal-header"><span>Admin Konsole (v6.2)</span><button type="button" class="modal-close-btn" style="color:var(--primary-color);" onclick="closeAdminModal('adminConsoleModal')">✕</button></div>
         <div class="admin-tab-bar">
             <button type="button" class="admin-tab-btn active" id="adminTabBtnUsers" onclick="switchAdminTab('users')">👥 Techniker (users.json)</button>
             <button type="button" class="admin-tab-btn" id="adminTabBtnDb" onclick="switchAdminTab('db')">🗂️ Datenbanken (databases.json)</button>
@@ -3325,6 +3339,9 @@
             }
             const restM3h = val('ww_m3h'), restMax = val('ww_max_flow');
             wwMaxFlowManual = restMax > 0 && (restM3h <= 0 || Math.abs(restMax - restM3h) >= 0.02);
+            const restSlider = Number($('ww_mid_slider')?.value || 20);
+            const expectedMa = (restM3h > 0 && restMax > 0) ? Math.max(4, Math.min(20, 4 + 16 * (restM3h / restMax))) : 20;
+            wwMidSliderManual = ('ww_mid_slider' in saved) && Math.abs(restSlider - expectedMa) >= 0.15;
             refreshDropdownTriggers(); syncDatePickerTriggers();
         } catch {}
     }
@@ -4381,11 +4398,12 @@
         txt('std_res_soll', soll.toFixed(2) + ' mg/l');
         txt('std_res_menge', (anol > 0 ? ((soll * val('std_vol')) / anol) * 1000 : 0).toFixed(2) + ' ml');
     }
-    let wwFlowState = { m3tag: false, stunden: false, lsek: false }, wwLastFlowSrc = null, wwMaxFlowManual = false;
+    let wwFlowState = { m3tag: false, stunden: false, lsek: false }, wwLastFlowSrc = null, wwMaxFlowManual = false, wwMidSliderManual = false;
     function resetWwTracking() {
         wwFlowState = { m3tag: false, stunden: false, lsek: false };
         wwLastFlowSrc = null;
         wwMaxFlowManual = false;
+        wwMidSliderManual = false;
     }
     function syncWwMaxFlowFromCalc(m3h) {
         if (wwMaxFlowManual || !$('ww_max_flow')) return;
@@ -4398,6 +4416,22 @@
     function adoptWwMaxFlowFromCalc() {
         wwMaxFlowManual = false;
         syncWwMaxFlowFromCalc(val('ww_m3h'));
+        calcWasserwerk();
+        saveTabInputs();
+    }
+    function onWwMidSliderInput() {
+        wwMidSliderManual = true;
+        calcWasserwerk();
+    }
+    function setWwMidSliderMa(maVal) {
+        const s = $('ww_mid_slider');
+        if (s) s.value = String(Math.max(4, Math.min(20, Number(maVal))));
+        wwMidSliderManual = true;
+        calcWasserwerk();
+        saveTabInputs();
+    }
+    function snapWwMidSliderToCalc() {
+        wwMidSliderManual = false;
         calcWasserwerk();
         saveTabInputs();
     }
@@ -4516,28 +4550,50 @@
             }
         }
 
+        const sliderEl = $('ww_mid_slider');
+        if (sliderEl && !wwMidSliderManual) {
+            const natMa = (m3h > 0 && maxFlow > 0) ? Math.max(4, Math.min(20, 4 + 16 * (m3h / maxFlow))) : 20;
+            sliderEl.value = natMa.toFixed(1);
+        }
+
         const showMa = !!$('ww_show_mid_ma')?.checked, maBox = $('ww_mid_ma_box');
         if (maBox) {
             maBox.style.display = showMa ? 'block' : 'none';
             if (showMa) {
-                const maEl = $('ww_res_mid_ma'), hintEl = $('ww_mid_ma_hint');
-                if (m3h > 0 && maxFlow > 0) {
-                    const ma = 4 + 16 * (m3h / maxFlow);
-                    const pAkt = m3h * lM3;
-                    if (maEl) {
-                        maEl.innerText = ma.toFixed(2) + ' mA';
-                        maEl.style.color = m3h > maxFlow ? '#c62828' : '';
+                const maEl = $('ww_res_mid_ma'), flowEl = $('ww_res_mid_flow'), lhEl = $('ww_res_mid_lh'), badgeEl = $('ww_mid_slider_badge'), snapBtn = $('ww_mid_snap_p1_btn'), hintEl = $('ww_mid_ma_hint');
+                if (sliderEl) sliderEl.disabled = maxFlow <= 0;
+                if (maxFlow > 0) {
+                    const curMa = Math.max(4, Math.min(20, Number(sliderEl?.value || 20)));
+                    const ratio = (curMa - 4) / 16;
+                    const pct = ratio * 100;
+                    const pctStr = Math.abs(pct - Math.round(pct)) < 0.05 ? String(Math.round(pct)) : pct.toFixed(1);
+                    const curFlowM3h = maxFlow * ratio;
+                    const curFlowLs = curFlowM3h / 3.6;
+                    const pAkt = curFlowM3h * lM3;
+                    if (badgeEl) badgeEl.innerText = `${curMa.toFixed(1)} mA (${pctStr} %)`;
+                    if (maEl) { maEl.innerText = `${curMa.toFixed(2)} mA`; maEl.style.color = ''; }
+                    if (flowEl) flowEl.innerText = `${curFlowM3h.toFixed(2)} m³/h (${curFlowLs.toFixed(2)} l/s)`;
+                    if (lhEl) lhEl.innerText = lM3 > 0 ? pAkt.toFixed(2) + ' l/h' : 'Konz. (Pkt. 2) fehlt';
+                    if (snapBtn) {
+                        const natMa = m3h > 0 ? Math.max(4, Math.min(20, 4 + 16 * (m3h / maxFlow))) : 20;
+                        const showSnap = m3h > 0 && m3h <= maxFlow && Math.abs(curMa - natMa) >= 0.15;
+                        snapBtn.style.display = showSnap ? 'inline-block' : 'none';
+                        if (showSnap) snapBtn.innerText = `↺ Pkt. 1 (${natMa.toFixed(1)} mA)`;
                     }
-                    txt('ww_res_mid_lh', lM3 > 0 ? pAkt.toFixed(2) + ' l/h' : 'Konz. (Pkt. 2) fehlt');
                     if (hintEl) {
-                        hintEl.innerHTML = m3h > maxFlow
-                            ? `<span style="color:#c62828;font-weight:600;">⚠️ Aktueller Durchsatz (${m3h.toFixed(2)} m³/h) liegt über dem 20-mA-Endwert (${maxFlow.toFixed(2)} m³/h) – MID im Überbereich (&gt; 20 mA)!</span>`
-                            : `Vergleichswert am Pumpendisplay bei <b>${m3h.toFixed(2)} m³/h</b> (MID-Bereich 0–${Number(maxFlow.toFixed(2))} m³/h = 4–20 mA).`;
+                        const baseTxt = `100 % (20 mA) = <b>${maxFlow.toFixed(2)} m³/h</b> · <b>${lM3 > 0 ? p20.toFixed(2) + ' l/h' : 'Konz. fehlt'}</b>.`;
+                        const overTxt = (m3h > maxFlow)
+                            ? `<br><span style="color:#c62828;font-weight:600;">⚠️ Punkt 1 (${m3h.toFixed(2)} m³/h) liegt über dem 20-mA-Endwert (${maxFlow.toFixed(2)} m³/h) → MID im Überbereich (${(4 + 16 * (m3h / maxFlow)).toFixed(2)} mA)!</span>`
+                            : '';
+                        hintEl.innerHTML = baseTxt + overTxt;
                     }
                 } else {
+                    if (badgeEl) badgeEl.innerText = '- mA';
                     if (maEl) { maEl.innerText = '- mA'; maEl.style.color = ''; }
-                    txt('ww_res_mid_lh', '- l/h');
-                    if (hintEl) hintEl.textContent = 'Für den MID-Abgleich bitte oben einen Durchsatz (Abschnitt 1) und „Max. Wasserfluss bei 20 mA“ ausfüllen.';
+                    if (flowEl) flowEl.innerText = '- m³/h';
+                    if (lhEl) lhEl.innerText = '- l/h';
+                    if (snapBtn) snapBtn.style.display = 'none';
+                    if (hintEl) hintEl.textContent = 'Für den Schieberegler bitte in Punkt 1 oder Punkt 4 einen „Max. Wasserfluss bei 20 mA“ angeben.';
                 }
             }
         }
