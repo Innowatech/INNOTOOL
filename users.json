@@ -18,13 +18,14 @@
       "anlagen",
       "radar",
       "enthaerter",
+      "taschenlampe",
+      "schlauchvolumen",
+      "auslitern",
+      "notizen",
+      "kundennotizen",
       "koffer",
       "enthaertertausch",
-      "taschenlampe",
-      "auslitern",
-      "schlauchvolumen",
-      "notizen",
-      "kundennotizen"
+      "phosphatierung"
     ]
   },
   "MAT": {
@@ -46,13 +47,14 @@
       "anlagen",
       "radar",
       "enthaerter",
-      "koffer",
-      "enthaertertausch",
       "taschenlampe",
       "schlauchvolumen",
       "auslitern",
       "notizen",
-      "kundennotizen"
+      "kundennotizen",
+      "koffer",
+      "enthaertertausch",
+      "phosphatierung"
     ]
   },
   "MÜR": {
@@ -62,7 +64,6 @@
     "status": "active",
     "isAdmin": false,
     "autoUpdate": false,
-    "pcGuide": false,
     "modules": [
       "standard",
       "wasserwerk",
@@ -89,7 +90,6 @@
     "status": "active",
     "isAdmin": false,
     "autoUpdate": false,
-    "pcGuide": false,
     "modules": [
       "standard",
       "wasserwerk",
@@ -116,7 +116,6 @@
     "status": "active",
     "isAdmin": false,
     "autoUpdate": false,
-    "pcGuide": false,
     "modules": [
       "standard",
       "wasserwerk",
@@ -143,7 +142,6 @@
     "status": "active",
     "isAdmin": false,
     "autoUpdate": false,
-    "pcGuide": false,
     "modules": [
       "standard",
       "wasserwerk",
@@ -170,7 +168,6 @@
     "status": "active",
     "isAdmin": false,
     "autoUpdate": false,
-    "pcGuide": false,
     "modules": [
       "standard",
       "wasserwerk",
@@ -197,7 +194,6 @@
     "status": "active",
     "isAdmin": false,
     "autoUpdate": false,
-    "pcGuide": false,
     "modules": [
       "standard",
       "wasserwerk",
@@ -224,7 +220,6 @@
     "status": "active",
     "isAdmin": false,
     "autoUpdate": false,
-    "pcGuide": false,
     "modules": [
       "standard",
       "wasserwerk",
@@ -251,7 +246,6 @@
     "status": "active",
     "isAdmin": false,
     "autoUpdate": false,
-    "pcGuide": false,
     "modules": [
       "standard",
       "wasserwerk",
@@ -278,7 +272,6 @@
     "status": "active",
     "isAdmin": false,
     "autoUpdate": false,
-    "pcGuide": false,
     "modules": [
       "standard",
       "wasserwerk",
@@ -305,7 +298,6 @@
     "status": "active",
     "isAdmin": false,
     "autoUpdate": false,
-    "pcGuide": false,
     "modules": [
       "standard",
       "wasserwerk",
@@ -332,7 +324,6 @@
     "status": "active",
     "isAdmin": false,
     "autoUpdate": false,
-    "pcGuide": false,
     "modules": [
       "standard",
       "wasserwerk",
@@ -359,7 +350,6 @@
     "status": "active",
     "isAdmin": false,
     "autoUpdate": false,
-    "pcGuide": false,
     "modules": [
       "standard",
       "wasserwerk",
@@ -386,7 +376,6 @@
     "status": "active",
     "isAdmin": false,
     "autoUpdate": false,
-    "pcGuide": false,
     "modules": [
       "standard",
       "wasserwerk",
