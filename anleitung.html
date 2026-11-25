@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>INNOWATΞCH Service Tool – Anleitung (v6.2)</title>
+    <title>INNOWATΞCH Service Tool – Anleitung (v6.3)</title>
     <style>
         :root {
             --bg-page: #f4f6f8;
@@ -14,10 +14,10 @@
             --text-soft: #64748b;
             --border-hairline: #dbe2ea;
             --border-strong: #c2ccd6;
-            --accent: #0d47a1;
-            --accent-hover: #093782;
-            --accent-tint: #eef4fc;
-            --cat-app: #0d47a1;
+            --accent: #2951A0;
+            --accent-hover: #203D84;
+            --accent-tint: #eef3fc;
+            --cat-app: #2951A0;
             --cat-param: #1b5e20;
             --cat-tools: #a16207;
             --cat-check: #b91c1c;
@@ -414,7 +414,7 @@
 
         .step-card.is-active {
             border-color: var(--accent);
-            box-shadow: 0 0 0 2px rgba(13, 71, 161, 0.14);
+            box-shadow: 0 0 0 2px rgba(41, 81, 160, 0.16);
             background: #fafcff;
         }
 
@@ -607,7 +607,7 @@
         <div class="topbar-inner">
             <div class="brand-wrap">
                 <div class="brand-title"><span>INNOWATΞCH</span> Service Tool · Anleitung</div>
-                <div class="brand-sub">Stand v6.2 · Einarbeitung &amp; Übersicht am PC</div>
+                <div class="brand-sub">Stand v6.3 · Einarbeitung &amp; Übersicht am PC</div>
             </div>
             <div class="topbar-actions">
                 <button type="button" class="btn" id="top-btn-dashboard">Startseite</button>
@@ -633,12 +633,12 @@
                     <li><a href="#kapitel-1" class="chapter-rail-link is-current">1. Offline &amp; Updates</a></li>
                     <li><a href="#kapitel-2" class="chapter-rail-link">2. Aufbau &amp; Bedienung</a></li>
                     <li><a href="#kapitel-3" class="chapter-rail-link">3. Zahnrad-Menü</a></li>
-                    <li><a href="#kapitel-4" class="chapter-rail-link">4. Alle 17 Module</a></li>
+                    <li><a href="#kapitel-4" class="chapter-rail-link">4. Alle 18 Module</a></li>
                 </ul>
                 <div class="chapter-rail-divider"></div>
                 <div class="chapter-rail-title">Kategorien</div>
                 <ul class="chapter-rail-sublist">
-                    <li><a href="#cat-anwendung" class="chapter-rail-sublink"><span class="cat-swatch" style="background:var(--cat-app);"></span>Anwendung (6)</a></li>
+                    <li><a href="#cat-anwendung" class="chapter-rail-sublink"><span class="cat-swatch" style="background:var(--cat-app);"></span>Anwendung (7)</a></li>
                     <li><a href="#cat-parameter" class="chapter-rail-sublink"><span class="cat-swatch" style="background:var(--cat-param);"></span>Parameter (4)</a></li>
                     <li><a href="#cat-hilfsmittel" class="chapter-rail-sublink"><span class="cat-swatch" style="background:var(--cat-tools);"></span>Tools (5)</a></li>
                     <li><a href="#cat-checklisten" class="chapter-rail-sublink"><span class="cat-swatch" style="background:var(--cat-check);"></span>Katalog &amp; Checkl. (2)</a></li>
@@ -720,7 +720,7 @@
                             <h3 class="step-card-title">2.1 Kopf- und Fußzeile (Kürzel, Hell/Dunkel, Signal-Balken, Version)</h3>
                         </div>
                         <p class="step-card-body">
-                            Oben links steht kompakt <strong>INNOWATΞCH</strong> mit <strong>Service Tool · Kürzel</strong> direkt darunter (rechts im Demo-Modus steht <code>Service Tool · DEMO</code>). Oben rechts sitzen der direkte Umschalter für den <strong>Hell-/Dunkelmodus</strong> sowie das <strong>Zahnrad-Menü (⚙️)</strong> – plus <code>📌</code>, sobald ein Modul offen ist. Unten in der Fußzeile zeigt das <strong>Signal-Balken-Symbol</strong> ohne lange Wörter den Empfang (Grün = Online, 1 orange Balken = Schwaches Netz, Rot durchgestrichen = Offline – einfach kurz antippen für den Klartext-Hinweis), rechts daneben steht einmalig <strong>v6.2</strong>.
+                            Oben links steht das <strong>INNOWATΞCH-Firmenlogo</strong> mit <strong>Service Tool · Kürzel</strong> direkt darunter (rechts im Demo-Modus steht <code>Service Tool · DEMO</code>). Oben rechts sitzen der direkte Umschalter für den <strong>Hell-/Dunkelmodus</strong> sowie das <strong>Zahnrad-Menü (⚙️)</strong> – plus <code>📌</code>, sobald ein Modul offen ist. Unten in der Fußzeile zeigt das <strong>Signal-Balken-Symbol</strong> kompakt den Empfang (Grün = <em>Online</em>, Gelb/Orange = <em>Schlechter Empfang</em>, Rot durchgestrichen = <em>Offline</em> – ohne lange Kommentare), rechts daneben steht einmalig <strong>v6.3</strong>.
                         </p>
                         <div class="step-actions">
                             <button type="button" class="jump-btn" data-guide-action='{"action":"dashboard","targetSelector":"#header-theme-btn"}' data-label="Hell/Dunkel-Schalter oben rechts">Hell/Dunkel oben zeigen</button>
@@ -733,7 +733,7 @@
                             <h3 class="step-card-title">2.2 Die 4 Bereiche auf der Startseite</h3>
                         </div>
                         <p class="step-card-body">
-                            Alle 17 Module sind farblich sortiert: <strong>Anwendungen</strong> (Blau: Dosier- und Anlagenrechner), <strong>Parameter</strong> (Grün: Nachschlage-Datenbanken &amp; Radarsensor), <strong>Tools</strong> (Gelb: Baustellen-Tools &amp; Notizen) und <strong>Katalog &amp; Checklisten</strong> (Rot: Servicekoffer &amp; Enthärtertausch). Im Standard-Stil greifen auch die puristischen Linien-Icons diese vier Kategoriefarben auf. Kopf- und Fußleiste bleiben fest stehen, nur der mittlere Kachelbereich scrollt – liegen noch Module darunter, erscheint ein weicher Schattenverlauf mit <strong>↓ Weitere Module</strong>.
+                            Alle 18 Module sind farblich sortiert: <strong>Anwendungen</strong> (INNOWATΞCH-Blau: Dosier- und Anlagenrechner), <strong>Parameter</strong> (Grün: Nachschlage-Datenbanken &amp; Radarsensor), <strong>Tools</strong> (Gelb: Baustellen-Tools &amp; Notizen) und <strong>Katalog &amp; Checklisten</strong> (Rot: Servicekoffer &amp; Enthärtertausch). Im Standard-Stil greifen auch die puristischen Linien-Icons diese vier Kategoriefarben auf. Kopf- und Fußleiste bleiben fest stehen, nur der mittlere Kachelbereich scrollt – liegen noch Module darunter, erscheint ein weicher Schattenverlauf mit <strong>↓ Weitere Module</strong>.
                         </p>
                         <div class="step-actions">
                             <button type="button" class="jump-btn" data-guide-action='{"action":"dashboard"}' data-label="Dashboard Übersicht">Startseite komplett zeigen</button>
@@ -852,7 +852,7 @@
                 <!-- KAPITEL 4 -->
                 <section class="chapter-section" id="kapitel-4">
                     <div class="chapter-header">
-                        <h2 class="chapter-title">4. Alle 17 Module im Überblick (Reihenfolge wie auf dem Dashboard)</h2>
+                        <h2 class="chapter-title">4. Alle 18 Module im Überblick (Reihenfolge wie auf dem Dashboard)</h2>
                     </div>
                     <p class="chapter-intro">
                         Alle Kacheln der Reihe nach von oben nach unten. Klicke einfach auf „Im Tool öffnen“, um das Modul rechts direkt auszuprobieren.
@@ -902,12 +902,24 @@
                         </div>
                     </article>
 
-                    <article class="step-card" id="mod-pid">
+                    <article class="step-card" id="mod-phosphatierung">
                         <div class="step-card-top">
-                            <h3 class="step-card-title">4.4 PID-Regler</h3>
+                            <h3 class="step-card-title">4.4 Phosphatierung</h3>
                         </div>
                         <p class="step-card-body">
-                            Hilfe zur Einregulierung bei Warmwasser- (Zirkulation) oder Kaltwasser-Anlagen (inkl. Empfehlung für die Grunddosierung bei 0,075 mg/l Abstand). Mit einer Testdosierung und dem gemessenen Chlor-Anstieg (<code>ΔY</code>) lässt sich außerdem der tatsächliche Durchfluss in der Hauptleitung in <code>l/s</code> und <code>m³/h</code> zurückrechnen.
+                            Inbetriebnahme-Rechner für die Produkte <strong>Aquatec HK30</strong> (<code>0,085 ml/l</code> → <code>1,5–2,0 mg/l PO₄</code>), <strong>Aquatec 20H</strong> (<code>0,085 ml/l</code> → <code>1,5–2,0 mg/l PO₄</code>) und <strong>INNOWATΞCH 100 KW</strong> (<code>0,035 ml/l</code> → <code>30–40 mg/l POC</code>). Wasserzählertaktung (<code>L/Impuls</code>, inkl. Schnellwahl-Chips) wählen – gibt direkt die einzustellende Pumpendosierung in <strong>ml pro Impuls</strong> aus und enthält unten die passenden Messanleitungen (Lovibond DE / POC-Trübungstest) als vergrößerbare Vorschau.
+                        </p>
+                        <div class="step-actions">
+                            <button type="button" class="jump-btn" data-guide-action='{"action":"tab","tabId":"phosphatierung"}' data-label="Modul: Phosphatierung">Im Tool öffnen</button>
+                        </div>
+                    </article>
+
+                    <article class="step-card" id="mod-pid">
+                        <div class="step-card-top">
+                            <h3 class="step-card-title">4.5 PID-Regler</h3>
+                        </div>
+                        <p class="step-card-body">
+                            Hilfe zur Einregulierung für <strong>Kaltwasser (MID + PID)</strong>, <strong>Warmwasser (Zirkulation)</strong> sowie neu auch für den <strong>Kühlwasserkreislauf (Umwälzung / Absalzung)</strong> mit konservativerer Abstimmung (Totzone <code>0,03 mg/l</code>). Mit einer Testdosierung und dem gemessenen Chlor-Anstieg (<code>ΔY</code>) lässt sich außerdem der tatsächliche Durchfluss bzw. Umwälzstrom in <code>l/s</code> und <code>m³/h</code> zurückrechnen.
                         </p>
                         <div class="step-actions">
                             <button type="button" class="jump-btn" data-guide-action='{"action":"tab","tabId":"pid"}' data-label="Modul: PID-Regler">Im Tool öffnen</button>
@@ -916,7 +928,7 @@
 
                     <article class="step-card" id="mod-verduennung">
                         <div class="step-card-top">
-                            <h3 class="step-card-title">4.5 Verdünnung</h3>
+                            <h3 class="step-card-title">4.6 Verdünnung</h3>
                         </div>
                         <p class="step-card-body">
                             Wenn ein Behälter oder Kanister auf eine niedrigere Konzentration heruntergemischt werden soll: Zielkonzentration, gewünschte Endmenge und vorhandene Anolytekonzentration angeben – zeigt Liter Konzentrat plus Liter Wasser.
@@ -928,7 +940,7 @@
 
                     <article class="step-card" id="mod-dosierauswertung">
                         <div class="step-card-top">
-                            <h3 class="step-card-title">4.6 Dosierauswertung</h3>
+                            <h3 class="step-card-title">4.7 Dosierauswertung</h3>
                         </div>
                         <p class="step-card-body">
                             Rechnet aus alten und neuen Zählerständen (Wasserzähler in m³ und Pumpen-Mengensummierung in l) die reale Dosierquote (%) und das wirklich eindosierte Aktivchlor (mg/l) aus – mit Check gegen den Sollwert, ob Unter- oder Überdosierung vorliegt. Mit Datumsfeldern gibt es zusätzlich den Schnitt pro Tag (<code>m³/Tag</code> und <code>l/Tag</code>) sowie einen Button zur Übernahme in die Service-Notizen.
@@ -948,7 +960,7 @@
 
                     <article class="step-card" id="mod-sonden">
                         <div class="step-card-top">
-                            <h3 class="step-card-title">4.7 Sonden</h3>
+                            <h3 class="step-card-title">4.8 Sonden</h3>
                         </div>
                         <p class="step-card-body">
                             Datenbank unserer 11 Messsonden mit Messbereich, Signal, Artikelnummer und kurzen Hinweisen zu Kalibrierung bzw. Einbau.
@@ -960,7 +972,7 @@
 
                     <article class="step-card" id="mod-anlagen">
                         <div class="step-card-top">
-                            <h3 class="step-card-title">4.8 Aquadron-Anlagen</h3>
+                            <h3 class="step-card-title">4.9 Aquadron-Anlagen</h3>
                         </div>
                         <p class="step-card-body">
                             Technische Daten zu allen 47 Aquadron-Baugrößen (Leistung, Zellen, Salz- und Wasserverbrauch, Druckbereich) zum schnellen Nachschlagen vor Ort.
@@ -972,7 +984,7 @@
 
                     <article class="step-card" id="mod-radar">
                         <div class="step-card-top">
-                            <h3 class="step-card-title">4.9 Vega Radarsensor</h3>
+                            <h3 class="step-card-title">4.10 Vega Radarsensor</h3>
                         </div>
                         <p class="step-card-body">
                             Anleitung zur Einrichtung der VEGAPULS-Sensoren am Tank: Nach Auswahl der Tankgröße (Liter) stehen direkt alle Werte inkl. <strong>Tankdurchmesser (Ø)</strong> in mm bereit. In jedem Schritt gibt es die passenden Screenshots der VEGA-App zum Aufzoomen.
@@ -985,7 +997,7 @@
 
                     <article class="step-card" id="mod-enthaerter">
                         <div class="step-card-top">
-                            <h3 class="step-card-title">4.10 Enthärter</h3>
+                            <h3 class="step-card-title">4.11 Enthärter</h3>
                         </div>
                         <p class="step-card-body">
                             Enthärtertyp auswählen (11 Modelle hinterlegt) und gemessene Rohwasserhärte (<code>°dH</code>) eingeben – zeigt die 80-%-Nutzkapazität (Quellharz-Sensor) und wie viel enthärtetes Wasser bis zur Regeneration durchläuft.
@@ -1005,7 +1017,7 @@
 
                     <article class="step-card" id="mod-taschenlampe">
                         <div class="step-card-top">
-                            <h3 class="step-card-title">4.11 Taschenlampe</h3>
+                            <h3 class="step-card-title">4.12 Taschenlampe</h3>
                         </div>
                         <p class="step-card-body">
                             Macht den Bildschirm einfach komplett weiß – praktisch im dunklen Schaltschrank oder hinter der Anlage, ohne aus der App wechseln zu müssen.
@@ -1017,7 +1029,7 @@
 
                     <article class="step-card" id="mod-schlauchvolumen">
                         <div class="step-card-top">
-                            <h3 class="step-card-title">4.12 Schlauchvolumen</h3>
+                            <h3 class="step-card-title">4.13 Schlauchvolumen</h3>
                         </div>
                         <p class="step-card-body">
                             Innendurchmesser (mm) und Leitungslänge (m) ergeben den Inhalt in <strong>Litern</strong> (und <code>l/m</code>). Mit der Pumpenleistung sieht man zusätzlich, wie lange es dauert, bis Anolyte vorne am Impfpunkt ankommt.
@@ -1029,7 +1041,7 @@
 
                     <article class="step-card" id="mod-auslitern">
                         <div class="step-card-top">
-                            <h3 class="step-card-title">4.13 Auslitern</h3>
+                            <h3 class="step-card-title">4.14 Auslitern</h3>
                         </div>
                         <p class="step-card-body">
                             Zum Nachmessen von Dosierpumpen am Messbecher: Auswahl für <em>Katholyte</em>, <em>Anolyte</em> oder <em>Beides</em>, eingebaute Stoppuhr (<strong>15 s / 30 s / 60 s</strong> mit Piepton am Ende) und direkte Umrechnung in <code>l/h</code>.
@@ -1041,7 +1053,7 @@
 
                     <article class="step-card" id="mod-notizen">
                         <div class="step-card-top">
-                            <h3 class="step-card-title">4.14 Service-Notizen</h3>
+                            <h3 class="step-card-title">4.15 Service-Notizen</h3>
                         </div>
                         <p class="step-card-body">
                             Das Hauptfeld für Einsatzberichte und Störungsmeldungen (bleibt immer lokal gespeichert):
@@ -1058,7 +1070,7 @@
 
                     <article class="step-card" id="mod-kundennotizen">
                         <div class="step-card-top">
-                            <h3 class="step-card-title">4.15 Kunden- &amp; Eigennotizen</h3>
+                            <h3 class="step-card-title">4.16 Kunden- &amp; Eigennotizen</h3>
                         </div>
                         <p class="step-card-body">
                             Getrenntes Notizbuch für Kundeninfos, eigene Erinnerungen, Wartungshinweise, Rückrufe oder Materialbestellungen. Alles lässt sich im lokalen Archiv speichern, nach Typ filtern/durchsuchen, als PDF drucken oder per An/CC an Kollegen aus der hinterlegten <code>users.json</code> schicken.
@@ -1078,7 +1090,7 @@
 
                     <article class="step-card" id="mod-koffer">
                         <div class="step-card-top">
-                            <h3 class="step-card-title">4.16 Servicekoffer (6 Koffer / 162 Teile)</h3>
+                            <h3 class="step-card-title">4.17 Servicekoffer (6 Koffer / 162 Teile)</h3>
                         </div>
                         <p class="step-card-body">
                             Alle 6 L-Boxen mit Originalfotos und Suchfeld – funktioniert in beide Richtungen:
@@ -1095,7 +1107,7 @@
 
                     <article class="step-card" id="mod-enthaertertausch">
                         <div class="step-card-top">
-                            <h3 class="step-card-title">4.17 Checkliste Enthärtertausch</h3>
+                            <h3 class="step-card-title">4.18 Checkliste Enthärtertausch</h3>
                         </div>
                         <p class="step-card-body">
                             Für die Baustellenaufnahme beim Enthärtertausch: Stammdaten, 14 Enthärtertypen mit Artikelnummer und Zeitaufwand, Kabinett-/Schlauch-/Panzerschlauch-/Schwimmerlanzen-Auswahl (bei Bedarf auch frei unter <em>„Sonstiges“</em>) sowie die 3 Turbinenfotos (100041, 109012, 103547) plus <em>„Ohne“</em>.
@@ -1128,7 +1140,7 @@
             </div>
 
             <div class="phone-frame">
-                <iframe id="guide-app-iframe" title="INNOWATΞCH Service Tool v6.2 Demo"></iframe>
+                <iframe id="guide-app-iframe" title="INNOWATΞCH Service Tool v6.3 Demo"></iframe>
             </div>
 
             <div class="phone-footnote">
