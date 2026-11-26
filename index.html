@@ -348,7 +348,7 @@
         .et-custom-input.visible { display: flex; }
         .et-time-box { background: var(--result-bg); border: 1px solid var(--result-border); border-radius: 6px; padding: 8px 10px; margin-bottom: 8px; font-size: 0.78rem; color: var(--text-color); line-height: 1.4; }
         .et-saved-item, .kn-saved-item { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 8px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--card-bg); margin-bottom: 6px; font-size: 0.78rem; }
-        .mail-rec-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 5px; margin-bottom: 8px; }
+        .mail-rec-grid { display: flex; flex-direction: column; gap: 5px; margin-bottom: 8px; }
         .mail-rec-item { display: flex; align-items: center; gap: 6px; padding: 6px 8px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--card-bg); font-size: 0.74rem; cursor: pointer; line-height: 1.2; }
         .mail-rec-item input { width: 16px; height: 16px; flex-shrink: 0; }
         .kn-badge { display: inline-block; padding: 1px 6px; border-radius: 4px; font-size: 0.68rem; font-weight: 700; background: var(--result-bg); color: var(--primary-color); border: 1px solid var(--result-border); }
@@ -498,10 +498,7 @@
 
     <div class="header">
         <div class="header-left header-brand">
-            <div class="header-logo-wrap" id="header-logo-wrap">
-                <span class="header-logo-pill" id="header-logo-pill"><img id="header-logo-img" class="header-logo-img" alt="INNOWATΞCH"></span>
-                <h1 id="app-title"><span id="first-letter">I</span>NNOWATΞCH</h1>
-            </div>
+            <h1 id="app-title"><span id="first-letter">I</span>NNOWATΞCH</h1>
             <div class="header-sub" id="header-sub">Service Tool</div>
         </div>
         <div class="header-right">
@@ -633,36 +630,42 @@
             <label>Produkt auswählen</label>
             <div class="input-wrapper">
                 <select id="phos_produkt" onchange="calcPhosphatierung()">
+                    <option value="">-- Bitte Phosphatprodukt wählen --</option>
                     <option value="hk30">Aquatec HK30 (0,085 ml/l · PO₄)</option>
                     <option value="20h">Aquatec 20H (0,085 ml/l · PO₄)</option>
                     <option value="100kw">INNOWATΞCH 100 KW (0,035 ml/l · POC)</option>
                 </select>
             </div>
         </div>
-        <div class="result-box" style="margin-top:6px;">
-            <div class="result-row"><span class="result-label">Grunddosierung (Inbetriebnahme)</span><span class="result-value" id="phos_res_grund">0,085 ml/l</span></div>
-            <div class="result-row"><span class="result-label">Zielwert Kontrolle</span><span class="result-value" id="phos_res_ziel">1,5 – 2,0 mg/l PO₄</span></div>
-        </div>
-
-        <div class="section-title">2. Wasserzählertaktung &amp; Pumpen-Einstellung</div>
-        <div class="form-group">
-            <label>Taktung Wasserzähler</label>
-            <div class="input-wrapper"><input type="number" id="phos_impuls" step="0.1" placeholder="z. B. 100" oninput="calcPhosphatierung()"><span class="unit">L / Impuls</span></div>
-            <div style="display:flex; gap:6px; flex-wrap:wrap; margin-top:6px;">
-                <button type="button" class="snippet-chip" onclick="setPhosImpuls(1)">1 l</button>
-                <button type="button" class="snippet-chip" onclick="setPhosImpuls(10)">10 l</button>
-                <button type="button" class="snippet-chip" onclick="setPhosImpuls(100)">100 l</button>
-                <button type="button" class="snippet-chip" onclick="setPhosImpuls(1000)">1000 l</button>
+        <div id="phos_content_wrap" style="display:none;">
+            <div class="result-box" style="margin-top:6px;">
+                <div class="result-row"><span class="result-label">Grunddosierung (Inbetriebnahme)</span><span class="result-value" id="phos_res_grund">0,085 ml/l</span></div>
+                <div class="result-row"><span class="result-label">Zielwert Kontrolle</span><span class="result-value" id="phos_res_ziel">1,5 – 2,0 mg/l PO₄</span></div>
             </div>
-        </div>
-        <div class="result-box">
-            <label>Einzustellende Dosiermenge der Pumpe pro Impuls</label>
-            <div class="result-value" id="phos_res_ml" style="font-size:1.25rem;">0.00 ml</div>
-            <div class="hint" id="phos_res_hint" style="margin-top:4px; color:var(--result-label);">Entspricht 85,0 ml pro m³ Wasser.</div>
-        </div>
 
-        <div class="section-title">3. Mess-Bedienungsanleitung (zum Vergrößern antippen)</div>
-        <div id="phos_guide_area"></div>
+            <div class="section-title">2. Wasserzählertaktung &amp; Pumpen-Einstellung</div>
+            <div class="form-group">
+                <label>Taktung Wasserzähler</label>
+                <div class="input-wrapper"><input type="number" id="phos_impuls" step="0.1" placeholder="z. B. 100" oninput="calcPhosphatierung()"><span class="unit">L / Impuls</span></div>
+                <div style="display:flex; gap:6px; flex-wrap:wrap; margin-top:6px;">
+                    <button type="button" class="snippet-chip" onclick="setPhosImpuls(1)">1 l</button>
+                    <button type="button" class="snippet-chip" onclick="setPhosImpuls(10)">10 l</button>
+                    <button type="button" class="snippet-chip" onclick="setPhosImpuls(100)">100 l</button>
+                    <button type="button" class="snippet-chip" onclick="setPhosImpuls(1000)">1000 l</button>
+                </div>
+            </div>
+            <div class="result-box">
+                <label>Einzustellende Dosiermenge der Pumpe pro Impuls</label>
+                <div class="result-value" id="phos_res_ml" style="font-size:1.25rem;">0.00 ml</div>
+                <div class="hint" id="phos_res_hint" style="margin-top:4px; color:var(--result-label);">Entspricht 85,0 ml pro m³ Wasser.</div>
+            </div>
+
+            <div class="section-title">3. Mess-Bedienungsanleitung (zum Vergrößern antippen)</div>
+            <div id="phos_guide_area"></div>
+        </div>
+        <div id="phos_placeholder_box" class="alert-box" style="margin-top:12px;">
+            Bitte oben ein Phosphatprodukt auswählen, um die Grunddosierung, Wasserzählertaktung und Messanleitung anzuzeigen.
+        </div>
 
         <button type="button" class="pdf-export-btn" onclick="exportToPDF()">📄 Als PDF speichern / drucken</button>
         <button type="button" class="reset-tab-btn" onclick="resetTabInputs('phosphatierung')">↺ Eingaben zurücksetzen</button>
@@ -1030,10 +1033,10 @@
         </div>
 
         <div class="et-card no-print" style="margin-top:8px; margin-bottom:8px;">
-            <div style="font-size:0.8rem; font-weight:700; color:var(--primary-color); margin-bottom:4px;">✉️ Empfänger-Verteiler Enthärtertausch</div>
-            <div class="hint" style="margin-bottom:6px;">Standard-Verteiler (bei Urlaub/Krankheit einzeln abwählbar). Danach gespeicherte PDF &amp; Handyfotos in der Mail-App anhängen.</div>
+            <div style="font-size:0.8rem; font-weight:700; color:var(--primary-color); margin-bottom:4px;">✉️ E-Mail-Verteiler &amp; PDF-Export</div>
+            <div class="hint" style="margin-bottom:6px;">Tipp: Beim Senden wird auf Wunsch direkt das PDF zum Abspeichern generiert, damit es im Mail-Programm als Anhang hinzugefügt werden kann.</div>
             <div class="mail-rec-grid" id="et_mail_recipients"></div>
-            <button type="button" class="pdf-export-btn" onclick="sendEtEmail()" style="margin-top:4px; background:linear-gradient(to bottom,#dc2626,#b91c1c); border-color:#991b1b;">🚀 E-Mail-Verteiler öffnen</button>
+            <button type="button" class="pdf-export-btn" onclick="sendEtEmail()" style="margin-top:4px; background:linear-gradient(to bottom,#dc2626,#b91c1c); border-color:#991b1b;">🚀 PDF speichern &amp; E-Mail öffnen</button>
         </div>
 
         <div class="no-print" style="display:flex; gap:6px; margin-top:6px;">
@@ -2426,18 +2429,29 @@
         if (window.self !== window.top) showToast('Hinweis: Falls die Vorschau Drucken blockiert, oben rechts „Vollbild“ öffnen.');
         window.print();
     }
-    function sendEtEmail() {
+    async function sendEtEmail() {
         const recipients = [...document.querySelectorAll('#et_mail_recipients .et-mail-cb:checked')].map(c => c.value);
         if (!recipients.length) return showToast('Bitte mindestens eine E-Mail-Adresse im Verteiler anhaken.');
+        const wantPdf = await askConfirm('Möchtest du das Checklisten-PDF jetzt direkt speichern (Druckdialog öffnet sich), damit du es gleich in der E-Mail als Anhang hinzufügen kannst?');
+        if (wantPdf) {
+            exportEtToPDF();
+        }
         const k = ($('et_kunde')?.value || '').trim();
         const fn = ($('et_fabnr')?.value || '').trim();
         const ku = ($('et_kuerzel')?.value || '').trim() || activeUser || 'Techniker';
         const base = k ? `Aufnahme Enthärtertausch - ${k}` : 'Aufnahme Enthärtertausch';
         const subject = `${base}${fn ? ' (Fab.-Nr. ' + fn + ')' : ''} (${ku})`;
-        const body = buildEnthaertertauschText() + '\n\nHinweis: Gespeicherte PDF („' + base + '.pdf“) und zugehörige Handy-Fotos bitte direkt in dieser E-Mail anhängen.';
+        const body = buildEnthaertertauschText() + '\n\nHinweis: Bitte das soeben gespeicherte PDF („' + base + '.pdf“) und zugehörige Handy-Fotos als Anhang in dieser E-Mail hinzufügen.';
         const sep = getMailSeparator();
         if (IS_DEMO_MODE) return showDemoMailPreview(recipients.join(sep), subject);
-        window.location.href = `mailto:${recipients.join(sep)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        const openMail = () => {
+            window.location.href = `mailto:${recipients.join(sep)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        };
+        if (wantPdf) {
+            setTimeout(openMail, 1500);
+        } else {
+            openMail();
+        }
     }
     function copyEtClipboard() {
         const txtBlock = buildEnthaertertauschText();
@@ -4494,8 +4508,18 @@
         saveTabInputs();
     }
     function calcPhosphatierung() {
-        const key = $('phos_produkt')?.value || 'hk30';
-        const p = PHOSPHAT_PRODUCTS[key] || PHOSPHAT_PRODUCTS.hk30;
+        const key = $('phos_produkt')?.value || '';
+        const wrap = $('phos_content_wrap');
+        const ph = $('phos_placeholder_box');
+        if (!key) {
+            if (wrap) wrap.style.display = 'none';
+            if (ph) ph.style.display = 'block';
+            return;
+        }
+        if (wrap) wrap.style.display = 'block';
+        if (ph) ph.style.display = 'none';
+        const p = PHOSPHAT_PRODUCTS[key];
+        if (!p) return;
         const impRaw = String($('phos_impuls')?.value ?? '').trim();
         const imp = impRaw === '' ? 0 : Number(impRaw);
         txt('phos_res_grund', `${p.grund.toFixed(3).replace('.', ',')} ml/l`);
