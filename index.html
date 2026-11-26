@@ -9,7 +9,7 @@
     <meta name="theme-color" content="#2951A0">
     <meta name="color-scheme" content="light" id="meta-color-scheme">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>INNOWATΞCH Service Tool v6.3</title>
+    <title>INNOWATΞCH Service Tool v6.4</title>
     <link rel="icon" type="image/png" sizes="512x512" href="icon.png?v=6.3">
     <link rel="manifest" href="manifest.json?v=6.3">
     <link rel="apple-touch-icon" href="icon.png?v=6.3">
@@ -1222,7 +1222,7 @@
             <button type="button" id="net-status-badge" class="net-signal-btn" onclick="showNetStatusToast()" title="Verbindungsstatus anzeigen" aria-label="Verbindungsstatus"></button>
             <span id="footer-update-pill" onclick="applyAppUpdate()" title="Update jetzt installieren" style="display:none; font-size:0.7rem; padding:2px 7px; border-radius:10px; background:#f59e0b; color:white; cursor:pointer; font-weight:bold;">🔄 Update</span>
         </div>
-        <span class="footer-version" style="flex:1; text-align:right;" onclick="handleVersionClick()">v6.3</span>
+        <span class="footer-version" style="flex:1; text-align:right;" onclick="handleVersionClick()">v6.4</span>
     </div>
 
     <nav class="bottom-cat-nav" id="bottom-cat-nav" aria-label="Bereiche">
@@ -1320,7 +1320,7 @@
 
 <div class="admin-modal-overlay" id="adminAuthModal">
     <div class="admin-modal-content">
-        <div class="admin-modal-header"><span>Admin Authentifizierung (v6.3)</span><button type="button" class="modal-close-btn" style="color:var(--primary-color);" onclick="closeAdminModal('adminAuthModal')">✕</button></div>
+        <div class="admin-modal-header"><span>Admin Authentifizierung (v6.4)</span><button type="button" class="modal-close-btn" style="color:var(--primary-color);" onclick="closeAdminModal('adminAuthModal')">✕</button></div>
         <p style="font-size:0.82rem; color:var(--subtext-color); margin-bottom:12px;">Bitte die Admin-PIN eingeben:</p>
         <div class="form-group"><label>Admin-PIN</label><input type="password" id="adminPin8" class="field-box" value="" autocomplete="new-password" placeholder="••••••••" style="letter-spacing:2px;"></div>
         <button type="button" class="admin-btn admin-btn-primary" style="margin-top:10px;" onclick="verifyAdminAuth8()">Admin Console öffnen</button>
@@ -1329,7 +1329,7 @@
 
 <div class="admin-modal-overlay" id="adminConsoleModal">
     <div class="admin-modal-content" style="max-width:540px;">
-        <div class="admin-modal-header"><span>Admin Konsole (v6.3)</span><button type="button" class="modal-close-btn" style="color:var(--primary-color);" onclick="closeAdminModal('adminConsoleModal')">✕</button></div>
+        <div class="admin-modal-header"><span>Admin Konsole (v6.4)</span><button type="button" class="modal-close-btn" style="color:var(--primary-color);" onclick="closeAdminModal('adminConsoleModal')">✕</button></div>
         <div class="admin-tab-bar">
             <button type="button" class="admin-tab-btn active" id="adminTabBtnUsers" onclick="switchAdminTab('users')">👥 Techniker (users.json)</button>
             <button type="button" class="admin-tab-btn" id="adminTabBtnDb" onclick="switchAdminTab('db')">🗂️ Datenbanken (databases.json)</button>
